@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-10-30
-Data refresh: last successful run 2026-10-30T08:56:08Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-10-30T18:58:11Z UTC. Model nbaengine-0.1.0.
 
 - CHA at WAS (game 401909277): P(home) sim 0.278 / Elo 0.283; mean score 112.8-121.2 (total 234.0); margin 50% [-17.0, 1.0], 80% [-25.0, 9.0]; total 80% [211.0, 257.0]; P(OT) 0.018; most frequent exact score 116-121 (rarely hit).
 - CHI at BOS (game 401909278): P(home) sim 0.846 / Elo 0.867; mean score 126.2-111.9 (total 238.2); margin 50% [6.0, 23.0], 80% [-3.0, 31.0]; total 80% [215.0, 261.0]; P(OT) 0.015; most frequent exact score 133-108 (rarely hit).
