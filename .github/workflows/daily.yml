@@ -1,0 +1,26 @@
+name: nba-daily
+on:
+  schedule:
+    - cron: "0 14 * * *"
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency: nba-daily
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install numpy pandas scipy
+      - run: python scripts/daily_update.py
+        working-directory: nba_engine
+      - name: Commit updated state, database and report
+        run: |
+          git config user.name "nba-engine-bot"
+          git config user.email "nba-engine-bot@users.noreply.github.com"
+          git add -f nba_engine/artifacts/state.json nba_engine/artifacts/live.sqlite nba_engine/artifacts/reports
+          git diff --cached --quiet || git commit -m "daily update $(date -u +%F)"
+          git push
