@@ -1,0 +1,25 @@
+run failed (expected once): 2025-12-10 ConnectionError: simulated outage
+replayed 175 days in 197s, failed runs: 1
+model                 elo  home_const     sim_mc  sim_mc_raw
+n               1228.0000   1228.0000  1228.0000   1228.0000
+brier              0.2060      0.2471     0.2097      0.2108
+log_loss           0.6001      0.6873     0.6086      0.6112
+accuracy           0.6816      0.5546     0.6832      0.6832
+margin_mae        11.4366     13.0751    11.4905     11.4889
+margin_rmse       14.6529     16.3638    14.6694     14.6678
+margin_cov50       0.5073      0.4593     0.4870      0.5790
+margin_width50    18.9198     20.3126    17.6785     22.4984
+margin_cov80       0.7875      0.7720     0.7671      0.8567
+margin_width80    35.9482     38.5946    33.4261     42.5676
+margin_cov90       0.8803      0.8738     0.8599      0.9397
+margin_width90    46.1391     49.5356    42.8501     54.6206
+total_mae             NaN     16.0939    15.0771     15.1367
+total_rmse            NaN     20.2863    18.9652     19.1495
+total_cov50           NaN      0.5090     0.4951      0.5187
+total_cov80           NaN      0.7883     0.7801      0.8249
+total_cov90           NaN      0.8933     0.8827      0.9055
+ot_brier              NaN         NaN     0.0425      0.0425
+['monitor: last 300 completed forecasted games - log loss elo=0.5150, home_const=0.6786, sim_mc=0.5602, sim_mc_raw=0.5686', '  FLAG: simulator is >0.02 worse than Elo on this window']
+games forecast: 1228 | runs: (175, 174)
+last successful refresh: 2026-10-20T01:42:43Z
+duplicate forecast keys: 0

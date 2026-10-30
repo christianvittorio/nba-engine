@@ -1,0 +1,39 @@
+immutability OK: UPDATE -> forecasts are immutable
+immutability OK: DELETE -> forecasts are immutable
+leakage test (future scores scrambled, first 150 forecasts x 4 models identical): PASS | later forecasts did change: True
+
+season label 2024 (n=1230)
+             brier  log_loss  accuracy  total_mae
+model                                            
+elo         0.2150    0.6176    0.6504        NaN
+home_const  0.2485    0.6901    0.5431    16.2159
+sim_mc      0.2141    0.6163    0.6504    14.6942
+sim_mc_raw  0.2156    0.6203    0.6504    14.9177
+
+season label 2025 (n=1230)
+             brier  log_loss  accuracy  total_mae
+model                                            
+elo         0.2135    0.6145    0.6577        NaN
+home_const  0.2482    0.6896    0.5439    15.8372
+sim_mc      0.2139    0.6162    0.6691    14.7025
+sim_mc_raw  0.2148    0.6188    0.6691    14.7357
+
+OT: mean simulated P(OT) 0.0226 vs actual OT rate 0.0484
+home win rate in evaluated games 0.5435; mean actual margin 1.89; mean sim margin 2.05
+mean actual total 228.04; mean sim total 228.04
+paired log-loss difference sim - elo: mean +0.0002, standard error 0.0034 (negative favours sim)
+
+WORKED EXAMPLE: HOU at OKC, game_id 22401230 (season label 2025), 10,000 sims
+  reproducible with same seed: True
+  P(home win) 0.745 (Monte Carlo SE 0.0044); Elo P(home) 0.798
+  mean score 119.5-110.1, median 119-110, most frequent exact score 122-116 (only 0.4% of sims)
+  margin 50% interval [-1.0, 18.0], 90% [-12.0, 31.0]; total 80% [207.0, 253.0]
+  P(OT) 0.018; thresholds {"home 110+": 0.813, "total over 225.5": 0.585, "home wins by 10+": 0.5}
+  ACTUAL: 111-96 (home margin +15, total 207); periods 4
+  stored backtest forecast for this game (2,000 sims): p_home 0.731, mean 119.2-110.6
+
+Monte Carlo sampling error of P(home win), same game, 12 different seeds:
+  n_sims=   100: spread (sd) across seeds 0.0478, theoretical 0.0436
+  n_sims=  1000: spread (sd) across seeds 0.0125, theoretical 0.0138
+  n_sims= 10000: spread (sd) across seeds 0.0042, theoretical 0.0044
+  (more simulations shrink sampling noise only; they do not improve the model's real-world accuracy)

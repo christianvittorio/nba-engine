@@ -1,0 +1,16 @@
+stage 1: minutes half-life, cap
+  hl_min=6: cap36=4.772, cap38=4.778, cap40=4.797, cap42=4.814, cap48=4.838, raw_ewm=5.124, last10_avg=5.197 (56s)
+  hl_min=12: cap36=4.944, cap38=4.952, cap40=4.972, cap42=4.991, cap48=5.015, raw_ewm=5.333, last10_avg=5.197 (114s)
+  hl_min=24: cap36=5.153, cap38=5.164, cap40=5.186, cap42=5.204, cap48=5.228, raw_ewm=5.570, last10_avg=5.197 (173s)
+  chosen hl_min 6 cap 36.0
+stage 2: rate half-life and shrinkage
+  hl_rate=20 k_min=75: dev_total 8.1428 pts_mae 3.690 (last10 per-min baseline 3.814) (228s)
+  hl_rate=20 k_min=150: dev_total 8.1922 pts_mae 3.703 (last10 per-min baseline 3.814) (285s)
+  hl_rate=20 k_min=300: dev_total 8.3407 pts_mae 3.737 (last10 per-min baseline 3.814) (344s)
+  hl_rate=40 k_min=75: dev_total 8.1568 pts_mae 3.701 (last10 per-min baseline 3.814) (400s)
+  hl_rate=40 k_min=150: dev_total 8.1782 pts_mae 3.707 (last10 per-min baseline 3.814) (457s)
+  hl_rate=40 k_min=300: dev_total 8.2575 pts_mae 3.725 (last10 per-min baseline 3.814) (512s)
+  hl_rate=80 k_min=75: dev_total 8.1937 pts_mae 3.717 (last10 per-min baseline 3.814) (568s)
+  hl_rate=80 k_min=150: dev_total 8.2042 pts_mae 3.720 (last10 per-min baseline 3.814) (624s)
+  hl_rate=80 k_min=300: dev_total 8.2518 pts_mae 3.731 (last10 per-min baseline 3.814) (679s)
+chosen {'hl_min': 6, 'cap': 36.0, 'hl_rate': 20, 'k_min': 75}

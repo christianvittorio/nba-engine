@@ -1,0 +1,8 @@
+hl_min=3: cap30=5.241, cap32=4.896, cap34=4.726, cap36=4.670, cap38=4.675, raw_ewm=4.988, last10_avg=5.197 (59s)
+hl_min=4: cap30=5.265, cap32=4.923, cap34=4.756, cap36=4.702, cap38=4.706, raw_ewm=5.031, last10_avg=5.197 (119s)
+minutes best (4.670013914722176, 3, 36.0)
+hl_rate=10 k_min=75: dev_total 8.1922 pts_mae 3.695 (178s)
+hl_rate=20 k_min=40: dev_total 8.1390 pts_mae 3.688 (235s)
+hl_rate=10 k_min=40: dev_total 8.1732 pts_mae 3.686 (294s)
+hl_rate=30 k_min=75: dev_total 8.1454 pts_mae 3.696 (352s)
+chosen {'hl_min': 3, 'cap': 36.0, 'hl_rate': 20, 'k_min': 40}

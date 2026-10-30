@@ -1,0 +1,76 @@
+validation: {
+  "ok": true,
+  "checks": {
+    "rows": 4920,
+    "duplicate_game_ids": 0,
+    "null_scores": 0,
+    "null_teams": 0,
+    "ties": 0,
+    "score_out_of_range": 0,
+    "games_per_season": {
+      "2022": 1230,
+      "2023": 1230,
+      "2024": 1230,
+      "2025": 1230
+    },
+    "teams_per_season": {
+      "2022": 30,
+      "2023": 30,
+      "2024": 30,
+      "2025": 30
+    },
+    "pbp_points_reconcile_mismatch_games": 27
+  }
+}
+calibration (season 2023): {"kappa_margin": 0.7839391839831196, "kappa_total": 0.9209561875321809, "n_calibration_games": 410, "total_level_bias_end": 0.09150000000000015}
+  300/2460 games forecast
+  600/2460 games forecast
+  900/2460 games forecast
+  1200/2460 games forecast
+  1500/2460 games forecast
+  1800/2460 games forecast
+  2100/2460 games forecast
+  2400/2460 games forecast
+backtest wall time 438s with 2000 sims/game
+model                 elo  home_const     sim_mc  sim_mc_raw
+n               2460.0000   2460.0000  2460.0000   2460.0000
+brier              0.2143      0.2484     0.2140      0.2152
+log_loss           0.6161      0.6899     0.6162      0.6196
+accuracy           0.6541      0.5435     0.6598      0.6598
+margin_mae        11.1075     12.5259    11.1208     11.1193
+margin_rmse       14.2031     15.7625    14.2464     14.2452
+margin_cov50       0.5122      0.4919     0.5102      0.6093
+margin_width50    18.7334     20.3324    17.5606     22.3574
+margin_cov80       0.7963      0.7976     0.7809      0.8785
+margin_width80    35.5941     38.6322    33.1917     42.2830
+margin_cov90       0.8963      0.8902     0.8817      0.9415
+margin_width90    45.6845     49.5839    42.5696     54.2467
+total_mae             NaN     16.0266    14.6983     14.8267
+total_rmse            NaN     20.1245    18.4493     18.5886
+total_cov50           NaN      0.4988     0.4967      0.5341
+total_cov80           NaN      0.8049     0.7951      0.8252
+total_cov90           NaN      0.9033     0.8959      0.9203
+ot_brier              NaN         NaN     0.0467      0.0467
+
+calibration: sim_mc
+                 n  mean_pred  observed
+bin                                    
+(-0.001, 0.3]  142      0.244     0.176
+(0.3, 0.4]     278      0.356     0.302
+(0.4, 0.5]     460      0.455     0.409
+(0.5, 0.6]     702      0.550     0.554
+(0.6, 0.7]     413      0.648     0.663
+(0.7, 0.8]     325      0.748     0.778
+(0.8, 1.0]     140      0.845     0.886
+
+calibration: elo
+                 n  mean_pred  observed
+bin                                    
+(-0.001, 0.3]  193      0.228     0.161
+(0.3, 0.4]     236      0.352     0.335
+(0.4, 0.5]     315      0.451     0.400
+(0.5, 0.6]     413      0.554     0.494
+(0.6, 0.7]     476      0.649     0.574
+(0.7, 0.8]     428      0.750     0.675
+(0.8, 1.0]     399      0.857     0.840
+done

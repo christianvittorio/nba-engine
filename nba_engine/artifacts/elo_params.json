@@ -1,0 +1,12 @@
+{
+  "params": {
+    "k": 20,
+    "home_adv": 80,
+    "carryover": 0.7,
+    "init": 1505.0,
+    "mov_scale": 1.0
+  },
+  "tuning_log_loss": 0.6002494619388887,
+  "tuned_on": "538 nbaallelo 1996-2015 regular season",
+  "n_games": 23513
+}

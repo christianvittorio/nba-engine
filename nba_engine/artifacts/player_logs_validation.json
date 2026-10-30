@@ -1,0 +1,67 @@
+{
+  "2022": {
+    "team_games": 2460,
+    "minutes_within_1": 1.0,
+    "minutes_within_5": 1.0,
+    "minutes_mean_gap": -1.1553540418863418e-17,
+    "minutes_worst": 2.842170943040401e-14,
+    "points_exact": 0.9947154471544716,
+    "points_within_3": 1.0,
+    "points_mean_gap": -0.005284552845528455,
+    "starters_eq_5": 1.0,
+    "starters_ge_5": 1.0,
+    "avg_players_per_team_game": 10.585365853658537
+  },
+  "2023": {
+    "team_games": 2460,
+    "minutes_within_1": 1.0,
+    "minutes_within_5": 1.0,
+    "minutes_mean_gap": 2.3107080837726835e-17,
+    "minutes_worst": 2.842170943040401e-14,
+    "points_exact": 0.9959349593495935,
+    "points_within_3": 1.0,
+    "points_mean_gap": -0.004471544715447155,
+    "starters_eq_5": 1.0,
+    "starters_ge_5": 1.0,
+    "avg_players_per_team_game": 10.52560975609756
+  },
+  "2024": {
+    "team_games": 2460,
+    "minutes_within_1": 1.0,
+    "minutes_within_5": 1.0,
+    "minutes_mean_gap": 1.1553540418863418e-17,
+    "minutes_worst": 2.842170943040401e-14,
+    "points_exact": 0.9983739837398374,
+    "points_within_3": 1.0,
+    "points_mean_gap": -0.0016260162601626016,
+    "starters_eq_5": 1.0,
+    "starters_ge_5": 1.0,
+    "avg_players_per_team_game": 10.732113821138212
+  },
+  "2025": {
+    "team_games": 2460,
+    "minutes_within_1": 0.9995934959349594,
+    "minutes_within_5": 0.9995934959349594,
+    "minutes_mean_gap": 0.004878048780487794,
+    "minutes_worst": 12.0,
+    "points_exact": 0.9959349593495935,
+    "points_within_3": 1.0,
+    "points_mean_gap": -0.0040650406504065045,
+    "starters_eq_5": 1.0,
+    "starters_ge_5": 1.0,
+    "avg_players_per_team_game": 10.69349593495935
+  },
+  "2026": {
+    "team_games": 2460,
+    "minutes_within_1": 1.0,
+    "minutes_within_5": 1.0,
+    "minutes_mean_gap": 0.0,
+    "minutes_worst": 2.842170943040401e-14,
+    "points_exact": 0.9963414634146341,
+    "points_within_3": 1.0,
+    "points_mean_gap": -0.003658536585365854,
+    "starters_eq_5": 1.0,
+    "starters_ge_5": 1.0,
+    "avg_players_per_team_game": 10.833739837398374
+  }
+}
