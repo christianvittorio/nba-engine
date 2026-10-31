@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-10-31T09:56:11Z",
+ "generated_utc": "2026-10-31T18:09:08Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -1389,18 +1389,18 @@
      "date": "2026-10-26T22:52Z"
     },
     {
-     "name": "Alperen Sengun",
-     "nba_id": 1630578,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-10-31T05:00Z"
-    },
-    {
      "name": "Reed Sheppard",
      "nba_id": 1642263,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-10-31T05:00Z"
+     "date": "2026-10-31T17:33Z"
+    },
+    {
+     "name": "Fred VanVleet",
+     "nba_id": 1627832,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-10-31T17:31Z"
     }
    ]
   },
@@ -2317,6 +2317,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-10-29T18:33Z"
+    },
+    {
+     "name": "Rudy Gobert",
+     "nba_id": 203497,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-10-31T18:03Z"
     }
    ]
   },
@@ -2565,12 +2572,6 @@
   },
   "OKC": {
    "roster": [
-    {
-     "espn_id": "4397018",
-     "name": "Ochai Agbaji",
-     "pos": "G",
-     "nba_id": 1630534
-    },
     {
      "espn_id": "4684208",
      "name": "Brooks Barnhizer",
@@ -2980,14 +2981,21 @@
      "nba_id": 1627759,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-10-31T04:58Z"
+     "date": "2026-10-31T17:08Z"
+    },
+    {
+     "name": "Joel Embiid",
+     "nba_id": 203954,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-10-31T17:12Z"
     },
     {
      "name": "Tacko Fall",
      "nba_id": 1629605,
      "status": "Out",
      "detail": "",
-     "date": "2026-10-27T21:10Z"
+     "date": "2026-10-31T17:14Z"
     },
     {
      "name": "Ariel Hukporti",
@@ -2997,11 +3005,18 @@
      "date": "2026-10-06T19:17Z"
     },
     {
+     "name": "LeBron James",
+     "nba_id": 2544,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-10-31T17:16Z"
+    },
+    {
      "name": "Jabari Walker",
      "nba_id": 1631133,
      "status": "Out",
      "detail": "",
-     "date": "2026-10-29T21:34Z"
+     "date": "2026-10-31T17:25Z"
     }
    ]
   },
@@ -3239,20 +3254,6 @@
      "status": "Out",
      "detail": "",
      "date": "2026-08-24T20:23Z"
-    },
-    {
-     "name": "Robert Williams III",
-     "nba_id": 1629057,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-10-30T23:11Z"
-    },
-    {
-     "name": "Chris Youngblood",
-     "nba_id": 1642959,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-10-30T23:09Z"
     }
    ]
   },
@@ -3993,7 +3994,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 28,
-  "injuries_endpoint_entries": 85,
-  "embedded_injuries": 86
+  "injuries_endpoint_entries": 88,
+  "embedded_injuries": 87
  }
 }
