@@ -96,6 +96,7 @@ def build_availability(feed, teams: list | None = None, player_state_path: str |
         out["problems"].append(f"teams: {type(ex).__name__}: {ex}")
         return out
     wanted = [t for t in (teams or sorted(ids)) if t in ids]
+    embedded = []
     by_espn_id = {}
     for code in wanted:
         try:
@@ -110,6 +111,13 @@ def build_availability(feed, teams: list | None = None, player_state_path: str |
                 if nid is None:
                     out["unmatched_roster_names"].append(f"{code}:{name}")
                 row = {"espn_id": str(a.get("id")), "name": name, "pos": pos, "nba_id": nid}
+                for inj in (a.get("injuries") or []):
+                    if not isinstance(inj, dict):
+                        continue
+                    stx = inj.get("status") or (inj.get("type") or {}).get("description") or (inj.get("type") or {}).get("name")
+                    embedded.append((code, row, stx, (inj.get("shortComment") or inj.get("longComment") or "")[:160], inj.get("date")))
+                    if "embedded_injury_sample" not in out["probe"]:
+                        out["probe"]["embedded_injury_sample"] = {k: (v if not isinstance(v, (dict, list)) else "<" + type(v).__name__ + ">") for k, v in list(inj.items())[:8]}
                 roster.append(row)
                 by_espn_id[row["espn_id"]] = (code, row)
             out["teams"][code] = {"roster": roster, "injuries": []}
@@ -118,6 +126,8 @@ def build_availability(feed, teams: list | None = None, player_state_path: str |
     try:
         js = feed._get(f"{feed.BASE}/injuries")
         out["probe"]["injuries_top_keys"] = sorted(js.keys())
+        out["probe"]["injuries_endpoint_teams"] = len(js.get("injuries", []))
+        out["probe"]["injuries_endpoint_entries"] = sum(len(te.get("injuries", [])) for te in js.get("injuries", []))
         for te in js.get("injuries", []):
             for inj in te.get("injuries", []):
                 ath = inj.get("athlete") or {}
@@ -132,6 +142,11 @@ def build_availability(feed, teams: list | None = None, player_state_path: str |
                     "date": inj.get("date")})
     except Exception as ex:
         out["problems"].append(f"injuries: {type(ex).__name__}: {ex}")
+    seen = {(c, i["name"]) for c, t in out["teams"].items() for i in t["injuries"]}
+    for code, row, stx, detail, date in embedded:          # injuries listed on the roster itself
+        if (code, row["name"]) not in seen and code in out["teams"]:
+            out["teams"][code]["injuries"].append({"name": row["name"], "nba_id": row["nba_id"], "status": stx, "detail": detail, "date": date})
+    out["probe"]["embedded_injuries"] = len(embedded)
     return out
 
 
