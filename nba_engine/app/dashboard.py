@@ -216,7 +216,15 @@ with tab_players:
             extra = c2.multiselect("Also include (not on the list)", [x for x in pm.pool(team, window=82) if x not in roster],
                                    format_func=lambda x: f"{pm.names.get(x, x)} ({(pm.ewm_min(x) or 0):.0f} min)")
             pool = roster + extra
-        active = [x for x in pool if x not in out]
+        rot_n = c1.slider("Players in the rotation", 8, 13, 10,
+                          help="Only about 10 players play meaningful minutes. The healthy players with the most usual minutes are used, "
+                               "so when a regular is out, the next man in the roster moves up.")
+
+        def rotation(ids):
+            ranked = sorted(ids, key=lambda x: -((pm.ewm_min(x) or 12.0) if x >= 0 else 12.0))
+            return ranked[:rot_n]
+
+        active = rotation([x for x in pool if x not in out])
         n_sims = c1.select_slider("Simulations", [1000, 4000, 10000], value=4000)
         if len(active) < 5:
             st.warning("Fewer than five players are active. Pick at least five.")
@@ -236,7 +244,7 @@ with tab_players:
             fmt["P(over line)"] = "{:.0%}"
             st.dataframe(tbl.style.format(fmt), hide_index=True, width="stretch")
             if out:
-                base_proj, _ = project(team, tuple(pool), tuple(pool), n_sims, pmt)
+                base_proj, _ = project(team, tuple(rotation(pool)), tuple(pool), n_sims, pmt)
                 cmp = pd.DataFrame({"Player": proj["name"], "Min (now)": proj["proj_min"].values})
                 cmp = cmp.merge(pd.DataFrame({"Player": base_proj["name"], "Min (all healthy)": base_proj["proj_min"].values}),
                                 on="Player", how="left")
