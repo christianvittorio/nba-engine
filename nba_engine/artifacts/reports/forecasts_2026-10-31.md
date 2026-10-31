@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-10-31
-Data refresh: last successful run 2026-10-31T09:47:46Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-10-31T09:56:11Z UTC. Model nbaengine-0.1.0.
 
 - POR at UTA (game 401909896): P(home) sim 0.349 / Elo 0.355; mean score 119.0-125.0 (total 244.1); margin 50% [-15.0, 3.0], 80% [-23.0, 11.0]; total 80% [221.0, 268.0]; P(OT) 0.024; most frequent exact score 122-121 (rarely hit).
 - PHI at CHA (game 401909897): P(home) sim 0.596 / Elo 0.616; mean score 114.5-110.6 (total 225.1); margin 50% [-5.0, 13.0], 80% [-13.0, 21.0]; total 80% [203.0, 248.0]; P(OT) 0.021; most frequent exact score 115-111 (rarely hit).
