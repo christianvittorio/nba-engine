@@ -1,0 +1,3423 @@
+{
+ "generated_utc": "2026-10-31T09:45:31Z",
+ "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
+ "teams": {
+  "ATL": {
+   "roster": [
+    {
+     "espn_id": "4278039",
+     "name": "Nickeil Alexander-Walker",
+     "pos": "G",
+     "nba_id": 1629638
+    },
+    {
+     "espn_id": "4869342",
+     "name": "Dyson Daniels",
+     "pos": "G",
+     "nba_id": 1630700
+    },
+    {
+     "espn_id": "4431941",
+     "name": "RayJ Dennis",
+     "pos": "G",
+     "nba_id": 1642484
+    },
+    {
+     "espn_id": "4397020",
+     "name": "Luguentz Dort",
+     "pos": "G",
+     "nba_id": 1629652
+    },
+    {
+     "espn_id": "5106262",
+     "name": "Zuby Ejiofor",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "2578185",
+     "name": "Dorian Finney-Smith",
+     "pos": "F",
+     "nba_id": 1627827
+    },
+    {
+     "espn_id": "5149077",
+     "name": "Kingston Flemings",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4585618",
+     "name": "Keshon Gilbert",
+     "pos": "G",
+     "nba_id": 1642933
+    },
+    {
+     "espn_id": "4712863",
+     "name": "Mouhamed Gueye",
+     "pos": "F",
+     "nba_id": 1631243
+    },
+    {
+     "espn_id": "4701230",
+     "name": "Jalen Johnson",
+     "pos": "F",
+     "nba_id": 1630552
+    },
+    {
+     "espn_id": "4280151",
+     "name": "Corey Kispert",
+     "pos": "F",
+     "nba_id": 1630557
+    },
+    {
+     "espn_id": "3146557",
+     "name": "Jock Landale",
+     "pos": "C",
+     "nba_id": 1629111
+    },
+    {
+     "espn_id": "2490149",
+     "name": "CJ McCollum",
+     "pos": "G",
+     "nba_id": 203468
+    },
+    {
+     "espn_id": "4873201",
+     "name": "Asa Newell",
+     "pos": "F",
+     "nba_id": 1642854
+    },
+    {
+     "espn_id": "4431680",
+     "name": "Onyeka Okongwu",
+     "pos": "F",
+     "nba_id": 1630168
+    },
+    {
+     "espn_id": "5105571",
+     "name": "Henri Veesaar",
+     "pos": "C",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4397183",
+     "name": "Aaron Wiggins",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4431714",
+     "name": "Jalen Wilson",
+     "pos": "F",
+     "nba_id": 1630592
+    }
+   ],
+   "injuries": []
+  },
+  "BKN": {
+   "roster": [
+    {
+     "espn_id": "5105626",
+     "name": "Tyler Bilodeau",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5101761",
+     "name": "Mikel Brown Jr.",
+     "pos": "G",
+     "nba_id": 1629650
+    },
+    {
+     "espn_id": "4712896",
+     "name": "Noah Clowney",
+     "pos": "F",
+     "nba_id": 1641730
+    },
+    {
+     "espn_id": "5175643",
+     "name": "Egor Demin",
+     "pos": "G",
+     "nba_id": 1642856
+    },
+    {
+     "espn_id": "4702177",
+     "name": "Keon Ellis",
+     "pos": "G",
+     "nba_id": 1631165
+    },
+    {
+     "espn_id": "4870564",
+     "name": "Joshua Jefferson",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5174655",
+     "name": "Chaney Johnson",
+     "pos": "F",
+     "nba_id": 1643052
+    },
+    {
+     "espn_id": "3907823",
+     "name": "Terance Mann",
+     "pos": "G",
+     "nba_id": 1629611
+    },
+    {
+     "espn_id": "4687718",
+     "name": "Josh Minott",
+     "pos": "F",
+     "nba_id": 1631169
+    },
+    {
+     "espn_id": "4702670",
+     "name": "Grant Nelson",
+     "pos": "F",
+     "nba_id": 1641761
+    },
+    {
+     "espn_id": "4278104",
+     "name": "Michael Porter Jr.",
+     "pos": "F",
+     "nba_id": 1629008
+    },
+    {
+     "espn_id": "5037873",
+     "name": "Drake Powell",
+     "pos": "G",
+     "nba_id": 1642962
+    },
+    {
+     "espn_id": "3064514",
+     "name": "Julius Randle",
+     "pos": "F",
+     "nba_id": 203944
+    },
+    {
+     "espn_id": "5242502",
+     "name": "Ben Saraf",
+     "pos": "G",
+     "nba_id": 1642879
+    },
+    {
+     "espn_id": "4432194",
+     "name": "Day'Ron Sharpe",
+     "pos": "C",
+     "nba_id": 1630549
+    },
+    {
+     "espn_id": "5279130",
+     "name": "Nolan Traore",
+     "pos": "G",
+     "nba_id": 1642849
+    },
+    {
+     "espn_id": "3150844",
+     "name": "Moritz Wagner",
+     "pos": "C",
+     "nba_id": 1629021
+    },
+    {
+     "espn_id": "5107173",
+     "name": "Danny Wolf",
+     "pos": "F",
+     "nba_id": 1642874
+    }
+   ],
+   "injuries": []
+  },
+  "BOS": {
+   "roster": [
+    {
+     "espn_id": "4433188",
+     "name": "Devin Carter",
+     "pos": "G",
+     "nba_id": 1642269
+    },
+    {
+     "espn_id": "5142621",
+     "name": "Chris Cenac Jr.",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "3195",
+     "name": "Mike Conley",
+     "pos": "G",
+     "nba_id": 201144
+    },
+    {
+     "espn_id": "4277951",
+     "name": "Luka Garza",
+     "pos": "C",
+     "nba_id": 1630568
+    },
+    {
+     "espn_id": "4251",
+     "name": "Paul George",
+     "pos": "F",
+     "nba_id": 202331
+    },
+    {
+     "espn_id": "5175647",
+     "name": "Hugo Gonzalez",
+     "pos": "G",
+     "nba_id": 1642864
+    },
+    {
+     "espn_id": "4397251",
+     "name": "Ron Harper Jr.",
+     "pos": "G",
+     "nba_id": 1631199
+    },
+    {
+     "espn_id": "4065804",
+     "name": "Sam Hauser",
+     "pos": "F",
+     "nba_id": 1630573
+    },
+    {
+     "espn_id": "5106283",
+     "name": "Dillon Mitchell",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4066354",
+     "name": "Payton Pritchard",
+     "pos": "G",
+     "nba_id": 1630202
+    },
+    {
+     "espn_id": "4397424",
+     "name": "Neemias Queta",
+     "pos": "C",
+     "nba_id": 1629674
+    },
+    {
+     "espn_id": "4351852",
+     "name": "Mitchell Robinson",
+     "pos": "C",
+     "nba_id": 1629011
+    },
+    {
+     "espn_id": "4593841",
+     "name": "Baylor Scheierman",
+     "pos": "G",
+     "nba_id": 1631248
+    },
+    {
+     "espn_id": "4065648",
+     "name": "Jayson Tatum",
+     "pos": "F",
+     "nba_id": 1628369
+    },
+    {
+     "espn_id": "4683689",
+     "name": "Jordan Walsh",
+     "pos": "G",
+     "nba_id": 1641775
+    },
+    {
+     "espn_id": "3078576",
+     "name": "Derrick White",
+     "pos": "G",
+     "nba_id": 1628401
+    },
+    {
+     "espn_id": "4702745",
+     "name": "Amari Williams",
+     "pos": "F",
+     "nba_id": 1642873
+    }
+   ],
+   "injuries": []
+  },
+  "CHA": {
+   "roster": [
+    {
+     "espn_id": "3135045",
+     "name": "Grayson Allen",
+     "pos": "G",
+     "nba_id": 1628960
+    },
+    {
+     "espn_id": "5060701",
+     "name": "Christian Anderson",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4684269",
+     "name": "Kylan Boswell",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4433249",
+     "name": "Moussa Diabate",
+     "pos": "F",
+     "nba_id": 1631217
+    },
+    {
+     "espn_id": "4701225",
+     "name": "PJ Hall",
+     "pos": "C",
+     "nba_id": 1641790
+    },
+    {
+     "espn_id": "4602025",
+     "name": "Sion James",
+     "pos": "G",
+     "nba_id": 1642883
+    },
+    {
+     "espn_id": "4576060",
+     "name": "Ryan Kalkbrenner",
+     "pos": "C",
+     "nba_id": 1641750
+    },
+    {
+     "espn_id": "5061575",
+     "name": "Kon Knueppel",
+     "pos": "G",
+     "nba_id": 1642851
+    },
+    {
+     "espn_id": "5239590",
+     "name": "Liam McNeeley",
+     "pos": "G",
+     "nba_id": 1642862
+    },
+    {
+     "espn_id": "4433287",
+     "name": "Brandon Miller",
+     "pos": "F",
+     "nba_id": 1641706
+    },
+    {
+     "espn_id": "2583632",
+     "name": "Royce O'Neale",
+     "pos": "F",
+     "nba_id": 1626220
+    },
+    {
+     "espn_id": "4396971",
+     "name": "Naz Reid",
+     "pos": "C",
+     "nba_id": 1629675
+    },
+    {
+     "espn_id": "5211176",
+     "name": "Tidjane Salaun",
+     "pos": "F",
+     "nba_id": 1642275
+    },
+    {
+     "espn_id": "3032979",
+     "name": "Dennis Schroder",
+     "pos": "G",
+     "nba_id": 203471
+    },
+    {
+     "espn_id": "5281370",
+     "name": "Hannes Steinbach",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4395651",
+     "name": "Coby White",
+     "pos": "G",
+     "nba_id": 1629632
+    },
+    {
+     "espn_id": "4066218",
+     "name": "Grant Williams",
+     "pos": "F",
+     "nba_id": 1629684
+    }
+   ],
+   "injuries": []
+  },
+  "CHI": {
+   "roster": [
+    {
+     "espn_id": "5105555",
+     "name": "Tobe Awaka",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4711294",
+     "name": "Matas Buzelis",
+     "pos": "F",
+     "nba_id": 1641824
+    },
+    {
+     "espn_id": "4278067",
+     "name": "Nic Claxton",
+     "pos": "C",
+     "nba_id": 1629651
+    },
+    {
+     "espn_id": "4066650",
+     "name": "Zach Collins",
+     "pos": "F",
+     "nba_id": 1628380
+    },
+    {
+     "espn_id": "5242496",
+     "name": "Noa Essengue",
+     "pos": "F",
+     "nba_id": 1642855
+    },
+    {
+     "espn_id": "4871145",
+     "name": "Josh Giddey",
+     "pos": "G",
+     "nba_id": 1630581
+    },
+    {
+     "espn_id": "4683750",
+     "name": "Jordan Hawkins",
+     "pos": "G",
+     "nba_id": 1641722
+    },
+    {
+     "espn_id": "2990984",
+     "name": "Buddy Hield",
+     "pos": "G",
+     "nba_id": 1627741
+    },
+    {
+     "espn_id": "4395626",
+     "name": "Tre Jones",
+     "pos": "G",
+     "nba_id": 1630200
+    },
+    {
+     "espn_id": "5044385",
+     "name": "Leonard Miller",
+     "pos": "F",
+     "nba_id": 1631159
+    },
+    {
+     "espn_id": "4432822",
+     "name": "Isaac Okoro",
+     "pos": "F",
+     "nba_id": 1630171
+    },
+    {
+     "espn_id": "2595516",
+     "name": "Norman Powell",
+     "pos": "G",
+     "nba_id": 1626181
+    },
+    {
+     "espn_id": "4898010",
+     "name": "Jaylin Sellers",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4397189",
+     "name": "Jalen Smith",
+     "pos": "F",
+     "nba_id": 1630188
+    },
+    {
+     "espn_id": "4848625",
+     "name": "Dailyn Swain",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4431687",
+     "name": "Patrick Williams",
+     "pos": "F",
+     "nba_id": 1630172
+    },
+    {
+     "espn_id": "5095151",
+     "name": "Caleb Wilson",
+     "pos": "F",
+     "nba_id": null
+    }
+   ],
+   "injuries": []
+  },
+  "CLE": {
+   "roster": [
+    {
+     "espn_id": "4066328",
+     "name": "Jarrett Allen",
+     "pos": "C",
+     "nba_id": 1628386
+    },
+    {
+     "espn_id": "3934723",
+     "name": "Thomas Bryant",
+     "pos": "C",
+     "nba_id": 1628418
+    },
+    {
+     "espn_id": "4431734",
+     "name": "Tristan Enaruna",
+     "pos": "F",
+     "nba_id": 1642400
+    },
+    {
+     "espn_id": "3992",
+     "name": "James Harden",
+     "pos": "G",
+     "nba_id": 201935
+    },
+    {
+     "espn_id": "2995706",
+     "name": "Mario Hezonja",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4066757",
+     "name": "Sam Merrill",
+     "pos": "G",
+     "nba_id": 1630241
+    },
+    {
+     "espn_id": "5177362",
+     "name": "Riley Minix",
+     "pos": "F",
+     "nba_id": 1642434
+    },
+    {
+     "espn_id": "3908809",
+     "name": "Donovan Mitchell",
+     "pos": "G",
+     "nba_id": 1628378
+    },
+    {
+     "espn_id": "4432158",
+     "name": "Evan Mobley",
+     "pos": "C",
+     "nba_id": 1630596
+    },
+    {
+     "espn_id": "4701233",
+     "name": "Craig Porter Jr.",
+     "pos": "G",
+     "nba_id": 1641854
+    },
+    {
+     "espn_id": "5023693",
+     "name": "Tyrese Proctor",
+     "pos": "G",
+     "nba_id": 1642878
+    },
+    {
+     "espn_id": "5041951",
+     "name": "Meleek Thomas",
+     "pos": "G",
+     "nba_id": 1629744
+    },
+    {
+     "espn_id": "4683747",
+     "name": "Jaylon Tyson",
+     "pos": "G",
+     "nba_id": 1642281
+    },
+    {
+     "espn_id": "5106261",
+     "name": "Ernest Udeh Jr.",
+     "pos": "C",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4576087",
+     "name": "Peyton Watson",
+     "pos": "G",
+     "nba_id": 1631212
+    }
+   ],
+   "injuries": []
+  },
+  "DAL": {
+   "roster": [
+    {
+     "espn_id": "4593125",
+     "name": "Santi Aldama",
+     "pos": "F",
+     "nba_id": 1630583
+    },
+    {
+     "espn_id": "5148538",
+     "name": "Tarik Biberovic",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4432582",
+     "name": "Max Christie",
+     "pos": "G",
+     "nba_id": 1631108
+    },
+    {
+     "espn_id": "4701208",
+     "name": "Moussa Cisse",
+     "pos": "C",
+     "nba_id": 1630619
+    },
+    {
+     "espn_id": "4896372",
+     "name": "Walter Clayton Jr.",
+     "pos": "G",
+     "nba_id": 1642383
+    },
+    {
+     "espn_id": "5279129",
+     "name": "Sergio de Larrea",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5041939",
+     "name": "Cooper Flagg",
+     "pos": "F",
+     "nba_id": 1642843
+    },
+    {
+     "espn_id": "4278049",
+     "name": "Daniel Gafford",
+     "pos": "F",
+     "nba_id": 1629655
+    },
+    {
+     "espn_id": "5105806",
+     "name": "Jett Howard",
+     "pos": "G",
+     "nba_id": 1641724
+    },
+    {
+     "espn_id": "6442",
+     "name": "Kyrie Irving",
+     "pos": "G",
+     "nba_id": 202681
+    },
+    {
+     "espn_id": "4873153",
+     "name": "Morez Johnson Jr.",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5106040",
+     "name": "Tobi Lawal",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4683688",
+     "name": "Dereck Lively II",
+     "pos": "C",
+     "nba_id": 1641726
+    },
+    {
+     "espn_id": "4278594",
+     "name": "Naji Marshall",
+     "pos": "F",
+     "nba_id": 1630230
+    },
+    {
+     "espn_id": "3138160",
+     "name": "Caleb Martin",
+     "pos": "F",
+     "nba_id": 1628997
+    },
+    {
+     "espn_id": "5211175",
+     "name": "Zaccharie Risacher",
+     "pos": "F",
+     "nba_id": 1642258
+    },
+    {
+     "espn_id": "4432107",
+     "name": "Marcus Sasser",
+     "pos": "G",
+     "nba_id": 1631204
+    },
+    {
+     "espn_id": "4278078",
+     "name": "P.J. Washington",
+     "pos": "F",
+     "nba_id": 1629023
+    }
+   ],
+   "injuries": []
+  },
+  "DEN": {
+   "roster": [
+    {
+     "espn_id": "4277848",
+     "name": "Marvin Bagley III",
+     "pos": "F",
+     "nba_id": 1628963
+    },
+    {
+     "espn_id": "4431767",
+     "name": "Christian Braun",
+     "pos": "G",
+     "nba_id": 1631128
+    },
+    {
+     "espn_id": "4698719",
+     "name": "Trevon Brazile",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "3978",
+     "name": "DeMar DeRozan",
+     "pos": "G",
+     "nba_id": 201942
+    },
+    {
+     "espn_id": "4065813",
+     "name": "Alpha Diallo",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "3064290",
+     "name": "Aaron Gordon",
+     "pos": "F",
+     "nba_id": 203932
+    },
+    {
+     "espn_id": "4433607",
+     "name": "DaRon Holmes II",
+     "pos": "F",
+     "nba_id": 1641747
+    },
+    {
+     "espn_id": "4565698",
+     "name": "Bryce Hopkins",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "3138196",
+     "name": "Cameron Johnson",
+     "pos": "F",
+     "nba_id": 1629661
+    },
+    {
+     "espn_id": "3112335",
+     "name": "Nikola Jokic",
+     "pos": "C",
+     "nba_id": 203999
+    },
+    {
+     "espn_id": "4592427",
+     "name": "Spencer Jones",
+     "pos": "F",
+     "nba_id": 1642461
+    },
+    {
+     "espn_id": "3135046",
+     "name": "Tyus Jones",
+     "pos": "G",
+     "nba_id": 1626145
+    },
+    {
+     "espn_id": "3936299",
+     "name": "Jamal Murray",
+     "pos": "G",
+     "nba_id": 1627750
+    },
+    {
+     "espn_id": "4433629",
+     "name": "Ryan Nembhard",
+     "pos": "G",
+     "nba_id": 1642948
+    },
+    {
+     "espn_id": "4431690",
+     "name": "Zeke Nnaji",
+     "pos": "F",
+     "nba_id": 1630192
+    },
+    {
+     "espn_id": "4432181",
+     "name": "Julian Strawther",
+     "pos": "G",
+     "nba_id": 1631124
+    },
+    {
+     "espn_id": "5105592",
+     "name": "Cam Whitmore",
+     "pos": "F",
+     "nba_id": 1641715
+    }
+   ],
+   "injuries": []
+  },
+  "DET": {
+   "roster": [
+    {
+     "espn_id": "3908845",
+     "name": "John Collins",
+     "pos": "F",
+     "nba_id": 1628381
+    },
+    {
+     "espn_id": "4432166",
+     "name": "Cade Cunningham",
+     "pos": "G",
+     "nba_id": 1630595
+    },
+    {
+     "espn_id": "4433621",
+     "name": "Jalen Duren",
+     "pos": "C",
+     "nba_id": 1631105
+    },
+    {
+     "espn_id": "2596112",
+     "name": "Javonte Green",
+     "pos": "G",
+     "nba_id": 1629750
+    },
+    {
+     "espn_id": "4397449",
+     "name": "Elijah Harkless",
+     "pos": "G",
+     "nba_id": 1641989
+    },
+    {
+     "espn_id": "4683771",
+     "name": "Ronald Holland II",
+     "pos": "F",
+     "nba_id": 1641842
+    },
+    {
+     "espn_id": "4066372",
+     "name": "Kevin Huerter",
+     "pos": "G",
+     "nba_id": 1628989
+    },
+    {
+     "espn_id": "5107199",
+     "name": "Daniss Jenkins",
+     "pos": "G",
+     "nba_id": 1642450
+    },
+    {
+     "espn_id": "4395702",
+     "name": "Isaiah Joe",
+     "pos": "G",
+     "nba_id": 1630198
+    },
+    {
+     "espn_id": "5107818",
+     "name": "Isaac Jones",
+     "pos": "C",
+     "nba_id": 1642403
+    },
+    {
+     "espn_id": "4700852",
+     "name": "Chaz Lanier",
+     "pos": "G",
+     "nba_id": 1642404
+    },
+    {
+     "espn_id": "5258459",
+     "name": "Ebuka Okorie",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5037878",
+     "name": "Ugonna Onyenso",
+     "pos": "C",
+     "nba_id": null
+    },
+    {
+     "espn_id": "2990962",
+     "name": "Taurean Prince",
+     "pos": "F",
+     "nba_id": 1627752
+    },
+    {
+     "espn_id": "4278562",
+     "name": "Paul Reed",
+     "pos": "F",
+     "nba_id": 1630194
+    },
+    {
+     "espn_id": "3157465",
+     "name": "Duncan Robinson",
+     "pos": "F",
+     "nba_id": 1629130
+    },
+    {
+     "espn_id": "4397882",
+     "name": "Tolu Smith",
+     "pos": "F",
+     "nba_id": 1642449
+    },
+    {
+     "espn_id": "4684742",
+     "name": "Ausar Thompson",
+     "pos": "G",
+     "nba_id": 1641709
+    }
+   ],
+   "injuries": []
+  },
+  "GSW": {
+   "roster": [
+    {
+     "espn_id": "4397886",
+     "name": "Charles Bassey",
+     "pos": "C",
+     "nba_id": 1629646
+    },
+    {
+     "espn_id": "6430",
+     "name": "Jimmy Butler III",
+     "pos": "F",
+     "nba_id": 202710
+    },
+    {
+     "espn_id": "4433149",
+     "name": "LJ Cryer",
+     "pos": "G",
+     "nba_id": 1643018
+    },
+    {
+     "espn_id": "3975",
+     "name": "Stephen Curry",
+     "pos": "G",
+     "nba_id": 201939
+    },
+    {
+     "espn_id": "6589",
+     "name": "Draymond Green",
+     "pos": "F",
+     "nba_id": 203110
+    },
+    {
+     "espn_id": "3213",
+     "name": "Al Horford",
+     "pos": "C",
+     "nba_id": 201143
+    },
+    {
+     "espn_id": "4703396",
+     "name": "Graham Ike",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5175737",
+     "name": "Yaxel Lendeborg",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4897449",
+     "name": "Malevy Leons",
+     "pos": "F",
+     "nba_id": 1642502
+    },
+    {
+     "espn_id": "4066436",
+     "name": "De'Anthony Melton",
+     "pos": "G",
+     "nba_id": 1629001
+    },
+    {
+     "espn_id": "4432171",
+     "name": "Moses Moody",
+     "pos": "G",
+     "nba_id": 1630541
+    },
+    {
+     "espn_id": "2990969",
+     "name": "Georges Niang",
+     "pos": "F",
+     "nba_id": 1627777
+    },
+    {
+     "espn_id": "3134903",
+     "name": "Gary Payton II",
+     "pos": "G",
+     "nba_id": 1627780
+    },
+    {
+     "espn_id": "4709138",
+     "name": "Brandin Podziemski",
+     "pos": "G",
+     "nba_id": 1641764
+    },
+    {
+     "espn_id": "3102531",
+     "name": "Kristaps Porzingis",
+     "pos": "C",
+     "nba_id": 204001
+    },
+    {
+     "espn_id": "4897262",
+     "name": "Will Richard",
+     "pos": "G",
+     "nba_id": 1642954
+    },
+    {
+     "espn_id": "4997536",
+     "name": "Gui Santos",
+     "pos": "F",
+     "nba_id": 1630611
+    },
+    {
+     "espn_id": "4397040",
+     "name": "Brandon Williams",
+     "pos": "G",
+     "nba_id": 1630314
+    }
+   ],
+   "injuries": []
+  },
+  "HOU": {
+   "roster": [
+    {
+     "espn_id": "2991235",
+     "name": "Steven Adams",
+     "pos": "C",
+     "nba_id": 203500
+    },
+    {
+     "espn_id": "3037789",
+     "name": "Bogdan Bogdanovic",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "3102529",
+     "name": "Clint Capela",
+     "pos": "C",
+     "nba_id": 203991
+    },
+    {
+     "espn_id": "4683860",
+     "name": "Quadir Copeland",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4592857",
+     "name": "Isaiah Crawford",
+     "pos": "F",
+     "nba_id": 1642384
+    },
+    {
+     "espn_id": "3202",
+     "name": "Kevin Durant",
+     "pos": "F",
+     "nba_id": 201142
+    },
+    {
+     "espn_id": "4433192",
+     "name": "Tari Eason",
+     "pos": "F",
+     "nba_id": 1631106
+    },
+    {
+     "espn_id": "5105553",
+     "name": "Julian Phillips",
+     "pos": "F",
+     "nba_id": 1641763
+    },
+    {
+     "espn_id": "4871144",
+     "name": "Alperen Sengun",
+     "pos": "C",
+     "nba_id": 1630578
+    },
+    {
+     "espn_id": "4711272",
+     "name": "Reed Sheppard",
+     "pos": "G",
+     "nba_id": 1642263
+    },
+    {
+     "espn_id": "2990992",
+     "name": "Marcus Smart",
+     "pos": "G",
+     "nba_id": 203935
+    },
+    {
+     "espn_id": "4432639",
+     "name": "Jabari Smith Jr.",
+     "pos": "F",
+     "nba_id": 1631095
+    },
+    {
+     "espn_id": "3136777",
+     "name": "Jae'Sean Tate",
+     "pos": "F",
+     "nba_id": 1630256
+    },
+    {
+     "espn_id": "4684740",
+     "name": "Amen Thompson",
+     "pos": "G",
+     "nba_id": 1641708
+    },
+    {
+     "espn_id": "5105837",
+     "name": "Bruce Thornton",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4432827",
+     "name": "Oscar Tshiebwe",
+     "pos": "C",
+     "nba_id": 1631131
+    },
+    {
+     "espn_id": "2991230",
+     "name": "Fred VanVleet",
+     "pos": "G",
+     "nba_id": 1627832
+    }
+   ],
+   "injuries": []
+  },
+  "IND": {
+   "roster": [
+    {
+     "espn_id": "4431752",
+     "name": "Kobe Brown",
+     "pos": "G",
+     "nba_id": 1641738
+    },
+    {
+     "espn_id": "5157066",
+     "name": "Johnny Furphy",
+     "pos": "G",
+     "nba_id": 1642277
+    },
+    {
+     "espn_id": "4396993",
+     "name": "Tyrese Haliburton",
+     "pos": "G",
+     "nba_id": 1630169
+    },
+    {
+     "espn_id": "4065731",
+     "name": "Jay Huff",
+     "pos": "C",
+     "nba_id": 1630643
+    },
+    {
+     "espn_id": "4592829",
+     "name": "Quenton Jackson",
+     "pos": "G",
+     "nba_id": 1631245
+    },
+    {
+     "espn_id": "2530530",
+     "name": "T.J. McConnell",
+     "pos": "G",
+     "nba_id": 204456
+    },
+    {
+     "espn_id": "2580365",
+     "name": "Larry Nance Jr.",
+     "pos": "F",
+     "nba_id": 1626204
+    },
+    {
+     "espn_id": "4395712",
+     "name": "Andrew Nembhard",
+     "pos": "G",
+     "nba_id": 1629614
+    },
+    {
+     "espn_id": "4396909",
+     "name": "Aaron Nesmith",
+     "pos": "G",
+     "nba_id": 1630174
+    },
+    {
+     "espn_id": "3133603",
+     "name": "Kelly Oubre Jr.",
+     "pos": "G",
+     "nba_id": 1626162
+    },
+    {
+     "espn_id": "4433076",
+     "name": "Ben Sheppard",
+     "pos": "G",
+     "nba_id": 1641767
+    },
+    {
+     "espn_id": "3149673",
+     "name": "Pascal Siakam",
+     "pos": "F",
+     "nba_id": 1627783
+    },
+    {
+     "espn_id": "4398207",
+     "name": "Jalen Slawson",
+     "pos": "F",
+     "nba_id": 1641771
+    },
+    {
+     "espn_id": "5105854",
+     "name": "Braden Smith",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4278355",
+     "name": "Obi Toppin",
+     "pos": "F",
+     "nba_id": 1630167
+    },
+    {
+     "espn_id": "5106060",
+     "name": "Jarace Walker",
+     "pos": "F",
+     "nba_id": 1641716
+    },
+    {
+     "espn_id": "4017837",
+     "name": "Ivica Zubac",
+     "pos": "C",
+     "nba_id": 1627826
+    }
+   ],
+   "injuries": []
+  },
+  "LAC": {
+   "roster": [
+    {
+     "espn_id": "6580",
+     "name": "Bradley Beal",
+     "pos": "G",
+     "nba_id": 203078
+    },
+    {
+     "espn_id": "4845363",
+     "name": "Cam Christie",
+     "pos": "G",
+     "nba_id": 1642353
+    },
+    {
+     "espn_id": "5106258",
+     "name": "Gradey Dick",
+     "pos": "G",
+     "nba_id": 1641711
+    },
+    {
+     "espn_id": "2991139",
+     "name": "Kris Dunn",
+     "pos": "G",
+     "nba_id": 1627739
+    },
+    {
+     "espn_id": "4396907",
+     "name": "Darius Garland",
+     "pos": "G",
+     "nba_id": 1629636
+    },
+    {
+     "espn_id": "4066648",
+     "name": "Rui Hachimura",
+     "pos": "F",
+     "nba_id": 1629060
+    },
+    {
+     "espn_id": "3913176",
+     "name": "Brandon Ingram",
+     "pos": "F",
+     "nba_id": 1627742
+    },
+    {
+     "espn_id": "4432170",
+     "name": "Isaiah Jackson",
+     "pos": "F",
+     "nba_id": 1630543
+    },
+    {
+     "espn_id": "3936099",
+     "name": "Derrick Jones Jr.",
+     "pos": "F",
+     "nba_id": 1627884
+    },
+    {
+     "espn_id": "3448",
+     "name": "Brook Lopez",
+     "pos": "C",
+     "nba_id": 201572
+    },
+    {
+     "espn_id": "5105832",
+     "name": "Nick Martinelli",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5075626",
+     "name": "Baba Miller",
+     "pos": "F",
+     "nba_id": 1641706
+    },
+    {
+     "espn_id": "4396818",
+     "name": "Jordan Miller",
+     "pos": "G",
+     "nba_id": 1641757
+    },
+    {
+     "espn_id": "5108024",
+     "name": "Yanic Konan Niederhauser",
+     "pos": "C",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4398390",
+     "name": "Jalen Pickett",
+     "pos": "G",
+     "nba_id": 1629618
+    },
+    {
+     "espn_id": "4702352",
+     "name": "Kobe Sanders",
+     "pos": "G",
+     "nba_id": 1642920
+    },
+    {
+     "espn_id": "4065778",
+     "name": "Max Strus",
+     "pos": "G",
+     "nba_id": 1629622
+    },
+    {
+     "espn_id": "5254165",
+     "name": "Keaton Wagler",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4683935",
+     "name": "Blake Wesley",
+     "pos": "G",
+     "nba_id": 1631104
+    }
+   ],
+   "injuries": []
+  },
+  "LAL": {
+   "roster": [
+    {
+     "espn_id": "5113969",
+     "name": "Cameron Carr",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "3945274",
+     "name": "Luka Doncic",
+     "pos": "G",
+     "nba_id": 1629029
+    },
+    {
+     "espn_id": "4397014",
+     "name": "Quentin Grimes",
+     "pos": "G",
+     "nba_id": 1629656
+    },
+    {
+     "espn_id": "4868423",
+     "name": "Jaden Hardy",
+     "pos": "G",
+     "nba_id": 1630702
+    },
+    {
+     "espn_id": "4683774",
+     "name": "Bronny James",
+     "pos": "G",
+     "nba_id": 1642355
+    },
+    {
+     "espn_id": "4433599",
+     "name": "Arthur Kaluma",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4433136",
+     "name": "Walker Kessler",
+     "pos": "C",
+     "nba_id": 1631117
+    },
+    {
+     "espn_id": "4592691",
+     "name": "Jake LaRavia",
+     "pos": "F",
+     "nba_id": 1631222
+    },
+    {
+     "espn_id": "3155535",
+     "name": "Kevon Looney",
+     "pos": "F",
+     "nba_id": 1626172
+    },
+    {
+     "espn_id": "4596528",
+     "name": "Lawson Lovering",
+     "pos": "C",
+     "nba_id": 1643133
+    },
+    {
+     "espn_id": "4278580",
+     "name": "Sandro Mamukelashvili",
+     "pos": "F",
+     "nba_id": 1630572
+    },
+    {
+     "espn_id": "4702972",
+     "name": "Chris Manon",
+     "pos": "G",
+     "nba_id": 1643024
+    },
+    {
+     "espn_id": "5114350",
+     "name": "AK Okereke",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4066457",
+     "name": "Austin Reaves",
+     "pos": "G",
+     "nba_id": 1630559
+    },
+    {
+     "espn_id": "4277811",
+     "name": "Collin Sexton",
+     "pos": "G",
+     "nba_id": 1629012
+    },
+    {
+     "espn_id": "5060631",
+     "name": "Adou Thiero",
+     "pos": "F",
+     "nba_id": 1642876
+    },
+    {
+     "espn_id": "3907498",
+     "name": "Matisse Thybulle",
+     "pos": "G",
+     "nba_id": 1629680
+    },
+    {
+     "espn_id": "4278077",
+     "name": "Jarred Vanderbilt",
+     "pos": "F",
+     "nba_id": 1629020
+    },
+    {
+     "espn_id": "4433137",
+     "name": "Ziaire Williams",
+     "pos": "F",
+     "nba_id": 1630533
+    }
+   ],
+   "injuries": []
+  },
+  "MEM": {
+   "roster": [
+    {
+     "espn_id": "5041935",
+     "name": "Cameron Boozer",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5105817",
+     "name": "Carson Cooper",
+     "pos": "C",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4903027",
+     "name": "Cedric Coward",
+     "pos": "F",
+     "nba_id": 1642907
+    },
+    {
+     "espn_id": "4600663",
+     "name": "Zach Edey",
+     "pos": "C",
+     "nba_id": 1641744
+    },
+    {
+     "espn_id": "2991070",
+     "name": "Jerami Grant",
+     "pos": "F",
+     "nba_id": 203924
+    },
+    {
+     "espn_id": "4684806",
+     "name": "Taylor Hendricks",
+     "pos": "F",
+     "nba_id": 1641707
+    },
+    {
+     "espn_id": "5105550",
+     "name": "GG Jackson",
+     "pos": "F",
+     "nba_id": 1641713
+    },
+    {
+     "espn_id": "4065733",
+     "name": "Ty Jerome",
+     "pos": "G",
+     "nba_id": 1629660
+    },
+    {
+     "espn_id": "5231919",
+     "name": "Karim Lopez",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4683934",
+     "name": "Jahmai Mashack",
+     "pos": "G",
+     "nba_id": 1642942
+    },
+    {
+     "espn_id": "4594326",
+     "name": "Kris Murray",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4431785",
+     "name": "Scotty Pippen Jr.",
+     "pos": "G",
+     "nba_id": 1630590
+    },
+    {
+     "espn_id": "4593016",
+     "name": "Quinten Post",
+     "pos": "C",
+     "nba_id": 1642366
+    },
+    {
+     "espn_id": "4595400",
+     "name": "Olivier-Maxence Prosper",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4781746",
+     "name": "Javon Small",
+     "pos": "G",
+     "nba_id": 1642914
+    },
+    {
+     "espn_id": "4433083",
+     "name": "Cam Spencer",
+     "pos": "G",
+     "nba_id": 1642285
+    },
+    {
+     "espn_id": "4432810",
+     "name": "Isaiah Stewart",
+     "pos": "C",
+     "nba_id": 1630191
+    },
+    {
+     "espn_id": "5112087",
+     "name": "Jaylen Wells",
+     "pos": "F",
+     "nba_id": 1642377
+    }
+   ],
+   "injuries": []
+  },
+  "MIA": {
+   "roster": [
+    {
+     "espn_id": "4066261",
+     "name": "Bam Adebayo",
+     "pos": "C",
+     "nba_id": 1628389
+    },
+    {
+     "espn_id": "3032977",
+     "name": "Giannis Antetokounmpo",
+     "pos": "F",
+     "nba_id": 203507
+    },
+    {
+     "espn_id": "5107157",
+     "name": "Ryan Conwell",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4837356",
+     "name": "Tre Donaldson",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "3899664",
+     "name": "Simone Fontecchio",
+     "pos": "F",
+     "nba_id": 1631323
+    },
+    {
+     "espn_id": "4431772",
+     "name": "Myron Gardner",
+     "pos": "F",
+     "nba_id": 1642066
+    },
+    {
+     "espn_id": "4700818",
+     "name": "Vladislav Goldin",
+     "pos": "C",
+     "nba_id": null
+    },
+    {
+     "espn_id": "2528210",
+     "name": "Tim Hardaway Jr.",
+     "pos": "G",
+     "nba_id": 203501
+    },
+    {
+     "espn_id": "4431786",
+     "name": "Keshad Johnson",
+     "pos": "F",
+     "nba_id": 1642352
+    },
+    {
+     "espn_id": "4997528",
+     "name": "Nikola Jovic",
+     "pos": "F",
+     "nba_id": 1631107
+    },
+    {
+     "espn_id": "4601025",
+     "name": "Pelle Larsson",
+     "pos": "G",
+     "nba_id": 1641796
+    },
+    {
+     "espn_id": "4278053",
+     "name": "Davion Mitchell",
+     "pos": "G",
+     "nba_id": 1630558
+    },
+    {
+     "espn_id": "3064482",
+     "name": "Bobby Portis",
+     "pos": "F",
+     "nba_id": 1626171
+    },
+    {
+     "espn_id": "4278076",
+     "name": "Nick Richards",
+     "pos": "C",
+     "nba_id": 1630208
+    },
+    {
+     "espn_id": "4066993",
+     "name": "Dru Smith",
+     "pos": "G",
+     "nba_id": 1630696
+    },
+    {
+     "espn_id": "6475",
+     "name": "Klay Thompson",
+     "pos": "G",
+     "nba_id": 202691
+    },
+    {
+     "espn_id": "3059319",
+     "name": "Andrew Wiggins",
+     "pos": "F",
+     "nba_id": 203952
+    }
+   ],
+   "injuries": []
+  },
+  "MIL": {
+   "roster": [
+    {
+     "espn_id": "5164559",
+     "name": "Nate Ament",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5082206",
+     "name": "Brayden Burries",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4997526",
+     "name": "Ousmane Dieng",
+     "pos": "F",
+     "nba_id": 1631172
+    },
+    {
+     "espn_id": "4397475",
+     "name": "AJ Green",
+     "pos": "G",
+     "nba_id": 1631260
+    },
+    {
+     "espn_id": "4395725",
+     "name": "Tyler Herro",
+     "pos": "G",
+     "nba_id": 1629639
+    },
+    {
+     "espn_id": "5214640",
+     "name": "Kasparas Jakucionis",
+     "pos": "G",
+     "nba_id": 1642857
+    },
+    {
+     "espn_id": "4432848",
+     "name": "Jaime Jaquez Jr.",
+     "pos": "F",
+     "nba_id": 1631170
+    },
+    {
+     "espn_id": "4697268",
+     "name": "Kam Jones",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "3134907",
+     "name": "Kyle Kuzma",
+     "pos": "F",
+     "nba_id": 1628398
+    },
+    {
+     "espn_id": "2991043",
+     "name": "Caris LeVert",
+     "pos": "G",
+     "nba_id": 1627747
+    },
+    {
+     "espn_id": "5214989",
+     "name": "Bogoljub Markovic",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4397233",
+     "name": "Pete Nance",
+     "pos": "F",
+     "nba_id": 1631250
+    },
+    {
+     "espn_id": "4591725",
+     "name": "Ryan Rollins",
+     "pos": "G",
+     "nba_id": 1631157
+    },
+    {
+     "espn_id": "4397114",
+     "name": "Cormac Ryan",
+     "pos": "G",
+     "nba_id": 1642504
+    },
+    {
+     "espn_id": "4277922",
+     "name": "Jericho Sims",
+     "pos": "C",
+     "nba_id": 1630579
+    },
+    {
+     "espn_id": "4277843",
+     "name": "Gary Trent Jr.",
+     "pos": "G",
+     "nba_id": 1629018
+    },
+    {
+     "espn_id": "3133628",
+     "name": "Myles Turner",
+     "pos": "C",
+     "nba_id": 1626167
+    },
+    {
+     "espn_id": "5105623",
+     "name": "Kel'el Ware",
+     "pos": "C",
+     "nba_id": 1642276
+    }
+   ],
+   "injuries": []
+  },
+  "MIN": {
+   "roster": [
+    {
+     "espn_id": "4432816",
+     "name": "LaMelo Ball",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5279133",
+     "name": "Joan Beringer",
+     "pos": "F",
+     "nba_id": 1642866
+    },
+    {
+     "espn_id": "4432247",
+     "name": "Jaylen Clark",
+     "pos": "G",
+     "nba_id": 1641740
+    },
+    {
+     "espn_id": "3934673",
+     "name": "Donte DiVincenzo",
+     "pos": "G",
+     "nba_id": 1628978
+    },
+    {
+     "espn_id": "4397002",
+     "name": "Ayo Dosunmu",
+     "pos": "G",
+     "nba_id": 1630245
+    },
+    {
+     "espn_id": "4594268",
+     "name": "Anthony Edwards",
+     "pos": "G",
+     "nba_id": 1630162
+    },
+    {
+     "espn_id": "5061585",
+     "name": "Isaiah Evans",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4592699",
+     "name": "Enrique Freeman",
+     "pos": "F",
+     "nba_id": 1642402
+    },
+    {
+     "espn_id": "3032976",
+     "name": "Rudy Gobert",
+     "pos": "C",
+     "nba_id": 203497
+    },
+    {
+     "espn_id": "4592492",
+     "name": "Bones Hyland",
+     "pos": "G",
+     "nba_id": 1630538
+    },
+    {
+     "espn_id": "4433247",
+     "name": "Jonathan Kuminga",
+     "pos": "F",
+     "nba_id": 1630228
+    },
+    {
+     "espn_id": "3136196",
+     "name": "Trey Lyles",
+     "pos": "F",
+     "nba_id": 1626168
+    },
+    {
+     "espn_id": "4431671",
+     "name": "Jaden McDaniels",
+     "pos": "F",
+     "nba_id": 1630183
+    },
+    {
+     "espn_id": "4592979",
+     "name": "Zyon Pullin",
+     "pos": "G",
+     "nba_id": 1642389
+    },
+    {
+     "espn_id": "4432847",
+     "name": "Terrence Shannon Jr.",
+     "pos": "G",
+     "nba_id": 1630545
+    },
+    {
+     "espn_id": "4895758",
+     "name": "Cody Williams",
+     "pos": "F",
+     "nba_id": 1642262
+    },
+    {
+     "espn_id": "5157587",
+     "name": "Rocco Zikarsky",
+     "pos": "C",
+     "nba_id": 1642911
+    }
+   ],
+   "injuries": []
+  },
+  "NOP": {
+   "roster": [
+    {
+     "espn_id": "4397136",
+     "name": "Saddiq Bey",
+     "pos": "G",
+     "nba_id": 1630180
+    },
+    {
+     "espn_id": "4712862",
+     "name": "Malik Dia",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5144091",
+     "name": "Jeremiah Fears",
+     "pos": "G",
+     "nba_id": 1642847
+    },
+    {
+     "espn_id": "5170947",
+     "name": "AJ Johnson",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4277813",
+     "name": "Herbert Jones",
+     "pos": "F",
+     "nba_id": 1630529
+    },
+    {
+     "espn_id": "3442",
+     "name": "DeAndre Jordan",
+     "pos": "C",
+     "nba_id": 201599
+    },
+    {
+     "espn_id": "4683634",
+     "name": "Bennedict Mathurin",
+     "pos": "G",
+     "nba_id": 1631097
+    },
+    {
+     "espn_id": "4997538",
+     "name": "Karlo Matkovic",
+     "pos": "F",
+     "nba_id": 1631255
+    },
+    {
+     "espn_id": "4576086",
+     "name": "Bryce McGowens",
+     "pos": "G",
+     "nba_id": 1631121
+    },
+    {
+     "espn_id": "5061589",
+     "name": "Yves Missi",
+     "pos": "C",
+     "nba_id": 1642274
+    },
+    {
+     "espn_id": "4397688",
+     "name": "Trey Murphy III",
+     "pos": "F",
+     "nba_id": 1630530
+    },
+    {
+     "espn_id": "3907497",
+     "name": "Dejounte Murray",
+     "pos": "G",
+     "nba_id": 1627749
+    },
+    {
+     "espn_id": "4703115",
+     "name": "Jaron Pierre Jr.",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4277956",
+     "name": "Jordan Poole",
+     "pos": "G",
+     "nba_id": 1629673
+    },
+    {
+     "espn_id": "4869780",
+     "name": "Derik Queen",
+     "pos": "C",
+     "nba_id": 1642852
+    },
+    {
+     "espn_id": "4683742",
+     "name": "Julian Reese",
+     "pos": "F",
+     "nba_id": 1642882
+    },
+    {
+     "espn_id": "4431675",
+     "name": "Trendon Watford",
+     "pos": "F",
+     "nba_id": 1630570
+    },
+    {
+     "espn_id": "4395628",
+     "name": "Zion Williamson",
+     "pos": "F",
+     "nba_id": 1629627
+    }
+   ],
+   "injuries": []
+  },
+  "NYK": {
+   "roster": [
+    {
+     "espn_id": "4683730",
+     "name": "Jaden Akins",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4277869",
+     "name": "Jose Alvarado",
+     "pos": "G",
+     "nba_id": 1630631
+    },
+    {
+     "espn_id": "3934719",
+     "name": "OG Anunoby",
+     "pos": "F",
+     "nba_id": 1628384
+    },
+    {
+     "espn_id": "3147657",
+     "name": "Mikal Bridges",
+     "pos": "G",
+     "nba_id": 1628969
+    },
+    {
+     "espn_id": "3934672",
+     "name": "Jalen Brunson",
+     "pos": "G",
+     "nba_id": 1628973
+    },
+    {
+     "espn_id": "2528426",
+     "name": "Jordan Clarkson",
+     "pos": "G",
+     "nba_id": 203903
+    },
+    {
+     "espn_id": "5211983",
+     "name": "Pacome Dadiet",
+     "pos": "F",
+     "nba_id": 1642359
+    },
+    {
+     "espn_id": "5289900",
+     "name": "Mohamed Diawara",
+     "pos": "F",
+     "nba_id": 1642885
+    },
+    {
+     "espn_id": "6585",
+     "name": "Andre Drummond",
+     "pos": "C",
+     "nba_id": 203083
+    },
+    {
+     "espn_id": "3062679",
+     "name": "Josh Hart",
+     "pos": "G",
+     "nba_id": 1628404
+    },
+    {
+     "espn_id": "4897943",
+     "name": "Dalton Knecht",
+     "pos": "F",
+     "nba_id": 1642261
+    },
+    {
+     "espn_id": "4433225",
+     "name": "Tyler Kolek",
+     "pos": "G",
+     "nba_id": 1642278
+    },
+    {
+     "espn_id": "4431823",
+     "name": "Miles McBride",
+     "pos": "G",
+     "nba_id": 1630540
+    },
+    {
+     "espn_id": "4838721",
+     "name": "Tyler Nickel",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "3914044",
+     "name": "Landry Shamet",
+     "pos": "G",
+     "nba_id": 1629013
+    },
+    {
+     "espn_id": "3136195",
+     "name": "Karl-Anthony Towns",
+     "pos": "C",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4432808",
+     "name": "James Wiseman",
+     "pos": "C",
+     "nba_id": 1630164
+    }
+   ],
+   "injuries": []
+  },
+  "OKC": {
+   "roster": [
+    {
+     "espn_id": "4397018",
+     "name": "Ochai Agbaji",
+     "pos": "G",
+     "nba_id": 1630534
+    },
+    {
+     "espn_id": "4684208",
+     "name": "Brooks Barnhizer",
+     "pos": "F",
+     "nba_id": 1642964
+    },
+    {
+     "espn_id": "2991350",
+     "name": "Alex Caruso",
+     "pos": "G",
+     "nba_id": 1627936
+    },
+    {
+     "espn_id": "5105800",
+     "name": "Josh Dix",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4278073",
+     "name": "Shai Gilgeous-Alexander",
+     "pos": "G",
+     "nba_id": 1628983
+    },
+    {
+     "espn_id": "4222252",
+     "name": "Isaiah Hartenstein",
+     "pos": "C",
+     "nba_id": 1628392
+    },
+    {
+     "espn_id": "4433255",
+     "name": "Chet Holmgren",
+     "pos": "C",
+     "nba_id": 1631096
+    },
+    {
+     "espn_id": "5174983",
+     "name": "Aday Mara",
+     "pos": "C",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4683778",
+     "name": "Jared McCain",
+     "pos": "G",
+     "nba_id": 1642272
+    },
+    {
+     "espn_id": "4900671",
+     "name": "Ajay Mitchell",
+     "pos": "G",
+     "nba_id": 1642349
+    },
+    {
+     "espn_id": "4432185",
+     "name": "Micah Peavy",
+     "pos": "G",
+     "nba_id": 1642877
+    },
+    {
+     "espn_id": "5061603",
+     "name": "Thomas Sorber",
+     "pos": "C",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5241364",
+     "name": "Bennett Stirtz",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5159925",
+     "name": "Nikola Topic",
+     "pos": "G",
+     "nba_id": 1642260
+    },
+    {
+     "espn_id": "4683692",
+     "name": "Cason Wallace",
+     "pos": "G",
+     "nba_id": 1641717
+    },
+    {
+     "espn_id": "4593803",
+     "name": "Jalen Williams",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4432823",
+     "name": "Jaylin Williams",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "3133626",
+     "name": "Kenrich Williams",
+     "pos": "G",
+     "nba_id": 1629026
+    }
+   ],
+   "injuries": []
+  },
+  "ORL": {
+   "roster": [
+    {
+     "espn_id": "4432573",
+     "name": "Paolo Banchero",
+     "pos": "F",
+     "nba_id": 1631094
+    },
+    {
+     "espn_id": "4066320",
+     "name": "Desmond Bane",
+     "pos": "G",
+     "nba_id": 1630217
+    },
+    {
+     "espn_id": "4348700",
+     "name": "Goga Bitadze",
+     "pos": "C",
+     "nba_id": 1629048
+    },
+    {
+     "espn_id": "4712849",
+     "name": "Anthony Black",
+     "pos": "G",
+     "nba_id": 1641710
+    },
+    {
+     "espn_id": "4278572",
+     "name": "Jamal Cain",
+     "pos": "F",
+     "nba_id": 1631288
+    },
+    {
+     "espn_id": "3133635",
+     "name": "Jevon Carter",
+     "pos": "G",
+     "nba_id": 1628975
+    },
+    {
+     "espn_id": "4277847",
+     "name": "Wendell Carter Jr.",
+     "pos": "C",
+     "nba_id": 1628976
+    },
+    {
+     "espn_id": "4397204",
+     "name": "Colin Castleton",
+     "pos": "C",
+     "nba_id": 1630658
+    },
+    {
+     "espn_id": "4702382",
+     "name": "Tristan da Silva",
+     "pos": "F",
+     "nba_id": 1641783
+    },
+    {
+     "espn_id": "4065654",
+     "name": "Jonathan Isaac",
+     "pos": "F",
+     "nba_id": 1628371
+    },
+    {
+     "espn_id": "4593034",
+     "name": "Alex Morales",
+     "pos": "G",
+     "nba_id": 1631457
+    },
+    {
+     "espn_id": "5107251",
+     "name": "Izaiyah Nelson",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5214637",
+     "name": "Noah Penda",
+     "pos": "F",
+     "nba_id": 1642869
+    },
+    {
+     "espn_id": "5239561",
+     "name": "Jase Richardson",
+     "pos": "G",
+     "nba_id": 1642859
+    },
+    {
+     "espn_id": "4432165",
+     "name": "Jalen Suggs",
+     "pos": "G",
+     "nba_id": 1630591
+    },
+    {
+     "espn_id": "6478",
+     "name": "Nikola Vucevic",
+     "pos": "C",
+     "nba_id": 202696
+    },
+    {
+     "espn_id": "4566434",
+     "name": "Franz Wagner",
+     "pos": "F",
+     "nba_id": 1630532
+    }
+   ],
+   "injuries": []
+  },
+  "PHI": {
+   "roster": [
+    {
+     "espn_id": "4870562",
+     "name": "Dominick Barlow",
+     "pos": "F",
+     "nba_id": 1631230
+    },
+    {
+     "espn_id": "5105637",
+     "name": "Adem Bona",
+     "pos": "C",
+     "nba_id": 1641737
+    },
+    {
+     "espn_id": "3917376",
+     "name": "Jaylen Brown",
+     "pos": "G",
+     "nba_id": 1627759
+    },
+    {
+     "espn_id": "2581018",
+     "name": "Kentavious Caldwell-Pope",
+     "pos": "G",
+     "nba_id": 203484
+    },
+    {
+     "espn_id": "5124612",
+     "name": "VJ Edgecombe",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4711297",
+     "name": "Justin Edwards",
+     "pos": "F",
+     "nba_id": 1642348
+    },
+    {
+     "espn_id": "3059318",
+     "name": "Joel Embiid",
+     "pos": "C",
+     "nba_id": 203954
+    },
+    {
+     "espn_id": "3904625",
+     "name": "Tacko Fall",
+     "pos": "C",
+     "nba_id": 1629605
+    },
+    {
+     "espn_id": "4871141",
+     "name": "Ariel Hukporti",
+     "pos": "C",
+     "nba_id": 1630574
+    },
+    {
+     "espn_id": "1966",
+     "name": "LeBron James",
+     "pos": "F",
+     "nba_id": 2544
+    },
+    {
+     "espn_id": "4433144",
+     "name": "Caleb Love",
+     "pos": "G",
+     "nba_id": 1631126
+    },
+    {
+     "espn_id": "4431678",
+     "name": "Tyrese Maxey",
+     "pos": "G",
+     "nba_id": 1630178
+    },
+    {
+     "espn_id": "4873090",
+     "name": "Labaron Philon Jr.",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5099752",
+     "name": "Rayan Rupert",
+     "pos": "G",
+     "nba_id": 1641712
+    },
+    {
+     "espn_id": "4351851",
+     "name": "Anfernee Simons",
+     "pos": "G",
+     "nba_id": 1629014
+    },
+    {
+     "espn_id": "3912848",
+     "name": "Dean Wade",
+     "pos": "F",
+     "nba_id": 1629731
+    },
+    {
+     "espn_id": "4432446",
+     "name": "Jabari Walker",
+     "pos": "F",
+     "nba_id": 1631133
+    }
+   ],
+   "injuries": []
+  },
+  "PHX": {
+   "roster": [
+    {
+     "espn_id": "3136193",
+     "name": "Devin Booker",
+     "pos": "G",
+     "nba_id": 1626164
+    },
+    {
+     "espn_id": "4280245",
+     "name": "Jamaree Bouyea",
+     "pos": "G",
+     "nba_id": 1631123
+    },
+    {
+     "espn_id": "4066383",
+     "name": "Miles Bridges",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "3155526",
+     "name": "Dillon Brooks",
+     "pos": "F",
+     "nba_id": 1628415
+    },
+    {
+     "espn_id": "4888725",
+     "name": "Ryan Dunn",
+     "pos": "F",
+     "nba_id": 1642346
+    },
+    {
+     "espn_id": "5105977",
+     "name": "Rasheer Fleming",
+     "pos": "F",
+     "nba_id": 1642853
+    },
+    {
+     "espn_id": "4278585",
+     "name": "Collin Gillespie",
+     "pos": "G",
+     "nba_id": 1631221
+    },
+    {
+     "espn_id": "4278402",
+     "name": "Jordan Goodwin",
+     "pos": "G",
+     "nba_id": 1630692
+    },
+    {
+     "espn_id": "4437244",
+     "name": "Jalen Green",
+     "pos": "G",
+     "nba_id": 1630224
+    },
+    {
+     "espn_id": "4601023",
+     "name": "Oso Ighodaro",
+     "pos": "F",
+     "nba_id": 1642345
+    },
+    {
+     "espn_id": "3913174",
+     "name": "Luke Kennard",
+     "pos": "G",
+     "nba_id": 1628379
+    },
+    {
+     "espn_id": "5203685",
+     "name": "Khaman Maluach",
+     "pos": "C",
+     "nba_id": 1642863
+    },
+    {
+     "espn_id": "5041953",
+     "name": "Koa Peat",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4066268",
+     "name": "Duop Reath",
+     "pos": "C",
+     "nba_id": 1641871
+    },
+    {
+     "espn_id": "4592714",
+     "name": "Pat Spencer",
+     "pos": "G",
+     "nba_id": 1630311
+    },
+    {
+     "espn_id": "4431695",
+     "name": "Drew Timme",
+     "pos": "F",
+     "nba_id": 1631166
+    },
+    {
+     "espn_id": "4701232",
+     "name": "Mark Williams",
+     "pos": "C",
+     "nba_id": 1631109
+    }
+   ],
+   "injuries": []
+  },
+  "POR": {
+   "roster": [
+    {
+     "espn_id": "4683021",
+     "name": "Deni Avdija",
+     "pos": "F",
+     "nba_id": 1630166
+    },
+    {
+     "espn_id": "4431736",
+     "name": "Toumani Camara",
+     "pos": "F",
+     "nba_id": 1641739
+    },
+    {
+     "espn_id": "4592435",
+     "name": "Branden Carlson",
+     "pos": "C",
+     "nba_id": 1642382
+    },
+    {
+     "espn_id": "5081727",
+     "name": "Sidy Cissoko",
+     "pos": "G",
+     "nba_id": 1631321
+    },
+    {
+     "espn_id": "5105565",
+     "name": "Donovan Clingan",
+     "pos": "C",
+     "nba_id": 1642270
+    },
+    {
+     "espn_id": "5217746",
+     "name": "Yang Hansen",
+     "pos": "C",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4683678",
+     "name": "Scoot Henderson",
+     "pos": "G",
+     "nba_id": 1630703
+    },
+    {
+     "espn_id": "3995",
+     "name": "Jrue Holiday",
+     "pos": "G",
+     "nba_id": 201950
+    },
+    {
+     "espn_id": "4703889",
+     "name": "Jayson Kent",
+     "pos": "G",
+     "nba_id": 1643257
+    },
+    {
+     "espn_id": "4578893",
+     "name": "Vit Krejci",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "6606",
+     "name": "Damian Lillard",
+     "pos": "G",
+     "nba_id": 203081
+    },
+    {
+     "espn_id": "4279888",
+     "name": "Ja Morant",
+     "pos": "G",
+     "nba_id": 1629630
+    },
+    {
+     "espn_id": "4066399",
+     "name": "Micah Potter",
+     "pos": "C",
+     "nba_id": 1630695
+    },
+    {
+     "espn_id": "4914336",
+     "name": "Shaedon Sharpe",
+     "pos": "G",
+     "nba_id": 1631101
+    },
+    {
+     "espn_id": "4593043",
+     "name": "John Tonje",
+     "pos": "F",
+     "nba_id": 1642910
+    },
+    {
+     "espn_id": "4066211",
+     "name": "Robert Williams III",
+     "pos": "C",
+     "nba_id": 1629057
+    },
+    {
+     "espn_id": "4706557",
+     "name": "Chris Youngblood",
+     "pos": "G",
+     "nba_id": 1642959
+    }
+   ],
+   "injuries": []
+  },
+  "SAC": {
+   "roster": [
+    {
+     "espn_id": "4431679",
+     "name": "Precious Achiuwa",
+     "pos": "F",
+     "nba_id": 1630173
+    },
+    {
+     "espn_id": "5142620",
+     "name": "Darius Acuff Jr.",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4395650",
+     "name": "Leaky Black",
+     "pos": "F",
+     "nba_id": 1641778
+    },
+    {
+     "espn_id": "4433174",
+     "name": "Dylan Cardwell",
+     "pos": "C",
+     "nba_id": 1642928
+    },
+    {
+     "espn_id": "4702384",
+     "name": "Nique Clifford",
+     "pos": "G",
+     "nba_id": 1642363
+    },
+    {
+     "espn_id": "4065732",
+     "name": "De'Andre Hunter",
+     "pos": "F",
+     "nba_id": 1629631
+    },
+    {
+     "espn_id": "4917149",
+     "name": "Alex Karaban",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "3064440",
+     "name": "Zach LaVine",
+     "pos": "G",
+     "nba_id": 203897
+    },
+    {
+     "espn_id": "5107897",
+     "name": "Jonathan Mogbo",
+     "pos": "F",
+     "nba_id": 1642367
+    },
+    {
+     "espn_id": "4066262",
+     "name": "Malik Monk",
+     "pos": "G",
+     "nba_id": 1628370
+    },
+    {
+     "espn_id": "4594327",
+     "name": "Keegan Murray",
+     "pos": "F",
+     "nba_id": 1631099
+    },
+    {
+     "espn_id": "4709131",
+     "name": "Sean Pedulla",
+     "pos": "G",
+     "nba_id": 1642951
+    },
+    {
+     "espn_id": "4279318",
+     "name": "Daeqwon Plowden",
+     "pos": "G",
+     "nba_id": 1631342
+    },
+    {
+     "espn_id": "4898371",
+     "name": "Maxime Raynaud",
+     "pos": "C",
+     "nba_id": 1642875
+    },
+    {
+     "espn_id": "3155942",
+     "name": "Domantas Sabonis",
+     "pos": "F",
+     "nba_id": 1627734
+    },
+    {
+     "espn_id": "5106058",
+     "name": "Emanuel Sharp",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "3907387",
+     "name": "Ben Simmons",
+     "pos": "G",
+     "nba_id": 1627732
+    }
+   ],
+   "injuries": []
+  },
+  "SAS": {
+   "roster": [
+    {
+     "espn_id": "6578",
+     "name": "Harrison Barnes",
+     "pos": "F",
+     "nba_id": 203084
+    },
+    {
+     "espn_id": "5105337",
+     "name": "Maliq Brown",
+     "pos": "F",
+     "nba_id": 1629650
+    },
+    {
+     "espn_id": "5061568",
+     "name": "Carter Bryant",
+     "pos": "F",
+     "nba_id": 1642868
+    },
+    {
+     "espn_id": "4845367",
+     "name": "Stephon Castle",
+     "pos": "G",
+     "nba_id": 1642264
+    },
+    {
+     "espn_id": "4592479",
+     "name": "Julian Champagnie",
+     "pos": "F",
+     "nba_id": 1630577
+    },
+    {
+     "espn_id": "4066259",
+     "name": "De'Aaron Fox",
+     "pos": "G",
+     "nba_id": 1628368
+    },
+    {
+     "espn_id": "5107968",
+     "name": "Ja'Kobi Gillespie",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5037871",
+     "name": "Dylan Harper",
+     "pos": "G",
+     "nba_id": 1642844
+    },
+    {
+     "espn_id": "6440",
+     "name": "Tobias Harris",
+     "pos": "F",
+     "nba_id": 202699
+    },
+    {
+     "espn_id": "4395723",
+     "name": "Keldon Johnson",
+     "pos": "F",
+     "nba_id": 1629640
+    },
+    {
+     "espn_id": "4713010",
+     "name": "David Jones Garcia",
+     "pos": "F",
+     "nba_id": 1642357
+    },
+    {
+     "espn_id": "3064560",
+     "name": "Luke Kornet",
+     "pos": "C",
+     "nba_id": 1628436
+    },
+    {
+     "espn_id": "3134916",
+     "name": "Jordan McLaughlin",
+     "pos": "G",
+     "nba_id": 1629162
+    },
+    {
+     "espn_id": "5101845",
+     "name": "Jayden Quaintance",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5105809",
+     "name": "Tarris Reed Jr.",
+     "pos": "C",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4395630",
+     "name": "Devin Vassell",
+     "pos": "G",
+     "nba_id": 1630170
+    },
+    {
+     "espn_id": "5104157",
+     "name": "Victor Wembanyama",
+     "pos": "F",
+     "nba_id": null
+    }
+   ],
+   "injuries": []
+  },
+  "TOR": {
+   "roster": [
+    {
+     "espn_id": "2993874",
+     "name": "Kyle Anderson",
+     "pos": "F",
+     "nba_id": 203937
+    },
+    {
+     "espn_id": "4433134",
+     "name": "Scottie Barnes",
+     "pos": "F",
+     "nba_id": 1630567
+    },
+    {
+     "espn_id": "4395625",
+     "name": "RJ Barrett",
+     "pos": "F",
+     "nba_id": 1629628
+    },
+    {
+     "espn_id": "4431893",
+     "name": "Jamison Battle",
+     "pos": "F",
+     "nba_id": 1642419
+    },
+    {
+     "espn_id": "4432586",
+     "name": "Nate Bittle",
+     "pos": "C",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4432737",
+     "name": "Jaden Bradley",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5149115",
+     "name": "Allen Graves",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4431684",
+     "name": "Trayce Jackson-Davis",
+     "pos": "F",
+     "nba_id": 1631218
+    },
+    {
+     "espn_id": "6450",
+     "name": "Kawhi Leonard",
+     "pos": "F",
+     "nba_id": 202695
+    },
+    {
+     "espn_id": "4702656",
+     "name": "Alijah Martin",
+     "pos": "G",
+     "nba_id": 1642918
+    },
+    {
+     "espn_id": "5093267",
+     "name": "Collin Murray-Boyles",
+     "pos": "F",
+     "nba_id": 1642867
+    },
+    {
+     "espn_id": "3134908",
+     "name": "Jakob Poeltl",
+     "pos": "C",
+     "nba_id": 1627751
+    },
+    {
+     "espn_id": "4395724",
+     "name": "Immanuel Quickley",
+     "pos": "G",
+     "nba_id": 1630193
+    },
+    {
+     "espn_id": "4432241",
+     "name": "Jamal Shead",
+     "pos": "G",
+     "nba_id": 1642347
+    },
+    {
+     "espn_id": "4397784",
+     "name": "Malachi Smith",
+     "pos": "G",
+     "nba_id": 1641869
+    },
+    {
+     "espn_id": "4684272",
+     "name": "Ja'Kobe Walter",
+     "pos": "G",
+     "nba_id": 1642266
+    }
+   ],
+   "injuries": []
+  },
+  "UTA": {
+   "roster": [
+    {
+     "espn_id": "4433268",
+     "name": "Trey Alexander",
+     "pos": "G",
+     "nba_id": 1641725
+    },
+    {
+     "espn_id": "4873138",
+     "name": "Ace Bailey",
+     "pos": "G",
+     "nba_id": 1642846
+    },
+    {
+     "espn_id": "4277919",
+     "name": "Mo Bamba",
+     "pos": "C",
+     "nba_id": 1628964
+    },
+    {
+     "espn_id": "4065673",
+     "name": "Tony Bradley",
+     "pos": "C",
+     "nba_id": 1628396
+    },
+    {
+     "espn_id": "4683766",
+     "name": "Isaiah Collier",
+     "pos": "G",
+     "nba_id": 1642268
+    },
+    {
+     "espn_id": "4684793",
+     "name": "Kyle Filipowski",
+     "pos": "F",
+     "nba_id": 1642271
+    },
+    {
+     "espn_id": "4433627",
+     "name": "Keyonte George",
+     "pos": "G",
+     "nba_id": 1641718
+    },
+    {
+     "espn_id": "4432811",
+     "name": "Josh Green",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "4397077",
+     "name": "Jaxson Hayes",
+     "pos": "C",
+     "nba_id": 1629637
+    },
+    {
+     "espn_id": "4396963",
+     "name": "Blake Hinson",
+     "pos": "F",
+     "nba_id": 1642396
+    },
+    {
+     "espn_id": "4433618",
+     "name": "Harrison Ingram",
+     "pos": "F",
+     "nba_id": 1631127
+    },
+    {
+     "espn_id": "4277961",
+     "name": "Jaren Jackson Jr.",
+     "pos": "F",
+     "nba_id": 1628991
+    },
+    {
+     "espn_id": "4066336",
+     "name": "Lauri Markkanen",
+     "pos": "F",
+     "nba_id": 1628374
+    },
+    {
+     "espn_id": "3133602",
+     "name": "Svi Mykhailiuk",
+     "pos": "G",
+     "nba_id": 1629004
+    },
+    {
+     "espn_id": "3102530",
+     "name": "Jusuf Nurkic",
+     "pos": "C",
+     "nba_id": 203994
+    },
+    {
+     "espn_id": "4065663",
+     "name": "Josh Okogie",
+     "pos": "G",
+     "nba_id": 1629006
+    },
+    {
+     "espn_id": "5041955",
+     "name": "Darryn Peterson",
+     "pos": "G",
+     "nba_id": 1641809
+    },
+    {
+     "espn_id": "5105839",
+     "name": "Brice Sensabaugh",
+     "pos": "F",
+     "nba_id": 1641729
+    }
+   ],
+   "injuries": []
+  },
+  "WAS": {
+   "roster": [
+    {
+     "espn_id": "4278129",
+     "name": "Deandre Ayton",
+     "pos": "C",
+     "nba_id": 1629028
+    },
+    {
+     "espn_id": "4432187",
+     "name": "Reece Beekman",
+     "pos": "G",
+     "nba_id": 1641736
+    },
+    {
+     "espn_id": "4845374",
+     "name": "Bub Carrington",
+     "pos": "G",
+     "nba_id": 1642267
+    },
+    {
+     "espn_id": "4432907",
+     "name": "Justin Champagnie",
+     "pos": "F",
+     "nba_id": 1630551
+    },
+    {
+     "espn_id": "5104155",
+     "name": "Bilal Coulibaly",
+     "pos": "G",
+     "nba_id": 1641731
+    },
+    {
+     "espn_id": "6583",
+     "name": "Anthony Davis",
+     "pos": "F",
+     "nba_id": 203076
+    },
+    {
+     "espn_id": "5142718",
+     "name": "AJ Dybantsa",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5174563",
+     "name": "Kyshawn George",
+     "pos": "F",
+     "nba_id": 1642273
+    },
+    {
+     "espn_id": "2581184",
+     "name": "Anthony Gill",
+     "pos": "F",
+     "nba_id": 1630264
+    },
+    {
+     "espn_id": "5238230",
+     "name": "Tre Johnson",
+     "pos": "G",
+     "nba_id": 1642848
+    },
+    {
+     "espn_id": "4432819",
+     "name": "Tre Mann",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
+     "espn_id": "6609",
+     "name": "Khris Middleton",
+     "pos": "F",
+     "nba_id": 203114
+    },
+    {
+     "espn_id": "5105841",
+     "name": "Felix Okpara",
+     "pos": "F",
+     "nba_id": null
+    },
+    {
+     "espn_id": "5144126",
+     "name": "Will Riley",
+     "pos": "G",
+     "nba_id": 1642860
+    },
+    {
+     "espn_id": "5160992",
+     "name": "Alex Sarr",
+     "pos": "C",
+     "nba_id": 1642259
+    },
+    {
+     "espn_id": "4997537",
+     "name": "Tristan Vukcevic",
+     "pos": "F",
+     "nba_id": 1641774
+    },
+    {
+     "espn_id": "4606840",
+     "name": "Jamir Watkins",
+     "pos": "G",
+     "nba_id": 1642364
+    },
+    {
+     "espn_id": "4277905",
+     "name": "Trae Young",
+     "pos": "G",
+     "nba_id": 1629027
+    }
+   ],
+   "injuries": []
+  }
+ },
+ "unmatched_roster_names": [
+  "ATL:Zuby Ejiofor",
+  "ATL:Kingston Flemings",
+  "ATL:Henri Veesaar",
+  "ATL:Aaron Wiggins",
+  "BKN:Tyler Bilodeau",
+  "BKN:Joshua Jefferson",
+  "BOS:Chris Cenac Jr.",
+  "BOS:Dillon Mitchell",
+  "CHA:Christian Anderson",
+  "CHA:Kylan Boswell",
+  "CHA:Hannes Steinbach",
+  "CHI:Tobe Awaka",
+  "CHI:Jaylin Sellers",
+  "CHI:Dailyn Swain",
+  "CHI:Caleb Wilson",
+  "CLE:Mario Hezonja",
+  "CLE:Ernest Udeh Jr.",
+  "DAL:Tarik Biberovic",
+  "DAL:Sergio de Larrea",
+  "DAL:Morez Johnson Jr.",
+  "DAL:Tobi Lawal",
+  "DEN:Trevon Brazile",
+  "DEN:Alpha Diallo",
+  "DEN:Bryce Hopkins",
+  "DET:Ebuka Okorie",
+  "DET:Ugonna Onyenso",
+  "GSW:Graham Ike",
+  "GSW:Yaxel Lendeborg",
+  "HOU:Bogdan Bogdanovic",
+  "HOU:Quadir Copeland",
+  "HOU:Bruce Thornton",
+  "IND:Braden Smith",
+  "LAC:Nick Martinelli",
+  "LAC:Yanic Konan Niederhauser",
+  "LAC:Keaton Wagler",
+  "LAL:Cameron Carr",
+  "LAL:Arthur Kaluma",
+  "LAL:AK Okereke",
+  "MEM:Cameron Boozer",
+  "MEM:Carson Cooper",
+  "MEM:Karim Lopez",
+  "MEM:Kris Murray",
+  "MEM:Olivier-Maxence Prosper",
+  "MIA:Ryan Conwell",
+  "MIA:Tre Donaldson",
+  "MIA:Vladislav Goldin",
+  "MIL:Nate Ament",
+  "MIL:Brayden Burries",
+  "MIL:Kam Jones",
+  "MIL:Bogoljub Markovic",
+  "MIN:LaMelo Ball",
+  "MIN:Isaiah Evans",
+  "NOP:Malik Dia",
+  "NOP:AJ Johnson",
+  "NOP:Jaron Pierre Jr.",
+  "NYK:Jaden Akins",
+  "NYK:Tyler Nickel",
+  "NYK:Karl-Anthony Towns",
+  "OKC:Josh Dix",
+  "OKC:Aday Mara",
+  "OKC:Thomas Sorber",
+  "OKC:Bennett Stirtz",
+  "OKC:Jalen Williams",
+  "OKC:Jaylin Williams",
+  "ORL:Izaiyah Nelson",
+  "PHI:VJ Edgecombe",
+  "PHI:Labaron Philon Jr.",
+  "PHX:Miles Bridges",
+  "PHX:Koa Peat",
+  "POR:Yang Hansen",
+  "POR:Vit Krejci",
+  "SAC:Darius Acuff Jr.",
+  "SAC:Alex Karaban",
+  "SAC:Emanuel Sharp",
+  "SAS:Ja'Kobi Gillespie",
+  "SAS:Jayden Quaintance",
+  "SAS:Tarris Reed Jr.",
+  "SAS:Victor Wembanyama",
+  "TOR:Nate Bittle",
+  "TOR:Jaden Bradley",
+  "TOR:Allen Graves",
+  "UTA:Josh Green",
+  "WAS:AJ Dybantsa",
+  "WAS:Tre Mann",
+  "WAS:Felix Okpara"
+ ],
+ "problems": [],
+ "probe": {
+  "roster_top_keys": [
+   "athletes",
+   "coach",
+   "season",
+   "status",
+   "team",
+   "timestamp"
+  ],
+  "first_athlete_keys": [
+   "age",
+   "alternateIds",
+   "birthPlace",
+   "college",
+   "contract",
+   "contracts",
+   "dateOfBirth",
+   "debutYear",
+   "displayHeight",
+   "displayName",
+   "displayWeight",
+   "experience",
+   "firstName",
+   "fullName",
+   "guid",
+   "headshot",
+   "height",
+   "id",
+   "injuries",
+   "jersey",
+   "lastName",
+   "links",
+   "position",
+   "shortName",
+   "slug",
+   "status",
+   "teams",
+   "uid",
+   "weight"
+  ],
+  "injuries_top_keys": [
+   "injuries",
+   "season",
+   "status",
+   "timestamp"
+  ]
+ }
+}
