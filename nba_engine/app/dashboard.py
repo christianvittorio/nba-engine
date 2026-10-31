@@ -155,7 +155,8 @@ def load_players(mtime: float):
 @st.cache_data(show_spinner=False)
 def project(team: str, active: tuple, pool: tuple, n_sims: int, _mtime: float):
     pm = load_players(_mtime)
-    proj = pm.project_team(team, active=list(active), pool_ids=list(pool))
+    extra = {p: 12.0 for p in pool if p < 0}            # no history yet: assume a 12-minute role
+    proj = pm.project_team(team, active=list(active), pool_ids=list(pool), extra_unknown=extra)
     samp = sample_players(proj, pm.p, n_sims, seed=2026)
     return proj, summarize_samples(samp)
 
@@ -168,7 +169,7 @@ with tab_players:
         pm = load_players(pmt)
         st.subheader("Player projections")
         st.caption("Projections are conditional on the availability you choose. The model does not know who is injured: "
-                   "you tell it (the injury list from any source you trust), and it redistributes minutes and usage. "
+                   "it uses the injury list below (or what you choose) and redistributes minutes and usage. "
                    f"Player history is learned through season {pm.season} ({pm.n_games} games).")
         teams = sorted(pm.team_gp)
         c1, c2 = st.columns([1, 3])
@@ -176,15 +177,45 @@ with tab_players:
         window = c1.slider("Roster window (team games since a player last played)", 5, 82, 8,
                            help="Players who last played for this team within this many team games are listed. "
                                 "8 is the setting used in the backtest. Wider windows pull in players who may have left the team.")
-        roster = pm.pool(team, window=window)
-        roster = sorted(roster, key=lambda x: -(pm.ewm_min(x) or 0.0))
-        label = {x: f"{pm.names.get(x, x)} ({(pm.ewm_min(x) or 0):.0f} min)" for x in roster}
-        st.caption("Rosters are taken from each team's most recent games in the data. Players who have moved teams since then "
-                   "still appear: mark them as out. Newly arrived players with no history are not listed.")
-        out = c2.multiselect("Out / not playing", roster, format_func=lambda x: label[x])
-        extra = c2.multiselect("Also include (not on the list)", [x for x in pm.pool(team, window=82) if x not in roster],
-                               format_func=lambda x: f"{pm.names.get(x, x)} ({(pm.ewm_min(x) or 0):.0f} min)")
-        pool = roster + extra
+        AV_PATH = os.path.join(ROOT, "artifacts/availability.json")
+        try:
+            av = json.load(open(AV_PATH)) if os.path.exists(AV_PATH) else None
+        except Exception:
+            av = None
+        team_av = (av or {}).get("teams", {}).get(team)
+        if team_av and team_av.get("roster"):
+            status = {i["name"]: (i.get("status") or "") for i in team_av.get("injuries", [])}
+            label, roster, default_out = {}, [], []
+            for r in team_av["roster"]:
+                pid = r["nba_id"] if r.get("nba_id") is not None else -int(r["espn_id"])
+                if pid in label:
+                    continue
+                if r.get("nba_id") is None:
+                    pm.names[pid] = r["name"]
+                    base = f"{r['name']} (no history)"
+                else:
+                    base = f"{r['name']} ({(pm.ewm_min(pid) or 0):.0f} min)"
+                st_ = status.get(r["name"], "")
+                label[pid] = base + (f" - {st_}" if st_ else "")
+                roster.append(pid)
+                if "out" in st_.lower():
+                    default_out.append(pid)
+            roster.sort(key=lambda x: -(pm.ewm_min(x) or 0.0))
+            st.caption(f"Roster and injury statuses from ESPN, fetched {av.get('generated_utc', '?')} UTC. ESPN's injury list is not an "
+                       "official report and may be late or incomplete: the players marked out are pre-selected, and you can change them. "
+                       "Players with no history use a 12-minute default and league-average rates.")
+            out = c2.multiselect("Out / not playing", roster, default=default_out, format_func=lambda x: label[x], key=f"out_{team}")
+            pool = list(roster)
+        else:
+            roster = pm.pool(team, window=window)
+            roster = sorted(roster, key=lambda x: -(pm.ewm_min(x) or 0.0))
+            label = {x: f"{pm.names.get(x, x)} ({(pm.ewm_min(x) or 0):.0f} min)" for x in roster}
+            st.caption("No current roster file for this team, so rosters come from each team's most recent games in the data. Players who "
+                       "have moved teams since then still appear: mark them as out. Newly arrived players are not listed.")
+            out = c2.multiselect("Out / not playing", roster, format_func=lambda x: label[x])
+            extra = c2.multiselect("Also include (not on the list)", [x for x in pm.pool(team, window=82) if x not in roster],
+                                   format_func=lambda x: f"{pm.names.get(x, x)} ({(pm.ewm_min(x) or 0):.0f} min)")
+            pool = roster + extra
         active = [x for x in pool if x not in out]
         n_sims = c1.select_slider("Simulations", [1000, 4000, 10000], value=4000)
         if len(active) < 5:

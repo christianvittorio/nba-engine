@@ -22,5 +22,6 @@ jobs:
           git config user.name "nba-engine-bot"
           git config user.email "nba-engine-bot@users.noreply.github.com"
           git add -f nba_engine/artifacts/state.json nba_engine/artifacts/live.sqlite nba_engine/artifacts/reports
+          git add -f nba_engine/artifacts/availability.json || true
           git diff --cached --quiet || git commit -m "daily update $(date -u +%F)"
           git push
