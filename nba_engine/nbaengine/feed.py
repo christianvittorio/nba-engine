@@ -151,6 +151,7 @@ class EspnFeed:
 
     def __init__(self, pause_s: float = 1.0, timeout: int = 20, user_agent: str = "nba-engine/0.1 (personal research)"):
         self.pause, self.timeout, self.ua = pause_s, timeout, user_agent
+        self.summaries: dict = {}      # event id -> (date, season, summary JSON) for every final fetched; used by the player update
 
     def _get(self, url: str) -> dict:
         req = urllib.request.Request(url, headers={"User-Agent": self.ua})
@@ -169,6 +170,7 @@ class EspnFeed:
     def _box(self, event_id: str) -> tuple[dict, dict]:
         """Team box ingredients from the summary endpoint. Returns (per-side counts, extras)."""
         js = self._get(f"{self.BASE}/summary?event={event_id}")
+        self._last_summary = js
         out, ids = {}, {}
         for t in js["boxscore"]["teams"]:
             side = t["homeAway"]
@@ -201,6 +203,7 @@ class EspnFeed:
             season = int(ev["season"]["year"])
             if name == "STATUS_FINAL":
                 box, _ = self._box(ev["id"])
+                self.summaries[str(ev["id"])] = (yyyymmdd[:4] + "-" + yyyymmdd[4:6] + "-" + yyyymmdd[6:], season, self._last_summary)
                 n_per = int(ev["status"].get("period", 4))
                 fin.append(FinalGame(int(ev["id"]), season, yyyymmdd[:4] + "-" + yyyymmdd[4:6] + "-" + yyyymmdd[6:],
                                      home, away, int(cs["home"]["score"]), int(cs["away"]["score"]), max(4, n_per), box))

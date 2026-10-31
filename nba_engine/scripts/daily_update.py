@@ -15,10 +15,16 @@ today = datetime.now(ZoneInfo("America/New_York")).date()
 store = Store(DB)
 eng = Engine.load(store, STATE)
 # First run on a fresh state: catch up on everything since the season opened (ingesting a game twice is a no-op).
-LOOKBACK = int(os.environ.get("LOOKBACK_DAYS", 3 if last_success(store) else 21))
-summary = run_update(eng, EspnFeed(), today, n_sims=N_SIMS, lookback_days=LOOKBACK)
+LOOKBACK = int(os.environ.get("LOOKBACK_DAYS", 3 if (last_success(store) and os.path.exists("artifacts/player_applied.json")) else 21))
+feed = EspnFeed()
+summary = run_update(eng, feed, today, n_sims=N_SIMS, lookback_days=LOOKBACK)
 print(summary)
 if summary["ok"]:
+    try:      # player history from ESPN box scores: best effort, must never fail the forecast job
+        from nbaengine.playerfeed import update_players
+        print("players:", update_players(feed, "artifacts"))
+    except Exception as ex:
+        print("player update failed (forecasts unaffected):", type(ex).__name__, ex)
     try:      # rosters + injury statuses: best effort, must never fail the forecast job
         from nbaengine.availability import build_availability, save_availability
         av = build_availability(EspnFeed(pause_s=0.3), teams=None, player_state_path="artifacts/player_state.json")   # all 30 teams

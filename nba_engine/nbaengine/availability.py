@@ -90,6 +90,8 @@ def build_availability(feed, teams: list | None = None, player_state_path: str |
     idx = _model_index(player_state_path)
     ov_path = os.path.join(os.path.dirname(player_state_path or "."), "name_overrides.json")
     overrides = json.load(open(ov_path)) if os.path.exists(ov_path) else {}     # {"<espn athlete id>": <NBA person id>}
+    map_path = os.path.join(os.path.dirname(player_state_path or "."), "player_id_map.json")
+    idmap = json.load(open(map_path)) if os.path.exists(map_path) else {}       # written by the player update
     try:
         ids = _team_ids(feed)
     except Exception as ex:
@@ -107,7 +109,7 @@ def build_availability(feed, teams: list | None = None, player_state_path: str |
             for a in _athletes(js):
                 name = a.get("displayName") or a.get("fullName") or ""
                 pos = (a.get("position") or {}).get("abbreviation")
-                nid = overrides.get(str(a.get("id"))) or _resolve(idx, name, code)
+                nid = overrides.get(str(a.get("id"))) or idmap.get(str(a.get("id"))) or _resolve(idx, name, code)
                 if nid is None:
                     out["unmatched_roster_names"].append(f"{code}:{name}")
                 row = {"espn_id": str(a.get("id")), "name": name, "pos": pos, "nba_id": nid}
