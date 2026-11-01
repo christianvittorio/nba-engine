@@ -52,6 +52,14 @@ Evaluated walk-forward on 2025-26 (parameters fitted on earlier data only; 26,54
 
 Not built: player totals are not constrained to the team simulation; no injury information is read automatically (Rotowire and similar sites prohibit automated access in their terms, so the user supplies availability); team strength does not yet change when stars are out (an injury-adjusted team test is the next experiment: keep it only if it improves out-of-sample log loss).
 
+## 6b. Availability adjustment (experimental) [built, v0.5]
+
+Question tested: does a team do worse than its rating predicts when rotation players do not play? Method: walk-forward over 2022-2026 regular seasons (6,150 games). Before each game, using only earlier information, a rating-only (Elo) margin prediction and, for each team, the players in its recent rotation pool who then did not play. Each missing player's weight is `usual minutes x max(0, quality per minute - 0.32)`, with quality a shrunk Game-Score-per-minute from the player model. The margin the Elo model got wrong was regressed on (home missing value - away missing value).
+
+Result: coefficient -0.307 points per unit, fitted on 2023-2025 (t = -10.7), with the same sign and similar size in each season on its own (-0.27 to -0.37, t between -6 and -10). Applied to 2025-26 without refitting: margin MAE 11.47 -> 11.27 points, log loss 0.6003 -> 0.5932, Brier 0.2062 -> 0.2036. The 95% bootstrap interval of the log-loss change (-0.0175 to +0.0032) includes zero, so the evidence is encouraging but not conclusive.
+
+Caveats: the test counted everyone who did not play (injuries plus coach decisions), while live use counts only players ESPN lists as out, an unofficial and possibly late list. It was tested on the rating-only model; the simulator version shifts the simulated margin by the same amount and is untested. Because of this the adjustment is stored as separate forecasts (`sim_mc_inj`, `elo_inj`) next to the unchanged ones, so future games can show which is better. It applies only to players in the recent rotation pool, and the shift is capped at 10 points. Adjusted forecasts are made only when a game is first forecast; games already forecast are not revised.
+
 ## 7. Backtesting methodology [built]
 
 Single chronological pass; every forecast is written to SQLite **before** the result is ingested and state updated. Seasons: 2021-22 warm-up, 2022-23 calibration (dispersion), 2023-24 and 2024-25 evaluated (2,460 games). Metrics: Brier, log loss, accuracy, calibration bins, margin and total MAE/RMSE, 50/80/90% interval coverage, OT Brier. Comparators: constant home baseline and Elo. Not yet done: season-to-date net rating baseline, gradient-boosted model, playoffs, preseason.
