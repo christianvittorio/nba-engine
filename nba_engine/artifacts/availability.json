@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-10-31T18:09:08Z",
+ "generated_utc": "2026-11-01T10:51:39Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -120,6 +120,20 @@
      "status": "Out",
      "detail": "",
      "date": "2026-10-19T19:38Z"
+    },
+    {
+     "name": "Jalen Johnson",
+     "nba_id": 1630552,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-01T01:43Z"
+    },
+    {
+     "name": "Jock Landale",
+     "nba_id": 1629111,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-01T04:52Z"
     },
     {
      "name": "Henri Veesaar",
@@ -250,6 +264,13 @@
      "date": "2026-10-25T17:19Z"
     },
     {
+     "name": "Mikel Brown Jr.",
+     "nba_id": 1629650,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-10-31T20:58Z"
+    },
+    {
      "name": "Egor Demin",
      "nba_id": 1642856,
      "status": "Out",
@@ -370,6 +391,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-10-18T14:49Z"
+    },
+    {
+     "name": "Mitchell Robinson",
+     "nba_id": 1629011,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-10-31T20:32Z"
     }
    ]
   },
@@ -726,18 +754,11 @@
    ],
    "injuries": [
     {
-     "name": "Meleek Thomas",
-     "nba_id": 1629744,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-10-30T20:51Z"
-    },
-    {
      "name": "Jaylon Tyson",
      "nba_id": 1642281,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-10-30T20:52Z"
+     "date": "2026-11-01T04:53Z"
     }
    ]
   },
@@ -1260,6 +1281,20 @@
      "date": "2026-10-16T16:11Z"
     },
     {
+     "name": "Stephen Curry",
+     "nba_id": 201939,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-10-31T19:48Z"
+    },
+    {
+     "name": "Draymond Green",
+     "nba_id": 203110,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-10-31T19:51Z"
+    },
+    {
      "name": "Moses Moody",
      "nba_id": 1630541,
      "status": "Out",
@@ -1272,6 +1307,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-10-28T14:25Z"
+    },
+    {
+     "name": "Gui Santos",
+     "nba_id": 1630611,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-10-31T19:54Z"
     }
    ]
   },
@@ -1391,16 +1433,16 @@
     {
      "name": "Reed Sheppard",
      "nba_id": 1642263,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-10-31T17:33Z"
+     "date": "2026-11-01T04:56Z"
     },
     {
      "name": "Fred VanVleet",
      "nba_id": 1627832,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-10-31T17:31Z"
+     "date": "2026-11-01T04:56Z"
     }
    ]
   },
@@ -1532,6 +1574,13 @@
      "date": "2026-10-30T19:09Z"
     },
     {
+     "name": "Aaron Nesmith",
+     "nba_id": 1630174,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-10-31T21:13Z"
+    },
+    {
      "name": "Ben Sheppard",
      "nba_id": 1641767,
      "status": "Out",
@@ -1543,14 +1592,14 @@
      "nba_id": 1630167,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-10-31T05:01Z"
+     "date": "2026-10-31T21:10Z"
     },
     {
      "name": "Ivica Zubac",
      "nba_id": 1627826,
      "status": "Out",
      "detail": "",
-     "date": "2026-10-29T21:04Z"
+     "date": "2026-10-31T21:14Z"
     }
    ]
   },
@@ -1839,7 +1888,7 @@
      "nba_id": 1630533,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-10-31T04:52Z"
+     "date": "2026-11-01T00:04Z"
     }
    ]
   },
@@ -1855,7 +1904,7 @@
      "espn_id": "5105817",
      "name": "Carson Cooper",
      "pos": "C",
-     "nba_id": null
+     "nba_id": -5105817
     },
     {
      "espn_id": "4903027",
@@ -1960,21 +2009,21 @@
      "nba_id": 1629660,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-10-30T22:29Z"
+     "date": "2026-11-01T04:54Z"
     },
     {
      "name": "Scotty Pippen Jr.",
      "nba_id": 1630590,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-10-30T22:35Z"
+     "date": "2026-11-01T04:54Z"
     },
     {
      "name": "Quinten Post",
      "nba_id": 1642366,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-10-30T22:23Z"
+     "date": "2026-11-01T04:54Z"
     }
    ]
   },
@@ -2323,7 +2372,7 @@
      "nba_id": 203497,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-10-31T18:03Z"
+     "date": "2026-11-01T04:53Z"
     }
    ]
   },
@@ -2351,7 +2400,7 @@
      "espn_id": "5170947",
      "name": "AJ Johnson",
      "pos": "G",
-     "nba_id": null
+     "nba_id": -5170947
     },
     {
      "espn_id": "4277813",
@@ -2447,11 +2496,18 @@
      "date": "2026-10-30T21:32Z"
     },
     {
+     "name": "Dejounte Murray",
+     "nba_id": 1627749,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-01T04:52Z"
+    },
+    {
      "name": "Jordan Poole",
      "nba_id": 1629673,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-10-30T21:25Z"
+     "date": "2026-11-01T04:53Z"
     }
    ]
   },
@@ -2977,25 +3033,11 @@
      "date": "2026-10-19T21:07Z"
     },
     {
-     "name": "Jaylen Brown",
-     "nba_id": 1627759,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-10-31T17:08Z"
-    },
-    {
      "name": "Joel Embiid",
      "nba_id": 203954,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-10-31T17:12Z"
-    },
-    {
-     "name": "Tacko Fall",
-     "nba_id": 1629605,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-10-31T17:14Z"
+     "date": "2026-11-01T04:52Z"
     },
     {
      "name": "Ariel Hukporti",
@@ -3007,16 +3049,9 @@
     {
      "name": "LeBron James",
      "nba_id": 2544,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-10-31T17:16Z"
-    },
-    {
-     "name": "Jabari Walker",
-     "nba_id": 1631133,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-10-31T17:25Z"
+     "date": "2026-11-01T04:51Z"
     }
    ]
   },
@@ -3658,6 +3693,12 @@
      "nba_id": 1628396
     },
     {
+     "espn_id": "4683736",
+     "name": "Kobe Bufkin",
+     "pos": "G",
+     "nba_id": 1641723
+    },
+    {
      "espn_id": "4683766",
      "name": "Isaiah Collier",
      "pos": "G",
@@ -3686,12 +3727,6 @@
      "name": "Jaxson Hayes",
      "pos": "C",
      "nba_id": 1629637
-    },
-    {
-     "espn_id": "4396963",
-     "name": "Blake Hinson",
-     "pos": "F",
-     "nba_id": 1642396
     },
     {
      "espn_id": "4433618",
@@ -3751,25 +3786,11 @@
      "date": "2026-10-24T23:18Z"
     },
     {
-     "name": "Blake Hinson",
-     "nba_id": 1642396,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-10-21T15:17Z"
-    },
-    {
      "name": "Jaren Jackson Jr.",
      "nba_id": 1628991,
      "status": "Out",
      "detail": "",
      "date": "2026-10-27T19:25Z"
-    },
-    {
-     "name": "Lauri Markkanen",
-     "nba_id": 1628374,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-10-30T23:13Z"
     },
     {
      "name": "Jusuf Nurkic",
@@ -3929,12 +3950,10 @@
   "LAL:Cameron Carr",
   "LAL:Arthur Kaluma",
   "LAL:AK Okereke",
-  "MEM:Carson Cooper",
   "MIA:Tre Donaldson",
   "MIA:Vladislav Goldin",
   "MIL:Kam Jones",
   "NOP:Malik Dia",
-  "NOP:AJ Johnson",
   "NOP:Jaron Pierre Jr.",
   "NYK:Tyler Nickel",
   "OKC:Thomas Sorber",
@@ -3994,7 +4013,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 28,
-  "injuries_endpoint_entries": 88,
-  "embedded_injuries": 87
+  "injuries_endpoint_entries": 90,
+  "embedded_injuries": 90
  }
 }
