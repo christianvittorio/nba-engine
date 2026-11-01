@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-01T10:58:54Z",
+ "generated_utc": "2026-11-01T18:43:30Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -395,9 +395,9 @@
     {
      "name": "Mitchell Robinson",
      "nba_id": 1629011,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-10-31T20:32Z"
+     "date": "2026-11-01T15:05Z"
     }
    ]
   },
@@ -648,7 +648,7 @@
      "nba_id": 1629651,
      "status": "Out",
      "detail": "",
-     "date": "2026-10-26T22:20Z"
+     "date": "2026-11-01T17:15Z"
     },
     {
      "name": "Dailyn Swain",
@@ -1571,7 +1571,7 @@
      "nba_id": 204456,
      "status": "Out",
      "detail": "",
-     "date": "2026-10-30T19:09Z"
+     "date": "2026-11-01T16:26Z"
     },
     {
      "name": "Aaron Nesmith",
@@ -1729,25 +1729,11 @@
      "date": "2026-10-15T01:03Z"
     },
     {
-     "name": "Brandon Ingram",
-     "nba_id": 1627742,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-10-29T01:00Z"
-    },
-    {
      "name": "Jordan Miller",
      "nba_id": 1641757,
      "status": "Out",
      "detail": "",
      "date": "2026-08-26T20:04Z"
-    },
-    {
-     "name": "Yanic Konan Niederhauser",
-     "nba_id": null,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-10-29T18:44Z"
     },
     {
      "name": "Max Strus",
@@ -1881,7 +1867,7 @@
      "nba_id": 1642876,
      "status": "Out",
      "detail": "",
-     "date": "2026-10-30T00:05Z"
+     "date": "2026-11-01T15:04Z"
     },
     {
      "name": "Ziaire Williams",
@@ -2381,7 +2367,7 @@
     {
      "espn_id": "4397136",
      "name": "Saddiq Bey",
-     "pos": "G",
+     "pos": "F",
      "nba_id": 1630180
     },
     {
@@ -4013,7 +3999,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 28,
-  "injuries_endpoint_entries": 90,
-  "embedded_injuries": 90
+  "injuries_endpoint_entries": 88,
+  "embedded_injuries": 88
  }
 }
