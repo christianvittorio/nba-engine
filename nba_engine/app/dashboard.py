@@ -19,7 +19,7 @@ from nbaengine.players import PlayerModel, sample_players, summarize_samples
 
 LIVE_DB, LIVE_STATE = os.path.join(ROOT, "artifacts/live.sqlite"), os.path.join(ROOT, "artifacts/state.json")
 DEMO_DB, DEMO_STATE = os.path.join(ROOT, "artifacts/demo_replay.sqlite"), os.path.join(ROOT, "artifacts/demo_state.json")
-MODEL_LABEL = {"sim_mc": "Simulator", "elo": "Elo", "home_const": "Home-court baseline", "sim_mc_raw": "Simulator (uncalibrated)"}
+MODEL_LABEL = {"sim_mc_inj": "Simulator (injury-adjusted)", "elo_inj": "Elo (injury-adjusted)", "sim_mc": "Simulator", "elo": "Elo", "home_const": "Home-court baseline", "sim_mc_raw": "Simulator (uncalibrated)"}
 COLORS = {"Simulator": "#2563eb", "Elo": "#d97706", "Home-court baseline": "#6b7280", "Simulator (uncalibrated)": "#93c5fd"}
 
 st.set_page_config(page_title="NBA Engine", page_icon="🏀", layout="wide")
@@ -74,6 +74,10 @@ def load(db: str, mtime: float):
     sim["market"] = sd.map(lambda d: d.get("market"))
     elo = f[f.model == "elo"].set_index(["season", "game_id"])["p_home"].rename("p_elo")
     sim = sim.join(elo, on=["season", "game_id"])
+    inj = f[f.model == "sim_mc_inj"].set_index(["season", "game_id"])
+    sim = sim.join(inj["p_home"].rename("p_inj"), on=["season", "game_id"])
+    sim = sim.join(inj["det"].map(lambda s: (json.loads(s) if isinstance(s, str) else {}).get("injury_shift")).rename("inj_shift"),
+                   on=["season", "game_id"])
     res = pd.read_sql_query("SELECT season, game_id, home_pts, away_pts FROM results", con)
     sim = sim.merge(res, on=["season", "game_id"], how="left")
     ev = evaluate(store)
@@ -108,13 +112,15 @@ with tab_games:
             "Game": day.away + " at " + day.home,
             "Home win % (sim)": (day.p_home * 100).round(0).astype(int),
             "Home win % (Elo)": (day.p_elo * 100).round(0).astype(int),
+            "Home win % (injury-adj.)": day.p_inj.map(lambda v: "" if pd.isna(v) else f"{v * 100:.0f}"),
             "Projected score": day.apply(lambda r: f"{r.mean_away:.0f} - {r.mean_home:.0f}", axis=1),
             "Total": day.mean_total.round(1),
             "Likely margin (80%)": day.q.map(lambda q: f"{q['10']:+.0f} to {q['90']:+.0f}"),
             "OT chance %": (day.p_ot * 100).round(1),
             "Final": day.apply(lambda r: "" if pd.isna(r.home_pts) else f"{int(r.away_pts)} - {int(r.home_pts)}", axis=1),
         })
-        st.caption("Projected score is written away - home. Margin is home minus away; the range holds 80% of simulated games.")
+        st.caption("Injury-adjusted is experimental: it shifts the margin for rotation players ESPN lists as out (empty = no data). "
+                   "Projected score is written away - home. Margin is home minus away; the range holds 80% of simulated games.")
         st.dataframe(show, hide_index=True, width="stretch", height=min(38 + 35 * len(show), 700))
 
         st.subheader("Game detail")

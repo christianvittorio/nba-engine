@@ -15,7 +15,7 @@ from datetime import date, datetime, timedelta, timezone
 
 from . import MODEL_VERSION
 from .backtest import RunningSD, _norm_q
-from .elo import Elo, EloParams
+from .elo import ELO_PER_POINT, Elo, EloParams
 from .feed import FinalGame, UpcomingGame
 from .sim import ProfileParams, TeamProfiles, apply_dispersion, simulate_game, summarize
 from .store import Store, now_utc
@@ -39,6 +39,7 @@ class Engine:
         self.kappa_m, self.kappa_t, self.level_delta = kappa_m, kappa_t, level_delta
         self.base, self.sds, self.applied = base, sds, applied
         self.alpha = 0.01
+        self.injury_fn = None        # optional f(home, away) -> (margin_shift, detail); set by the daily job
         store.con.executescript(EXTRA_SCHEMA)
 
     # ---------------- persistence (plain JSON; diffable, no pickle)
@@ -136,7 +137,32 @@ class Engine:
                         "modal_score": [sm["modal_score_home"], sm["modal_score_away"]],
                         "median_score": [sm["median_home"], sm["median_away"]], "tip_utc": ug.tip_utc, "date": ug.date,
                         "home": h, "away": a})
+        self._forecast_injury_adjusted(ug, sim, e, bt, n_sims, seed, cutoff)
         return "made"
+
+    def _forecast_injury_adjusted(self, ug, sim, e, bt, n_sims, seed, cutoff) -> None:
+        """Extra, separately named forecasts that shift the margin for players ESPN lists as out. Never raises."""
+        try:
+            if self.injury_fn is None:
+                return
+            r = self.injury_fn(ug.home, ug.away)
+            if r is None:
+                return
+            shift, det = r
+            s, gid, h, a = ug.season, ug.game_id, ug.home, ug.away
+            sv = self.store.save_forecast
+            em = e["exp_margin"] + shift
+            d2 = e["elo_diff"] + ELO_PER_POINT * shift
+            sv(s, gid, "elo_inj", MODEL_VERSION, cutoff, None, None, 1.0 / (1.0 + 10.0 ** (-d2 / 400.0)), (bt + em) / 2, (bt - em) / 2,
+               None, None, q_margin=_norm_q(em, self.sds["elo"].sd()),
+               details={"injury_shift": shift, "date": ug.date, "home": h, "away": a, **det})
+            sm = summarize(apply_dispersion(sim, self.kappa_m, self.kappa_t, self.level_delta, margin_shift=shift))
+            sv(s, gid, "sim_mc_inj", MODEL_VERSION, cutoff, seed, n_sims, sm["p_home"], sm["mean_home"], sm["mean_away"], sm["mean_total"],
+               sm["p_ot"], q_margin=sm["q_margin"], q_total=sm["q_total"],
+               details={"injury_shift": shift, "date": ug.date, "home": h, "away": a,
+                        "modal_score": [sm["modal_score_home"], sm["modal_score_away"]], **det})
+        except Exception:
+            pass
 
 
 # ----------------------------------------------------------------------------
@@ -218,7 +244,13 @@ def write_report(store: Store, today: date, path: str) -> str:
         lines.append(f"- {det['away']} at {det['home']} (game {gid}): P(home) sim {r[2]:.3f} / Elo {el:.3f}; mean score {r[3]:.1f}-{r[4]:.1f} (total {r[5]:.1f}); "
                      f"margin 50% [{qm['25']:.1f}, {qm['75']:.1f}], 80% [{qm['10']:.1f}, {qm['90']:.1f}]; total 80% [{qt['10']:.1f}, {qt['90']:.1f}]; "
                      f"P(OT) {r[6]:.3f}; most frequent exact score {det['modal_score'][0]}-{det['modal_score'][1]} (rarely hit).")
+        ij = m.get("sim_mc_inj")
+        if ij:
+            d2 = ij[1]
+            outs = [f"{n} (home)" for n, _ in d2.get("home_out", [])] + [f"{n} (away)" for n, _ in d2.get("away_out", [])]
+            lines.append(f"  - injury-adjusted: P(home) sim {ij[0][2]:.3f}, margin shift {d2.get('injury_shift', 0):+.1f} pts; "
+                         f"rotation players listed out: {', '.join(outs) if outs else 'none'}.")
     lines += ["", *monitor(store), "",
-              "Known gaps: no injuries or lineups, no rest/travel features, offseason roster changes are only learned gradually."]
+              "Known gaps: injuries come only from ESPN's unofficial list (injury-adjusted lines are separate and experimental), no confirmed lineups, no rest/travel features."]
     open(path, "w").write("\n".join(lines))
     return "\n".join(lines)

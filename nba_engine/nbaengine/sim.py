@@ -257,7 +257,8 @@ def simulate_game(profiles: TeamProfiles, home: str, away: str, n_sims: int, see
             "rates_home": r_h, "rates_away": r_a, "mu_poss": mu, "pace_sd": sd}
 
 
-def apply_dispersion(sim: dict, kappa_margin: float, kappa_total: float, total_shift: float = 0.0) -> dict:
+def apply_dispersion(sim: dict, kappa_margin: float, kappa_total: float, total_shift: float = 0.0,
+                     margin_shift: float = 0.0) -> dict:
     """Documented approximation: shrink simulated margin/total deviations about
     their own simulation means by kappa (fit on warm-up games only).
 
@@ -274,14 +275,14 @@ def apply_dispersion(sim: dict, kappa_margin: float, kappa_total: float, total_s
     hp, ap = sim["home_pts"].astype(float), sim["away_pts"].astype(float)
     m, t = hp - ap, hp + ap
     mm, mt = m.mean(), t.mean()
-    m2 = mm + kappa_margin * (m - mm)
+    m2 = mm + margin_shift + kappa_margin * (m - mm)   # margin_shift: optional availability adjustment (home minus away, points)
     t2 = mt + total_shift + kappa_total * (t - mt)   # total_shift: online league-level correction
     h2 = np.rint((t2 + m2) / 2.0).astype(np.int32)
     a2 = np.rint((t2 - m2) / 2.0).astype(np.int32)
     tie = h2 == a2
     if tie.any():  # keep the raw winner when rounding creates a tie
-        h2[tie & (m > 0)] += 1
-        a2[tie & (m <= 0)] += 1
+        h2[tie & (m + margin_shift > 0)] += 1
+        a2[tie & (m + margin_shift <= 0)] += 1
     out = dict(sim)
     out["raw_home_pts"], out["raw_away_pts"] = sim["home_pts"], sim["away_pts"]
     out["home_pts"], out["away_pts"] = h2, a2
