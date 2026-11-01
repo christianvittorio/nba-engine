@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-01
-Data refresh: last successful run 2026-11-01T10:51:39Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-01T10:59:32Z UTC. Model nbaengine-0.1.0.
 
 - BOS at ORL (game 401909903): P(home) sim 0.372 / Elo 0.458; mean score 110.8-115.7 (total 226.5); margin 50% [-14.0, 4.0], 80% [-21.0, 11.0]; total 80% [204.0, 249.0]; P(OT) 0.023; most frequent exact score 118-117 (rarely hit).
 - BKN at IND (game 401909904): P(home) sim 0.636 / Elo 0.681; mean score 118.6-113.3 (total 232.0); margin 50% [-4.0, 14.0], 80% [-12.0, 22.0]; total 80% [209.0, 255.0]; P(OT) 0.022; most frequent exact score 121-112 (rarely hit).
@@ -9,4 +9,4 @@ Data refresh: last successful run 2026-11-01T10:51:39Z UTC. Model nbaengine-0.1.
 monitor: last 17 completed forecasted games - log loss elo=0.6131, home_const=0.6677, sim_mc=0.6614, sim_mc_raw=0.6627
   (fewer than 100 games: too noisy to judge drift)
 
-Known gaps: no injuries or lineups, no rest/travel features, offseason roster changes are only learned gradually.
+Known gaps: injuries come only from ESPN's unofficial list (injury-adjusted lines are separate and experimental), no confirmed lineups, no rest/travel features.
