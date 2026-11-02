@@ -386,6 +386,38 @@ with tab_trends:
                 show["date"] = show.date.dt.date; show["home"] = np.where(show.home == 1, "home", "away")
                 st.dataframe(show.round(2), hide_index=True, width="stretch")
 
+
+        st.subheader("Active niche streaks for upcoming games")
+        st.caption("Situations that describe an upcoming game, the team's record in the same situation since 2022-23, and the run it is on. "
+                   "Most are what chance produces when thousands of situations are scanned, and team-specific streaks did not carry over in the "
+                   "early-vs-late seasons test. Descriptive, not predictive.")
+        try:
+            import importlib.util
+            _spec = importlib.util.spec_from_file_location("niche_streaks", os.path.join(ROOT, "scripts/niche_streaks.py"))
+            _ns = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_ns)
+            _d = _ns.latest_open_date(DB)
+            if _d:
+                @st.cache_data(show_spinner="Finding streaks...")
+                def _streaks(d, mtime):
+                    up = TR.upcoming_extra(DB, d)
+                    pp = TR.load_projected(extra=pd.concat([TR.live_extra(DB), up], ignore_index=True))
+                    t2 = TR.team_games(pp, TR.load_warmup_games()); L2 = TR.add_labels(t2)
+                    return TR.niche_streaks(t2, L2, up.game_id.tolist(), min_run=6), up
+                sdf, sup = _streaks(_d, os.path.getmtime(DB))
+                st.write(f"Games on {_d}")
+                oc = st.multiselect("Outcome", list(TR.STREAK_OUTCOMES), default=["win", "beat_margin"], key="streak_oc")
+                tms = st.multiselect("Team", sorted(set(sup.home) | set(sup.away)), key="streak_tm")
+                sh = sdf[sdf.outcome.isin(oc)]
+                if tms:
+                    sh = sh[sh.team.isin(tms)]
+                sh = sh.assign(game=sh.opp.where(sh.home == 1, sh.opp) + "")
+                st.dataframe(sh[["team", "opp", "situation", "outcome", "n", "hits", "run", "model_chance_of_run"]].head(60).style.format(
+                    {"model_chance_of_run": "{:.3%}"}), hide_index=True, width="stretch")
+            else:
+                st.info("No upcoming forecast games right now.")
+        except Exception as ex:
+            st.info(f"Streaks unavailable: {type(ex).__name__}: {ex}")
+
         st.subheader("What the scan found (league-wide)")
         st.caption("Every combination of up to two situation features across all teams was tested against the model's expectation. "
                    "Shown: the strongest found on 2023-24 after a false-discovery filter, then re-measured on 2025-26. "

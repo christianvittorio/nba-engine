@@ -39,7 +39,7 @@ def load_projected(root: str = ROOT, extra: pd.DataFrame | None = None) -> pd.Da
     delta, lv = 0.0, []
     for h, a, sh, sa in zip(d.home_pts, d.away_pts, d.sim_home, d.sim_away):
         lv.append(delta)                                   # correction known BEFORE the game
-        if np.isnan(sh) or np.isnan(sa):                   # game without a stored projection (live season before forecasting started)
+        if np.isnan(sh) or np.isnan(sa) or np.isnan(h) or np.isnan(a):   # no stored projection yet, or game not played yet
             continue
         delta = (1 - ALPHA) * delta + ALPHA * ((h + a) - (sh + sa))
     d["level"] = lv
@@ -80,6 +80,37 @@ def live_extra(db_path: str) -> pd.DataFrame:
     return g.sort_values(["season", "game_id"]).reset_index(drop=True)
 
 
+def upcoming_extra(db_path: str, date: str) -> pd.DataFrame:
+    """Games forecast for `date` but not yet played, as projection rows with NaN results (so schedule features such as
+    rest and streaks are computed for them exactly as for played games)."""
+    import json, sqlite3
+    if not os.path.exists(db_path):
+        return pd.DataFrame()
+    con = sqlite3.connect(db_path)
+    try:
+        f = pd.read_sql_query("SELECT season, game_id, model_name, p_home, mean_home, mean_away, details_json FROM forecasts "
+                              "WHERE model_name IN ('sim_mc_raw','sim_mc','elo')", con)
+        done = set(map(tuple, pd.read_sql_query("SELECT season, game_id FROM results", con).values))
+    except Exception:
+        return pd.DataFrame()
+    finally:
+        con.close()
+    cal = f[f.model_name == "sim_mc"].copy()
+    cal["d"] = cal.details_json.map(lambda x: json.loads(x))
+    cal = cal[cal.d.map(lambda d: d.get("date") == date)]
+    rows = []
+    raw = f[f.model_name == "sim_mc_raw"].set_index(["season", "game_id"]); elo = f[f.model_name == "elo"].set_index(["season", "game_id"])
+    for r in cal.itertuples():
+        k = (r.season, r.game_id)
+        if k in done or k not in raw.index or k not in elo.index:
+            continue
+        rows.append({"season": r.season, "game_id": r.game_id, "date": date, "home": r.d["home"], "away": r.d["away"],
+                     "home_pts": np.nan, "away_pts": np.nan, "n_periods": np.nan,
+                     "sim_home": raw.mean_home[k], "sim_away": raw.mean_away[k], "sim_p_home": r.p_home,
+                     "elo_p_home": elo.p_home[k], "elo_margin": json.loads(elo.details_json[k]).get("exp_margin", np.nan)})
+    return pd.DataFrame(rows)
+
+
 def load_warmup_games(root: str = ROOT) -> pd.DataFrame:
     g = pd.read_csv(os.path.join(root, "data/processed/games_cdn_2022.csv"))[
         ["season", "game_id", "date", "home", "away", "home_pts", "away_pts", "n_periods"]]
@@ -106,7 +137,7 @@ def team_games(proj: pd.DataFrame, warm: pd.DataFrame | None = None) -> pd.DataF
                       "elo_p": 1 - d["elo_p_home"] if "elo_p_home" in d else None})
     t = pd.concat([h, a], ignore_index=True).sort_values(["team", "date", "game_id"]).reset_index(drop=True)
     t["margin"], t["total"] = t.pts - t.opp_pts, t.pts + t.opp_pts
-    t["win"] = (t.margin > 0).astype(int)
+    t["win"] = (t.margin > 0).astype(float).where(t.margin.notna())
 
     # ---- rest / schedule density (days off between games; NaN at the first game of a season)
     g = t.groupby(["team", "season"])
@@ -125,8 +156,8 @@ def team_games(proj: pd.DataFrame, warm: pd.DataFrame | None = None) -> pd.DataF
     t["beat_margin"] = ((t.margin - t.proj_margin) > 0).astype(float).where(t.proj_margin.notna())
     t["over_total"] = ((t.total - t.proj_total) > 0).astype(float).where(t.proj_total.notna())
     t["over_team"] = ((t.pts - t.proj_pts) > 0).astype(float).where(t.proj_pts.notna())
-    t["blowout_win"] = (t.margin >= 10).astype(int)
-    t["ot"] = (t.n_periods > 4).astype(int)
+    t["blowout_win"] = (t.margin >= 10).astype(float).where(t.margin.notna())
+    t["ot"] = (t.n_periods > 4).astype(float).where(t.n_periods.notna())
     g = t.groupby(["team", "season"])
     t["prev_margin"] = g.margin.shift(1)
     t["prev_win"] = g.win.shift(1)
@@ -407,3 +438,96 @@ def league_trends(t: pd.DataFrame, L: pd.DataFrame, top=30, min_n=60) -> pd.Data
     cols = ["situation", "outcome", "n_found", "rate_found", "expected_found", "edge_found", "n_later", "rate_later",
             "edge_later", "held_up"]
     return j[cols].head(top).reset_index(drop=True)
+
+
+# ----------------------------------------------------------------------------------------------- active niche streaks
+NICHE_FEATS = ["venue", "rest", "opp_rest", "rest_edge", "favorite", "proj_total", "prev_result", "streak",
+               "opp_record", "next_day_game", "density", "record"]
+STREAK_OUTCOMES = ("win", "beat_margin", "over_total", "over_team")
+
+
+def _trailing_run(x: np.ndarray) -> int:
+    """Signed length of the run at the end of x: +k = k straight 1s, -k = k straight 0s."""
+    if not len(x):
+        return 0
+    k = 1
+    while k < len(x) and x[-1 - k] == x[-1]:
+        k += 1
+    return k if x[-1] == 1 else -k
+
+
+def niche_streaks(t: pd.DataFrame, L: pd.DataFrame, game_ids, since=2023, min_run=6, min_n=8, max_feats=3,
+                  feats=NICHE_FEATS, outcomes=STREAK_OUTCOMES) -> pd.DataFrame:
+    """For each team in the given upcoming games: situations (<=3 features) that describe THAT game, the team's record in
+    the same situation since `since`, and the run it is currently on (the most recent matching games). Sorted by how unlikely
+    the run was under the model's own expectations (small = more unusual). Unusual is not the same as meaningful:
+    compare with the luck-only count from `luck_counts`."""
+    hist = t[(t.season >= since) & t.margin.notna() & t.p_win.notna()]
+    Lh = L.loc[hist.index]
+    pw = (0.5 * hist.p_win + 0.5 * hist.elo_p).to_numpy(float)
+    base = {oc: {v: np.nanmean(hist.loc[hist.home == v, oc]) for v in (0, 1)} for oc in outcomes if oc != "win"}
+    out = []
+    up = t[t.game_id.isin(list(game_ids)) & t.margin.isna()]
+    for u in up.itertuples():
+        tm_mask = hist.team.to_numpy() == u.team
+        ht, Lt, pt = hist[tm_mask], Lh[tm_mask], pw[tm_mask]
+        lu = L.loc[u.Index]
+        vals = [(f, lu[f]) for f in feats if pd.notna(lu[f]) and lu[f] != "n/a"]
+        ind = {(f, v): (Lt[f] == v).to_numpy() for f, v in vals}
+        for r in range(1, max_feats + 1):
+            for combo in itertools.combinations(vals, r):
+                m = ind[combo[0]].copy()
+                for c in combo[1:]:
+                    m &= ind[c]
+                if m.sum() < min_n:
+                    continue
+                for oc in outcomes:
+                    y = ht[oc].to_numpy(float)[m]
+                    ok = ~np.isnan(y)
+                    y = y[ok]
+                    if len(y) < min_n:
+                        continue
+                    run = _trailing_run(y)
+                    if abs(run) < min_run:
+                        continue
+                    k = abs(run)
+                    pe = pt[m][ok][-k:] if oc == "win" else np.where(ht.home.to_numpy()[m][ok][-k:] == 1, base[oc][1], base[oc][0])
+                    chance = float(np.prod(pe if run > 0 else 1 - pe))
+                    out.append({"team": u.team, "opp": u.opp, "home": int(u.home), "game_id": u.game_id,
+                                "situation": " & ".join(f"{f}={v}" for f, v in combo), "n_feats": r, "outcome": oc,
+                                "n": int(len(y)), "hits": int(y.sum()), "run": run, "model_chance_of_run": chance,
+                                "run_game_ids": tuple(ht.game_id.to_numpy()[m][ok][-k:])})
+    df = pd.DataFrame(out)
+    if df.empty:
+        return df
+    df = df.sort_values(["n_feats", "model_chance_of_run"]).drop_duplicates(["team", "outcome", "run_game_ids"])
+    return df.sort_values("model_chance_of_run").drop(columns="run_game_ids").reset_index(drop=True)
+
+
+def luck_counts(t: pd.DataFrame, L: pd.DataFrame, game_ids, since=2023, min_run=6, min_n=8, worlds=10, seed=7, **kw) -> dict:
+    """How many unusual active runs a luck-only world produces for the same upcoming games (outcomes redrawn from the
+    model's own probabilities and the league base rates; situations still describe the same games)."""
+    real = niche_streaks(t, L, game_ids, since, min_run, min_n, **kw)
+    rng = np.random.default_rng(seed)
+    hist_idx = t[(t.season >= since) & t.margin.notna() & t.p_win.notna()].index
+    counts = []
+    for _ in range(worlds):
+        tt = t.copy()
+        h = tt.loc[hist_idx]
+        hh = h[h.home == 1].set_index("game_id"); aa = h[h.home == 0].set_index("game_id")
+        common = hh.index.intersection(aa.index)
+        ph = (0.5 * hh.p_win + 0.5 * hh.elo_p).reindex(common).to_numpy()
+        w = (rng.random(len(common)) < ph).astype(float)
+        bm = (rng.random(len(common)) < np.nanmean(hh.beat_margin)).astype(float)
+        ot_ = (rng.random(len(common)) < np.nanmean(h.over_total)).astype(float)
+        sims = {"win": (w, 1 - w), "beat_margin": (bm, 1 - bm), "over_total": (ot_, ot_),
+                "over_team": ((rng.random(len(common)) < np.nanmean(hh.over_team)).astype(float),
+                              (rng.random(len(common)) < np.nanmean(aa.over_team)).astype(float))}
+        for oc, (vh, va) in sims.items():
+            gid_to_h, gid_to_a = dict(zip(common, vh)), dict(zip(common, va))
+            sel = tt.index.isin(hist_idx)
+            g = tt.loc[sel, "game_id"]
+            hv = tt.loc[sel, "home"] == 1
+            tt.loc[sel, oc] = np.where(hv, g.map(gid_to_h), g.map(gid_to_a))
+        counts.append(len(niche_streaks(tt, L, game_ids, since, min_run, min_n, **kw)))
+    return {"real": int(len(real)), "luck_only_avg": float(np.mean(counts)), "luck_only_max": int(np.max(counts)), "worlds": worlds}

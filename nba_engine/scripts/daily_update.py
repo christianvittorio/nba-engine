@@ -46,5 +46,13 @@ if summary["ok"]:
     eng.save_state(STATE)       # state is only persisted after a fully successful run
     os.makedirs("artifacts/reports", exist_ok=True)
     print(write_report(store, today, f"artifacts/reports/forecasts_{today}.md"))
+    try:      # active niche streaks for today's slate (best effort; descriptive, not predictive)
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("niche_streaks", os.path.join(ROOT, "scripts/niche_streaks.py"))
+        ns = importlib.util.module_from_spec(spec); spec.loader.exec_module(ns)
+        ns.build(DB, str(today), f"artifacts/reports/niche_streaks_{today}.md")
+        print("niche streaks written")
+    except Exception as ex:
+        print("niche streaks failed (forecasts unaffected):", type(ex).__name__, ex)
 else:
     sys.exit(1)
