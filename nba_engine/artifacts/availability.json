@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-02T07:25:32Z",
+ "generated_utc": "2026-11-02T14:09:32Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -1785,7 +1785,7 @@
      "espn_id": "5113969",
      "name": "Cameron Carr",
      "pos": "G",
-     "nba_id": null
+     "nba_id": -5113969
     },
     {
      "espn_id": "3945274",
@@ -3983,7 +3983,6 @@
   "DET:Ugonna Onyenso",
   "HOU:Quadir Copeland",
   "LAC:Yanic Konan Niederhauser",
-  "LAL:Cameron Carr",
   "LAL:Arthur Kaluma",
   "LAL:AK Okereke",
   "MIA:Tre Donaldson",
