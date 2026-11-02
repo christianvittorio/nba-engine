@@ -1,0 +1,17 @@
+{
+ "home_b2b": -2.4545446352033244,
+ "away_b2b": 2.768176418231735,
+ "se_home_b2b": 0.5470064265478687,
+ "se_away_b2b": 0.5199499112293229,
+ "fit_seasons": "2023-2026",
+ "n_games": 4920,
+ "out_of_sample_check": {
+  "fit_on": "2023-24",
+  "scored_on": "2025-26",
+  "log_loss_before": 0.6103688208683542,
+  "log_loss_after": 0.6089135095005777,
+  "mae_before": 11.310709349593496,
+  "mae_after": 11.270089093990812
+ },
+ "note": "Margin points added to the HOME team's projected margin. Fitted on projections that did not use rest."
+}

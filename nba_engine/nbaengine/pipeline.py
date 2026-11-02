@@ -24,6 +24,7 @@ SEED0 = 20261017
 EXTRA_SCHEMA = """
 CREATE TABLE IF NOT EXISTS runs(run_id INTEGER PRIMARY KEY AUTOINCREMENT, started_utc TEXT, finished_utc TEXT,
   today TEXT, ok INTEGER, finals_ingested INTEGER, forecasts_made INTEGER, forecasts_skipped_late INTEGER, error TEXT);
+CREATE TABLE IF NOT EXISTS game_dates(season INTEGER, game_id INTEGER, date TEXT, PRIMARY KEY(season, game_id));
 """
 
 
@@ -39,6 +40,8 @@ class Engine:
         self.kappa_m, self.kappa_t, self.level_delta = kappa_m, kappa_t, level_delta
         self.base, self.sds, self.applied = base, sds, applied
         self.alpha = 0.01
+        self.last_played = {}        # team -> ISO date of its latest game seen (for back-to-back detection)
+        self.rest_coef = None        # {'home_b2b': .., 'away_b2b': ..} margin points; set by the daily job
         self.injury_fn = None        # optional f(home, away) -> (margin_shift, detail); set by the daily job
         store.con.executescript(EXTRA_SCHEMA)
 
@@ -51,7 +54,7 @@ class Engine:
                          "lg_pace": p.lg_pace, "pace_sq": p.pace_sq, "season": p.season},
                 "kappa_m": self.kappa_m, "kappa_t": self.kappa_t, "level_delta": self.level_delta,
                 "base": self.base, "sds": {k: _sd_to(v) for k, v in self.sds.items()},
-                "applied": sorted(self.applied)}
+                "applied": sorted(self.applied), "last_played": self.last_played}
 
     def save_state(self, path: str) -> None:
         tmp = path + ".tmp"
@@ -65,8 +68,10 @@ class Engine:
         prof = TeamProfiles(ProfileParams(**d["prof"]["params"]))
         for k in ("off", "deff", "pace_w", "lg_side", "lg_pace", "pace_sq", "season"):
             setattr(prof, k, d["prof"][k])
-        return cls(store, elo, prof, d["kappa_m"], d["kappa_t"], d["level_delta"], d["base"],
-                   {k: _sd_from(v) for k, v in d["sds"].items()}, set(d["applied"]))
+        eng = cls(store, elo, prof, d["kappa_m"], d["kappa_t"], d["level_delta"], d["base"],
+                  {k: _sd_from(v) for k, v in d["sds"].items()}, set(d["applied"]))
+        eng.last_played = dict(d.get("last_played", {}))
+        return eng
 
     @classmethod
     def load(cls, store: Store, path: str) -> "Engine":
@@ -80,6 +85,10 @@ class Engine:
 
     def ingest(self, fg: FinalGame) -> bool:
         key = f"{fg.season}:{fg.game_id}"
+        self.store.con.execute("INSERT OR IGNORE INTO game_dates VALUES(?,?,?)", (fg.season, fg.game_id, fg.date))
+        for tm in (fg.home, fg.away):                 # schedule memory, updated even for already-applied games
+            if fg.date > self.last_played.get(tm, ""):
+                self.last_played[tm] = fg.date
         if key in self.applied:
             return False
         gd = {"game_id": fg.game_id, "season": fg.season, "home": fg.home, "away": fg.away, "home_pts": fg.home_pts,
@@ -137,8 +146,49 @@ class Engine:
                         "modal_score": [sm["modal_score_home"], sm["modal_score_away"]],
                         "median_score": [sm["median_home"], sm["median_away"]], "tip_utc": ug.tip_utc, "date": ug.date,
                         "home": h, "away": a})
+        con.execute("INSERT OR IGNORE INTO game_dates VALUES(?,?,?)", (s, gid, ug.date))
         self._forecast_injury_adjusted(ug, sim, e, bt, n_sims, seed, cutoff)
+        self._forecast_rest_adjusted(ug, sim, e, bt, n_sims, seed, cutoff)
         return "made"
+
+    def rest_shift(self, ug) -> tuple[float, dict] | None:
+        """Margin shift (home perspective) for teams on the second night of a back-to-back, from the fitted effect."""
+        if not self.rest_coef:
+            return None
+        day = date.fromisoformat(ug.date)
+        def b2b(tm):
+            lp = self.last_played.get(tm)
+            return bool(lp) and (day - date.fromisoformat(lp)).days == 1
+        hb, ab = b2b(ug.home), b2b(ug.away)
+        return (self.rest_coef["home_b2b"] * hb + self.rest_coef["away_b2b"] * ab), {"home_b2b": hb, "away_b2b": ab}
+
+    def _save_shifted(self, ug, sim, e, bt, n_sims, seed, cutoff, tag: str, shift: float, det: dict) -> None:
+        s, gid, h, a = ug.season, ug.game_id, ug.home, ug.away
+        sv = self.store.save_forecast
+        em = e["exp_margin"] + shift
+        d2 = e["elo_diff"] + ELO_PER_POINT * shift
+        info = {"shift": shift, "date": ug.date, "home": h, "away": a, **det}
+        sv(s, gid, f"elo_{tag}", MODEL_VERSION, cutoff, None, None, 1.0 / (1.0 + 10.0 ** (-d2 / 400.0)), (bt + em) / 2, (bt - em) / 2,
+           None, None, q_margin=_norm_q(em, self.sds["elo"].sd()), details=info)
+        sm = summarize(apply_dispersion(sim, self.kappa_m, self.kappa_t, self.level_delta, margin_shift=shift))
+        sv(s, gid, f"sim_mc_{tag}", MODEL_VERSION, cutoff, seed, n_sims, sm["p_home"], sm["mean_home"], sm["mean_away"], sm["mean_total"],
+           sm["p_ot"], q_margin=sm["q_margin"], q_total=sm["q_total"],
+           details={**info, "modal_score": [sm["modal_score_home"], sm["modal_score_away"]]})
+
+    def _forecast_rest_adjusted(self, ug, sim, e, bt, n_sims, seed, cutoff) -> None:
+        """Separately named forecasts: `*_rest` (back-to-back effect only) and `*_full` (rest + injuries, when both exist). Never raises."""
+        try:
+            rs = self.rest_shift(ug)
+            if rs is None:
+                return
+            shift, det = rs
+            self._save_shifted(ug, sim, e, bt, n_sims, seed, cutoff, "rest", shift, det)
+            ir = self.injury_fn(ug.home, ug.away) if self.injury_fn else None
+            if ir is not None:
+                self._save_shifted(ug, sim, e, bt, n_sims, seed, cutoff, "full", shift + ir[0],
+                                   {**det, "injury_shift": ir[0], "rest_shift": shift})
+        except Exception:
+            pass
 
     def _forecast_injury_adjusted(self, ug, sim, e, bt, n_sims, seed, cutoff) -> None:
         """Extra, separately named forecasts that shift the margin for players ESPN lists as out. Never raises."""
@@ -250,7 +300,13 @@ def write_report(store: Store, today: date, path: str) -> str:
             outs = [f"{n} (home)" for n, _ in d2.get("home_out", [])] + [f"{n} (away)" for n, _ in d2.get("away_out", [])]
             lines.append(f"  - injury-adjusted: P(home) sim {ij[0][2]:.3f}, margin shift {d2.get('injury_shift', 0):+.1f} pts; "
                          f"rotation players listed out: {', '.join(outs) if outs else 'none'}.")
+        fu = m.get("sim_mc_full") or m.get("sim_mc_rest")
+        if fu:
+            d3 = fu[1]
+            who = [t for t, f in (("home", d3.get("home_b2b")), ("away", d3.get("away_b2b"))) if f]
+            lines.append(f"  - with rest{' and injuries' if m.get('sim_mc_full') else ''}: P(home) sim {fu[0][2]:.3f}, margin shift {d3.get('shift', 0):+.1f} pts; "
+                         f"second night of a back-to-back: {', '.join(who) if who else 'neither team'}.")
     lines += ["", *monitor(store), "",
-              "Known gaps: injuries come only from ESPN's unofficial list (injury-adjusted lines are separate and experimental), no confirmed lineups, no rest/travel features."]
+              "Known gaps: injuries come only from ESPN's unofficial list; no confirmed lineups, no travel distance; rest/injury-adjusted lines are separate and experimental (rest effect fitted on 2023-2026 projections, see artifacts/rest_fit.json)."]
     open(path, "w").write("\n".join(lines))
     return "\n".join(lines)

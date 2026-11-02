@@ -2,7 +2,12 @@ name: nba-daily
 on:
   schedule:
     - cron: "0 14 * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      lookback_days:
+        description: "Days of past results to (re)ingest; leave empty for the normal 3. Use 20 once to backfill game dates."
+        required: false
+        default: ""
 permissions:
   contents: write
 concurrency: nba-daily
@@ -17,6 +22,8 @@ jobs:
       - run: pip install numpy pandas scipy
       - run: python scripts/daily_update.py
         working-directory: nba_engine
+        env:
+          LOOKBACK_DAYS: ${{ inputs.lookback_days }}
       - name: Commit updated state, database and report
         run: |
           git config user.name "nba-engine-bot"

@@ -39,6 +39,8 @@ def load_projected(root: str = ROOT, extra: pd.DataFrame | None = None) -> pd.Da
     delta, lv = 0.0, []
     for h, a, sh, sa in zip(d.home_pts, d.away_pts, d.sim_home, d.sim_away):
         lv.append(delta)                                   # correction known BEFORE the game
+        if np.isnan(sh) or np.isnan(sa):                   # game without a stored projection (live season before forecasting started)
+            continue
         delta = (1 - ALPHA) * delta + ALPHA * ((h + a) - (sh + sa))
     d["level"] = lv
     d["proj_total"] = d.sim_home + d.sim_away + d.level
@@ -46,6 +48,36 @@ def load_projected(root: str = ROOT, extra: pd.DataFrame | None = None) -> pd.Da
     d["proj_away"] = d.sim_away + d.level / 2
     d["proj_margin"] = d.sim_home - d.sim_away               # home perspective
     return d
+
+
+def live_extra(db_path: str) -> pd.DataFrame:
+    """Live-season games from the daily store (needs game_dates). Games without a stored forecast keep NaN projections:
+    they still count for rest calculations and for outcome-only angles."""
+    import json, sqlite3
+    if not os.path.exists(db_path):
+        return pd.DataFrame()
+    con = sqlite3.connect(db_path)
+    try:
+        g = pd.read_sql_query("""SELECT g.season, g.game_id, d.date, g.home, g.away, r.home_pts, r.away_pts, g.n_periods
+                                 FROM games g JOIN results r USING(season, game_id) JOIN game_dates d USING(season, game_id)""", con)
+        f = pd.read_sql_query("SELECT season, game_id, model_name, p_home, mean_home, mean_away, details_json FROM forecasts "
+                              "WHERE model_name IN ('sim_mc_raw','sim_mc','elo')", con)
+    except Exception:
+        return pd.DataFrame()
+    finally:
+        con.close()
+    if g.empty:
+        return pd.DataFrame()
+    raw = f[f.model_name == "sim_mc_raw"].set_index(["season", "game_id"])
+    cal = f[f.model_name == "sim_mc"].set_index(["season", "game_id"])
+    elo = f[f.model_name == "elo"].set_index(["season", "game_id"])
+    k = list(zip(g.season, g.game_id))
+    g["sim_home"] = [raw.mean_home.get(x, np.nan) for x in k]
+    g["sim_away"] = [raw.mean_away.get(x, np.nan) for x in k]
+    g["sim_p_home"] = [cal.p_home.get(x, np.nan) for x in k]
+    g["elo_p_home"] = [elo.p_home.get(x, np.nan) for x in k]
+    g["elo_margin"] = [json.loads(elo.details_json[x]).get("exp_margin", np.nan) if x in elo.index else np.nan for x in k]
+    return g.sort_values(["season", "game_id"]).reset_index(drop=True)
 
 
 def load_warmup_games(root: str = ROOT) -> pd.DataFrame:

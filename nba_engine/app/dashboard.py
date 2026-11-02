@@ -19,7 +19,7 @@ from nbaengine.players import PlayerModel, sample_players, summarize_samples
 
 LIVE_DB, LIVE_STATE = os.path.join(ROOT, "artifacts/live.sqlite"), os.path.join(ROOT, "artifacts/state.json")
 DEMO_DB, DEMO_STATE = os.path.join(ROOT, "artifacts/demo_replay.sqlite"), os.path.join(ROOT, "artifacts/demo_state.json")
-MODEL_LABEL = {"sim_mc_inj": "Simulator (injury-adjusted)", "elo_inj": "Elo (injury-adjusted)", "sim_mc": "Simulator", "elo": "Elo", "home_const": "Home-court baseline", "sim_mc_raw": "Simulator (uncalibrated)"}
+MODEL_LABEL = {"sim_mc_rest": "Simulator (back-to-back adj.)", "sim_mc_full": "Simulator (back-to-back + injuries)", "elo_rest": "Elo (back-to-back adj.)", "elo_full": "Elo (back-to-back + injuries)", "sim_mc_inj": "Simulator (injury-adjusted)", "elo_inj": "Elo (injury-adjusted)", "sim_mc": "Simulator", "elo": "Elo", "home_const": "Home-court baseline", "sim_mc_raw": "Simulator (uncalibrated)"}
 COLORS = {"Simulator": "#2563eb", "Elo": "#d97706", "Home-court baseline": "#6b7280", "Simulator (uncalibrated)": "#93c5fd"}
 
 st.set_page_config(page_title="NBA Engine", page_icon="🏀", layout="wide")
@@ -78,6 +78,9 @@ def load(db: str, mtime: float):
     sim = sim.join(inj["p_home"].rename("p_inj"), on=["season", "game_id"])
     sim = sim.join(inj["det"].map(lambda s: (json.loads(s) if isinstance(s, str) else {}).get("injury_shift")).rename("inj_shift"),
                    on=["season", "game_id"])
+    for tag in ("rest", "full"):
+        x = f[f.model == f"sim_mc_{tag}"].set_index(["season", "game_id"])
+        sim = sim.join(x["p_home"].rename(f"p_{tag}"), on=["season", "game_id"])
     res = pd.read_sql_query("SELECT season, game_id, home_pts, away_pts FROM results", con)
     sim = sim.merge(res, on=["season", "game_id"], how="left")
     ev = evaluate(store)
@@ -113,6 +116,8 @@ with tab_games:
             "Home win % (sim)": (day.p_home * 100).round(0).astype(int),
             "Home win % (Elo)": (day.p_elo * 100).round(0).astype(int),
             "Home win % (injury-adj.)": day.p_inj.map(lambda v: "" if pd.isna(v) else f"{v * 100:.0f}"),
+            "Home win % (back-to-back adj.)": day.p_rest.map(lambda v: "" if pd.isna(v) else f"{v * 100:.0f}"),
+            "Home win % (b2b + injuries)": day.p_full.map(lambda v: "" if pd.isna(v) else f"{v * 100:.0f}"),
             "Projected score": day.apply(lambda r: f"{r.mean_away:.0f} - {r.mean_home:.0f}", axis=1),
             "Total": day.mean_total.round(1),
             "Likely margin (80%)": day.q.map(lambda q: f"{q['10']:+.0f} to {q['90']:+.0f}"),
@@ -323,7 +328,7 @@ with tab_trends:
 
     @st.cache_data(show_spinner="Building the trend frame...")
     def _trend_frame():
-        p = TR.load_projected(); t = TR.team_games(p, TR.load_warmup_games()); return t, TR.add_labels(t)
+        p = TR.load_projected(extra=TR.live_extra(DB)); t = TR.team_games(p, TR.load_warmup_games()); return t, TR.add_labels(t)
 
     @st.cache_data(show_spinner="Scanning situations...")
     def _league_trends(_t, _L):
@@ -339,8 +344,9 @@ with tab_trends:
                    "There are no sportsbook lines in this data, so 'beat the projection' means better than OUR model, not a bet that cashed. "
                    "Projections exist for 2023-2026; 2022 is only used for outcome-only angles and is not included in model comparisons.")
         c1, c2, c3 = st.columns(3)
-        seasons = c1.multiselect("Seasons", [2023, 2024, 2025, 2026], default=[2023, 2024, 2025, 2026],
-                                 help="Season 2026 = 2025-26. The live 2026-27 season is not in this table yet.")
+        _opts = sorted(s_ for s_ in tt.season.unique() if s_ >= 2023)
+        seasons = c1.multiselect("Seasons", _opts, default=_opts, format_func=lambda s_: f"{s_-1}-{str(s_)[2:]}",
+                                 help="2026-27 is the live season: only games forecast by the daily job (and dated) count for projection-based angles.")
         team = c2.multiselect("Team", sorted(tt.team.unique())); opp = c3.multiselect("Opponent", sorted(tt.team.unique()))
         d1, d2, d3, d4 = st.columns(4)
         venue = d1.multiselect("Venue", ["home", "away"]); rest = d2.multiselect("Team rest", ["B2B", "1d", "2d", "3d+"],
@@ -422,5 +428,5 @@ with tab_status:
                                           "ok": "OK", "finals_ingested": "Results ingested", "forecasts_made": "Forecasts made",
                                           "forecasts_skipped_late": "Skipped (already started)", "error": "Error"}),
                      hide_index=True, width="stretch")
-    st.caption("Known gaps: no injuries or lineups, no rest/travel effects, offseason roster changes are learned only gradually. "
+    st.caption("Known gaps: injuries come from ESPN's unofficial list, no confirmed lineups, no travel distance, offseason roster changes are learned only gradually. "
                "Forecasts are probabilities, never certainties.")

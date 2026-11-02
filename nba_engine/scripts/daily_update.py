@@ -15,7 +15,7 @@ today = datetime.now(ZoneInfo("America/New_York")).date()
 store = Store(DB)
 eng = Engine.load(store, STATE)
 # First run on a fresh state: catch up on everything since the season opened (ingesting a game twice is a no-op).
-LOOKBACK = int(os.environ.get("LOOKBACK_DAYS", 3 if (last_success(store) and os.path.exists("artifacts/player_applied.json")) else 21))
+LOOKBACK = int(os.environ.get("LOOKBACK_DAYS") or (3 if (last_success(store) and os.path.exists("artifacts/player_applied.json")) else 21))
 # Rosters + injury statuses first (best effort, never fails the job): used for the injury-adjusted forecasts and the dashboard.
 try:
     from nbaengine.availability import build_availability, save_availability
@@ -29,6 +29,11 @@ try:
     eng.injury_fn = make_injury_fn(PlayerModel.load("artifacts/player_state.json"), av)
 except Exception as ex:
     print("availability step failed (forecasts unaffected):", type(ex).__name__, ex)
+try:        # back-to-back effect fitted from walk-forward projections (scripts/fit_rest.py)
+    import json as _json
+    eng.rest_coef = _json.load(open("artifacts/rest_fit.json"))
+except Exception as ex:
+    print("rest fit not loaded (rest-adjusted forecasts skipped):", type(ex).__name__, ex)
 feed = EspnFeed()
 summary = run_update(eng, feed, today, n_sims=N_SIMS, lookback_days=LOOKBACK)
 print(summary)
