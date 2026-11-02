@@ -13,5 +13,38 @@
   "mae_before": 11.310709349593496,
   "mae_after": 11.270089093990812
  },
- "note": "Margin points added to the HOME team's projected margin. Fitted on projections that did not use rest."
+ "note": "Margin points added to the HOME team's projected margin. Fitted on projections that did not use rest.",
+ "sit": {
+  "home_b2b": -2.4965007324546877,
+  "away_b2b": 2.803797943651831,
+  "after_10plus_win": 1.6695803257651787,
+  "se_after_10plus_win": 0.3163570681335557,
+  "leave_one_season_out": [
+   {
+    "held_out_season": 2023,
+    "form_coef": 2.0064094332250733,
+    "log_loss_b2b_only": 0.6472308963287338,
+    "log_loss_b2b_plus_form": 0.6473089981730289
+   },
+   {
+    "held_out_season": 2024,
+    "form_coef": 1.8396385256688297,
+    "log_loss_b2b_only": 0.6134174311151321,
+    "log_loss_b2b_plus_form": 0.6122532099605867
+   },
+   {
+    "held_out_season": 2025,
+    "form_coef": 1.4642249258519993,
+    "log_loss_b2b_only": 0.6110958380604182,
+    "log_loss_b2b_plus_form": 0.6074872378279389
+   },
+   {
+    "held_out_season": 2026,
+    "form_coef": 1.3580358611774994,
+    "log_loss_b2b_only": 0.6078235871940156,
+    "log_loss_b2b_plus_form": 0.6037268725574123
+   }
+  ],
+  "note": "after_10plus_win: margin points added to a team whose previous game (same season, within 10 days) was a win by 10+; added to the home margin for the home team and subtracted for the away team."
+ }
 }

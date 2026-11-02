@@ -19,7 +19,7 @@ from nbaengine.players import PlayerModel, sample_players, summarize_samples
 
 LIVE_DB, LIVE_STATE = os.path.join(ROOT, "artifacts/live.sqlite"), os.path.join(ROOT, "artifacts/state.json")
 DEMO_DB, DEMO_STATE = os.path.join(ROOT, "artifacts/demo_replay.sqlite"), os.path.join(ROOT, "artifacts/demo_state.json")
-MODEL_LABEL = {"sim_mc_rest": "Simulator (back-to-back adj.)", "sim_mc_full": "Simulator (back-to-back + injuries)", "elo_rest": "Elo (back-to-back adj.)", "elo_full": "Elo (back-to-back + injuries)", "sim_mc_inj": "Simulator (injury-adjusted)", "elo_inj": "Elo (injury-adjusted)", "sim_mc": "Simulator", "elo": "Elo", "home_const": "Home-court baseline", "sim_mc_raw": "Simulator (uncalibrated)"}
+MODEL_LABEL = {"sim_mc_sit": "Simulator (back-to-back + form)", "sim_mc_all": "Simulator (back-to-back + form + injuries)", "elo_sit": "Elo (back-to-back + form)", "elo_all": "Elo (back-to-back + form + injuries)", "sim_mc_rest": "Simulator (back-to-back adj.)", "sim_mc_full": "Simulator (back-to-back + injuries)", "elo_rest": "Elo (back-to-back adj.)", "elo_full": "Elo (back-to-back + injuries)", "sim_mc_inj": "Simulator (injury-adjusted)", "elo_inj": "Elo (injury-adjusted)", "sim_mc": "Simulator", "elo": "Elo", "home_const": "Home-court baseline", "sim_mc_raw": "Simulator (uncalibrated)"}
 COLORS = {"Simulator": "#2563eb", "Elo": "#d97706", "Home-court baseline": "#6b7280", "Simulator (uncalibrated)": "#93c5fd"}
 
 st.set_page_config(page_title="NBA Engine", page_icon="🏀", layout="wide")
@@ -78,7 +78,7 @@ def load(db: str, mtime: float):
     sim = sim.join(inj["p_home"].rename("p_inj"), on=["season", "game_id"])
     sim = sim.join(inj["det"].map(lambda s: (json.loads(s) if isinstance(s, str) else {}).get("injury_shift")).rename("inj_shift"),
                    on=["season", "game_id"])
-    for tag in ("rest", "full"):
+    for tag in ("rest", "full", "sit", "all"):
         x = f[f.model == f"sim_mc_{tag}"].set_index(["season", "game_id"])
         sim = sim.join(x["p_home"].rename(f"p_{tag}"), on=["season", "game_id"])
     res = pd.read_sql_query("SELECT season, game_id, home_pts, away_pts FROM results", con)
@@ -118,6 +118,8 @@ with tab_games:
             "Home win % (injury-adj.)": day.p_inj.map(lambda v: "" if pd.isna(v) else f"{v * 100:.0f}"),
             "Home win % (back-to-back adj.)": day.p_rest.map(lambda v: "" if pd.isna(v) else f"{v * 100:.0f}"),
             "Home win % (b2b + injuries)": day.p_full.map(lambda v: "" if pd.isna(v) else f"{v * 100:.0f}"),
+            "Home win % (b2b + form)": day.p_sit.map(lambda v: "" if pd.isna(v) else f"{v * 100:.0f}"),
+            "Home win % (b2b + form + injuries)": day.p_all.map(lambda v: "" if pd.isna(v) else f"{v * 100:.0f}"),
             "Projected score": day.apply(lambda r: f"{r.mean_away:.0f} - {r.mean_home:.0f}", axis=1),
             "Total": day.mean_total.round(1),
             "Likely margin (80%)": day.q.map(lambda q: f"{q['10']:+.0f} to {q['90']:+.0f}"),

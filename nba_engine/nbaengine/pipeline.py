@@ -40,6 +40,7 @@ class Engine:
         self.kappa_m, self.kappa_t, self.level_delta = kappa_m, kappa_t, level_delta
         self.base, self.sds, self.applied = base, sds, applied
         self.alpha = 0.01
+        self.last_margin = {}        # team -> [ISO date, margin] of its latest game seen (for the after-a-10+-win effect)
         self.last_played = {}        # team -> ISO date of its latest game seen (for back-to-back detection)
         self.rest_coef = None        # {'home_b2b': .., 'away_b2b': ..} margin points; set by the daily job
         self.injury_fn = None        # optional f(home, away) -> (margin_shift, detail); set by the daily job
@@ -54,7 +55,7 @@ class Engine:
                          "lg_pace": p.lg_pace, "pace_sq": p.pace_sq, "season": p.season},
                 "kappa_m": self.kappa_m, "kappa_t": self.kappa_t, "level_delta": self.level_delta,
                 "base": self.base, "sds": {k: _sd_to(v) for k, v in self.sds.items()},
-                "applied": sorted(self.applied), "last_played": self.last_played}
+                "applied": sorted(self.applied), "last_played": self.last_played, "last_margin": self.last_margin}
 
     def save_state(self, path: str) -> None:
         tmp = path + ".tmp"
@@ -71,6 +72,7 @@ class Engine:
         eng = cls(store, elo, prof, d["kappa_m"], d["kappa_t"], d["level_delta"], d["base"],
                   {k: _sd_from(v) for k, v in d["sds"].items()}, set(d["applied"]))
         eng.last_played = dict(d.get("last_played", {}))
+        eng.last_margin = dict(d.get("last_margin", {}))
         return eng
 
     @classmethod
@@ -87,8 +89,9 @@ class Engine:
         key = f"{fg.season}:{fg.game_id}"
         self.store.con.execute("INSERT OR IGNORE INTO game_dates VALUES(?,?,?)", (fg.season, fg.game_id, fg.date))
         for tm in (fg.home, fg.away):                 # schedule memory, updated even for already-applied games
-            if fg.date > self.last_played.get(tm, ""):
+            if fg.date >= self.last_played.get(tm, ""):     # ">=": re-ingesting a day repairs fields added later
                 self.last_played[tm] = fg.date
+                self.last_margin[tm] = [fg.date, (fg.home_pts - fg.away_pts) * (1 if tm == fg.home else -1)]
         if key in self.applied:
             return False
         gd = {"game_id": fg.game_id, "season": fg.season, "home": fg.home, "away": fg.away, "home_pts": fg.home_pts,
@@ -187,6 +190,19 @@ class Engine:
             if ir is not None:
                 self._save_shifted(ug, sim, e, bt, n_sims, seed, cutoff, "full", shift + ir[0],
                                    {**det, "injury_shift": ir[0], "rest_shift": shift})
+            sit = self.rest_coef.get("sit")
+            if sit:                       # back-to-back + coming off a 10+ point win (fitted jointly)
+                day = date.fromisoformat(ug.date)
+                def big_win(tm):
+                    lm = self.last_margin.get(tm)
+                    return bool(lm) and lm[1] >= 10 and 0 < (day - date.fromisoformat(lm[0])).days <= 10
+                hw, aw = big_win(ug.home), big_win(ug.away)
+                ssh = sit["home_b2b"] * det["home_b2b"] + sit["away_b2b"] * det["away_b2b"] + sit["after_10plus_win"] * (hw - aw)
+                d2 = {**det, "home_after_big_win": hw, "away_after_big_win": aw}
+                self._save_shifted(ug, sim, e, bt, n_sims, seed, cutoff, "sit", ssh, d2)
+                if ir is not None:
+                    self._save_shifted(ug, sim, e, bt, n_sims, seed, cutoff, "all", ssh + ir[0],
+                                       {**d2, "injury_shift": ir[0], "situational_shift": ssh})
         except Exception:
             pass
 
@@ -306,6 +322,12 @@ def write_report(store: Store, today: date, path: str) -> str:
             who = [t for t, f in (("home", d3.get("home_b2b")), ("away", d3.get("away_b2b"))) if f]
             lines.append(f"  - with rest{' and injuries' if m.get('sim_mc_full') else ''}: P(home) sim {fu[0][2]:.3f}, margin shift {d3.get('shift', 0):+.1f} pts; "
                          f"second night of a back-to-back: {', '.join(who) if who else 'neither team'}.")
+        al = m.get("sim_mc_all") or m.get("sim_mc_sit")
+        if al:
+            d4 = al[1]
+            fm = [t for t, f in (("home", d4.get("home_after_big_win")), ("away", d4.get("away_after_big_win"))) if f]
+            lines.append(f"  - with back-to-back, form{' and injuries' if m.get('sim_mc_all') else ''}: P(home) sim {al[0][2]:.3f}, margin shift {d4.get('shift', 0):+.1f} pts; "
+                         f"coming off a 10+ point win: {', '.join(fm) if fm else 'neither team'}.")
     lines += ["", *monitor(store), "",
               "Known gaps: injuries come only from ESPN's unofficial list; no confirmed lineups, no travel distance; rest/injury-adjusted lines are separate and experimental (rest effect fitted on 2023-2026 projections, see artifacts/rest_fit.json)."]
     open(path, "w").write("\n".join(lines))
