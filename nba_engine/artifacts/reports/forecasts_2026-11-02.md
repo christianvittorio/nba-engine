@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-02
-Data refresh: last successful run 2026-11-02T14:10:11Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-02T22:35:34Z UTC. Model nbaengine-0.1.0.
 
 - OKC at CLE (game 401909907): P(home) sim 0.487 / Elo 0.547; mean score 116.4-116.8 (total 233.3); margin 50% [-9.0, 8.0], 80% [-17.0, 16.0]; total 80% [210.0, 256.0]; P(OT) 0.023; most frequent exact score 114-118 (rarely hit).
   - injury-adjusted: P(home) sim 0.544, margin shift +2.6 pts; rotation players listed out: Jaylon Tyson (home), Alex Caruso (away), Chet Holmgren (away), N. Topić (away), Cason Wallace (away), Jalen Williams (away).
