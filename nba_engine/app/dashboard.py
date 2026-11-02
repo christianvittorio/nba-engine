@@ -98,7 +98,7 @@ elif not runs.empty:
     ok = runs[runs.ok == 1]
     st.caption(f"Last successful refresh: {ok.finished_utc.iloc[0] if len(ok) else 'never'} UTC")
 
-tab_games, tab_players, tab_perf, tab_ratings, tab_status = st.tabs(["Forecasts", "Players", "How accurate is it?", "Team ratings", "Run status"])
+tab_games, tab_players, tab_trends, tab_perf, tab_ratings, tab_status = st.tabs(["Forecasts", "Players", "Trends & streaks", "How accurate is it?", "Team ratings", "Run status"])
 
 # ---------------------------------------------------------------- forecasts
 with tab_games:
@@ -315,6 +315,80 @@ with tab_perf:
             diag = alt.Chart(pd.DataFrame({"x": [0, 1], "y": [0, 1]})).mark_line(color="#9ca3af", strokeDash=[4, 3]).encode(x="x", y="y")
             st.altair_chart((diag + pts).properties(height=340), width="stretch")
             st.caption("Points on the dashed line mean the stated chances match reality. Points below it mean overconfidence.")
+
+
+# ---------------------------------------------------------------- trends & streaks
+with tab_trends:
+    from nbaengine import trends as TR
+
+    @st.cache_data(show_spinner="Building the trend frame...")
+    def _trend_frame():
+        p = TR.load_projected(); t = TR.team_games(p, TR.load_warmup_games()); return t, TR.add_labels(t)
+
+    @st.cache_data(show_spinner="Scanning situations...")
+    def _league_trends(_t, _L):
+        return TR.league_trends(_t, _L)
+
+    try:
+        tt, LL = _trend_frame()
+    except Exception as ex:
+        st.info(f"Trend data not available: {type(ex).__name__}: {ex}"); tt = None
+    if tt is not None:
+        st.subheader("Check a trend")
+        st.caption("Pick a situation and see how teams did in it, season by season, against what the model expected. "
+                   "There are no sportsbook lines in this data, so 'beat the projection' means better than OUR model, not a bet that cashed. "
+                   "Projections exist for 2023-2026; 2022 is only used for outcome-only angles and is not included in model comparisons.")
+        c1, c2, c3 = st.columns(3)
+        seasons = c1.multiselect("Seasons", [2023, 2024, 2025, 2026], default=[2023, 2024, 2025, 2026],
+                                 help="Season 2026 = 2025-26. The live 2026-27 season is not in this table yet.")
+        team = c2.multiselect("Team", sorted(tt.team.unique())); opp = c3.multiselect("Opponent", sorted(tt.team.unique()))
+        d1, d2, d3, d4 = st.columns(4)
+        venue = d1.multiselect("Venue", ["home", "away"]); rest = d2.multiselect("Team rest", ["B2B", "1d", "2d", "3d+"],
+            help="B2B = second night of a back-to-back (0 days off)")
+        opp_rest = d3.multiselect("Opponent rest", ["B2B", "1d", "2d", "3d+"]); edge = d4.multiselect("Rest edge", ["more rest", "equal rest", "less rest"])
+        e1, e2, e3, e4 = st.columns(4)
+        fav = e1.multiselect("Model's view", ["heavy dog", "dog", "pick'em", "fav", "heavy fav"])
+        prev = e2.multiselect("Previous game", ["won by 10+", "won close", "lost close", "lost by 10+"])
+        strk = e3.multiselect("Streak entering", ["won 3+ straight", "lost 3+ straight", "no streak"])
+        orec = e4.multiselect("Opponent quality", ["good opp (.600+)", "middling opp", "bad opp (.400-)"], help="Record entering the game, from game 16 on")
+        f1, f2, f3, f4 = st.columns(4)
+        tmin = f1.number_input("Projected game total at least", value=0.0, step=0.5); tmax = f2.number_input("... at most", value=400.0, step=0.5)
+        pmin = f3.number_input("Team projected points at least", value=0.0, step=0.5); pmax = f4.number_input("... at most", value=300.0, step=0.5)
+        labels = {"team": team, "opponent": opp, "venue": venue, "rest": rest, "opp_rest": opp_rest, "rest_edge": edge,
+                  "favorite": fav, "prev_result": prev, "streak": strk, "opp_record": orec}
+        rows = TR.select(tt, LL, labels, {"proj_total": (tmin if tmin > 0 else None, tmax if tmax < 400 else None),
+                                          "proj_pts": (pmin if pmin > 0 else None, pmax if pmax < 300 else None)}, seasons)
+        rows = rows[rows.p_win.notna()]
+        if rows.empty:
+            st.warning("No games match this situation.")
+        else:
+            st.markdown(f"**{len(rows):,} team-games match.** (Each game appears once for each team, so a game can appear twice if both teams fit.)")
+            summ = TR.summarize_situation(rows, tt)
+            st.dataframe(summ.style.format({"hit rate": "{:.1%}", "expected rate": "{:.1%}", "z (vs expected)": "{:+.2f}"}), hide_index=True, width="stretch")
+            st.caption("'Expected rate' is what the model (win) or the league-wide base rate (other outcomes) predicted for these exact games. "
+                       "z beyond about +/-3 is worth a look; a long run alone is not, because thousands of situations exist and some will look perfect by luck. "
+                       "'Current run' is the streak of hits (positive) or misses (negative) ending at the most recent matching game.")
+            by = rows.groupby("season").agg(games=("win", "size"), wins=("win", "sum"), beat_margin=("beat_margin", "mean"),
+                                            over_total=("over_total", "mean")).reset_index()
+            by["season"] = by.season.map(lambda s: f"{s-1}-{str(s)[2:]}")
+            st.dataframe(by.rename(columns={"beat_margin": "beat projected margin", "over_total": "over projected total"}).style.format(
+                {"beat projected margin": "{:.1%}", "over projected total": "{:.1%}"}), hide_index=True, width="stretch")
+            if st.checkbox("Show the games", value=False):
+                show = rows[["date", "team", "opp", "home", "rest", "opp_rest", "pts", "opp_pts", "proj_pts", "proj_opp_pts", "proj_total", "p_win", "win", "beat_margin", "over_total"]].copy()
+                show["date"] = show.date.dt.date; show["home"] = np.where(show.home == 1, "home", "away")
+                st.dataframe(show.round(2), hide_index=True, width="stretch")
+
+        st.subheader("What the scan found (league-wide)")
+        st.caption("Every combination of up to two situation features across all teams was tested against the model's expectation. "
+                   "Shown: the strongest found on 2023-24 after a false-discovery filter, then re-measured on 2025-26. "
+                   "'Held up' means the later seasons moved the same direction.")
+        lt = _league_trends(tt, LL)
+        st.dataframe(lt.style.format({"rate_found": "{:.1%}", "expected_found": "{:.1%}", "edge_found": "{:+.1%}", "rate_later": "{:.1%}", "edge_later": "{:+.1%}"}),
+                     hide_index=True, width="stretch")
+        st.info("Honest reading: two families held up in both periods. (1) Rest: teams on the second night of a back-to-back scored about 2 to 3 "
+                "points worse than the model expected. (2) Mismatches: good teams against bad opponents beat the projected margin, so the model's "
+                "margins look a little compressed. Month-based patterns flipped sign between periods, and team-specific streaks "
+                "(for example 'Team A is 22-0 in this exact spot') did not carry over, which is what luck predicts.")
 
 # ---------------------------------------------------------------- ratings
 with tab_ratings:
