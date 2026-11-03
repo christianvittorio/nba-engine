@@ -395,16 +395,15 @@ with tab_trends:
             import importlib.util
             _spec = importlib.util.spec_from_file_location("niche_streaks", os.path.join(ROOT, "scripts/niche_streaks.py"))
             _ns = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_ns)
-            _d = _ns.latest_open_date(DB)
+            _fd = _ns.forecast_dates(DB)
+            _d = st.selectbox("Slate date", _fd[::-1], index=0, key="streak_date") if _fd else None
             if _d:
                 @st.cache_data(show_spinner="Finding streaks...")
                 def _streaks(d, mtime):
-                    up = TR.upcoming_extra(DB, d)
-                    pp = TR.load_projected(extra=pd.concat([TR.live_extra(DB), up], ignore_index=True))
-                    t2 = TR.team_games(pp, TR.load_warmup_games()); L2 = TR.add_labels(t2)
-                    return TR.niche_streaks(t2, L2, up.game_id.tolist(), min_run=6), up
+                    c = _ns.compute(DB, d, 6)
+                    return (c[0], c[1]) if c else (pd.DataFrame(), pd.DataFrame())
                 sdf, sup = _streaks(_d, os.path.getmtime(DB))
-                st.write(f"Games on {_d}")
+                st.write(f"Games on {_d} (situations as they stood before tip-off)")
                 oc = st.multiselect("Outcome", list(TR.STREAK_OUTCOMES), default=["win", "beat_margin"], key="streak_oc")
                 tms = st.multiselect("Team", sorted(set(sup.home) | set(sup.away)), key="streak_tm")
                 sh = sdf[sdf.outcome.isin(oc)]

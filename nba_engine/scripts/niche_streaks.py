@@ -24,14 +24,25 @@ def latest_open_date(db):
     return max(d) if d else None
 
 
-def build(db, date, out_path=None, per_team=3, min_run=6):
-    up = T.upcoming_extra(db, date)
+def compute(db, date, min_run=6):
+    """(streaks, slate, team-game frame, labels) for a date, as the slate stood BEFORE tip-off (works for late runs and backfills)."""
+    up = T.upcoming_extra(db, date, include_played=True)
     if up.empty:
         return None
-    p = T.load_projected(extra=pd.concat([T.live_extra(db), up], ignore_index=True))
+    live = T.live_extra(db)
+    if len(live):
+        live = live[live.date < date]                      # never let results from this date (or later) leak into the history
+    p = T.load_projected(extra=pd.concat([live, up], ignore_index=True))
     t = T.team_games(p, T.load_warmup_games()); L = T.add_labels(t)
+    return T.niche_streaks(t, L, up.game_id.tolist(), min_run=min_run), up, t, L
+
+
+def build(db, date, out_path=None, per_team=3, min_run=6):
+    c = compute(db, date, min_run)
+    if c is None:
+        return None
+    df, up, t, L = c
     gids = up.game_id.tolist()
-    df = T.niche_streaks(t, L, gids, min_run=min_run)
     luck = T.luck_counts(t, L, gids, min_run=min_run, worlds=6)
     lines = [f"# Active niche streaks for {date}", "",
              "Each line is a situation that describes tonight's game for that team, the team's record in the same situation since the "
@@ -63,7 +74,18 @@ def build(db, date, out_path=None, per_team=3, min_run=6):
     return text
 
 
+def forecast_dates(db):
+    import sqlite3, json
+    con = sqlite3.connect(db)
+    f = pd.read_sql_query("SELECT details_json FROM forecasts WHERE model_name='sim_mc'", con); con.close()
+    return sorted({json.loads(x).get("date") for x in f.details_json if json.loads(x).get("date")})
+
+
 if __name__ == "__main__":
     db = os.path.join(ROOT, "artifacts/live.sqlite")
-    date = sys.argv[1] if len(sys.argv) > 1 else latest_open_date(db)
-    print(build(db, date, os.path.join(ROOT, f"artifacts/reports/niche_streaks_{date}.md"))[:3000])
+    if len(sys.argv) > 1 and sys.argv[1] == "--all":       # (re)build a report for every date that has forecasts
+        for d in forecast_dates(db):
+            print(d, "written" if build(db, d, os.path.join(ROOT, f"artifacts/reports/niche_streaks_{d}.md")) else "no games")
+    else:
+        date = sys.argv[1] if len(sys.argv) > 1 else latest_open_date(db)
+        print(build(db, date, os.path.join(ROOT, f"artifacts/reports/niche_streaks_{date}.md"))[:3000])

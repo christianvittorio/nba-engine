@@ -80,7 +80,7 @@ def live_extra(db_path: str) -> pd.DataFrame:
     return g.sort_values(["season", "game_id"]).reset_index(drop=True)
 
 
-def upcoming_extra(db_path: str, date: str) -> pd.DataFrame:
+def upcoming_extra(db_path: str, date: str, include_played: bool = False) -> pd.DataFrame:
     """Games forecast for `date` but not yet played, as projection rows with NaN results (so schedule features such as
     rest and streaks are computed for them exactly as for played games)."""
     import json, sqlite3
@@ -102,7 +102,7 @@ def upcoming_extra(db_path: str, date: str) -> pd.DataFrame:
     raw = f[f.model_name == "sim_mc_raw"].set_index(["season", "game_id"]); elo = f[f.model_name == "elo"].set_index(["season", "game_id"])
     for r in cal.itertuples():
         k = (r.season, r.game_id)
-        if k in done or k not in raw.index or k not in elo.index:
+        if (k in done and not include_played) or k not in raw.index or k not in elo.index:
             continue
         rows.append({"season": r.season, "game_id": r.game_id, "date": date, "home": r.d["home"], "away": r.d["away"],
                      "home_pts": np.nan, "away_pts": np.nan, "n_periods": np.nan,

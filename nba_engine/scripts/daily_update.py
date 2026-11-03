@@ -50,8 +50,7 @@ if summary["ok"]:
         import importlib.util
         spec = importlib.util.spec_from_file_location("niche_streaks", os.path.join(ROOT, "scripts/niche_streaks.py"))
         ns = importlib.util.module_from_spec(spec); spec.loader.exec_module(ns)
-        ns.build(DB, str(today), f"artifacts/reports/niche_streaks_{today}.md")
-        print("niche streaks written")
+        print("niche streaks written" if ns.build(DB, str(today), f"artifacts/reports/niche_streaks_{today}.md") else f"no forecast games on {today}: no streak report")
     except Exception as ex:
         print("niche streaks failed (forecasts unaffected):", type(ex).__name__, ex)
 else:

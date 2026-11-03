@@ -1,7 +1,8 @@
 name: nba-daily
 on:
   schedule:
-    - cron: "0 14 * * *"
+    - cron: "0 9 * * *"     # early slot, so forecasts exist well before tip-off
+    - cron: "0 14 * * *"    # second slot in case the first is delayed or dropped (runs are idempotent)
   workflow_dispatch:
     inputs:
       lookback_days:
