@@ -15,7 +15,7 @@ A negative number means the home team did worse than projected. The same directi
 
 ## 2. League-wide situations (found on 2023-24, re-measured on 2025-26)
 
-16 of the top 25 moved the same direction in the later seasons (a coin flip would give about half). The ones that held are two families: the rest effect, and mismatches (good teams against bad opponents beat the projected margin, bad teams fall short of it, so the model's margins look a little too compressed). The month-of-season rows (for example February totals) flipped sign between the two periods: that is what a luck-only pattern looks like.
+16 of the top 25 moved the same direction in the later seasons (a coin flip would give about half). The ones that held are two families: the rest effect, and mismatches (good teams against bad opponents beat the projected margin more than half the time, bad teams fall short; a direct test found no scale error in the margins, so this is not a simple fix). The month-of-season rows (for example February totals) flipped sign between the two periods: that is what a luck-only pattern looks like.
 
 | Situation | Outcome | n found | Edge found | n later | Edge later | Held up |
 |---|---|---|---|---|---|---|

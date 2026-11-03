@@ -425,8 +425,8 @@ with tab_trends:
         st.dataframe(lt.style.format({"rate_found": "{:.1%}", "expected_found": "{:.1%}", "edge_found": "{:+.1%}", "rate_later": "{:.1%}", "edge_later": "{:+.1%}"}),
                      hide_index=True, width="stretch")
         st.info("Honest reading: two families held up in both periods. (1) Rest: teams on the second night of a back-to-back scored about 2 to 3 "
-                "points worse than the model expected. (2) Mismatches: good teams against bad opponents beat the projected margin, so the model's "
-                "margins look a little compressed. Month-based patterns flipped sign between periods, and team-specific streaks "
+                "points worse than the model expected. (2) Mismatches: good teams against bad opponents beat the projected margin more often than half the time, "
+                "although a direct test found no scale error in the margins themselves. Month-based patterns flipped sign between periods, and team-specific streaks "
                 "(for example 'Team A is 22-0 in this exact spot') did not carry over, which is what luck predicts.")
 
 # ---------------------------------------------------------------- ratings
