@@ -73,7 +73,11 @@ Purpose: check claims of the form "team A is 22-0 when ..." against the data. Co
 ## 6d. Back-to-back adjustment (experimental) [built, v0.6]
 * Effect: second night of a back-to-back costs the home team about 2.5 margin points and costs the away team about 2.8 (fitted on walk-forward projections 2023-2026 that did not use rest, `scripts/fit_rest.py` -> `artifacts/rest_fit.json`). Fitted on 2023-24 only, it lowered 2025-26 log-loss from 0.6104 to 0.6089 and margin MAE from 11.31 to 11.27: small, real.
 * Live use: the engine remembers each team's last game date (`last_played` in state.json), and a team playing the day after a game is flagged. Extra forecasts are stored under separate names: `elo_rest` / `sim_mc_rest` (back-to-back only) and `elo_full` / `sim_mc_full` (back-to-back plus injuries). Original forecasts are unchanged and immutable.
+* Second effect, tested the same way: a team coming off a win by 10+ does about 1.7 margin points better than the model expects (symmetric: added for that team, subtracted for the other). Leave-one-season-out log-loss improved in 3 of 4 held-out seasons and was flat in the fourth; stored as `elo_sit`/`sim_mc_sit` (back-to-back + form) and `elo_all`/`sim_mc_all` (plus injuries). A margin-scale test found no compression of projected margins (coefficient about 0), so the 'mismatch' pattern is not a model fix.
 * Not tested live yet: needs a few hundred games with both versions stored before comparing them. Travel distance, 3-in-4 and 4-in-6 effects are not modelled.
+
+## 6e. Active niche streaks [built, v0.6]
+`nbaengine/trends.py: niche_streaks, luck_counts`, `scripts/niche_streaks.py` (also run best-effort by the daily job, writes `artifacts/reports/niche_streaks_<date>.md`), dashboard Trends tab. For each team in an upcoming game: every situation of up to three features that describes that game, the team's record in it since 2022-23, the run it is on, and the model's chance of that run. A luck-only comparison (results redrawn from the model's probabilities) is printed every time: about 770 runs of 6+ exist for a typical slate versus about 590 from luck alone, and team-specific niche trends did not carry over from 2023-24 to 2025-26, so the output is descriptive, not predictive.
 
 ## 7. Backtesting methodology [built]
 
