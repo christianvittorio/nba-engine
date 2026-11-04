@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-04
-Data refresh: last successful run 2026-11-04T16:53:55Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-04T20:39:58Z UTC. Model nbaengine-0.1.0.
 
 - PHI at DET (game 401909922): P(home) sim 0.735 / Elo 0.775; mean score 114.2-105.4 (total 219.7); margin 50% [-2.3, 19.1], 80% [-10.2, 27.0]; total 80% [195.7, 243.4]; P(OT) 0.045; most frequent exact score 111-102 (rarely hit).
   - injury-adjusted: P(home) sim 0.670, margin shift -3.2 pts; rotation players listed out: Jalen Duren (home), Isaiah Joe (home).

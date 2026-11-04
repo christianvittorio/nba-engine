@@ -22,7 +22,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 
 ## MIL at BOS
 - **MIL**: has scored under its projection 12 straight when venue=away and rest=1d and next_day_game=no game tomorrow (31-57 in 88 such games; chance of run 0.023%).
-- **MIL**: has seen the game total stay under the projection 9 straight when venue=away and streak=lost 3+ straight (1-11 in 12 such games; chance of run 0.215%).
+- **MIL**: has seen the game total stay under the projection 9 straight when venue=away and prev_result=lost by 10+ and next_day_game=no game tomorrow (8-27 in 35 such games; chance of run 0.215%).
 - **MIL**: has fallen short of the model's margin 6 straight when venue=away and opp_rest=1d (46-59 in 105 such games; chance of run 1.675%).
 - **BOS**: has seen the game total stay under the projection 13 straight when venue=home and rest_edge=equal rest and next_day_game=no game tomorrow (25-46 in 71 such games; chance of run 0.014%).
 - **BOS**: has scored over its projection 7 straight when opp_rest=1d and prev_result=lost by 10+ and next_day_game=no game tomorrow (9-2 in 11 such games; chance of run 0.750%).
@@ -33,7 +33,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 - **CHA**: has scored under its projection 9 straight when venue=away and prev_result=lost by 10+ and streak=lost 3+ straight (10-19 in 29 such games; chance of run 0.190%).
 - **CHA**: has seen the game total stay under the projection 8 straight when venue=away and prev_result=lost by 10+ and next_day_game=no game tomorrow (24-32 in 56 such games; chance of run 0.425%).
 - **BKN**: has scored under its projection 13 straight when opp_rest=1d (92-112 in 204 such games; chance of run 0.013%).
-- **BKN**: has seen the game total go over the projection 9 straight when venue=home and opp_rest=1d and proj_total=<220 (18-9 in 27 such games; chance of run 0.178%).
+- **BKN**: has seen the game total go over the projection 9 straight when rest=1d and favorite=dog and proj_total=<220 (12-10 in 22 such games; chance of run 0.178%).
 - **BKN**: has lost 17 straight when favorite=dog and proj_total=<220 and next_day_game=no game tomorrow (2-25 in 27 such games; chance of run 0.234%).
 
 ## CHI at NYK
@@ -55,7 +55,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 ## UTA at NOP
 - **UTA**: has fallen short of the model's margin 11 straight when rest=1d and next_day_game=no game tomorrow and density=normal (51-67 in 118 such games; chance of run 0.051%).
 - **UTA**: has lost 16 straight when rest=1d and proj_total=235+ (25-79 in 104 such games; chance of run 0.433%).
-- **UTA**: has seen the game total go over the projection 6 straight when rest_edge=equal rest and favorite=dog and prev_result=lost by 10+ (16-9 in 25 such games; chance of run 1.467%).
+- **UTA**: has seen the game total go over the projection 6 straight when rest_edge=equal rest and favorite=dog and density=normal (27-17 in 44 such games; chance of run 1.467%).
 - **NOP**: has beaten the model's margin 9 straight when rest=1d and proj_total=235+ (20-12 in 32 such games; chance of run 0.193%).
 - **NOP**: has scored over its projection 7 straight when venue=home and density=normal (56-64 in 120 such games; chance of run 0.715%).
 - **NOP**: has won 6 straight when venue=home and density=normal (61-59 in 120 such games; chance of run 1.327%).
@@ -94,7 +94,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 - **DAL**: has lost 7 straight when prev_result=lost by 10+ and streak=no streak and next_day_game=no game tomorrow (17-32 in 49 such games; chance of run 4.686%).
 - **SAS**: has scored over its projection 9 straight when proj_total=230-235 and streak=won 3+ straight (10-3 in 13 such games; chance of run 0.189%).
 - **SAS**: has seen the game total stay under the projection 9 straight when rest_edge=equal rest and proj_total=230-235 (27-33 in 60 such games; chance of run 0.215%).
-- **SAS**: has beaten the model's margin 8 straight when rest_edge=equal rest and proj_total=230-235 (30-30 in 60 such games; chance of run 0.381%).
+- **SAS**: has beaten the model's margin 8 straight when proj_total=230-235 (51-51 in 102 such games; chance of run 0.381%).
 
 ## LAL at SAC
 - **LAL**: has seen the game total stay under the projection 13 straight when rest_edge=equal rest and density=3-in-4 (15-27 in 42 such games; chance of run 0.014%).

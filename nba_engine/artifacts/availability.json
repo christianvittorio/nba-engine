@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-04T16:53:10Z",
+ "generated_utc": "2026-11-04T20:39:21Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -395,9 +395,9 @@
     {
      "name": "Jayson Tatum",
      "nba_id": 1628369,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-03T21:10Z"
+     "date": "2026-11-04T17:48Z"
     }
    ]
   },
@@ -508,13 +508,6 @@
    ],
    "injuries": [
     {
-     "name": "Kon Knueppel",
-     "nba_id": 1642851,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-11-03T22:13Z"
-    },
-    {
      "name": "Coby White",
      "nba_id": 1629632,
      "status": "Day-To-Day",
@@ -526,7 +519,7 @@
      "nba_id": 1629684,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-01T22:17Z"
+     "date": "2026-11-04T17:59Z"
     }
    ]
   },
@@ -879,7 +872,7 @@
      "nba_id": 1630583,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-03T22:20Z"
+     "date": "2026-11-04T18:56Z"
     },
     {
      "name": "Tarik Biberovic",
@@ -1313,7 +1306,7 @@
      "nba_id": 204001,
      "status": "Out",
      "detail": "",
-     "date": "2026-10-28T14:25Z"
+     "date": "2026-11-04T17:00Z"
     },
     {
      "name": "Gui Santos",
@@ -1447,9 +1440,9 @@
     {
      "name": "Clint Capela",
      "nba_id": 203991,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-03T22:19Z"
+     "date": "2026-11-04T18:36Z"
     }
    ]
   },
@@ -1743,6 +1736,13 @@
      "date": "2026-11-02T16:01Z"
     },
     {
+     "name": "Isaiah Jackson",
+     "nba_id": 1630543,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-04T20:11Z"
+    },
+    {
      "name": "Jordan Miller",
      "nba_id": 1641757,
      "status": "Out",
@@ -1881,7 +1881,7 @@
      "nba_id": 1642876,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-03T01:30Z"
+     "date": "2026-11-04T18:48Z"
     }
    ]
   },
@@ -2125,13 +2125,6 @@
      "status": "Day-To-Day",
      "detail": "",
      "date": "2026-11-04T01:05Z"
-    },
-    {
-     "name": "Myron Gardner",
-     "nba_id": 1642066,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-04T01:08Z"
     }
    ]
   },
@@ -2246,7 +2239,15 @@
      "nba_id": 1642276
     }
    ],
-   "injuries": []
+   "injuries": [
+    {
+     "name": "Kam Jones",
+     "nba_id": null,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-04T17:43Z"
+    }
+   ]
   },
   "MIN": {
    "roster": [
@@ -2365,9 +2366,9 @@
     {
      "name": "Terrence Shannon Jr.",
      "nba_id": 1630545,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-03T23:11Z"
+     "date": "2026-11-04T18:16Z"
     }
    ]
   },
@@ -2495,7 +2496,7 @@
      "nba_id": 1630530,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-03T22:52Z"
+     "date": "2026-11-04T18:34Z"
     },
     {
      "name": "Jordan Poole",
@@ -2615,9 +2616,9 @@
     {
      "name": "Josh Hart",
      "nba_id": 1628404,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-03T21:49Z"
+     "date": "2026-11-04T18:08Z"
     }
    ]
   },
@@ -2891,13 +2892,6 @@
      "date": "2026-10-24T16:47Z"
     },
     {
-     "name": "Anthony Black",
-     "nba_id": 1641710,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-03T05:35Z"
-    },
-    {
      "name": "Jonathan Isaac",
      "nba_id": 1628371,
      "status": "Out",
@@ -3158,9 +3152,9 @@
     {
      "name": "Rasheer Fleming",
      "nba_id": 1642853,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-04T00:19Z"
+     "date": "2026-11-04T20:17Z"
     },
     {
      "name": "Jordan Goodwin",
@@ -3805,7 +3799,7 @@
      "nba_id": 1628964,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-03T23:04Z"
+     "date": "2026-11-04T18:41Z"
     },
     {
      "name": "Jaren Jackson Jr.",
@@ -3950,6 +3944,13 @@
      "date": "2026-10-28T18:38Z"
     },
     {
+     "name": "Bilal Coulibaly",
+     "nba_id": 1641731,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-04T17:38Z"
+    },
+    {
      "name": "Anthony Gill",
      "nba_id": 1630264,
      "status": "Day-To-Day",
@@ -4053,7 +4054,7 @@
    "status",
    "timestamp"
   ],
-  "injuries_endpoint_teams": 29,
+  "injuries_endpoint_teams": 30,
   "injuries_endpoint_entries": 96,
   "embedded_injuries": 96
  }
