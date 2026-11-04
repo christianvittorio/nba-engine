@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-04T02:24:25Z",
+ "generated_utc": "2026-11-04T02:25:47Z",
  "kappa_in_state": {
   "margin": 0.7839391839831196,
   "total": 0.9209561875321809
@@ -128,7 +128,7 @@
    "sim_log_loss": 0.6086146605351018,
    "sim_accuracy": 0.6821138211382114,
    "elo_brier": 0.20545160645287663,
-   "elo_log_loss": 0.598629529489296,
+   "elo_log_loss": 0.5986295294892959,
    "elo_accuracy": 0.6747967479674797,
    "home_win_rate_actual": 0.5544715447154471,
    "home_win_rate_predicted": 0.5435853658536586,
