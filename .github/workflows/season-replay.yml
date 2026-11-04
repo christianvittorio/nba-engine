@@ -1,0 +1,29 @@
+name: season-replay
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install numpy pandas scipy
+      - run: python scripts/season_replay.py
+        working-directory: nba_engine
+        env:
+          REPLAY_SOURCE: espn
+          N_SIMS: "2000"
+          PLAYER_SIMS: "600"
+      - name: Commit replay outputs
+        run: |
+          git config user.name "nba-engine-bot"
+          git config user.email "nba-engine-bot@users.noreply.github.com"
+          git pull --rebase || true
+          git add -f nba_engine/artifacts/replay_2027
+          git diff --cached --quiet || git commit -m "season replay $(date -u +%F)"
+          git push
