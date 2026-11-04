@@ -1,0 +1,439 @@
+{
+ "season": "2025-26",
+ "note": "Frozen-parameter walk-forward evaluation (parameters fitted on 2024-25 only). unconfirmed = lineup unknown (what the live job stores); confirmed = knowing who actually played.",
+ "unconfirmed": [
+  {
+   "stat": "min",
+   "n": 37269,
+   "mean_forecast": 15.672,
+   "mean_actual": 15.6545,
+   "bias": -0.0175,
+   "mae": 7.2992,
+   "cov50": 0.6166,
+   "cov80": 0.8541,
+   "cov90": 0.9386
+  },
+  {
+   "stat": "pts",
+   "n": 37269,
+   "mean_forecast": 7.4599,
+   "mean_actual": 7.5077,
+   "bias": 0.0478,
+   "mae": 4.7388,
+   "cov50": 0.6542,
+   "cov80": 0.8694,
+   "cov90": 0.9458
+  },
+  {
+   "stat": "reb",
+   "n": 37269,
+   "mean_forecast": 2.8619,
+   "mean_actual": 2.8413,
+   "bias": -0.0206,
+   "mae": 1.8992,
+   "cov50": 0.7074,
+   "cov80": 0.8999,
+   "cov90": 0.9585
+  },
+  {
+   "stat": "ast",
+   "n": 37269,
+   "mean_forecast": 1.716,
+   "mean_actual": 1.7359,
+   "bias": 0.0199,
+   "mae": 1.2639,
+   "cov50": 0.7607,
+   "cov80": 0.9172,
+   "cov90": 0.9609
+  },
+  {
+   "stat": "stl",
+   "n": 37269,
+   "mean_forecast": 0.5414,
+   "mean_actual": 0.5464,
+   "bias": 0.0049,
+   "mae": 0.5886,
+   "cov50": 0.8543,
+   "cov80": 0.9382,
+   "cov90": 0.9699
+  },
+  {
+   "stat": "blk",
+   "n": 37269,
+   "mean_forecast": 0.3177,
+   "mean_actual": 0.3132,
+   "bias": -0.0045,
+   "mae": 0.4012,
+   "cov50": 0.8809,
+   "cov80": 0.9491,
+   "cov90": 0.9734
+  },
+  {
+   "stat": "tov",
+   "n": 37269,
+   "mean_forecast": 0.8893,
+   "mean_actual": 0.8944,
+   "bias": 0.0051,
+   "mae": 0.7833,
+   "cov50": 0.8168,
+   "cov80": 0.9348,
+   "cov90": 0.9677
+  },
+  {
+   "stat": "tpm",
+   "n": 37269,
+   "mean_forecast": 0.8635,
+   "mean_actual": 0.8645,
+   "bias": 0.001,
+   "mae": 0.7816,
+   "cov50": 0.8221,
+   "cov80": 0.9352,
+   "cov90": 0.9665
+  },
+  {
+   "stat": "fgm",
+   "n": 37269,
+   "mean_forecast": 2.7167,
+   "mean_actual": 2.7256,
+   "bias": 0.0089,
+   "mae": 1.7739,
+   "cov50": 0.7045,
+   "cov80": 0.8965,
+   "cov90": 0.9573
+  },
+  {
+   "stat": "fga",
+   "n": 37269,
+   "mean_forecast": 5.7721,
+   "mean_actual": 5.7825,
+   "bias": 0.0104,
+   "mae": 3.2002,
+   "cov50": 0.6761,
+   "cov80": 0.8793,
+   "cov90": 0.9518
+  },
+  {
+   "stat": "ftm",
+   "n": 37269,
+   "mean_forecast": 1.163,
+   "mean_actual": 1.192,
+   "bias": 0.029,
+   "mae": 1.1297,
+   "cov50": 0.7914,
+   "cov80": 0.913,
+   "cov90": 0.9508
+  },
+  {
+   "stat": "fta",
+   "n": 37269,
+   "mean_forecast": 1.4885,
+   "mean_actual": 1.5222,
+   "bias": 0.0336,
+   "mae": 1.396,
+   "cov50": 0.7612,
+   "cov80": 0.9037,
+   "cov90": 0.9464
+  },
+  {
+   "stat": "pra",
+   "n": 37269,
+   "mean_forecast": 12.0378,
+   "mean_actual": 12.0849,
+   "bias": 0.0471,
+   "mae": 6.8417,
+   "cov50": 0.6319,
+   "cov80": 0.8517,
+   "cov90": 0.9402
+  }
+ ],
+ "confirmed": [
+  {
+   "stat": "min",
+   "n": 26545,
+   "mean_forecast": 22.3738,
+   "mean_actual": 22.3147,
+   "bias": -0.0592,
+   "mae": 4.6662,
+   "cov50": 0.506,
+   "cov80": 0.805,
+   "cov90": 0.9015
+  },
+  {
+   "stat": "pts",
+   "n": 26545,
+   "mean_forecast": 10.6428,
+   "mean_actual": 10.6989,
+   "bias": 0.0562,
+   "mae": 4.4841,
+   "cov50": 0.5696,
+   "cov80": 0.8342,
+   "cov90": 0.9195
+  },
+  {
+   "stat": "reb",
+   "n": 26545,
+   "mean_forecast": 4.0929,
+   "mean_actual": 4.0487,
+   "bias": -0.0442,
+   "mae": 1.8564,
+   "cov50": 0.6475,
+   "cov80": 0.8813,
+   "cov90": 0.9446
+  },
+  {
+   "stat": "ast",
+   "n": 26545,
+   "mean_forecast": 2.4675,
+   "mean_actual": 2.4746,
+   "bias": 0.0071,
+   "mae": 1.329,
+   "cov50": 0.715,
+   "cov80": 0.9106,
+   "cov90": 0.9576
+  },
+  {
+   "stat": "stl",
+   "n": 26545,
+   "mean_forecast": 0.7874,
+   "mean_actual": 0.7788,
+   "bias": -0.0086,
+   "mae": 0.7175,
+   "cov50": 0.8366,
+   "cov80": 0.9448,
+   "cov90": 0.9726
+  },
+  {
+   "stat": "blk",
+   "n": 26545,
+   "mean_forecast": 0.452,
+   "mean_actual": 0.4477,
+   "bias": -0.0043,
+   "mae": 0.5096,
+   "cov50": 0.8601,
+   "cov80": 0.9498,
+   "cov90": 0.9754
+  },
+  {
+   "stat": "tov",
+   "n": 26545,
+   "mean_forecast": 1.2768,
+   "mean_actual": 1.2757,
+   "bias": -0.0011,
+   "mae": 0.8843,
+   "cov50": 0.7912,
+   "cov80": 0.9363,
+   "cov90": 0.9706
+  },
+  {
+   "stat": "tpm",
+   "n": 26545,
+   "mean_forecast": 1.2406,
+   "mean_actual": 1.2309,
+   "bias": -0.0096,
+   "mae": 0.9071,
+   "cov50": 0.7835,
+   "cov80": 0.9316,
+   "cov90": 0.967
+  },
+  {
+   "stat": "fgm",
+   "n": 26545,
+   "mean_forecast": 3.8879,
+   "mean_actual": 3.8833,
+   "bias": -0.0046,
+   "mae": 1.7217,
+   "cov50": 0.6505,
+   "cov80": 0.8797,
+   "cov90": 0.9453
+  },
+  {
+   "stat": "fga",
+   "n": 26545,
+   "mean_forecast": 8.2658,
+   "mean_actual": 8.2433,
+   "bias": -0.0225,
+   "mae": 2.6747,
+   "cov50": 0.6148,
+   "cov80": 0.8668,
+   "cov90": 0.9372
+  },
+  {
+   "stat": "ftm",
+   "n": 26545,
+   "mean_forecast": 1.6264,
+   "mean_actual": 1.7013,
+   "bias": 0.0749,
+   "mae": 1.3208,
+   "cov50": 0.7258,
+   "cov80": 0.8989,
+   "cov90": 0.9459
+  },
+  {
+   "stat": "fta",
+   "n": 26545,
+   "mean_forecast": 2.0853,
+   "mean_actual": 2.1732,
+   "bias": 0.0879,
+   "mae": 1.601,
+   "cov50": 0.6772,
+   "cov80": 0.8848,
+   "cov90": 0.9419
+  },
+  {
+   "stat": "pra",
+   "n": 26545,
+   "mean_forecast": 17.2031,
+   "mean_actual": 17.2222,
+   "bias": 0.0191,
+   "mae": 5.8766,
+   "cov50": 0.5189,
+   "cov80": 0.8078,
+   "cov90": 0.9002
+  }
+ ],
+ "unconfirmed_last20pct": [
+  {
+   "stat": "min",
+   "n": 7457,
+   "mean_forecast": 15.6007,
+   "mean_actual": 15.7113,
+   "bias": 0.1106,
+   "mae": 7.8304,
+   "cov50": 0.5855,
+   "cov80": 0.8286,
+   "cov90": 0.9185
+  },
+  {
+   "stat": "pts",
+   "n": 7457,
+   "mean_forecast": 7.3822,
+   "mean_actual": 7.6287,
+   "bias": 0.2465,
+   "mae": 5.0382,
+   "cov50": 0.6279,
+   "cov80": 0.8456,
+   "cov90": 0.9277
+  },
+  {
+   "stat": "reb",
+   "n": 7457,
+   "mean_forecast": 2.8195,
+   "mean_actual": 2.8137,
+   "bias": -0.0058,
+   "mae": 1.9453,
+   "cov50": 0.6887,
+   "cov80": 0.8884,
+   "cov90": 0.952
+  },
+  {
+   "stat": "ast",
+   "n": 7457,
+   "mean_forecast": 1.7229,
+   "mean_actual": 1.7873,
+   "bias": 0.0644,
+   "mae": 1.3452,
+   "cov50": 0.739,
+   "cov80": 0.8979,
+   "cov90": 0.9488
+  },
+  {
+   "stat": "stl",
+   "n": 7457,
+   "mean_forecast": 0.5428,
+   "mean_actual": 0.5473,
+   "bias": 0.0045,
+   "mae": 0.5952,
+   "cov50": 0.8511,
+   "cov80": 0.934,
+   "cov90": 0.9678
+  },
+  {
+   "stat": "blk",
+   "n": 7457,
+   "mean_forecast": 0.3123,
+   "mean_actual": 0.3035,
+   "bias": -0.0088,
+   "mae": 0.3994,
+   "cov50": 0.8813,
+   "cov80": 0.9486,
+   "cov90": 0.9726
+  },
+  {
+   "stat": "tov",
+   "n": 7457,
+   "mean_forecast": 0.8826,
+   "mean_actual": 0.8879,
+   "bias": 0.0053,
+   "mae": 0.8095,
+   "cov50": 0.8054,
+   "cov80": 0.9266,
+   "cov90": 0.9615
+  },
+  {
+   "stat": "tpm",
+   "n": 7457,
+   "mean_forecast": 0.8536,
+   "mean_actual": 0.8792,
+   "bias": 0.0256,
+   "mae": 0.8114,
+   "cov50": 0.8086,
+   "cov80": 0.927,
+   "cov90": 0.9588
+  },
+  {
+   "stat": "fgm",
+   "n": 7457,
+   "mean_forecast": 2.6872,
+   "mean_actual": 2.7883,
+   "bias": 0.1011,
+   "mae": 1.8812,
+   "cov50": 0.6783,
+   "cov80": 0.8756,
+   "cov90": 0.9411
+  },
+  {
+   "stat": "fga",
+   "n": 7457,
+   "mean_forecast": 5.6984,
+   "mean_actual": 5.8042,
+   "bias": 0.1058,
+   "mae": 3.4351,
+   "cov50": 0.6437,
+   "cov80": 0.8533,
+   "cov90": 0.9375
+  },
+  {
+   "stat": "ftm",
+   "n": 7457,
+   "mean_forecast": 1.1543,
+   "mean_actual": 1.173,
+   "bias": 0.0187,
+   "mae": 1.1571,
+   "cov50": 0.7833,
+   "cov80": 0.9045,
+   "cov90": 0.9434
+  },
+  {
+   "stat": "fta",
+   "n": 7457,
+   "mean_forecast": 1.477,
+   "mean_actual": 1.5052,
+   "bias": 0.0281,
+   "mae": 1.4378,
+   "cov50": 0.7502,
+   "cov80": 0.8908,
+   "cov90": 0.9371
+  },
+  {
+   "stat": "pra",
+   "n": 7457,
+   "mean_forecast": 11.9246,
+   "mean_actual": 12.2297,
+   "bias": 0.3051,
+   "mae": 7.2984,
+   "cov50": 0.604,
+   "cov80": 0.8267,
+   "cov90": 0.9199
+  }
+ ]
+}

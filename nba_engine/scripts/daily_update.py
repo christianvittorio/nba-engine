@@ -16,6 +16,7 @@ store = Store(DB)
 eng = Engine.load(store, STATE)
 # First run on a fresh state: catch up on everything since the season opened (ingesting a game twice is a no-op).
 LOOKBACK = int(os.environ.get("LOOKBACK_DAYS") or (3 if (last_success(store) and os.path.exists("artifacts/player_applied.json")) else 21))
+av = None
 # Rosters + injury statuses first (best effort, never fails the job): used for the injury-adjusted forecasts and the dashboard.
 try:
     from nbaengine.availability import build_availability, save_availability
@@ -40,7 +41,26 @@ print(summary)
 if summary["ok"]:
     try:      # player history from ESPN box scores: best effort, must never fail the forecast job
         from nbaengine.playerfeed import update_players
-        print("players:", update_players(feed, "artifacts"))
+        from nbaengine import player_live as PLV
+        PLDB = "artifacts/player_live.sqlite"
+        print("players:", update_players(feed, "artifacts", sink=lambda season, eid, df: PLV.store_actuals(PLDB, season, eid, df)))
+        try:      # player-stat forecasts for today's games that have a stored team forecast and have not started (calibrated later)
+            import json as _j, sqlite3 as _sq
+            from datetime import datetime as _dt, timezone as _tz
+            from nbaengine.players import PlayerModel as _PM
+            _c = _sq.connect(DB)
+            _res = set(map(tuple, _c.execute("SELECT season, game_id FROM results").fetchall()))
+            _g = []
+            for _s, _gid, _dj in _c.execute("SELECT season, game_id, details_json FROM forecasts WHERE model_name='sim_mc'").fetchall():
+                _d = _j.loads(_dj)
+                if _d.get("date") == str(today) and (_s, _gid) not in _res and _d.get("tip_utc") and \
+                        _dt.fromisoformat(_d["tip_utc"].replace("Z", "+00:00")) > _dt.now(_tz.utc):
+                    _g.append({"season": _s, "game_id": _gid, "home": _d["home"], "away": _d["away"], "seed": 20261021 + _gid * 100})
+            _c.close()
+            print("player forecasts:", PLV.forecast_slate(PLDB, _PM.load("artifacts/player_state.json"), av, _g,
+                                                            n_sims=int(os.environ.get("PLAYER_N_SIMS", 1000))))
+        except Exception as ex:
+            print("player forecasts failed (team forecasts unaffected):", type(ex).__name__, ex)
     except Exception as ex:
         print("player update failed (forecasts unaffected):", type(ex).__name__, ex)
     eng.save_state(STATE)       # state is only persisted after a fully successful run
@@ -53,5 +73,11 @@ if summary["ok"]:
         print("niche streaks written" if ns.build(DB, str(today), f"artifacts/reports/niche_streaks_{today}.md") else f"no forecast games on {today}: no streak report")
     except Exception as ex:
         print("niche streaks failed (forecasts unaffected):", type(ex).__name__, ex)
+    try:      # calibration of team and player forecasts against results (reports + display constants; changes no stored forecast)
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("calibration_report", os.path.join(ROOT, "scripts/calibration_report.py"))
+        cr = importlib.util.module_from_spec(spec); spec.loader.exec_module(cr); cr.main()
+    except Exception as ex:
+        print("calibration report failed (forecasts unaffected):", type(ex).__name__, ex)
 else:
     sys.exit(1)

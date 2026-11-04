@@ -21,6 +21,7 @@ from .sim import ProfileParams, TeamProfiles, apply_dispersion, simulate_game, s
 from .store import Store, now_utc
 
 SEED0 = 20261017
+ALPHA_LATE, ALPHA_EARLY, N_EARLY = 0.01, 0.03, 60     # online scoring-level tracker: faster for the first N games of a season; level restarts at 0 each season
 EXTRA_SCHEMA = """
 CREATE TABLE IF NOT EXISTS runs(run_id INTEGER PRIMARY KEY AUTOINCREMENT, started_utc TEXT, finished_utc TEXT,
   today TEXT, ok INTEGER, finals_ingested INTEGER, forecasts_made INTEGER, forecasts_skipped_late INTEGER, error TEXT);
@@ -39,7 +40,9 @@ class Engine:
         self.store, self.elo, self.prof = store, elo, prof
         self.kappa_m, self.kappa_t, self.level_delta = kappa_m, kappa_t, level_delta
         self.base, self.sds, self.applied = base, sds, applied
-        self.alpha = 0.01
+        self.alpha = ALPHA_LATE
+        self.level_n = 0             # games used to learn the scoring level in the current season
+        self.level_season = None     # season the level belongs to; it restarts at 0 when the season changes
         self.last_margin = {}        # team -> [ISO date, margin] of its latest game seen (for the after-a-10+-win effect)
         self.last_played = {}        # team -> ISO date of its latest game seen (for back-to-back detection)
         self.rest_coef = None        # {'home_b2b': .., 'away_b2b': ..} margin points; set by the daily job
@@ -55,7 +58,8 @@ class Engine:
                          "lg_pace": p.lg_pace, "pace_sq": p.pace_sq, "season": p.season},
                 "kappa_m": self.kappa_m, "kappa_t": self.kappa_t, "level_delta": self.level_delta,
                 "base": self.base, "sds": {k: _sd_to(v) for k, v in self.sds.items()},
-                "applied": sorted(self.applied), "last_played": self.last_played, "last_margin": self.last_margin}
+                "applied": sorted(self.applied), "last_played": self.last_played, "last_margin": self.last_margin,
+                "level_n": self.level_n, "level_season": self.level_season}
 
     def save_state(self, path: str) -> None:
         tmp = path + ".tmp"
@@ -73,6 +77,7 @@ class Engine:
                   {k: _sd_from(v) for k, v in d["sds"].items()}, set(d["applied"]))
         eng.last_played = dict(d.get("last_played", {}))
         eng.last_margin = dict(d.get("last_margin", {}))
+        eng.level_n, eng.level_season = d.get("level_n", 0), d.get("level_season")
         return eng
 
     @classmethod
@@ -80,6 +85,13 @@ class Engine:
         return cls.from_dict(store, json.load(open(path)))
 
     # ---------------- ingest a finished game (state update happens AFTER its forecast was stored)
+    def _roll_level(self, season: int) -> None:
+        """The level correction learned from last season's surprises does not carry into a new season: restart at 0."""
+        if self.level_season is None:
+            self.level_season = season                      # old state files: keep what was learned, adopt the label
+        elif season != self.level_season:
+            self.level_delta, self.level_n, self.level_season = 0.0, 0, season
+
     def _stored(self, season, gid, model):
         r = self.store.con.execute("SELECT mean_margin, mean_total, details_json FROM forecasts WHERE season=? AND game_id=? "
                                    "AND model_name=? AND model_version=?", (season, gid, model, MODEL_VERSION)).fetchone()
@@ -105,7 +117,10 @@ class Engine:
         e, b, r = (self._stored(fg.season, fg.game_id, m) for m in ("elo", "home_const", "sim_mc_raw"))
         pred_poss = (r[2].get("mean_poss") if r else None) or self.prof.expected_poss(fg.home, fg.away)
         if e and b and r:      # forecasts existed before the result: update the online correction trackers
-            self.level_delta = (1 - self.alpha) * self.level_delta + self.alpha * (at - r[1])
+            self._roll_level(fg.season)
+            a = ALPHA_EARLY if self.level_n < N_EARLY else self.alpha
+            self.level_delta = (1 - a) * self.level_delta + a * (at - r[1])
+            self.level_n += 1
             self.sds["elo"].add(am - e[2]["exp_margin"])
             self.sds["base_m"].add(am - b[0]); self.sds["base_t"].add(at - b[1])
         self.base["n"] += 1; self.base["hw"] += float(am > 0); self.base["m"] += am; self.base["t"] += at
@@ -126,6 +141,7 @@ class Engine:
             if parse(ug.tip_utc) <= parse(now_iso):
                 return "late"
         self.elo.new_season(ug.season); self.prof.new_season(ug.season)
+        self._roll_level(ug.season)
         s, gid, h, a = ug.season, ug.game_id, ug.home, ug.away
         cutoff = now_iso
         seed = SEED0 + gid
@@ -142,7 +158,7 @@ class Engine:
         raw = summarize(sim)
         cal = summarize(apply_dispersion(sim, self.kappa_m, self.kappa_t, self.level_delta))
         mk = {"market": ug.market} if ug.market else {}
-        for name, sm, det in (("sim_mc_raw", raw, {}), ("sim_mc", cal, {"level_delta": self.level_delta, **mk})):
+        for name, sm, det in (("sim_mc_raw", raw, {}), ("sim_mc", cal, {"level_delta": self.level_delta, "level_n": self.level_n, **mk})):
             sv(s, gid, name, MODEL_VERSION, cutoff, seed, n_sims, sm["p_home"], sm["mean_home"], sm["mean_away"],
                sm["mean_total"], sm["p_ot"], q_margin=sm["q_margin"], q_total=sm["q_total"],
                details={**det, "mc_se_p_home": sm["mc_se_p_home"], "mean_poss": sm["mean_poss"],
@@ -299,6 +315,13 @@ def write_report(store: Store, today: date, path: str) -> str:
     for r in rows:
         det = json.loads(r[9]) if r[9] else {}
         by.setdefault(r[0], {})[r[1]] = (r, det)
+    try:      # display calibration constants from scripts/calibration_report.py (never change a stored forecast)
+        dc = json.load(open(os.path.join(os.path.dirname(path) or ".", "..", "calibration.json")))["display_constants"]
+    except Exception:
+        dc = {}
+    ots, mis = float(dc.get("ot_scale", 1.0)), float(dc.get("margin_interval_scale", 1.0))
+    tis = float(dc.get("total_interval_scale", 1.0))
+    sc = lambda q, k, f: q["50"] + f * (q[k] - q["50"])
     lines = [f"# NBA forecasts for {today}", f"Data refresh: last successful run {last_success(store)} UTC. Model {MODEL_VERSION}.", ""]
     for gid, m in by.items():
         s = m.get("sim_mc")
@@ -308,8 +331,8 @@ def write_report(store: Store, today: date, path: str) -> str:
         qm, qt = json.loads(r[7]), json.loads(r[8])
         el = m["elo"][0][2] if "elo" in m else float("nan")
         lines.append(f"- {det['away']} at {det['home']} (game {gid}): P(home) sim {r[2]:.3f} / Elo {el:.3f}; mean score {r[3]:.1f}-{r[4]:.1f} (total {r[5]:.1f}); "
-                     f"margin 50% [{qm['25']:.1f}, {qm['75']:.1f}], 80% [{qm['10']:.1f}, {qm['90']:.1f}]; total 80% [{qt['10']:.1f}, {qt['90']:.1f}]; "
-                     f"P(OT) {r[6]:.3f}; most frequent exact score {det['modal_score'][0]}-{det['modal_score'][1]} (rarely hit).")
+                     f"margin 50% [{sc(qm, '25', mis):.1f}, {sc(qm, '75', mis):.1f}], 80% [{sc(qm, '10', mis):.1f}, {sc(qm, '90', mis):.1f}]; total 80% [{sc(qt, '10', tis):.1f}, {sc(qt, '90', tis):.1f}]; "
+                     f"P(OT) {min(0.25, r[6] * ots):.3f}; most frequent exact score {det['modal_score'][0]}-{det['modal_score'][1]} (rarely hit).")
         ij = m.get("sim_mc_inj")
         if ij:
             d2 = ij[1]

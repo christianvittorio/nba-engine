@@ -22,6 +22,7 @@ FILES = {2022: "games_cdn_2022.csv", 2023: "games_cdn_2023.csv", 2024: "games_cd
          2025: "games_cdn_2025.csv", 2026: "games_cdn_2026.csv"}
 KAPPA_M, KAPPA_T = 0.7839391839831196, 0.9209561875321809      # fitted once on the 2023 season (stored in nba_engine.sqlite)
 SEED0 = 20261017
+QS = (5, 10, 25, 50, 75, 90, 95)
 
 
 def main(season: int, n_sims: int):
@@ -40,11 +41,15 @@ def main(season: int, n_sims: int):
                 e = elo.predict(h, a)
                 sim = simulate_game(prof, h, a, n_sims, SEED0 + gid, 0.0)
                 raw = summarize(sim)
+                m_ = (sim["home_pts"] - sim["away_pts"]).astype(float); t_ = (sim["home_pts"] + sim["away_pts"]).astype(float)
                 cal = summarize(apply_dispersion(sim, KAPPA_M, KAPPA_T, 0.0))
                 rows.append({"season": s, "game_id": gid, "date": gd["date"], "home": h, "away": a,
                              "home_pts": gd["home_pts"], "away_pts": gd["away_pts"], "n_periods": gd["n_periods"],
                              "sim_home": raw["mean_home"], "sim_away": raw["mean_away"],
-                             "sim_p_home": cal["p_home"], "elo_p_home": e["p_home"], "elo_margin": e["exp_margin"]})
+                             "sim_p_home": cal["p_home"], "elo_p_home": e["p_home"], "elo_margin": e["exp_margin"],
+                             "sim_p_ot": raw["p_ot"], "m_mean": float(m_.mean()), "m_sd": float(m_.std()),
+                             "t_mean": float(t_.mean()), "t_sd": float(t_.std()),
+                             **{f"rm_q{q}": float(np.percentile(m_, q)) for q in QS}, **{f"rt_q{q}": float(np.percentile(t_, q)) for q in QS}})
                 if len(rows) % 300 == 0:
                     print(season, len(rows), f"{time.time() - t0:.0f}s", flush=True)
             elo.update(h, a, gd["home_pts"], gd["away_pts"])

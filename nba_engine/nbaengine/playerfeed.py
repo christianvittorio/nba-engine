@@ -74,7 +74,7 @@ def _save(path, obj):
     os.replace(path + ".tmp", path)
 
 
-def update_players(feed, art_dir: str = "artifacts") -> dict:
+def update_players(feed, art_dir: str = "artifacts", sink=None) -> dict:
     out = {"games_applied": 0, "rows": 0, "mapped_existing": 0, "new_players": 0, "skipped_games": 0, "problems": []}
     try:
         state = os.path.join(art_dir, "player_state.json")
@@ -110,6 +110,11 @@ def update_players(feed, art_dir: str = "artifacts") -> dict:
                     df[c] = 0.0 if c not in ("team", "name") else ""
             df = df[COLS].fillna(0)
             pm.update_game(df, season)
+            if sink is not None:                    # e.g. store the actual box score for live calibration; never blocks the update
+                try:
+                    sink(season, eid, df)
+                except Exception as ex:
+                    out["problems"].append(f"sink game {eid}: {type(ex).__name__}: {ex}")
             applied.add(str(eid))
             out["games_applied"] += 1
             out["rows"] += len(df)
