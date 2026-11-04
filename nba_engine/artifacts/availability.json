@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-04T02:24:55Z",
+ "generated_utc": "2026-11-04T16:53:10Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -2293,12 +2293,6 @@
      "nba_id": -5061585
     },
     {
-     "espn_id": "4592699",
-     "name": "Enrique Freeman",
-     "pos": "F",
-     "nba_id": 1642402
-    },
-    {
      "espn_id": "3032976",
      "name": "Rudy Gobert",
      "pos": "C",
@@ -2367,13 +2361,6 @@
      "status": "Out",
      "detail": "",
      "date": "2026-10-29T18:33Z"
-    },
-    {
-     "name": "Enrique Freeman",
-     "nba_id": 1642402,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-11-03T20:59Z"
     },
     {
      "name": "Terrence Shannon Jr.",
@@ -2707,6 +2694,12 @@
      "name": "Bennett Stirtz",
      "pos": "G",
      "nba_id": -5241364
+    },
+    {
+     "espn_id": "4433159",
+     "name": "Dalen Terry",
+     "pos": "G",
+     "nba_id": 1631207
     },
     {
      "espn_id": "5159925",
@@ -4062,6 +4055,6 @@
   ],
   "injuries_endpoint_teams": 29,
   "injuries_endpoint_entries": 96,
-  "embedded_injuries": 97
+  "embedded_injuries": 96
  }
 }
