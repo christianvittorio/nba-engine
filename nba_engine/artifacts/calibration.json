@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-04T20:40:02Z",
+ "generated_utc": "2026-11-05T17:09:21Z",
  "kappa_in_state": {
   "margin": 0.7839391839831196,
   "total": 0.9209561875321809
@@ -111,9 +111,9 @@
    "away_pts_bias": 0.24207466492344382,
    "p_ot_pred": 0.022471544715447152,
    "p_ot_actual": 0.04878048780487805,
-   "margin_slope": 1.1049764094738022,
+   "margin_slope": 1.104976409473802,
    "margin_slope_se": 0.06400275863524538,
-   "total_slope": 0.9851944261271802,
+   "total_slope": 0.9851944261271803,
    "total_slope_se": 0.07208411848063923,
    "margin_cov50": 0.47479674796747967,
    "margin_cov80": 0.7739837398373983,
@@ -144,7 +144,7 @@
    "p_ot_actual": 0.04390243902439024,
    "margin_slope": 1.0924258999035905,
    "margin_slope_se": 0.06242863777271126,
-   "total_slope": 0.8756646360621967,
+   "total_slope": 0.8756646360621966,
    "total_slope_se": 0.08087126186770764,
    "margin_cov50": 0.4682926829268293,
    "margin_cov80": 0.748780487804878,
@@ -237,7 +237,7 @@
    "away_pts_bias": 0.05005837946005291,
    "p_ot_pred": 0.022535772357723576,
    "p_ot_actual": 0.05121951219512195,
-   "margin_slope": 1.0629141088099625,
+   "margin_slope": 1.0629141088099627,
    "margin_slope_se": 0.03362408442767669,
    "total_slope": 0.9200849685506685,
    "total_slope_se": 0.03555875137727617,
@@ -250,48 +250,202 @@
   }
  },
  "live_team": {
-  "n": 36,
-  "sim_log_loss": 0.6393647283352978,
-  "elo_log_loss": 0.6288132931803907,
-  "sim_brier": 0.2267307536111111,
-  "margin_bias": 1.9084861111111115,
-  "margin_mae": 11.71746388888889,
-  "total_bias": -11.316658333333335,
-  "total_bias_se": 3.4613969658042643,
-  "total_mae": 18.854602777777778,
-  "margin_cov80": 0.75,
-  "total_cov80": 0.6111111111111112,
-  "ot_pred": 0.022091666666666666,
-  "ot_actual": 0.027777777777777776,
-  "home_win_pred": 0.5408749999999999,
-  "home_win_actual": 0.5555555555555556,
+  "n": 50,
+  "sim_log_loss": 0.6268295744478604,
+  "elo_log_loss": 0.6307315563220284,
+  "sim_brier": 0.2210938382,
+  "margin_bias": 0.8671540000000004,
+  "margin_mae": 11.130457999999999,
+  "total_bias": -7.862298000000001,
+  "total_bias_se": 2.7769406004413395,
+  "total_mae": 16.393918,
+  "margin_cov80": 0.8,
+  "total_cov80": 0.68,
+  "ot_pred": 0.021856000000000004,
+  "ot_actual": 0.06,
+  "home_win_pred": 0.552046,
+  "home_win_actual": 0.54,
   "variants": {
    "sim_mc": {
-    "n": 36,
-    "log_loss": 0.6393647283352978,
-    "margin_mae": 11.71746388888889
+    "n": 50,
+    "log_loss": 0.6268295744478604,
+    "margin_mae": 11.130457999999999
    },
    "sim_mc_rest": {
-    "n": 15,
-    "log_loss": 0.5868994716452584,
-    "margin_mae": 10.121960000000001
+    "n": 29,
+    "log_loss": 0.5906151923103852,
+    "margin_mae": 9.880124137931038
+   },
+   "sim_mc_sit": {
+    "n": 14,
+    "log_loss": 0.5889398864932905,
+    "margin_mae": 9.619778571428574
    },
    "sim_mc_inj": {
-    "n": 15,
-    "log_loss": 0.6481796061578167,
-    "margin_mae": 11.014780000000002
+    "n": 29,
+    "log_loss": 0.6311514732084584,
+    "margin_mae": 10.409458620689653
    },
    "sim_mc_full": {
-    "n": 15,
-    "log_loss": 0.6348576033333104,
-    "margin_mae": 11.359746666666668
+    "n": 29,
+    "log_loss": 0.6242607820923346,
+    "margin_mae": 10.587889655172415
+   },
+   "sim_mc_all": {
+    "n": 14,
+    "log_loss": 0.6073696372886805,
+    "margin_mae": 9.760107142857146
    }
   }
  },
  "player_live": {
-  "games": 0,
-  "rows": 0,
-  "metrics": []
+  "games": 14,
+  "rows": 335,
+  "metrics": [
+   {
+    "stat": "min",
+    "n": 335,
+    "mean_forecast": 18.826,
+    "mean_actual": 19.5343,
+    "bias": 0.7083,
+    "mae": 6.9037,
+    "cov50": 0.591,
+    "cov80": 0.8418,
+    "cov90": 0.9493
+   },
+   {
+    "stat": "pts",
+    "n": 335,
+    "mean_forecast": 9.253,
+    "mean_actual": 9.1552,
+    "bias": -0.0978,
+    "mae": 4.7326,
+    "cov50": 0.6388,
+    "cov80": 0.8925,
+    "cov90": 0.9701
+   },
+   {
+    "stat": "reb",
+    "n": 335,
+    "mean_forecast": 3.4692,
+    "mean_actual": 3.6299,
+    "bias": 0.1606,
+    "mae": 2.0514,
+    "cov50": 0.6985,
+    "cov80": 0.9015,
+    "cov90": 0.9612
+   },
+   {
+    "stat": "ast",
+    "n": 335,
+    "mean_forecast": 2.1331,
+    "mean_actual": 2.0925,
+    "bias": -0.0406,
+    "mae": 1.2833,
+    "cov50": 0.7761,
+    "cov80": 0.9313,
+    "cov90": 0.9731
+   },
+   {
+    "stat": "stl",
+    "n": 335,
+    "mean_forecast": 0.6562,
+    "mean_actual": 0.594,
+    "bias": -0.0621,
+    "mae": 0.6278,
+    "cov50": 0.8746,
+    "cov80": 0.9612,
+    "cov90": 0.9791
+   },
+   {
+    "stat": "blk",
+    "n": 335,
+    "mean_forecast": 0.3911,
+    "mean_actual": 0.4537,
+    "bias": 0.0626,
+    "mae": 0.4855,
+    "cov50": 0.8299,
+    "cov80": 0.9254,
+    "cov90": 0.9612
+   },
+   {
+    "stat": "tov",
+    "n": 335,
+    "mean_forecast": 1.1257,
+    "mean_actual": 1.1224,
+    "bias": -0.0033,
+    "mae": 0.8581,
+    "cov50": 0.7791,
+    "cov80": 0.9493,
+    "cov90": 0.9761
+   },
+   {
+    "stat": "tpm",
+    "n": 335,
+    "mean_forecast": 1.0517,
+    "mean_actual": 1.009,
+    "bias": -0.0427,
+    "mae": 0.8451,
+    "cov50": 0.8239,
+    "cov80": 0.9343,
+    "cov90": 0.9821
+   },
+   {
+    "stat": "fgm",
+    "n": 335,
+    "mean_forecast": 3.3514,
+    "mean_actual": 3.2119,
+    "bias": -0.1394,
+    "mae": 1.7331,
+    "cov50": 0.7015,
+    "cov80": 0.9284,
+    "cov90": 0.9821
+   },
+   {
+    "stat": "fga",
+    "n": 335,
+    "mean_forecast": 7.1052,
+    "mean_actual": 7.1522,
+    "bias": 0.0471,
+    "mae": 3.1613,
+    "cov50": 0.6627,
+    "cov80": 0.8925,
+    "cov90": 0.9701
+   },
+   {
+    "stat": "ftm",
+    "n": 335,
+    "mean_forecast": 1.4985,
+    "mean_actual": 1.7224,
+    "bias": 0.2238,
+    "mae": 1.3524,
+    "cov50": 0.7672,
+    "cov80": 0.9194,
+    "cov90": 0.9522
+   },
+   {
+    "stat": "fta",
+    "n": 335,
+    "mean_forecast": 1.9199,
+    "mean_actual": 2.197,
+    "bias": 0.2771,
+    "mae": 1.6592,
+    "cov50": 0.7373,
+    "cov80": 0.8866,
+    "cov90": 0.9493
+   },
+   {
+    "stat": "pra",
+    "n": 335,
+    "mean_forecast": 14.8553,
+    "mean_actual": 14.8776,
+    "bias": 0.0223,
+    "mae": 6.6061,
+    "cov50": 0.6328,
+    "cov80": 0.8746,
+    "cov90": 0.9731
+   }
+  ]
  },
  "player_retro_available": true
 }
