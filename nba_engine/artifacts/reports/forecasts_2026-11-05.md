@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-05
-Data refresh: last successful run 2026-11-05T17:09:19Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-05T20:56:08Z UTC. Model nbaengine-0.1.0.
 
 - ORL at PHX (game 401909936): P(home) sim 0.536 / Elo 0.616; mean score 110.9-109.4 (total 220.4); margin 50% [-8.1, 11.0], 80% [-17.2, 20.0]; total 80% [196.7, 244.4]; P(OT) 0.044; most frequent exact score 103-105 (rarely hit).
   - injury-adjusted: P(home) sim 0.573, margin shift +1.8 pts; rotation players listed out: M. Williams (home), Paolo Banchero (away), Jalen Suggs (away).

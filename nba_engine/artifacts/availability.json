@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-05T17:08:29Z",
+ "generated_utc": "2026-11-05T20:55:13Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -531,9 +531,9 @@
     {
      "name": "Kon Knueppel",
      "nba_id": 1642851,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-05T01:54Z"
+     "date": "2026-11-05T17:12Z"
     },
     {
      "name": "Grant Williams",
@@ -1881,7 +1881,7 @@
      "nba_id": 1642876,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-04T18:48Z"
+     "date": "2026-11-05T18:30Z"
     }
    ]
   },
@@ -2481,14 +2481,14 @@
      "nba_id": 1642274,
      "status": "Out",
      "detail": "",
-     "date": "2026-10-30T21:32Z"
+     "date": "2026-11-05T20:47Z"
     },
     {
      "name": "Trey Murphy III",
      "nba_id": 1630530,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-05T15:02Z"
+     "date": "2026-11-05T20:19Z"
     }
    ]
   },
@@ -3144,16 +3144,16 @@
     {
      "name": "Rasheer Fleming",
      "nba_id": 1642853,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-05T15:04Z"
+     "date": "2026-11-05T20:22Z"
     },
     {
      "name": "Jordan Goodwin",
      "nba_id": 1630692,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-05T15:04Z"
+     "date": "2026-11-05T20:18Z"
     },
     {
      "name": "Mark Williams",
@@ -3612,6 +3612,12 @@
      "name": "Alijah Martin",
      "pos": "G",
      "nba_id": 1642918
+    },
+    {
+     "espn_id": "4411057",
+     "name": "Kevin McCullar Jr.",
+     "pos": "G",
+     "nba_id": 1641755
     },
     {
      "espn_id": "5093267",
