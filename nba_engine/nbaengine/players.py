@@ -57,6 +57,7 @@ class PlayerParams:
     min_resid: list = field(default_factory=list)
     p_play: dict = field(default_factory=dict)
     sigma_shoot: float = 0.0
+    p_play_pow: float = 1.0     # >1 shrinks the unconfirmed play probability (replay 2026-27: the table over-stated it)
 
 
 def allocate_minutes(base: np.ndarray, total: float, cap: float) -> np.ndarray:
@@ -185,7 +186,8 @@ class PlayerModel:
         self.n_games += 1
 
     def project_team(self, team: str, active: list | None = None, mode: str = "confirmed",
-                     extra_unknown: dict | None = None, pool_ids: list | None = None) -> pd.DataFrame:
+                     extra_unknown: dict | None = None, pool_ids: list | None = None,
+                     team_pts: float | None = None) -> pd.DataFrame:
         p = self.p
         pool = list(pool_ids) if pool_ids is not None else self.pool(team)
         act = pool if active is None else list(active)
@@ -211,12 +213,24 @@ class PlayerModel:
                     r[s] *= 1.0 + p.beta.get(s, 0.0) * f
             st = self.pl.get(pid)
             miss = self.misses_last5(pid) if st else 2
-            pp = p.p_play.get(f"{bucket(m0)}|{min(miss, 2)}", 0.85) if mode == "unconfirmed" else 1.0
+            pp = p.p_play.get(f"{bucket(m0)}|{min(miss, 2)}", 0.85) ** p.p_play_pow if mode == "unconfirmed" else 1.0
             row = {"player_id": pid, "name": self.names.get(pid, str(pid)), "base_min": float(m0),
                    "proj_min": float(m), "p_play": float(pp), "is_new": pid in unknown, "f": f,
                    "n_games": st["n"] if st else 0}
             row.update({f"r_{k}": v for k, v in r.items()})
             rows.append(row)
+        if team_pts and rows:
+            # Reconcile with the team simulation: scale shot volume (and assists, which follow made baskets) so that the players'
+            # expected points add up to the team's simulated points. Replay 2026-27: player sums ran 7 points/team above the team
+            # simulation and 7.5 above reality, in both halves of the sample, concentrated in 5-15 point scorers.
+            exp = 0.0
+            for r in rows:
+                pts_rate = r["r_fga"] * ((1 - r["r_s3"]) * 2 * r["r_p2"] + r["r_s3"] * 3 * r["r_p3"]) + r["r_fta"] * r["r_ft"]
+                exp += r["proj_min"] * pts_rate * r["p_play"]
+            k = float(np.clip(team_pts / exp, 0.8, 1.2)) if exp > 0 else 1.0
+            for r in rows:
+                r["r_fga"] *= k; r["r_fta"] *= k; r["r_ast"] *= k
+                r["recon_k"] = k
         return pd.DataFrame(rows)
 
     def baseline_means(self, pid: int, n: int = 10):

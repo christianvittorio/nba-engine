@@ -51,11 +51,12 @@ if summary["ok"]:
             _c = _sq.connect(DB)
             _res = set(map(tuple, _c.execute("SELECT season, game_id FROM results").fetchall()))
             _g = []
-            for _s, _gid, _dj in _c.execute("SELECT season, game_id, details_json FROM forecasts WHERE model_name='sim_mc'").fetchall():
+            for _s, _gid, _dj, _mh, _ma in _c.execute("SELECT season, game_id, details_json, mean_home, mean_away FROM forecasts WHERE model_name='sim_mc'").fetchall():
                 _d = _j.loads(_dj)
                 if _d.get("date") == str(today) and (_s, _gid) not in _res and _d.get("tip_utc") and \
                         _dt.fromisoformat(_d["tip_utc"].replace("Z", "+00:00")) > _dt.now(_tz.utc):
-                    _g.append({"season": _s, "game_id": _gid, "home": _d["home"], "away": _d["away"], "seed": 20261021 + _gid * 100})
+                    _g.append({"season": _s, "game_id": _gid, "home": _d["home"], "away": _d["away"], "seed": 20261021 + _gid * 100,
+                               "team_pts": {_d["home"]: _mh, _d["away"]: _ma}})
             _c.close()
             print("player forecasts:", PLV.forecast_slate(PLDB, _PM.load("artifacts/player_state.json"), av, _g,
                                                             n_sims=int(os.environ.get("PLAYER_N_SIMS", 1000))))

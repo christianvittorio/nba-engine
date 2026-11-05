@@ -30,6 +30,8 @@ SRC = os.environ.get("REPLAY_SOURCE", "espn")
 N_SIMS = int(os.environ.get("N_SIMS", 2000))
 P_SIMS = int(os.environ.get("PLAYER_SIMS", 600))
 LIMIT = int(os.environ.get("REPLAY_LIMIT", 120))
+RECON = os.environ.get("REPLAY_RECONCILE", "1") == "1"
+PPOW = float(os.environ.get("P_PLAY_POW", 1.3))
 ALL = [2022, 2023, 2024, 2025, 2026]
 if SRC.startswith("csv"):
     TARGET = int(SRC[3:])                      # label of the self-test season (2026 = 2025-26)
@@ -107,7 +109,7 @@ def csv_days():
 
 
 # ------------------------------------------------------------------------------------------ player forecasts for one game
-def player_rows(pm, fg, rows_by_team, mode_rows, out):
+def player_rows(pm, fg, rows_by_team, mode_rows, out, team_pts=None):
     """Forecast both teams in both modes from the CURRENT state, attach actuals. rows_by_team: team -> DataFrame of players who played."""
     for ti, team in enumerate((fg.home, fg.away)):
         played = rows_by_team.get(team)
@@ -117,11 +119,11 @@ def player_rows(pm, fg, rows_by_team, mode_rows, out):
                 ids = list(actual)
                 if len(ids) < 5:
                     continue
-                pr = pm.project_team(team, active=ids, mode="confirmed")
+                pr = pm.project_team(team, active=ids, mode="confirmed", team_pts=(team_pts or {}).get(team))
             else:
                 if not pm.pool(team):
                     continue
-                pr = pm.project_team(team, mode="unconfirmed")
+                pr = pm.project_team(team, mode="unconfirmed", team_pts=(team_pts or {}).get(team))
             pr = pr.sort_values("base_min", ascending=False).head(14 if mode == "unconfirmed" else 20).reset_index(drop=True)
             seed = 20271021 + fg.game_id % 100000 * 10 + ti * 2 + (mode == "confirmed")
             summ = summarize_samples(sample_players(pr, pm.p, P_SIMS, seed, mode))
@@ -147,6 +149,7 @@ def main():
     eng = build_team_engine(store); log("team state built from", WARM)
     tpl = json.load(open("artifacts/player_state.json"))
     pp = PlayerParams(**{**tpl["params"], "min_resid": [np.asarray(x, float) for x in tpl["params"]["min_resid"]]})
+    pp.p_play_pow = PPOW
     pm = PlayerModel(pp)
     run_pass(load_logs(WARM), pp, 99999, model=pm); log("player state built from", WARM, "players:", len(pm.pl))
     idmap = json.load(open("artifacts/player_id_map.json")) if os.path.exists("artifacts/player_id_map.json") else {}
@@ -178,7 +181,11 @@ def main():
             df = df[COLS].fillna(0)
             mapped.append(df)
             if len(df) >= 10:
-                player_rows(pm, fg, {t: g for t, g in df.groupby("team")}, None, prow)
+                tp = None
+                if RECON:
+                    r_ = store.con.execute("SELECT mean_home, mean_away FROM forecasts WHERE game_id=? AND model_name='sim_mc'", (fg.game_id,)).fetchone()
+                    tp = {fg.home: r_[0], fg.away: r_[1]} if r_ else None
+                player_rows(pm, fg, {t: g for t, g in df.groupby("team")}, None, prow, tp)
             h_box = fg.box
             poss = lambda p: h_box[f"{p}_fga"] - h_box[f"{p}_oreb"] + h_box[f"{p}_tov"] + 0.44 * h_box[f"{p}_fta"]
             extra.append({"game_id": fg.game_id, "actual_poss": (poss("home") + poss("away")) / 2,

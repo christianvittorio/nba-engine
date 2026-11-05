@@ -56,7 +56,7 @@ def forecast_slate(db_path: str, pm, av: dict | None, games: list[dict], n_sims:
             pool = [i for i in roster if i not in outs and i in pm.pl] if roster else [i for i in pm.pool(team) if i not in outs]
             if not pool:
                 continue
-            pr = pm.project_team(team, mode="unconfirmed", pool_ids=pool)
+            pr = pm.project_team(team, mode="unconfirmed", pool_ids=pool, team_pts=(g.get("team_pts") or {}).get(team))
             pr = pr.sort_values("base_min", ascending=False).head(top).reset_index(drop=True)
             samp = sample_players(pr, pm.p, n_sims, g["seed"] + ti, "unconfirmed")
             summ = summarize_samples(samp)

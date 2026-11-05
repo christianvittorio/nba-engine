@@ -19,6 +19,8 @@ jobs:
           REPLAY_SOURCE: espn
           N_SIMS: "2000"
           PLAYER_SIMS: "600"
+          P_PLAY_POW: "1.2"
+          REPLAY_RECONCILE: "1"
       - name: Commit replay outputs
         run: |
           git config user.name "nba-engine-bot"
