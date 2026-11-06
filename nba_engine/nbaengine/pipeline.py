@@ -26,7 +26,11 @@ EXTRA_SCHEMA = """
 CREATE TABLE IF NOT EXISTS runs(run_id INTEGER PRIMARY KEY AUTOINCREMENT, started_utc TEXT, finished_utc TEXT,
   today TEXT, ok INTEGER, finals_ingested INTEGER, forecasts_made INTEGER, forecasts_skipped_late INTEGER, error TEXT);
 CREATE TABLE IF NOT EXISTS game_dates(season INTEGER, game_id INTEGER, date TEXT, PRIMARY KEY(season, game_id));
+CREATE TABLE IF NOT EXISTS team_box(season INTEGER, game_id INTEGER, side TEXT, team TEXT, opp TEXT, n_periods INTEGER, pts INTEGER,
+  fga INTEGER, fgm INTEGER, fg3a INTEGER, fg3m INTEGER, fta INTEGER, ftm INTEGER, tov INTEGER, oreb INTEGER, dreb INTEGER,
+  PRIMARY KEY(season, game_id, side));
 """
+BOX_COLS = ("fga", "fgm", "3pa", "3pm", "fta", "ftm", "tov", "oreb", "dreb")
 
 
 def _sd_to(r): return {"s": r.s, "n": r.n, "prior": list(r.prior)}
@@ -100,6 +104,13 @@ class Engine:
     def ingest(self, fg: FinalGame) -> bool:
         key = f"{fg.season}:{fg.game_id}"
         self.store.con.execute("INSERT OR IGNORE INTO game_dates VALUES(?,?,?)", (fg.season, fg.game_id, fg.date))
+        try:                                           # full team box score, kept for the team-stat report (also repairs older days on re-ingest)
+            for side, tm, op, pts in (("home", fg.home, fg.away, fg.home_pts), ("away", fg.away, fg.home, fg.away_pts)):
+                if all(f"{side}_{c}" in fg.box for c in BOX_COLS):
+                    self.store.con.execute("INSERT OR IGNORE INTO team_box VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                                           (fg.season, fg.game_id, side, tm, op, fg.n_periods, pts, *[int(fg.box[f"{side}_{c}"]) for c in BOX_COLS]))
+        except Exception:
+            pass
         for tm in (fg.home, fg.away):                 # schedule memory, updated even for already-applied games
             if fg.date >= self.last_played.get(tm, ""):     # ">=": re-ingesting a day repairs fields added later
                 self.last_played[tm] = fg.date
@@ -154,7 +165,7 @@ class Engine:
            details={"elo_diff": e["elo_diff"], "margin_sd": sd_e, "exp_margin": e["exp_margin"]})
         sv(s, gid, "home_const", MODEL_VERSION, cutoff, None, None, bhw, (bt + bm) / 2, (bt - bm) / 2, bt, None,
            q_margin=_norm_q(bm, self.sds["base_m"].sd()), q_total=_norm_q(bt, self.sds["base_t"].sd()), details={})
-        sim = simulate_game(self.prof, h, a, n_sims, seed, 0.0)
+        sim = simulate_game(self.prof, h, a, n_sims, seed, 0.0, track=True)     # tracking adds no random draws: same scores as before
         raw = summarize(sim)
         cal = summarize(apply_dispersion(sim, self.kappa_m, self.kappa_t, self.level_delta))
         mk = {"market": ug.market} if ug.market else {}
@@ -164,7 +175,8 @@ class Engine:
                details={**det, "mc_se_p_home": sm["mc_se_p_home"], "mean_poss": sm["mean_poss"],
                         "modal_score": [sm["modal_score_home"], sm["modal_score_away"]],
                         "median_score": [sm["median_home"], sm["median_away"]], "tip_utc": ug.tip_utc, "date": ug.date,
-                        "home": h, "away": a})
+                        "home": h, "away": a,
+                        "team_box": {sd: {k: round(float(v.mean()), 2) for k, v in sim["box_" + sd].items()} for sd in ("home", "away")}})
         con.execute("INSERT OR IGNORE INTO game_dates VALUES(?,?,?)", (s, gid, ug.date))
         self._forecast_injury_adjusted(ug, sim, e, bt, n_sims, seed, cutoff)
         self._forecast_rest_adjusted(ug, sim, e, bt, n_sims, seed, cutoff)

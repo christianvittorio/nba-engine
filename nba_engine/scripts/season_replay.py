@@ -145,7 +145,11 @@ def player_rows(pm, fg, rows_by_team, mode_rows, out, team_pts=None):
 # ------------------------------------------------------------------------------------------ main replay
 def main():
     os.makedirs(OUT, exist_ok=True)
-    store = Store(":memory:")
+    os.makedirs(OUT, exist_ok=True)
+    DBP = f"{OUT}/replay.sqlite"
+    if os.path.exists(DBP):
+        os.remove(DBP)
+    store = Store(DBP)
     eng = build_team_engine(store); log("team state built from", WARM)
     tpl = json.load(open("artifacts/player_state.json"))
     pp = PlayerParams(**{**tpl["params"], "min_resid": [np.asarray(x, float) for x in tpl["params"]["min_resid"]]})
@@ -200,6 +204,13 @@ def main():
     store.commit()
     log("replay done; building comparison")
     build_outputs(store, pd.DataFrame(prow), pd.DataFrame(extra))
+    try:                                   # team box-score / advanced stats and how well each team stat was predicted
+        import importlib.util
+        sp = importlib.util.spec_from_file_location("team_stats_report", os.path.join(ROOT, "scripts/team_stats_report.py"))
+        tsr = importlib.util.module_from_spec(sp); sp.loader.exec_module(tsr); tsr.build(DBP, f"{OUT}/team_stats.md")
+    except Exception as ex:
+        print("team stats report failed:", type(ex).__name__, ex)
+    store.con.close(); os.remove(DBP)
 
 
 def build_outputs(store, P, X):

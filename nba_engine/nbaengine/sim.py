@@ -61,6 +61,7 @@ class ProfileParams:
     season_rollover: float = 0.6
     pace_prior_sd: float = 4.5
     league_half_life_games: float = 1230.0   # ~1 season: league scoring environment drifts
+    def_effect: tuple = ()                   # rates whose DEFENSIVE side also moves the matchup (default: only offense for s3/ft/orebft)
 
 
 class TeamProfiles:
@@ -130,7 +131,7 @@ class TeamProfiles:
             lg = self.league_rate(r)
             lg_side = self.league_rate(r, side)
             val = lg_side + (self._rate(self.off, off_team, r) - lg) + (self._rate(self.deff, def_team, r) - lg)
-            if r in ("ft", "s3", "orebft"):   # own-offense properties; defence has little causal pull here
+            if r in ("ft", "s3", "orebft") and r not in self.p.def_effect:   # own-offense properties; defence has little causal pull here
                 val = lg_side + (self._rate(self.off, off_team, r) - lg)
             out[r] = float(np.clip(val, 0.01, 0.99))
         return out
@@ -183,7 +184,7 @@ class TeamProfiles:
 # ----------------------------------------------------------------------------
 # Monte Carlo engine
 # ----------------------------------------------------------------------------
-def _simulate_possessions(rng, n_poss: np.ndarray, r: dict, z: np.ndarray) -> np.ndarray:
+def _simulate_possessions(rng, n_poss: np.ndarray, r: dict, z: np.ndarray, track: dict | None = None) -> np.ndarray:
     """Points scored by ONE team given per-sim possession counts. Vectorised over sims."""
     N = n_poss.shape[0]
     pts = np.zeros(N, dtype=np.int32)
@@ -202,15 +203,26 @@ def _simulate_possessions(rng, n_poss: np.ndarray, r: dict, z: np.ndarray) -> np
             att = 2 + (rng.random(N) < Q3).astype(np.int32)
             made = rng.binomial(att, r["ft"])
             pts += np.where(is_ft, made, 0).astype(np.int32)
+            if track is not None:
+                track["fta"] += np.where(is_ft, att, 0); track["ftm"] += np.where(is_ft, made, 0)
             last_missed = rng.random(N) < (1.0 - r["ft"])
             ft_reb = is_ft & last_missed & (rng.random(N) < r["orebft"])
             is_shot = is_shot | ft_reb
+            if track is not None:
+                track["oreb"] += ft_reb
         live = is_shot
-        for _ in range(5):   # shot, then up to 4 offensive-rebound re-tries
+        if track is not None:
+            track["tov"] += is_tov
+        for _it in range(5):   # shot, then up to 4 offensive-rebound re-tries
             if not live.any():
                 break
             is3 = rng.random(N) < r["s3"]
             make = rng.random(N) < np.where(is3, p3, p2)
+            if track is not None:
+                if _it > 0:
+                    track["oreb"] += live
+                track["fga"] += live; track["fgm"] += live & make
+                track["fg3a"] += live & is3; track["fg3m"] += live & make & is3
             pts += np.where(live & make, np.where(is3, 3, 2), 0).astype(np.int32)
             miss = live & ~make
             live = miss & (rng.random(N) < r["oreb"])
@@ -219,7 +231,7 @@ def _simulate_possessions(rng, n_poss: np.ndarray, r: dict, z: np.ndarray) -> np
 
 def simulate_game(profiles: TeamProfiles, home: str, away: str, n_sims: int, seed: int,
                   sigma_form: float, home_override: dict | None = None,
-                  away_override: dict | None = None) -> dict:
+                  away_override: dict | None = None, track: bool = False) -> dict:
     rng = np.random.default_rng(seed)
     r_h = profiles.matchup(home, away, "home")
     r_a = profiles.matchup(away, home, "away")
@@ -232,8 +244,10 @@ def simulate_game(profiles: TeamProfiles, home: str, away: str, n_sims: int, see
     n_poss = np.clip(np.rint(rng.normal(mu, sd, n_sims)), 80, 125).astype(np.int32)
     z_h = rng.normal(0.0, sigma_form, n_sims)
     z_a = rng.normal(0.0, sigma_form, n_sims)
-    hp = _simulate_possessions(rng, n_poss, r_h, z_h)
-    ap = _simulate_possessions(rng, n_poss, r_a, z_a)
+    th = {k: np.zeros(n_sims, dtype=np.int32) for k in ("fga", "fgm", "fg3a", "fg3m", "fta", "ftm", "tov", "oreb")} if track else None
+    ta = {k: np.zeros(n_sims, dtype=np.int32) for k in th} if track else None
+    hp = _simulate_possessions(rng, n_poss, r_h, z_h, th)
+    ap = _simulate_possessions(rng, n_poss, r_a, z_a, ta)
 
     # overtime(s)
     ot = np.zeros(n_sims, dtype=np.int32)
@@ -253,8 +267,11 @@ def simulate_game(profiles: TeamProfiles, home: str, away: str, n_sims: int, see
         hp[still] += flip.astype(np.int32)
         ap[still] += (~flip).astype(np.int32)
 
-    return {"home_pts": hp, "away_pts": ap, "overtimes": ot, "n_poss": n_poss,
-            "rates_home": r_h, "rates_away": r_a, "mu_poss": mu, "pace_sd": sd}
+    out = {"home_pts": hp, "away_pts": ap, "overtimes": ot, "n_poss": n_poss,
+           "rates_home": r_h, "rates_away": r_a, "mu_poss": mu, "pace_sd": sd}
+    if track:                      # regulation-time box score of the simulated game (before any overtime)
+        out["box_home"], out["box_away"] = th, ta
+    return out
 
 
 def apply_dispersion(sim: dict, kappa_margin: float, kappa_total: float, total_shift: float = 0.0,

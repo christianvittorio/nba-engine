@@ -74,6 +74,12 @@ if summary["ok"]:
         print("niche streaks written" if ns.build(DB, str(today), f"artifacts/reports/niche_streaks_{today}.md") else f"no forecast games on {today}: no streak report")
     except Exception as ex:
         print("niche streaks failed (forecasts unaffected):", type(ex).__name__, ex)
+    try:      # team box-score / advanced-stat report (best effort)
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("team_stats_report", os.path.join(ROOT, "scripts/team_stats_report.py"))
+        tsr = importlib.util.module_from_spec(spec); spec.loader.exec_module(tsr); tsr.build(DB)
+    except Exception as ex:
+        print("team stats report failed (forecasts unaffected):", type(ex).__name__, ex)
     try:      # calibration of team and player forecasts against results (reports + display constants; changes no stored forecast)
         import importlib.util
         spec = importlib.util.spec_from_file_location("calibration_report", os.path.join(ROOT, "scripts/calibration_report.py"))

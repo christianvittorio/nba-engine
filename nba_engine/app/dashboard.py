@@ -101,7 +101,7 @@ elif not runs.empty:
     ok = runs[runs.ok == 1]
     st.caption(f"Last successful refresh: {ok.finished_utc.iloc[0] if len(ok) else 'never'} UTC")
 
-tab_games, tab_players, tab_trends, tab_cal, tab_perf, tab_ratings, tab_status = st.tabs(["Forecasts", "Players", "Trends & streaks", "Calibration", "How accurate is it?", "Team ratings", "Run status"])
+tab_games, tab_players, tab_trends, tab_cal, tab_perf, tab_ratings, tab_tstats, tab_status = st.tabs(["Forecasts", "Players", "Trends & streaks", "Calibration", "How accurate is it?", "Team ratings", "Team stats", "Run status"])
 
 # ---------------------------------------------------------------- forecasts
 with tab_games:
@@ -453,6 +453,27 @@ with tab_ratings:
             width="stretch")
         st.caption(f"Average team is about 1505. A 100-point gap is roughly a 64% win chance for the stronger team before home-court. "
                    f"Season label in state: {stt['elo']['season']}.")
+
+# ---------------------------------------------------------------- team stats
+with tab_tstats:
+    from nbaengine.teamstats import load_box, advanced_table, predicted_vs_actual, accuracy_table
+    _bx = load_box(DB)
+    if _bx.empty:
+        st.info("No team box scores stored yet. They are saved as games are ingested by the daily run.")
+    else:
+        _ssn = int(_bx.season.max())
+        _tt = advanced_table(_bx[_bx.season == _ssn])
+        st.subheader(f"Team stats, {_ssn - 1}-{str(_ssn)[2:]} season ({_bx[_bx.season == _ssn].game_id.nunique()} games)")
+        st.caption("Ratings per 100 possessions. 'opp' columns are what the team allows. Click a column header to sort.")
+        st.dataframe(_tt.round(3), width="stretch", height=560)
+        _pick = st.multiselect("Compare teams", list(_tt.index), default=[], max_selections=2)
+        if len(_pick) == 2:
+            st.dataframe(_tt.loc[_pick].T.round(3), width="stretch")
+        _M = predicted_vs_actual(DB)
+        if len(_M):
+            st.subheader("How well the simulator predicted each team stat")
+            st.caption("Forecasts stored before tip-off (regulation games), against the final box score.")
+            st.dataframe(accuracy_table(_M).round(3), width="stretch", hide_index=True)
 
 # ---------------------------------------------------------------- status
 with tab_status:
