@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-06
-Data refresh: last successful run 2026-11-06T16:37:52Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-06T16:47:08Z UTC. Model nbaengine-0.1.0.
 
 - WAS at ATL (game 401909287): P(home) sim 0.787 / Elo 0.843; mean score 121.5-110.4 (total 231.9); margin 50% [1.7, 21.1], 80% [-8.2, 30.2]; total 80% [207.6, 255.3]; P(OT) 0.036; most frequent exact score 126-111 (rarely hit).
   - injury-adjusted: P(home) sim 0.795, margin shift +0.2 pts; rotation players listed out: Jock Landale (home), Asa Newell (home), Reece Beekman (away), Justin Champagnie (away).
