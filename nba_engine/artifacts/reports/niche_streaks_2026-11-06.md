@@ -50,7 +50,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 - **MIL**: has fallen short of the model's margin 9 straight when venue=home and favorite=dog (1-9 in 10 such games; chance of run 0.176%).
 
 ## MIN at NOP
-- **MIN**: has seen the game total stay under the projection 7 straight when venue=away and density=normal (56-74 in 130 such games; chance of run 0.847%).
+- **MIN**: has seen the game total stay under the projection 7 straight when proj_total=235+ and prev_result=won by 10+ and density=normal (1-10 in 11 such games; chance of run 0.847%).
 - **MIN**: has won 7 straight when rest=1d and density=normal (102-62 in 164 such games; chance of run 1.250%).
 - **NOP**: has beaten the model's margin 10 straight when rest=1d and proj_total=235+ (21-12 in 33 such games; chance of run 0.098%).
 - **NOP**: has lost 18 straight when rest=1d and favorite=dog and density=normal (1-30 in 31 such games; chance of run 0.244%).
