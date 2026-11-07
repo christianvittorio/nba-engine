@@ -237,6 +237,15 @@ class PlayerModel:
             if m is None:
                 m = (extra_unknown or {}).get(pid, 10.0)
                 unknown.append(pid)
+            elif os.environ.get("NBA_NO_MINADJ") != "1":
+                # minutes momentum and return from absence (walk-forward 2025-26, fit on 1st half, 2nd-half MAE 4.668 -> 4.618):
+                # 14% of last game's minutes gap carries forward; a player back after 3+ missed team games plays about 1.5 minutes fewer
+                st = self.pl.get(pid)
+                if st and st["hist"]:
+                    m += 0.136 * (st["hist"][-1][0] - m)
+                    if self.team_gp.get(st["team"], 0) - st["last_tg"] >= 3:
+                        m -= 1.45
+                    m = max(m, 1.0)
             base.append(m)
         base = np.array(base, dtype=float)
         mins = allocate_minutes(base, p.team_minutes, p.cap) if confirmed else base
