@@ -1,0 +1,28 @@
+name: gamedata
+on:
+  workflow_dispatch:
+    inputs:
+      from_date: {description: "first US Eastern date, YYYY-MM-DD", required: true}
+      to_date: {description: "last US Eastern date, YYYY-MM-DD", required: true}
+      pause_s: {description: "seconds between ESPN requests", default: "0.6"}
+permissions:
+  contents: write
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install numpy pandas scipy
+      - run: python scripts/collect_gamedata.py "${{ inputs.from_date }}" "${{ inputs.to_date }}" "${{ inputs.pause_s }}"
+        working-directory: nba_engine
+      - name: Commit
+        run: |
+          git config user.name "nba-engine-bot"
+          git config user.email "nba-engine-bot@users.noreply.github.com"
+          git add -f nba_engine/artifacts/gamedata
+          git diff --cached --quiet || git commit -m "gamedata ${{ inputs.from_date }}..${{ inputs.to_date }}"
+          for i in 1 2 3; do git pull --rebase && git push && break || sleep 5; done

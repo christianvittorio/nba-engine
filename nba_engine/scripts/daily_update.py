@@ -45,6 +45,11 @@ if summary["ok"]:
         from nbaengine import player_live as PLV
         PLDB = "artifacts/player_live.sqlite"
         print("players:", update_players(feed, "artifacts", sink=lambda season, eid, df: PLV.store_actuals(PLDB, season, eid, df)))
+        try:      # raw game data (plays, shot coordinates, quarter scores, officials, odds, team stats) for the new layers
+            from nbaengine.gamedata import collect_from_feed
+            print("gamedata:", collect_from_feed(feed, "artifacts/gamedata"), "games stored")
+        except Exception as ex:
+            print("gamedata failed (forecasts unaffected):", type(ex).__name__, ex)
         try:      # player-stat forecasts for today's games that have a stored team forecast and have not started (calibrated later)
             import json as _j, sqlite3 as _sq
             from datetime import datetime as _dt, timezone as _tz
