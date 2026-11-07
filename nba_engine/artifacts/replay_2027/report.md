@@ -10,6 +10,8 @@ Every game forecast from the model state before its day, then the real result an
 | Elo | 77/123 | 62.6% | 0.2239 | 0.6343 |
 | Simulator + back-to-back | 80/123 | 65.0% | 0.2142 | 0.6136 |
 | Simulator + back-to-back + form | 78/123 | 63.4% | 0.2120 | 0.6082 |
+| Simulator + availability (who actually played) | 78/123 | 63.4% | 0.2176 | 0.6193 |
+| Simulator + availability + back-to-back + form | 78/123 | 63.4% | 0.2146 | 0.6113 |
 | Home-court constant | 64/123 | 52.0% | 0.2507 | 0.6945 |
 
 Home teams won 52.0% of games; the simulator expected 55.6%.
@@ -22,6 +24,8 @@ Home teams won 52.0% of games; the simulator expected 55.6%.
 | Away points | 113.4 | 112.5 | -0.91 | 9.71 |
 | Total points | 229.0 | 226.8 | -2.22 | 15.04 |
 | Margin (home - away) | 2.2 | 1.9 | -0.39 | 11.57 |
+| Total points, with availability | 227.8 | 226.8 | -1.03 | 14.71 |
+| Margin, with availability | 2.1 | 1.9 | -0.27 | 11.70 |
 | Possessions | 99.2 | 102.4 | +3.20 | 4.62 |
 
 For comparison, always guessing the season-to-date average (226.8 total) would give a total MAE of 15.38 and always guessing the average margin a margin MAE of 12.99 (that comparison uses the full set of results, so it flatters the baseline).
@@ -231,29 +235,29 @@ Small samples (a handful of games per team): differences of a few points are noi
 
 | stat | n | forecast avg | actual avg | bias | MAE | MAE last-10 avg | 50% range | 80% range |
 |---|---|---|---|---|---|---|---|---|
-| min | 3435 | 15.95 | 14.98 | -0.967 | 8.90 | 11.19 | 66.3% | 86.6% |
-| pts | 3435 | 7.71 | 7.13 | -0.579 | 5.20 | 6.71 | 69.9% | 90.4% |
-| reb | 3435 | 2.91 | 2.75 | -0.161 | 2.07 | 2.67 | 73.7% | 91.7% |
-| ast | 3435 | 1.77 | 1.68 | -0.095 | 1.37 | 1.76 | 78.8% | 93.4% |
+| min | 3435 | 15.94 | 14.98 | -0.966 | 8.91 | 11.19 | 66.6% | 86.4% |
+| pts | 3435 | 7.67 | 7.13 | -0.542 | 5.19 | 6.71 | 69.5% | 90.1% |
+| reb | 3435 | 2.91 | 2.75 | -0.162 | 2.07 | 2.67 | 73.9% | 91.7% |
+| ast | 3435 | 1.76 | 1.68 | -0.086 | 1.37 | 1.76 | 78.9% | 93.3% |
 | stl | 3435 | 0.56 | 0.53 | -0.033 | 0.61 | 0.76 | 86.2% | 94.4% |
-| blk | 3435 | 0.32 | 0.31 | -0.013 | 0.41 | 0.49 | 88.0% | 95.0% |
-| tov | 3435 | 0.93 | 0.95 | +0.017 | 0.88 | 1.09 | 80.9% | 93.3% |
-| tpm | 3435 | 0.89 | 0.83 | -0.061 | 0.83 | 1.03 | 83.6% | 94.3% |
-| pra | 3435 | 12.39 | 11.55 | -0.836 | 7.67 | 9.94 | 68.4% | 88.3% |
+| blk | 3435 | 0.32 | 0.31 | -0.014 | 0.41 | 0.49 | 88.1% | 95.1% |
+| tov | 3435 | 0.93 | 0.95 | +0.017 | 0.88 | 1.09 | 80.8% | 93.3% |
+| tpm | 3435 | 0.88 | 0.83 | -0.057 | 0.83 | 1.03 | 83.7% | 94.1% |
+| pra | 3435 | 12.34 | 11.55 | -0.790 | 7.66 | 9.94 | 68.2% | 88.7% |
 
 ### Told who actually played (minutes shared among them): players who played
 
 | stat | n | forecast avg | actual avg | bias | MAE | MAE last-10 avg | 50% range | 80% range |
 |---|---|---|---|---|---|---|---|---|
 | min | 2705 | 21.79 | 21.67 | -0.119 | 5.16 | 5.81 | 45.8% | 76.4% |
-| pts | 2705 | 10.37 | 10.20 | -0.170 | 4.64 | 5.06 | 52.5% | 82.4% |
-| reb | 2705 | 4.04 | 3.96 | -0.076 | 1.88 | 2.00 | 63.9% | 87.4% |
-| ast | 2705 | 2.40 | 2.36 | -0.043 | 1.33 | 1.42 | 71.2% | 90.7% |
-| stl | 2705 | 0.78 | 0.76 | -0.014 | 0.71 | 0.74 | 84.9% | 93.7% |
-| blk | 2705 | 0.45 | 0.45 | +0.004 | 0.51 | 0.52 | 85.7% | 94.7% |
-| tov | 2705 | 1.32 | 1.37 | +0.045 | 0.94 | 1.00 | 76.5% | 92.3% |
-| tpm | 2705 | 1.19 | 1.18 | -0.004 | 0.91 | 0.93 | 77.6% | 93.0% |
-| pra | 2705 | 16.81 | 16.52 | -0.289 | 6.11 | 6.72 | 49.2% | 77.2% |
+| pts | 2705 | 10.32 | 10.20 | -0.119 | 4.63 | 5.06 | 52.5% | 82.2% |
+| reb | 2705 | 4.04 | 3.96 | -0.077 | 1.88 | 2.00 | 64.0% | 87.3% |
+| ast | 2705 | 2.39 | 2.36 | -0.030 | 1.33 | 1.42 | 71.4% | 90.8% |
+| stl | 2705 | 0.78 | 0.76 | -0.014 | 0.72 | 0.74 | 85.1% | 93.7% |
+| blk | 2705 | 0.45 | 0.45 | +0.003 | 0.51 | 0.52 | 85.8% | 94.8% |
+| tov | 2705 | 1.32 | 1.37 | +0.045 | 0.94 | 1.00 | 76.1% | 92.5% |
+| tpm | 2705 | 1.18 | 1.18 | +0.003 | 0.91 | 0.93 | 77.5% | 93.0% |
+| pra | 2705 | 16.75 | 16.52 | -0.226 | 6.10 | 6.72 | 49.5% | 77.2% |
 
 ### Players furthest from their points projection (5+ games, told who played)
 
@@ -261,24 +265,24 @@ Under-delivering:
 
 | name | games | forecast | actual | diff |
 |---|---|---|---|---|
-| Ousmane Dieng | 5 | 8.7 | 1.4 | -7.3 |
-| Nique Clifford | 6 | 7.5 | 0.3 | -7.2 |
+| Ousmane Dieng | 5 | 8.8 | 1.4 | -7.4 |
+| Nique Clifford | 6 | 7.5 | 0.3 | -7.1 |
 | Will Riley | 5 | 7.5 | 0.8 | -6.7 |
-| Daeqwon Plowden | 5 | 8.0 | 2.2 | -5.8 |
-| Jaden Hardy | 5 | 6.8 | 1.0 | -5.8 |
-| DeMar DeRozan | 5 | 15.0 | 10.2 | -4.8 |
-| Dennis Schroder | 8 | 13.8 | 9.1 | -4.7 |
-| Jerami Grant | 7 | 13.4 | 8.9 | -4.5 |
+| Daeqwon Plowden | 5 | 8.1 | 2.2 | -5.9 |
+| Jaden Hardy | 5 | 6.7 | 1.0 | -5.7 |
+| DeMar DeRozan | 5 | 14.7 | 10.2 | -4.5 |
+| Jerami Grant | 7 | 13.3 | 8.9 | -4.4 |
+| Dennis Schroder | 8 | 13.5 | 9.1 | -4.4 |
 
 Over-delivering:
 
 | name | games | forecast | actual | diff |
 |---|---|---|---|---|
-| Luka Doncic | 7 | 27.4 | 40.0 | +12.6 |
-| Stephen Curry | 6 | 19.8 | 31.0 | +11.2 |
-| Victor Wembanyama | 7 | 22.8 | 31.4 | +8.6 |
-| Tyrese Maxey | 8 | 21.1 | 28.0 | +6.9 |
-| Jamal Murray | 6 | 22.3 | 28.7 | +6.3 |
-| Mikel Brown Jr. | 5 | 6.9 | 13.2 | +6.3 |
-| Isaiah Stewart | 6 | 7.0 | 13.2 | +6.2 |
+| Luka Doncic | 7 | 27.6 | 40.0 | +12.4 |
+| Stephen Curry | 6 | 19.7 | 31.0 | +11.3 |
+| Victor Wembanyama | 7 | 22.5 | 31.4 | +8.9 |
+| Tyrese Maxey | 8 | 20.9 | 28.0 | +7.1 |
+| Jamal Murray | 6 | 22.1 | 28.7 | +6.5 |
+| Isaiah Stewart | 6 | 6.9 | 13.2 | +6.3 |
+| Mikel Brown Jr. | 5 | 7.0 | 13.2 | +6.2 |
 | Davion Mitchell | 8 | 10.7 | 16.8 | +6.1 |
