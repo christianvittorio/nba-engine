@@ -15,7 +15,11 @@ VARIANTS = {"base": ProfileParams(), "s3": ProfileParams(def_effect=("s3",)),
 if os.environ.get("VSET") == "hl":        # recency of the team profiles
     VARIANTS = {"s3": ProfileParams(def_effect=("s3",)), "hl25": ProfileParams(def_effect=("s3",), half_life_games=25.0),
                 "hl60": ProfileParams(def_effect=("s3",), half_life_games=60.0), "hl90": ProfileParams(def_effect=("s3",), half_life_games=90.0)}
-SUFFIX = "_hl" if os.environ.get("VSET") == "hl" else ""
+if os.environ.get("VSET") == "hl2":
+    VARIANTS = {"hl12": ProfileParams(def_effect=("s3",), half_life_games=12.0), "hl18": ProfileParams(def_effect=("s3",), half_life_games=18.0),
+                "hl25r": ProfileParams(def_effect=("s3",), half_life_games=25.0, season_rollover=0.4),
+                "hl25q": ProfileParams(def_effect=("s3",), half_life_games=25.0, season_rollover=0.8)}
+SUFFIX = {"hl": "_hl", "hl2": "_hl2"}.get(os.environ.get("VSET"), "")
 
 
 def main(season, n_sims=200, limit=None):
