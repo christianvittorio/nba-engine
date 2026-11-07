@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-07
-Data refresh: last successful run 2026-11-07T15:28:22Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-07T18:27:46Z UTC. Model nbaengine-0.1.0.
 
 - DEN at IND (game 401909938): P(home) sim 0.302 / Elo 0.282; mean score 112.6-120.1 (total 232.7); margin 50% [-17.0, 2.1], 80% [-26.0, 11.2]; total 80% [208.6, 257.4]; P(OT) 0.050; most frequent exact score 114-113 (rarely hit).
   - injury-adjusted: P(home) sim 0.234, margin shift -2.4 pts; rotation players listed out: Tyrese Haliburton (home), J. Strawther (away).

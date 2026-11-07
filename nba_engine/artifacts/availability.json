@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-07T15:27:32Z",
+ "generated_utc": "2026-11-07T18:27:02Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -117,9 +117,9 @@
     {
      "name": "Keshon Gilbert",
      "nba_id": 1642933,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-07T15:08Z"
+     "date": "2026-11-07T18:17Z"
     },
     {
      "name": "Mouhamed Gueye",
@@ -133,21 +133,21 @@
      "nba_id": 1630552,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-06T22:06Z"
+     "date": "2026-11-07T18:10Z"
     },
     {
      "name": "Jock Landale",
      "nba_id": 1629111,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-05T22:12Z"
+     "date": "2026-11-07T18:14Z"
     },
     {
      "name": "Asa Newell",
      "nba_id": 1642854,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-07T15:07Z"
+     "date": "2026-11-07T18:16Z"
     },
     {
      "name": "Henri Veesaar",
@@ -524,9 +524,9 @@
     {
      "name": "Moussa Diabate",
      "nba_id": 1631217,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-06T18:08Z"
+     "date": "2026-11-07T17:39Z"
     },
     {
      "name": "Kon Knueppel",
@@ -784,23 +784,23 @@
     {
      "name": "Jarrett Allen",
      "nba_id": 1628386,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-07T15:07Z"
+     "date": "2026-11-07T18:11Z"
     },
     {
      "name": "Sam Merrill",
      "nba_id": 1630241,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-07T15:08Z"
+     "date": "2026-11-07T18:13Z"
     },
     {
      "name": "Jaylon Tyson",
      "nba_id": 1642281,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-05T22:23Z"
+     "date": "2026-11-07T18:14Z"
     }
    ]
   },
@@ -1958,6 +1958,12 @@
      "nba_id": -4595400
     },
     {
+     "espn_id": "5105462",
+     "name": "Richie Saunders",
+     "pos": "G",
+     "nba_id": null
+    },
+    {
      "espn_id": "4781746",
      "name": "Javon Small",
      "pos": "G",
@@ -1989,6 +1995,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-05T23:03Z"
+    },
+    {
+     "name": "Richie Saunders",
+     "nba_id": null,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-07T17:24Z"
     },
     {
      "name": "Isaiah Stewart",
@@ -2720,13 +2733,6 @@
      "date": "2026-11-03T22:45Z"
     },
     {
-     "name": "Nikola Topic",
-     "nba_id": 1642260,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-11-03T22:49Z"
-    },
-    {
      "name": "Cason Wallace",
      "nba_id": 1641717,
      "status": "Out",
@@ -3008,9 +3014,9 @@
     {
      "name": "Adem Bona",
      "nba_id": 1641737,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-06T23:10Z"
+     "date": "2026-11-07T17:38Z"
     },
     {
      "name": "Ariel Hukporti",
@@ -3646,9 +3652,9 @@
     {
      "name": "Scottie Barnes",
      "nba_id": 1630567,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-06T23:44Z"
+     "date": "2026-11-07T17:39Z"
     },
     {
      "name": "Nate Bittle",
@@ -3667,9 +3673,9 @@
     {
      "name": "Immanuel Quickley",
      "nba_id": 1630193,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-06T23:41Z"
+     "date": "2026-11-07T17:37Z"
     }
    ]
   },
@@ -3970,6 +3976,7 @@
   "LAC:Yanic Konan Niederhauser",
   "LAL:Arthur Kaluma",
   "LAL:AK Okereke",
+  "MEM:Richie Saunders",
   "MIA:Tre Donaldson",
   "MIA:Vladislav Goldin",
   "MIL:Kam Jones",
@@ -4023,8 +4030,8 @@
    "weight"
   ],
   "embedded_injury_sample": {
-   "status": "Day-To-Day",
-   "date": "2026-11-07T15:08Z"
+   "status": "Out",
+   "date": "2026-11-07T18:17Z"
   },
   "injuries_top_keys": [
    "injuries",
@@ -4033,7 +4040,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 28,
-  "injuries_endpoint_entries": 92,
+  "injuries_endpoint_entries": 93,
   "embedded_injuries": 93
  }
 }

@@ -22,7 +22,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 ## NYK at CLE
 - **NYK**: has scored under its projection 10 straight when rest=2d and prev_result=won by 10+ and next_day_game=no game tomorrow (3-10 in 13 such games; chance of run 0.101%).
 - **NYK**: has beaten the model's margin 10 straight when opp_rest=B2B and proj_total=225-230 and next_day_game=no game tomorrow (10-1 in 11 such games; chance of run 0.102%).
-- **NYK**: has seen the game total stay under the projection 9 straight when favorite=pick'em and density=normal (61-73 in 134 such games; chance of run 0.219%).
+- **NYK**: has seen the game total stay under the projection 9 straight when rest=2d and rest_edge=more rest and proj_total=225-230 (0-9 in 9 such games; chance of run 0.219%).
 - **CLE**: has lost 7 straight when prev_result=won by 10+ and streak=no streak and density=3-in-4 (3-11 in 14 such games; chance of run 0.110%).
 - **CLE**: has fallen short of the model's margin 7 straight when prev_result=won by 10+ and streak=no streak and density=3-in-4 (3-11 in 14 such games; chance of run 0.789%).
 - **CLE**: has seen the game total stay under the projection 6 straight when venue=home and proj_total=225-230 (16-16 in 32 such games; chance of run 1.685%).
@@ -55,5 +55,5 @@ Each line is a situation that describes tonight's game for that team, the team's
 - **SAS**: has seen the game total stay under the projection 11 straight when rest_edge=equal rest and proj_total=230-235 (27-35 in 62 such games; chance of run 0.056%).
 - **SAS**: has won 9 straight when venue=away and rest_edge=equal rest and prev_result=won by 10+ (10-8 in 18 such games; chance of run 0.137%).
 - **POR**: has beaten the model's margin 7 straight when venue=home and rest=B2B and proj_total=230-235 (8-2 in 10 such games; chance of run 0.841%).
-- **POR**: has scored over its projection 6 straight when venue=home and proj_total=230-235 and prev_result=lost close (8-3 in 11 such games; chance of run 1.437%).
+- **POR**: has scored over its projection 6 straight when venue=home and rest_edge=equal rest and proj_total=230-235 (14-6 in 20 such games; chance of run 1.437%).
 - **POR**: has seen the game total go over the projection 6 straight when opp_rest=B2B and proj_total=230-235 and next_day_game=no game tomorrow (10-6 in 16 such games; chance of run 1.448%).
