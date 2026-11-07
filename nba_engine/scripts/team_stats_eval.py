@@ -53,5 +53,5 @@ def table(variant, D):
 
 if __name__ == "__main__":
     D = load(); print("regulation games:", len(D))
-    for v in ("base", "def"):
+    for v in [c[:-8] for c in D.columns if c.endswith("_poss") and c.split("_")[0] in ("base", "s3", "lg400", "lg700")]:
         t, _ = table(v, D); print("\n== variant", v); print(t.round(4).to_string(index=False))

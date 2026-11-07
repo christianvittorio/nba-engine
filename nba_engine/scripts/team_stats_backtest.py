@@ -9,7 +9,9 @@ from nbaengine.sim import TeamProfiles, ProfileParams, simulate_game
 
 FILES = {s: f"games_cdn_{s}.csv" for s in (2022, 2023, 2024, 2025, 2026)}
 KEYS = ("fga", "fgm", "fg3a", "fg3m", "fta", "ftm", "tov", "oreb")
-VARIANTS = {"base": ProfileParams(), "def": ProfileParams(def_effect=("s3", "ft"))}
+VARIANTS = {"base": ProfileParams(), "s3": ProfileParams(def_effect=("s3",)),
+            "lg400": ProfileParams(def_effect=("s3",), league_half_life_games=400.0),
+            "lg700": ProfileParams(def_effect=("s3",), league_half_life_games=700.0)}
 
 
 def main(season, n_sims=200, limit=None):
