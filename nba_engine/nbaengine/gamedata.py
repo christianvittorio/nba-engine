@@ -19,6 +19,18 @@ def _g(d, *path, default=None):
     return d
 
 
+def _slim_odds(pc):
+    """keep the numbers (current and opening lines, odds), drop links, logos and deep-link URLs"""
+    out = []
+    for o in pc or []:
+        out.append({"provider": _g(o, "provider", "name"), "details": o.get("details"), "overUnder": o.get("overUnder"), "spread": o.get("spread"),
+                    "overOdds": o.get("overOdds"), "underOdds": o.get("underOdds"),
+                    "home": {k: v for k, v in (o.get("homeTeamOdds") or {}).items() if k not in ("team", "links")},
+                    "away": {k: v for k, v in (o.get("awayTeamOdds") or {}).items() if k not in ("team", "links")},
+                    "moneyline": o.get("moneyline"), "pointSpread": o.get("pointSpread"), "total": o.get("total")})
+    return out
+
+
 def extract(event_id: str, date: str, season: int, js: dict) -> dict:
     comp = _g(js, "header", "competitions", 0, default={}) or {}
     teams = {}
@@ -34,10 +46,10 @@ def extract(event_id: str, date: str, season: int, js: dict) -> dict:
                       "players": [_g(a, "athlete", "id") for a in (p.get("participants") or [])]})
     return {"game_id": str(event_id), "date": date, "season": season, "teams": teams, "plays": plays,
             "officials": _g(js, "gameInfo", "officials", default=[]), "venue": _g(js, "gameInfo", "venue", "fullName"), "attendance": _g(js, "gameInfo", "attendance"),
-            "pickcenter": js.get("pickcenter"), "odds": js.get("odds"), "againstTheSpread": js.get("againstTheSpread"),
+            "odds": _slim_odds(js.get("pickcenter")), "againstTheSpread": js.get("againstTheSpread"),
             "team_stats": [{"team": _g(t, "team", "id"), "stats": [{"name": s.get("name"), "value": s.get("displayValue")} for s in (t.get("statistics") or [])]}
                            for t in (_g(js, "boxscore", "teams", default=[]) or [])],
-            "winprobability": js.get("winprobability"), "leaders": js.get("leaders")}
+            "winprob_home": [round(float(w.get("homeWinPercentage")), 4) for w in (js.get("winprobability") or []) if w.get("homeWinPercentage") is not None]}
 
 
 def save_day(out_dir: str, date: str, records: list[dict]) -> str:
