@@ -27,6 +27,6 @@ jobs:
           git config user.name "nba-engine-bot"
           git config user.email "nba-engine-bot@users.noreply.github.com"
           git pull --rebase || true
-          git add -f nba_engine/artifacts/replay_2027
+          git add -f nba_engine/artifacts/replay_2027 nba_engine/artifacts/opp_defense.json
           git diff --cached --quiet || git commit -m "season replay $(date -u +%F)"
           git push
