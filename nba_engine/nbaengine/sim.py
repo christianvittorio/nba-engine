@@ -231,7 +231,8 @@ def _simulate_possessions(rng, n_poss: np.ndarray, r: dict, z: np.ndarray, track
 
 def simulate_game(profiles: TeamProfiles, home: str, away: str, n_sims: int, seed: int,
                   sigma_form: float, home_override: dict | None = None,
-                  away_override: dict | None = None, track: bool = False) -> dict:
+                  away_override: dict | None = None, track: bool = False,
+                  shift_home: float = 0.0, shift_away: float = 0.0) -> dict:
     rng = np.random.default_rng(seed)
     r_h = profiles.matchup(home, away, "home")
     r_a = profiles.matchup(away, home, "away")
@@ -242,8 +243,8 @@ def simulate_game(profiles: TeamProfiles, home: str, away: str, n_sims: int, see
     mu = profiles.expected_poss(home, away)
     sd = profiles.pace_sd()
     n_poss = np.clip(np.rint(rng.normal(mu, sd, n_sims)), 80, 125).astype(np.int32)
-    z_h = rng.normal(0.0, sigma_form, n_sims)
-    z_a = rng.normal(0.0, sigma_form, n_sims)
+    z_h = rng.normal(0.0, sigma_form, n_sims) + shift_home     # shift = logit change of both 2- and 3-point make probability (availability)
+    z_a = rng.normal(0.0, sigma_form, n_sims) + shift_away
     th = {k: np.zeros(n_sims, dtype=np.int32) for k in ("fga", "fgm", "fg3a", "fg3m", "fta", "ftm", "tov", "oreb")} if track else None
     ta = {k: np.zeros(n_sims, dtype=np.int32) for k in th} if track else None
     hp = _simulate_possessions(rng, n_poss, r_h, z_h, th)

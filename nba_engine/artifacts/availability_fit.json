@@ -1,0 +1,12 @@
+{
+ "own_pts_per_unit": -0.24642976197001884,
+ "opp_pts_per_unit": 0.09520888016351636,
+ "fit_2023_24": [
+  -0.2330247087982556,
+  0.07750675417057017
+ ],
+ "typical_missing_value": 5.465709731881112,
+ "n_games": 4920,
+ "definition": "missing value = sum(usual minutes * max(0, quality/min - 0.32)) of rotation-pool players who did not play",
+ "pts_per_logit": 43.874687499999965
+}

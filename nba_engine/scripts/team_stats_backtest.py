@@ -12,6 +12,10 @@ KEYS = ("fga", "fgm", "fg3a", "fg3m", "fta", "ftm", "tov", "oreb")
 VARIANTS = {"base": ProfileParams(), "s3": ProfileParams(def_effect=("s3",)),
             "lg400": ProfileParams(def_effect=("s3",), league_half_life_games=400.0),
             "lg700": ProfileParams(def_effect=("s3",), league_half_life_games=700.0)}
+if os.environ.get("VSET") == "hl":        # recency of the team profiles
+    VARIANTS = {"s3": ProfileParams(def_effect=("s3",)), "hl25": ProfileParams(def_effect=("s3",), half_life_games=25.0),
+                "hl60": ProfileParams(def_effect=("s3",), half_life_games=60.0), "hl90": ProfileParams(def_effect=("s3",), half_life_games=90.0)}
+SUFFIX = "_hl" if os.environ.get("VSET") == "hl" else ""
 
 
 def main(season, n_sims=200, limit=None):
@@ -41,7 +45,7 @@ def main(season, n_sims=200, limit=None):
             for p in prof.values():
                 pp = p.expected_poss(gd["home"], gd["away"])
                 p.record_pace_residual(pp, gd); p.update(gd)
-    out = os.path.join(ROOT, "data/processed", f"team_stats_bt_{season}.csv")
+    out = os.path.join(ROOT, "data/processed", f"team_stats_bt_{season}{SUFFIX}.csv")
     pd.DataFrame(rows).to_csv(out, index=False)
     print("wrote", out, len(rows), f"{time.time() - t0:.0f}s")
 

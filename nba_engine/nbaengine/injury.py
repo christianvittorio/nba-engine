@@ -55,3 +55,54 @@ def make_injury_fn(pm, availability: dict):
         return shift, {"home_missing_value": round(mh, 2), "away_missing_value": round(ma, 2), "home_out": wh, "away_out": wa,
                        "beta": BETA, "generated_utc": availability.get("generated_utc")}
     return fn
+
+
+# ---------------------------------------------------------------------------------------------------------------------------------
+# Availability INSIDE the simulation (v0.8). The margin shift above moves only the margin. This version converts missing rotation value
+# into a change of each team's shooting efficiency (logit shift of 2- and 3-point make probability, no new random draws), so scores, totals,
+# team box scores, ranges and win probability all respond. Coefficients: scripts/fit_availability.py -> artifacts/availability_fit.json.
+import json as _json
+import os as _os
+
+_FIT = None
+
+
+def _fit():
+    global _FIT
+    if _FIT is None:
+        p = _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))), "artifacts/availability_fit.json")
+        _FIT = _json.load(open(p))
+    return _FIT
+
+
+CAP_PTS = 8.0
+
+
+def availability_shifts(mv_home: float, mv_away: float) -> tuple[float, float, float, float]:
+    """(home points shift, away points shift, home logit shift, away logit shift) from each team's missing value, relative to the typical amount."""
+    f = _fit()
+    a, b, m0, k = f["own_pts_per_unit"], f["opp_pts_per_unit"], f["typical_missing_value"], f["pts_per_logit"]
+    ph = max(-CAP_PTS, min(CAP_PTS, a * (mv_home - m0) + b * (mv_away - m0)))
+    pa = max(-CAP_PTS, min(CAP_PTS, a * (mv_away - m0) + b * (mv_home - m0)))
+    return ph, pa, ph / k, pa / k
+
+
+def make_avail_fn(pm, availability: dict):
+    """Returns f(ug) -> (shift_home_logit, shift_away_logit, detail) from players ESPN lists as Out. None if no availability data."""
+    teams = (availability or {}).get("teams") or {}
+    if not teams:
+        return None
+
+    def out_ids(team):
+        t = teams.get(team) or {}
+        return [i["nba_id"] for i in t.get("injuries", []) if i.get("nba_id") is not None and "out" in str(i.get("status", "")).lower()]
+
+    def fn(ug):
+        if ug.home not in teams or ug.away not in teams:
+            return None
+        mh, wh = missing_value(pm, ug.home, out_ids(ug.home))
+        ma, wa = missing_value(pm, ug.away, out_ids(ug.away))
+        ph, pa, lh, la = availability_shifts(mh, ma)
+        return lh, la, {"home_missing_value": round(mh, 2), "away_missing_value": round(ma, 2), "home_out": wh, "away_out": wa,
+                        "home_pts_shift": round(ph, 2), "away_pts_shift": round(pa, 2), "generated_utc": availability.get("generated_utc")}
+    return fn

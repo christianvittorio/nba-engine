@@ -20,7 +20,7 @@ av = None
 # Rosters + injury statuses first (best effort, never fails the job): used for the injury-adjusted forecasts and the dashboard.
 try:
     from nbaengine.availability import build_availability, save_availability
-    from nbaengine.injury import make_injury_fn
+    from nbaengine.injury import make_injury_fn, make_avail_fn
     from nbaengine.players import PlayerModel
     av = build_availability(EspnFeed(pause_s=0.3), teams=None, player_state_path="artifacts/player_state.json")   # all 30 teams
     save_availability(av, "artifacts/availability.json")
@@ -28,6 +28,7 @@ try:
     print(f"availability: {len(av['teams'])} teams, {n_inj} injury entries, {len(av['unmatched_roster_names'])} roster names "
           f"without history, problems={av['problems'][:3]}")
     eng.injury_fn = make_injury_fn(PlayerModel.load("artifacts/player_state.json"), av)
+    eng.avail_fn = make_avail_fn(PlayerModel.load("artifacts/player_state.json"), av)
 except Exception as ex:
     print("availability step failed (forecasts unaffected):", type(ex).__name__, ex)
 try:        # back-to-back effect fitted from walk-forward projections (scripts/fit_rest.py)

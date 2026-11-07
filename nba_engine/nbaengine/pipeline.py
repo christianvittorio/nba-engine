@@ -53,6 +53,7 @@ class Engine:
         self.last_margin = {}        # team -> [ISO date, margin] of its latest game seen (for the after-a-10+-win effect)
         self.last_played = {}        # team -> ISO date of its latest game seen (for back-to-back detection)
         self.rest_coef = None        # {'home_b2b': .., 'away_b2b': ..} margin points; set by the daily job
+        self.avail_fn = None         # optional f(ug) -> (home_logit_shift, away_logit_shift, detail): availability inside the simulation
         self.injury_fn = None        # optional f(home, away) -> (margin_shift, detail); set by the daily job
         store.con.executescript(EXTRA_SCHEMA)
 
@@ -186,7 +187,43 @@ class Engine:
         con.execute("INSERT OR IGNORE INTO game_dates VALUES(?,?,?)", (s, gid, ug.date))
         self._forecast_injury_adjusted(ug, sim, e, bt, n_sims, seed, cutoff)
         self._forecast_rest_adjusted(ug, sim, e, bt, n_sims, seed, cutoff)
+        self._forecast_availability(ug, bt, n_sims, seed, cutoff)
         return "made"
+
+    def _sit_shift(self, ug) -> float | None:
+        """Back-to-back + coming-off-a-big-win margin shift (home perspective), same rule as the `sit` forecasts. None if not fitted."""
+        rs = self.rest_shift(ug)
+        sit = (self.rest_coef or {}).get("sit")
+        if rs is None or not sit:
+            return None
+        det = rs[1]; day = date.fromisoformat(ug.date)
+        def big_win(tm):
+            lm = self.last_margin.get(tm)
+            return bool(lm) and lm[1] >= 10 and 0 < (day - date.fromisoformat(lm[0])).days <= 10
+        return sit["home_b2b"] * det["home_b2b"] + sit["away_b2b"] * det["away_b2b"] + sit["after_10plus_win"] * (big_win(ug.home) - big_win(ug.away))
+
+    def _forecast_availability(self, ug, bt, n_sims, seed, cutoff) -> None:
+        """`sim_mc_av`: the simulator re-run with each team's shooting efficiency moved by who is out (same random draws as sim_mc).
+        `sim_mc_avsit`: the same plus back-to-back and recent-form margin shifts. Separate names; sim_mc itself is never changed. Never raises."""
+        try:
+            r = self.avail_fn(ug) if self.avail_fn else None
+            if r is None:
+                return
+            lh, la, det = r
+            s, gid, h, a = ug.season, ug.game_id, ug.home, ug.away
+            sim2 = simulate_game(self.prof, h, a, n_sims, seed, 0.0, track=True, shift_home=lh, shift_away=la)
+            ssh = self._sit_shift(ug)
+            for name, shift in (("sim_mc_av", 0.0), ("sim_mc_avsit", ssh)):
+                if shift is None:
+                    continue
+                sm = summarize(apply_dispersion(sim2, self.kappa_m, self.kappa_t, self.level_delta, margin_shift=shift))
+                self.store.save_forecast(s, gid, name, MODEL_VERSION, cutoff, seed, n_sims, sm["p_home"], sm["mean_home"], sm["mean_away"],
+                    sm["mean_total"], sm["p_ot"], q_margin=sm["q_margin"], q_total=sm["q_total"],
+                    details={**det, "situational_shift": shift, "level_delta": self.level_delta, "mean_poss": sm["mean_poss"],
+                             "date": ug.date, "home": h, "away": a,
+                             "team_box": {sd: {k: round(float(v.mean()), 2) for k, v in sim2["box_" + sd].items()} for sd in ("home", "away")}})
+        except Exception:
+            pass
 
     def rest_shift(self, ug) -> tuple[float, dict] | None:
         """Margin shift (home perspective) for teams on the second night of a back-to-back, from the fitted effect."""

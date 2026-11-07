@@ -24,6 +24,7 @@ from nbaengine.players import PlayerModel, PlayerParams, sample_players, summari
 from nbaengine.players_backtest import load_logs, run_pass
 from nbaengine.playerfeed import COLS, parse_summary
 from nbaengine.sim import ProfileParams, TeamProfiles
+from nbaengine.injury import missing_value, availability_shifts
 from nbaengine.store import Store
 
 SRC = os.environ.get("REPLAY_SOURCE", "espn")
@@ -164,11 +165,8 @@ def main():
     prow, extra = [], []
     for dstr in sorted(days):
         games = days[dstr]
-        # 1) team forecasts for the whole day from the state before the day
-        for fg, _ in games:
-            eng.forecast(UpcomingGame(fg.game_id, fg.season, fg.date, "2099-01-01T00:00:00Z", fg.home, fg.away), N_SIMS, "replay", enforce_tip=False)
-        # 2) map players, forecast players from the state before the day
-        mapped = []
+        # 1) map players to model ids, and work out who was missing (the replay knows the actual lineups = the 'inactives are known' case)
+        mapped, av_in = [], {}
         for fg, rows in games:
             for r in rows:
                 k = str(r.get("espn_id"))
@@ -185,9 +183,21 @@ def main():
             df = df[COLS].fillna(0)
             mapped.append(df)
             if len(df) >= 10:
+                mv = {}
+                for tm in (fg.home, fg.away):
+                    played = set(df.loc[(df.team == tm) & (df["min"] > 0), "player_id"].astype(int))
+                    mv[tm], _ = missing_value(pm, tm, [x for x in pm.pool(tm) if x not in played])
+                ph, pa, lh, la = availability_shifts(mv[fg.home], mv[fg.away])
+                av_in[fg.game_id] = (lh, la, {"home_missing_value": round(mv[fg.home], 2), "away_missing_value": round(mv[fg.away], 2), "home_pts_shift": round(ph, 2), "away_pts_shift": round(pa, 2), "source": "replay: actual non-participants"})
+        eng.avail_fn = lambda ug: av_in.get(ug.game_id)
+        # 2) team forecasts for the whole day from the state before the day, then player forecasts
+        for fg, _ in games:
+            eng.forecast(UpcomingGame(fg.game_id, fg.season, fg.date, "2099-01-01T00:00:00Z", fg.home, fg.away), N_SIMS, "replay", enforce_tip=False)
+        for (fg, _), df in zip(games, mapped):
+            if len(df) >= 10:
                 tp = None
                 if RECON:
-                    r_ = store.con.execute("SELECT mean_home, mean_away FROM forecasts WHERE game_id=? AND model_name='sim_mc'", (fg.game_id,)).fetchone()
+                    r_ = store.con.execute("SELECT mean_home, mean_away FROM forecasts WHERE game_id=? AND model_name IN ('sim_mc_av','sim_mc') ORDER BY model_name DESC LIMIT 1", (fg.game_id,)).fetchone()
                     tp = {fg.home: r_[0], fg.away: r_[1]} if r_ else None
                 player_rows(pm, fg, {t: g for t, g in df.groupby("team")}, None, prow, tp)
             h_box = fg.box
@@ -228,8 +238,15 @@ def build_outputs(store, P, X):
     det = base.details_json.map(json.loads)
     base["pred_poss"] = det.map(lambda d: d.get("mean_poss")); base["level_delta"] = det.map(lambda d: d.get("level_delta"))
     base["modal"] = det.map(lambda d: d.get("modal_score"))
-    for name, tag in (("elo", "elo"), ("sim_mc_rest", "rest"), ("sim_mc_sit", "sit"), ("home_const", "const")):
+    for name, tag in (("elo", "elo"), ("sim_mc_rest", "rest"), ("sim_mc_sit", "sit"), ("home_const", "const"), ("sim_mc_av", "av"), ("sim_mc_avsit", "avsit")):
         base = base.merge(F[F.model_name == name][["game_id", "p_home"]].rename(columns={"p_home": f"p_{tag}"}), on="game_id", how="left")
+    for name, tag in (("sim_mc_av", "av"),):
+        x = F[F.model_name == name][["game_id", "mean_home", "mean_away", "mean_margin", "mean_total"]].rename(columns=lambda c: c if c == "game_id" else f"{c}_{tag}")
+        base = base.merge(x, on="game_id", how="left")
+    for c, d in (("p_av", "p_home"), ("p_avsit", "p_sit"), ("mean_home_av", "mean_home"), ("mean_away_av", "mean_away"), ("mean_margin_av", "mean_margin"), ("mean_total_av", "mean_total")):
+        base[c] = base[c].fillna(base[d])       # games without a stored lineup fall back to the plain simulator
+    for c, d in (("p_av", "p_home"), ("p_avsit", "p_sit"), ("mean_home_av", "mean_home"), ("mean_away_av", "mean_away"), ("mean_margin_av", "mean_margin"), ("mean_total_av", "mean_total")):
+        base[c] = base[c].fillna(base[d])       # games without a stored lineup fall back to the plain simulator
     qm, qt = base.q_margin_json.map(json.loads), base.q_total_json.map(json.loads)
     for k in ("10", "25", "75", "90"):
         base[f"qm{k}"], base[f"qt{k}"] = qm.map(lambda q: q[k]), qt.map(lambda q: q[k])
@@ -261,7 +278,8 @@ def write_report(G, P):
          f"Start state rebuilt from seasons {WARM[0]}-{WARM[-1]} ({'ESPN results' if SRC == 'espn' else 'offline self-test on a past season'}); {N_SIMS} simulations per game. "
          "No injury information is replayed, and these replay forecasts are not the immutable live forecasts (those only exist for games forecast before tip-off).", ""]
     rows = []
-    for nm, col in (("Simulator", "p_home"), ("Elo", "p_elo"), ("Simulator + back-to-back", "p_rest"), ("Simulator + back-to-back + form", "p_sit"), ("Home-court constant", "p_const")):
+    for nm, col in (("Simulator", "p_home"), ("Elo", "p_elo"), ("Simulator + back-to-back", "p_rest"), ("Simulator + back-to-back + form", "p_sit"), ("Simulator + availability (who actually played)", "p_av"),
+                    ("Simulator + availability + back-to-back + form", "p_avsit"), ("Home-court constant", "p_const")):
         p = G[col]
         rows.append({"model": nm, "winner right": f"{int(((p > .5) == (y == 1)).sum())}/{n}", "accuracy": float(((p > .5) == (y == 1)).mean()), "Brier": float(((p - y) ** 2).mean()), "log-loss": _ll(p.to_numpy(), y.to_numpy())})
     L += ["## 1. Who wins", "", md(pd.DataFrame(rows), {"accuracy": "{:.1%}", "Brier": "{:.4f}", "log-loss": "{:.4f}"}), "",
@@ -273,6 +291,8 @@ def write_report(G, P):
         {"quantity": "Away points", "predicted avg": ap_hat.mean(), "actual avg": G.away_pts.mean(), "bias": (G.away_pts - ap_hat).mean(), "MAE": (G.away_pts - ap_hat).abs().mean()},
         {"quantity": "Total points", "predicted avg": G.mean_total.mean(), "actual avg": G.total.mean(), "bias": (G.total - G.mean_total).mean(), "MAE": (G.total - G.mean_total).abs().mean()},
         {"quantity": "Margin (home - away)", "predicted avg": G.mean_margin.mean(), "actual avg": G.margin.mean(), "bias": (G.margin - G.mean_margin).mean(), "MAE": (G.margin - G.mean_margin).abs().mean()},
+        {"quantity": "Total points, with availability", "predicted avg": G.mean_total_av.mean(), "actual avg": G.total.mean(), "bias": (G.total - G.mean_total_av).mean(), "MAE": (G.total - G.mean_total_av).abs().mean()},
+        {"quantity": "Margin, with availability", "predicted avg": G.mean_margin_av.mean(), "actual avg": G.margin.mean(), "bias": (G.margin - G.mean_margin_av).mean(), "MAE": (G.margin - G.mean_margin_av).abs().mean()},
         {"quantity": "Possessions", "predicted avg": G.pred_poss.mean(), "actual avg": G.actual_poss.mean(), "bias": (G.actual_poss - G.pred_poss).mean(), "MAE": (G.actual_poss - G.pred_poss).abs().mean()}])
     cov = {f"{lab}% {t}": float(((G[t] >= G[f"q{t[0]}{lo}"]) & (G[t] <= G[f"q{t[0]}{hi}"])).mean()) for t in ("margin", "total") for lo, hi, lab in (("25", "75", 50), ("10", "90", 80))}
     L += ["## 2. Scores", "", md(sc, {"predicted avg": "{:.1f}", "actual avg": "{:.1f}", "bias": "{:+.2f}", "MAE": "{:.2f}"}), "",
@@ -337,6 +357,7 @@ def day_report(G, P, M, n_days=int(os.environ.get("REPORT_DAYS", 2))):
             tot.append((ok, r.margin - r.mean_margin, r.total - r.mean_total))
             L += [f"### {r.away} at {r.home}", "",
                   f"Predicted {r.mean_away:.0f}-{r.mean_home:.0f} ({r.home} win {r.p_home:.0%}), actual {r.away_pts}-{r.home_pts}. Winner {'right' if ok else 'WRONG'}; margin off by {r.margin - r.mean_margin:+.0f}, total off by {r.total - r.mean_total:+.0f}"
+                  + (f" With who actually played: {r.mean_away_av:.0f}-{r.mean_home_av:.0f} ({r.home} win {r.p_av:.0%})." if abs(r.mean_margin_av - r.mean_margin) > 0.3 else "")
                   + (f". Went to overtime ({int(r.n_periods) - 4})." if r.n_periods > 4 else "."), ""]
             m = M[M.game_id == r.game_id] if len(M) else M
             if len(m) == 2:
