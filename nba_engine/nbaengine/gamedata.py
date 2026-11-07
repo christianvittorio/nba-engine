@@ -49,6 +49,9 @@ def extract(event_id: str, date: str, season: int, js: dict) -> dict:
             "odds": _slim_odds(js.get("pickcenter")), "againstTheSpread": js.get("againstTheSpread"),
             "team_stats": [{"team": _g(t, "team", "id"), "stats": [{"name": s.get("name"), "value": s.get("displayValue")} for s in (t.get("statistics") or [])]}
                            for t in (_g(js, "boxscore", "teams", default=[]) or [])],
+            "players": [{"team": _g(t, "team", "id"), "id": _g(a, "athlete", "id"), "name": _g(a, "athlete", "displayName"), "starter": bool(a.get("starter")),
+                        "stats": a.get("stats")} for t in (_g(js, "boxscore", "players", default=[]) or [])
+                       for blk in (t.get("statistics") or [])[:1] for a in (blk.get("athletes") or [])],
             "winprob_home": [round(float(w.get("homeWinPercentage")), 4) for w in (js.get("winprobability") or []) if w.get("homeWinPercentage") is not None]}
 
 
