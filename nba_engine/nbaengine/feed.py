@@ -187,6 +187,11 @@ class EspnFeed:
             out.update({f"{side}_fga": fga, f"{side}_fgm": fgm, f"{side}_3pa": a3, f"{side}_3pm": m3,
                         f"{side}_fta": fta, f"{side}_ftm": ftm, f"{side}_tov": tov, f"{side}_oreb": oreb,
                         f"{side}_oreb_fg": oreb - oreb_ft, f"{side}_oreb_ft": oreb_ft, f"{side}_dreb": dreb})
+            try:        # every other numeric team statistic ESPN publishes (steals, blocks, fouls, paint / fast-break points ...), kept as-is
+                out[f"{side}_x"] = {x["name"]: float(x["displayValue"]) for x in st
+                                    if x.get("name") and str(x.get("displayValue", "")).replace(".", "", 1).lstrip("-").isdigit()}
+            except Exception:
+                pass
         return out, ids
 
     def scoreboard(self, yyyymmdd: str):

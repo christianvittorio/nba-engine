@@ -30,6 +30,9 @@ CREATE TABLE IF NOT EXISTS team_box(season INTEGER, game_id INTEGER, side TEXT, 
   fga INTEGER, fgm INTEGER, fg3a INTEGER, fg3m INTEGER, fta INTEGER, ftm INTEGER, tov INTEGER, oreb INTEGER, dreb INTEGER,
   PRIMARY KEY(season, game_id, side));
 """
+EXTRA_SCHEMA += """
+CREATE TABLE IF NOT EXISTS team_box_extra(season INTEGER, game_id INTEGER, side TEXT, stats_json TEXT, PRIMARY KEY(season, game_id, side));
+"""
 BOX_COLS = ("fga", "fgm", "3pa", "3pm", "fta", "ftm", "tov", "oreb", "dreb")
 
 
@@ -109,6 +112,9 @@ class Engine:
                 if all(f"{side}_{c}" in fg.box for c in BOX_COLS):
                     self.store.con.execute("INSERT OR IGNORE INTO team_box VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                                            (fg.season, fg.game_id, side, tm, op, fg.n_periods, pts, *[int(fg.box[f"{side}_{c}"]) for c in BOX_COLS]))
+            for side in ("home", "away"):
+                if isinstance(fg.box.get(f"{side}_x"), dict) and fg.box[f"{side}_x"]:
+                    self.store.con.execute("INSERT OR IGNORE INTO team_box_extra VALUES(?,?,?,?)", (fg.season, fg.game_id, side, json.dumps(fg.box[f"{side}_x"])))
         except Exception:
             pass
         for tm in (fg.home, fg.away):                 # schedule memory, updated even for already-applied games

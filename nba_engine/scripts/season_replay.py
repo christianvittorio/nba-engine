@@ -210,6 +210,11 @@ def main():
         tsr = importlib.util.module_from_spec(sp); sp.loader.exec_module(tsr); tsr.build(DBP, f"{OUT}/team_stats.md")
     except Exception as ex:
         print("team stats report failed:", type(ex).__name__, ex)
+    try:
+        from nbaengine.teamstats import predicted_vs_actual
+        day_report(pd.read_csv(f"{OUT}/games.csv"), pd.DataFrame(prow), predicted_vs_actual(DBP))
+    except Exception as ex:
+        print("day report failed:", type(ex).__name__, ex)
     store.con.close(); os.remove(DBP)
 
 
@@ -315,6 +320,52 @@ def write_report(G, P):
               "Over-delivering:", "", md(pl.tail(8).iloc[::-1].reset_index(), {"forecast": "{:.1f}", "actual": "{:.1f}", "diff": "{:+.1f}"}), ""]
     open(f"{OUT}/report.md", "w").write("\n".join(L))
     log("report written:", f"{OUT}/report.md")
+
+
+def day_report(G, P, M, n_days=int(os.environ.get("REPORT_DAYS", 2))):
+    """Game-by-game simulation vs reality for the most recent completed days: score, win probability, team box score, key players."""
+    dates = sorted(G.date.unique())[-n_days:]
+    L = [f"# Simulation vs actual: {', '.join(dates)}", "",
+         "Each game was simulated from the model state before that day (Elo + possession simulator with back-to-back/form variants, the opponent-aware 3-point rate, and the player layer reconciled to the team total), then compared with the final. "
+         "Team box columns show predicted / actual and exist for regulation games only. Players: forecast made knowing who actually played (minutes shared among them).", ""]
+    tot = []
+    for d in dates:
+        g = G[G.date == d]
+        L += [f"## {d}: {len(g)} games", ""]
+        for r in g.itertuples():
+            ok = (r.p_home > .5) == (r.margin > 0)
+            tot.append((ok, r.margin - r.mean_margin, r.total - r.mean_total))
+            L += [f"### {r.away} at {r.home}", "",
+                  f"Predicted {r.mean_away:.0f}-{r.mean_home:.0f} ({r.home} win {r.p_home:.0%}), actual {r.away_pts}-{r.home_pts}. Winner {'right' if ok else 'WRONG'}; margin off by {r.margin - r.mean_margin:+.0f}, total off by {r.total - r.mean_total:+.0f}"
+                  + (f". Went to overtime ({int(r.n_periods) - 4})." if r.n_periods > 4 else "."), ""]
+            m = M[M.game_id == r.game_id] if len(M) else M
+            if len(m) == 2:
+                rows = []
+                for lab, k in (("FG made-att", None), ("3PM-3PA", None), ("FTA", "fta"), ("TOV", "tov"), ("OREB", "oreb")):
+                    cells = []
+                    for side in ("away", "home"):
+                        x = m[m.side == side].iloc[0]
+                        if lab == "FG made-att":
+                            cells.append(f"{x.p_fgm:.0f}-{x.p_fga:.0f} / {x.a_fgm:.0f}-{x.a_fga:.0f}")
+                        elif lab == "3PM-3PA":
+                            cells.append(f"{x.p_fg3m:.0f}-{x.p_fg3a:.0f} / {x.a_fg3m:.0f}-{x.a_fg3a:.0f}")
+                        else:
+                            cells.append(f"{x['p_' + k]:.0f} / {x['a_' + k]:.0f}")
+                    rows.append(f"| {lab} | {cells[0]} | {cells[1]} |")
+                L += [f"| predicted / actual | {r.away} | {r.home} |", "|---|---|---|", *rows, ""]
+            if len(P):
+                pp = P[(P.game_id == r.game_id) & (P["mode"] == "confirmed") & (P.played == 1)].sort_values("mean_min", ascending=False)
+                rows = []
+                for tm in (r.away, r.home):
+                    for x in pp[pp.team == tm].head(5).itertuples():
+                        rows.append(f"| {x.name} ({tm}) | {x.mean_min:.0f} / {x.a_min:.0f} | {x.mean_pts:.1f} / {x.a_pts:.0f} | {x.mean_reb:.1f} / {x.a_reb:.0f} | {x.mean_ast:.1f} / {x.a_ast:.0f} | {x.mean_tpm:.1f} / {x.a_tpm:.0f} |")
+                if rows:
+                    L += ["| player: forecast / actual | min | pts | reb | ast | 3PM |", "|---|---|---|---|---|---|", *rows, ""]
+    if tot:
+        a = np.array([(float(o), abs(m), abs(t), m, t) for o, m, t in tot])
+        L.insert(2, f"**Summary: winner right in {int(a[:,0].sum())} of {len(a)}; average margin miss {a[:,1].mean():.1f}, total miss {a[:,2].mean():.1f}; bias (actual minus predicted) margin {a[:,3].mean():+.1f}, total {a[:,4].mean():+.1f}.**")
+        L.insert(3, "")
+    open(f"{OUT}/day_report.md", "w").write("\n".join(L)); log("day report written")
 
 
 if __name__ == "__main__":

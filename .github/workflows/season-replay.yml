@@ -21,6 +21,7 @@ jobs:
           PLAYER_SIMS: "600"
           P_PLAY_POW: "1.2"
           REPLAY_RECONCILE: "1"
+          REPORT_DAYS: "3"
       - name: Commit replay outputs
         run: |
           git config user.name "nba-engine-bot"
