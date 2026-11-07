@@ -82,8 +82,14 @@ def _zeros():
     return {k: 0.0 for k in SUMKEYS}
 
 
+OPP_STATS = ["pts", "ast", "tpm", "tpa", "reb", "fga", "fta", "tov", "stl", "blk"]
+OPP_HL, OPP_PRIOR, OPP_LG_DECAY = 25.0, 8.0, 0.9995
+
+
 class PlayerModel:
     def __init__(self, params: PlayerParams | None = None):
+        self.opp: dict = {}        # team -> {stat: [weighted sum allowed, weight]}: what each defence has allowed per game (half-life 25 games)
+        self.opp_lg: dict = {}     # league average per team-game, same stats
         self.p = params or PlayerParams()
         self.pl: dict = {}
         self.names: dict = {}
@@ -184,16 +190,45 @@ class PlayerModel:
                 if pid not in flagged:
                     st["flags"] = (st["flags"] + [1])[-10:]
         self.n_games += 1
+        try:
+            self._update_opp(rows)
+        except Exception:
+            pass
+
+    def _update_opp(self, rows: pd.DataFrame) -> None:
+        tot = {t: {k: float(g.loc[g["min"] > 0, k].sum()) for k in OPP_STATS} for t, g in rows.groupby("team")}
+        if len(tot) != 2:
+            return
+        lam = 0.5 ** (1.0 / OPP_HL)
+        (a, ta), (b, tb) = list(tot.items())
+        for defence, allowed in ((b, ta), (a, tb)):         # the points, assists ... a team's players scored were ALLOWED by the other team
+            st = self.opp.setdefault(defence, {k: [0.0, 0.0] for k in OPP_STATS})
+            for k in OPP_STATS:
+                st[k] = [st[k][0] * lam + allowed[k], st[k][1] * lam + 1.0]
+                lg = self.opp_lg.setdefault(k, [0.0, 0.0])
+                self.opp_lg[k] = [lg[0] * OPP_LG_DECAY + allowed[k], lg[1] * OPP_LG_DECAY + 1.0]
+
+    def opp_factors(self, opp_team: str | None) -> dict | None:
+        """Multipliers (1.0 = league average) for a player facing `opp_team`'s defence: recent allowed per game over league average, shrunk toward 1."""
+        st = self.opp.get(opp_team) if (opp_team and os.environ.get("NBA_NO_OPP") != "1") else None
+        if not st or not self.opp_lg:
+            return None
+        out = {}
+        for k in OPP_STATS:
+            lg = self.opp_lg[k][0] / self.opp_lg[k][1] if self.opp_lg.get(k, [0, 0])[1] > 0 else None
+            out[k] = ((st[k][0] + OPP_PRIOR * lg) / (st[k][1] + OPP_PRIOR)) / lg if lg else 1.0
+        return out
 
     def project_team(self, team: str, active: list | None = None, mode: str = "confirmed",
                      extra_unknown: dict | None = None, pool_ids: list | None = None,
-                     team_pts: float | None = None) -> pd.DataFrame:
+                     team_pts: float | None = None, opp_team: str | None = None) -> pd.DataFrame:
         p = self.p
         pool = list(pool_ids) if pool_ids is not None else self.pool(team)
         act = pool if active is None else list(active)
         actset = set(act)
         absent = [x for x in pool if x not in actset]
         confirmed = mode == "confirmed"
+        of = self.opp_factors(opp_team)
         f = min(0.6, sum(self.ewm_min(x) or 0.0 for x in absent) / 240.0) if confirmed else 0.0
         ids = act if confirmed else pool
         base, unknown = [], []
@@ -211,6 +246,11 @@ class PlayerModel:
             if confirmed:
                 for s in COUNT:
                     r[s] *= 1.0 + p.beta.get(s, 0.0) * f
+            if of:
+                # matchup: a defence that allows more of a stat than average raises that stat (walk-forward 2025-26: coefficient 0.9-1.3, t 8-14)
+                r["fga"] *= of["fga"]; r["fta"] *= of["fta"]; r["ast"] *= of["ast"]; r["reb"] *= of["reb"]
+                r["tov"] *= of["tov"]; r["stl"] *= of["stl"]; r["blk"] *= of["blk"]
+                r["s3"] = min(1.0, r["s3"] * of["tpa"] / of["fga"]); r["p3"] = min(0.98, r["p3"] * of["tpm"] / of["tpa"])
             st = self.pl.get(pid)
             miss = self.misses_last5(pid) if st else 2
             pp = p.p_play.get(f"{bucket(m0)}|{min(miss, 2)}", 0.85) ** p.p_play_pow if mode == "unconfirmed" else 1.0
@@ -243,7 +283,8 @@ class PlayerModel:
         return {"params": asdict(self.p),
                 "pl": {str(k): v for k, v in self.pl.items()},
                 "names": {str(k): v for k, v in self.names.items()},
-                "team_gp": self.team_gp, "lg": self.lg, "season": self.season, "n_games": self.n_games}
+                "team_gp": self.team_gp, "lg": self.lg, "season": self.season, "n_games": self.n_games,
+                "opp": self.opp, "opp_lg": self.opp_lg}
 
     @staticmethod
     def from_dict(d: dict) -> "PlayerModel":
@@ -256,6 +297,7 @@ class PlayerModel:
         m.lg = d["lg"]
         m.season = d["season"]
         m.n_games = d["n_games"]
+        m.opp, m.opp_lg = d.get("opp", {}), d.get("opp_lg", {})
         return m
 
     def save(self, path: str) -> None:
@@ -268,7 +310,11 @@ class PlayerModel:
     @staticmethod
     def load(path: str) -> "PlayerModel":
         with open(path) as fh:
-            return PlayerModel.from_dict(json.load(fh))
+            m = PlayerModel.from_dict(json.load(fh))
+        snap = os.path.join(os.path.dirname(path) or ".", "opp_defense.json")      # one-off snapshot of the defence tables, built by the season replay
+        if not m.opp and os.path.exists(snap):
+            d = json.load(open(snap)); m.opp, m.opp_lg = d["opp"], d["opp_lg"]
+        return m
 
 
 def _nb(rng, mu, k):

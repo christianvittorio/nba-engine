@@ -120,11 +120,11 @@ def player_rows(pm, fg, rows_by_team, mode_rows, out, team_pts=None):
                 ids = list(actual)
                 if len(ids) < 5:
                     continue
-                pr = pm.project_team(team, active=ids, mode="confirmed", team_pts=(team_pts or {}).get(team))
+                pr = pm.project_team(team, active=ids, mode="confirmed", team_pts=(team_pts or {}).get(team), opp_team=(fg.away if team == fg.home else fg.home))
             else:
                 if not pm.pool(team):
                     continue
-                pr = pm.project_team(team, mode="unconfirmed", team_pts=(team_pts or {}).get(team))
+                pr = pm.project_team(team, mode="unconfirmed", team_pts=(team_pts or {}).get(team), opp_team=(fg.away if team == fg.home else fg.home))
             pr = pr.sort_values("base_min", ascending=False).head(14 if mode == "unconfirmed" else 20).reset_index(drop=True)
             seed = 20271021 + fg.game_id % 100000 * 10 + ti * 2 + (mode == "confirmed")
             summ = summarize_samples(sample_players(pr, pm.p, P_SIMS, seed, mode))
@@ -226,6 +226,8 @@ def main():
     except Exception as ex:
         print("day report failed:", type(ex).__name__, ex)
     store.con.close(); os.remove(DBP)
+    if SRC == "espn":
+        json.dump({"opp": pm.opp, "opp_lg": pm.opp_lg, "through": max(days)}, open("artifacts/opp_defense.json", "w"))
 
 
 def build_outputs(store, P, X):
