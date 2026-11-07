@@ -1,6 +1,6 @@
 # Calibration report
 
-Generated 2026-11-06T20:15:09Z. Team layer: 4920 walk-forward games (2022-23 to 2025-26, each projected only from earlier games) plus the live season. Player layer: 2025-26 frozen-parameter evaluation plus live games as they accumulate.
+Generated 2026-11-07T15:28:26Z. Team layer: 4920 walk-forward games (2022-23 to 2025-26, each projected only from earlier games) plus the live season. Player layer: 2025-26 frozen-parameter evaluation plus live games as they accumulate.
 
 ## 1. Team layer on past games
 
@@ -53,38 +53,38 @@ Margin slope 1.33 +/- 0.09 and total slope 1.17 +/- 0.11 over the last 600 games
 
 ## 3. Team layer on the live season
 
-52 live games with stored pre-game forecasts and results (small sample: treat as a smoke test, not a verdict).
+61 live games with stored pre-game forecasts and results (small sample: treat as a smoke test, not a verdict).
 
 | metric | value |
 |---|---|
-| n | 52.000 |
-| sim_log_loss | 0.626 |
-| elo_log_loss | 0.625 |
-| sim_brier | 0.221 |
-| margin_bias | 1.399 |
-| margin_mae | 11.267 |
-| total_bias | -7.822 |
-| total_bias_se | 2.677 |
-| total_mae | 16.049 |
-| margin_cov80 | 0.788 |
-| total_cov80 | 0.692 |
+| n | 61.000 |
+| sim_log_loss | 0.593 |
+| elo_log_loss | 0.590 |
+| sim_brier | 0.205 |
+| margin_bias | 0.436 |
+| margin_mae | 11.265 |
+| total_bias | -6.576 |
+| total_bias_se | 2.468 |
+| total_mae | 15.690 |
+| margin_cov80 | 0.770 |
+| total_cov80 | 0.705 |
 | ot_pred | 0.022 |
-| ot_actual | 0.058 |
-| home_win_pred | 0.552 |
-| home_win_actual | 0.558 |
+| ot_actual | 0.049 |
+| home_win_pred | 0.540 |
+| home_win_actual | 0.541 |
 
-**Total score:** live games are totalling -7.8 points versus the projection (standard error 2.7). Part of this is that the scoring-level correction learned at the end of 2025-26 (about +6 points) was carried into the new season while scoring dropped. From 2026-11-04 the level restarts at 0 each season and tracks faster for the first 60 games (walk-forward history shows no loss from this: total MAE 14.773 vs 14.774 for all games; forecasts already stored are not touched).
+**Total score:** live games are totalling -6.6 points versus the projection (standard error 2.5). Part of this is that the scoring-level correction learned at the end of 2025-26 (about +6 points) was carried into the new season while scoring dropped. From 2026-11-04 the level restarts at 0 each season and tracks faster for the first 60 games (walk-forward history shows no loss from this: total MAE 14.773 vs 14.774 for all games; forecasts already stored are not touched).
 
 Variants on the same live games (each only for games that had that variant stored):
 
 | model | n | log_loss | margin_mae |
 |---|---|---|---|
-| sim_mc | 52.0 | 0.6263 | 11.27 |
-| sim_mc_rest | 31.0 | 0.5914 | 10.18 |
-| sim_mc_sit | 16.0 | 0.5905 | 10.23 |
-| sim_mc_inj | 31.0 | 0.6279 | 10.65 |
-| sim_mc_full | 31.0 | 0.6205 | 10.80 |
-| sim_mc_all | 16.0 | 0.6021 | 10.28 |
+| sim_mc | 61.0 | 0.5930 | 11.26 |
+| sim_mc_rest | 40.0 | 0.5484 | 10.42 |
+| sim_mc_sit | 25.0 | 0.5172 | 10.64 |
+| sim_mc_inj | 40.0 | 0.5765 | 10.85 |
+| sim_mc_full | 40.0 | 0.5708 | 10.97 |
+| sim_mc_all | 25.0 | 0.5246 | 10.74 |
 
 ## 4. Player layer
 
@@ -108,23 +108,23 @@ Variants on the same live games (each only for games that had that variant store
 
 Per-player means are unbiased (bias is a few hundredths of a unit). Coverage of the discrete stats (steals, blocks, turnovers, threes) reads high because counts take whole values and a range edge on a whole number counts as inside; points, minutes and points+rebounds+assists are the informative rows, and they sit at or slightly above nominal. In the last fifth of the season points were under-projected by about 0.25 per player (+3%), a drift worth watching.
 
-### Live 2026-27 (16 games, 383 player rows)
+### Live 2026-27 (25 games, 599 player rows)
 
 | stat | n | mean_forecast | mean_actual | bias | mae | cov50 | cov80 | cov90 |
 |---|---|---|---|---|---|---|---|---|
-| min | 383 | 18.69 | 19.48 | +0.790 | 6.63 | 59.5% | 85.9% | 95.3% |
-| pts | 383 | 9.25 | 9.13 | -0.127 | 4.68 | 64.0% | 89.6% | 97.1% |
-| reb | 383 | 3.43 | 3.60 | +0.168 | 2.03 | 69.2% | 90.3% | 96.3% |
-| ast | 383 | 2.12 | 2.14 | +0.020 | 1.31 | 76.2% | 92.7% | 97.1% |
-| stl | 383 | 0.65 | 0.62 | -0.029 | 0.64 | 86.2% | 95.0% | 97.7% |
-| blk | 383 | 0.38 | 0.45 | +0.069 | 0.49 | 82.8% | 92.2% | 96.1% |
-| tov | 383 | 1.12 | 1.18 | +0.062 | 0.88 | 77.0% | 94.0% | 96.6% |
-| tpm | 383 | 1.06 | 1.03 | -0.026 | 0.85 | 81.5% | 93.5% | 98.4% |
-| fgm | 383 | 3.35 | 3.22 | -0.128 | 1.72 | 70.0% | 93.0% | 97.9% |
-| fga | 383 | 7.10 | 7.10 | +0.003 | 3.09 | 67.1% | 90.3% | 97.1% |
-| ftm | 383 | 1.50 | 1.66 | +0.155 | 1.29 | 78.1% | 92.4% | 95.6% |
-| fta | 383 | 1.92 | 2.14 | +0.215 | 1.59 | 74.7% | 89.3% | 95.0% |
-| pra | 383 | 14.80 | 14.86 | +0.061 | 6.44 | 64.0% | 88.0% | 97.4% |
+| min | 599 | 18.55 | 19.29 | +0.741 | 6.72 | 58.4% | 85.5% | 95.5% |
+| pts | 599 | 9.25 | 9.09 | -0.154 | 4.80 | 64.4% | 88.5% | 96.3% |
+| reb | 599 | 3.42 | 3.52 | +0.105 | 2.03 | 68.6% | 89.6% | 96.0% |
+| ast | 599 | 2.12 | 2.11 | -0.005 | 1.35 | 75.5% | 92.5% | 96.5% |
+| stl | 599 | 0.64 | 0.64 | -0.003 | 0.65 | 84.6% | 94.2% | 96.8% |
+| blk | 599 | 0.39 | 0.41 | +0.024 | 0.46 | 84.1% | 93.7% | 97.2% |
+| tov | 599 | 1.11 | 1.19 | +0.084 | 0.88 | 76.6% | 93.3% | 97.2% |
+| tpm | 599 | 1.05 | 1.05 | -0.004 | 0.86 | 81.0% | 93.5% | 97.7% |
+| fgm | 599 | 3.34 | 3.18 | -0.165 | 1.77 | 70.5% | 92.2% | 97.3% |
+| fga | 599 | 7.10 | 7.04 | -0.058 | 3.11 | 66.6% | 89.6% | 96.7% |
+| ftm | 599 | 1.50 | 1.68 | +0.179 | 1.32 | 76.0% | 91.0% | 94.7% |
+| fta | 599 | 1.92 | 2.13 | +0.210 | 1.61 | 73.0% | 89.6% | 94.7% |
+| pra | 599 | 14.78 | 14.73 | -0.054 | 6.62 | 62.9% | 87.3% | 96.8% |
 
 ## 5. What this does not cover
 
