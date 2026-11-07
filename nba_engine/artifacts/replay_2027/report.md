@@ -1,4 +1,4 @@
-# Season replay: 123 games, 2026-10-20 to 2026-11-05
+# Season replay: 132 games, 2026-10-20 to 2026-11-06
 
 Every game forecast from the model state before its day, then the real result and box score compared. Start state rebuilt from seasons 2022-2026 (ESPN results); 2000 simulations per game. No injury information is replayed, and these replay forecasts are not the immutable live forecasts (those only exist for games forecast before tip-off).
 
@@ -6,33 +6,33 @@ Every game forecast from the model state before its day, then the real result an
 
 | model | winner right | accuracy | Brier | log-loss |
 |---|---|---|---|---|
-| Simulator | 84/123 | 68.3% | 0.2123 | 0.6104 |
-| Elo | 77/123 | 62.6% | 0.2239 | 0.6343 |
-| Simulator + back-to-back | 82/123 | 66.7% | 0.2105 | 0.6061 |
-| Simulator + back-to-back + form | 82/123 | 66.7% | 0.2088 | 0.6020 |
-| Simulator + availability (who actually played) | 79/123 | 64.2% | 0.2150 | 0.6150 |
-| Simulator + availability + back-to-back + form | 80/123 | 65.0% | 0.2118 | 0.6068 |
-| Home-court constant | 64/123 | 52.0% | 0.2507 | 0.6945 |
+| Simulator | 93/132 | 70.5% | 0.2072 | 0.5997 |
+| Elo | 86/132 | 65.2% | 0.2159 | 0.6174 |
+| Simulator + back-to-back | 91/132 | 68.9% | 0.2055 | 0.5957 |
+| Simulator + back-to-back + form | 91/132 | 68.9% | 0.2035 | 0.5908 |
+| Simulator + availability (who actually played) | 88/132 | 66.7% | 0.2103 | 0.6052 |
+| Simulator + availability + back-to-back + form | 89/132 | 67.4% | 0.2069 | 0.5966 |
+| Home-court constant | 68/132 | 51.5% | 0.2512 | 0.6956 |
 
-Home teams won 52.0% of games; the simulator expected 55.6%.
+Home teams won 51.5% of games; the simulator expected 55.0%.
 
 ## 2. Scores
 
 | quantity | predicted avg | actual avg | bias | MAE |
 |---|---|---|---|---|
-| Home points | 115.7 | 114.3 | -1.40 | 9.77 |
-| Away points | 113.4 | 112.5 | -0.98 | 9.73 |
-| Total points | 229.1 | 226.8 | -2.38 | 15.06 |
-| Margin (home - away) | 2.3 | 1.9 | -0.41 | 11.37 |
-| Total points, with availability | 227.9 | 226.8 | -1.16 | 14.72 |
-| Margin, with availability | 2.2 | 1.9 | -0.33 | 11.51 |
-| Possessions | 100.0 | 102.4 | +2.40 | 4.37 |
+| Home points | 115.5 | 114.1 | -1.43 | 9.74 |
+| Away points | 113.5 | 112.8 | -0.73 | 9.75 |
+| Total points | 229.0 | 226.8 | -2.16 | 14.91 |
+| Margin (home - away) | 2.0 | 1.3 | -0.71 | 11.40 |
+| Total points, with availability | 227.8 | 226.8 | -1.00 | 14.60 |
+| Margin, with availability | 2.0 | 1.3 | -0.73 | 11.58 |
+| Possessions | 100.1 | 102.3 | +2.25 | 4.31 |
 
-For comparison, always guessing the season-to-date average (226.8 total) would give a total MAE of 15.38 and always guessing the average margin a margin MAE of 12.99 (that comparison uses the full set of results, so it flatters the baseline).
+For comparison, always guessing the season-to-date average (226.8 total) would give a total MAE of 15.29 and always guessing the average margin a margin MAE of 13.28 (that comparison uses the full set of results, so it flatters the baseline).
 
-Predicted ranges that actually contained the result (nominal 50% / 80%): 50% margin: 48.8%; 80% margin: 78.0%; 50% total: 47.2%; 80% total: 81.3%.
+Predicted ranges that actually contained the result (nominal 50% / 80%): 50% margin: 50.0%; 80% margin: 77.3%; 50% total: 47.7%; 80% total: 81.8%.
 
-Overtime: the simulator said 2.2%; 5.7% of these games went to overtime. Three-pointers made per game 26.3, attempts 75.6, free-throw attempts 50.7, turnovers 30.5, offensive rebounds 24.2 (actual, both teams).
+Overtime: the simulator said 2.2%; 5.3% of these games went to overtime. Three-pointers made per game 26.3, attempts 75.6, free-throw attempts 51.0, turnovers 30.5, offensive rebounds 24.3 (actual, both teams).
 
 ### Biggest margin misses
 
@@ -40,14 +40,14 @@ Overtime: the simulator said 2.2%; 5.7% of these games went to overtime. Three-p
 |---|---|---|---|---|---|---|---|
 | 2026-10-23 | ATL at CHA | 115-112 | 81-128 | 57% | NO | -50 | -18 |
 | 2026-10-21 | PHX at POR | 113-110 | 124-83 | 57% | yes | +39 | -16 |
+| 2026-11-06 | BOS at CHA | 103-106 | 80-119 | 42% | yes | -36 | -11 |
 | 2026-10-21 | CHI at TOR | 121-112 | 135-92 | 76% | yes | +34 | -6 |
 | 2026-10-28 | OKC at DAL | 110-120 | 120-96 | 26% | NO | +33 | -14 |
 | 2026-10-29 | MEM at POR | 121-112 | 103-124 | 74% | NO | -30 | -7 |
 | 2026-11-02 | DET at CHA | 104-108 | 91-124 | 40% | yes | -29 | +3 |
 | 2026-10-26 | GSW at DEN | 120-112 | 114-134 | 71% | NO | -28 | +16 |
+| 2026-11-06 | OKC at MEM | 112-116 | 97-128 | 42% | yes | -28 | -3 |
 | 2026-10-25 | IND at BKN | 114-114 | 109-136 | 49% | yes | -27 | +17 |
-| 2026-10-21 | MIN at MIA | 120-119 | 106-131 | 52% | NO | -26 | -1 |
-| 2026-10-31 | ATL at NOP | 117-120 | 121-99 | 42% | NO | +25 | -17 |
 
 ### Biggest total misses
 
@@ -56,13 +56,13 @@ Overtime: the simulator said 2.2%; 5.7% of these games went to overtime. Three-p
 | 2026-10-22 | DEN at OKC | 118-114 | 96-84 | 61% | yes | +8 | -52 |
 | 2026-10-30 | CHA at WAS | 109-115 | 95-79 | 34% | NO | +22 | -50 |
 | 2026-10-28 | DEN at NOP | 119-122 | 91-104 | 42% | yes | -10 | -46 |
+| 2026-11-06 | WAS at ATL | 119-110 | 139-132 | 73% | yes | -1 | +42 |
 | 2026-10-24 | NOP at DEN | 121-114 | 141-135 | 70% | yes | -2 | +41 |
 | 2026-10-28 | LAL at LAC | 115-115 | 87-103 | 48% | yes | -16 | -40 |
 | 2026-11-01 | BKN at IND | 115-111 | 90-98 | 60% | NO | -12 | -39 |
 | 2026-10-27 | POR at LAL | 116-113 | 129-136 | 57% | NO | -10 | +36 |
 | 2026-10-28 | CHA at DET | 113-109 | 97-89 | 60% | yes | +4 | -35 |
 | 2026-10-31 | POR at UTA | 115-121 | 90-112 | 36% | yes | -17 | -34 |
-| 2026-10-24 | GSW at PHX | 111-109 | 131-122 | 56% | yes | +7 | +33 |
 
 ### Every game
 
@@ -191,40 +191,49 @@ Overtime: the simulator said 2.2%; 5.7% of these games went to overtime. Three-p
 | 2026-11-04 | MIA at LAC | 117-117 | 116-117 | 50% | yes | -2 | -1 |
 | 2026-11-05 | ORL at PHX | 112-110 | 117-104 | 55% | yes | +11 | -1 |
 | 2026-11-05 | MIA at GSW | 120-116 | 120-100 | 59% | yes | +16 | -17 |
+| 2026-11-06 | WAS at ATL | 119-110 | 139-132 | 73% | yes | -1 | +42 |
+| 2026-11-06 | BOS at CHA | 103-106 | 80-119 | 42% | yes | -36 | -11 |
+| 2026-11-06 | PHI at CLE | 115-112 | 119-95 | 59% | yes | +20 | -13 |
+| 2026-11-06 | UTA at DAL | 119-114 | 112-100 | 61% | yes | +7 | -21 |
+| 2026-11-06 | OKC at MEM | 112-116 | 97-128 | 42% | yes | -28 | -3 |
+| 2026-11-06 | TOR at MIL | 108-117 | 107-121 | 26% | yes | -5 | +3 |
+| 2026-11-06 | MIN at NOP | 114-117 | 109-115 | 41% | yes | -3 | -6 |
+| 2026-11-06 | POR at LAL | 116-114 | 124-118 | 53% | yes | +4 | +13 |
+| 2026-11-06 | SAS at SAC | 108-121 | 109-124 | 18% | yes | -2 | +4 |
 
 ## 3. Team by team
 
 | team | games | wins | expected wins | points vs proj | allowed vs proj |
 |---|---|---|---|---|---|
-| SAS | 8 | 6 | 5.6 | -2.6 | -3.1 |
-| LAL | 9 | 7 | 5.5 | +4.3 | +0.6 |
-| BOS | 8 | 6 | 5.4 | -0.6 | +0.5 |
-| CHA | 9 | 3 | 5.3 | -14.0 | +0.7 |
+| SAS | 9 | 7 | 6.4 | -2.0 | -2.6 |
+| BOS | 9 | 7 | 6.0 | +0.9 | -2.1 |
+| LAL | 10 | 8 | 6.0 | +4.7 | +1.0 |
+| CHA | 10 | 3 | 5.7 | -14.9 | +1.9 |
+| ATL | 10 | 6 | 5.7 | +0.6 | +0.1 |
+| TOR | 9 | 5 | 5.6 | +2.4 | +1.6 |
+| MIN | 10 | 7 | 5.6 | +2.7 | -5.8 |
+| CLE | 9 | 5 | 5.3 | +2.5 | +1.5 |
+| OKC | 9 | 7 | 5.3 | -2.8 | -3.9 |
 | HOU | 9 | 7 | 5.3 | +3.1 | -3.8 |
 | NYK | 8 | 4 | 5.1 | -3.9 | -3.3 |
 | DET | 8 | 6 | 5.1 | -2.4 | -6.5 |
-| MIN | 9 | 6 | 5.0 | +3.2 | -5.9 |
-| ATL | 9 | 5 | 4.9 | -1.6 | -2.3 |
-| TOR | 8 | 4 | 4.9 | +2.2 | +1.9 |
-| OKC | 8 | 6 | 4.7 | -4.7 | -2.5 |
-| CLE | 8 | 4 | 4.7 | +2.4 | +3.7 |
-| PHI | 9 | 8 | 4.3 | -1.6 | -8.1 |
+| PHI | 10 | 8 | 4.8 | -3.1 | -6.9 |
+| NOP | 9 | 4 | 4.6 | +1.6 | +0.6 |
+| POR | 8 | 6 | 4.6 | +5.6 | -0.9 |
+| MEM | 9 | 6 | 4.5 | -0.4 | -6.5 |
 | MIA | 9 | 3 | 4.2 | -1.5 | +3.6 |
 | GSW | 9 | 6 | 4.2 | +4.1 | -2.0 |
-| NOP | 8 | 4 | 4.2 | +2.3 | +0.9 |
-| MEM | 8 | 6 | 4.1 | +1.4 | -8.9 |
-| POR | 7 | 6 | 4.1 | +5.8 | -2.2 |
 | IND | 9 | 3 | 4.0 | -4.5 | -3.3 |
 | DEN | 7 | 4 | 4.0 | -1.9 | +0.3 |
 | LAC | 8 | 1 | 3.7 | -3.1 | +2.0 |
+| DAL | 9 | 5 | 3.5 | -2.4 | -7.8 |
 | ORL | 8 | 2 | 3.4 | -6.2 | +0.2 |
+| UTA | 9 | 1 | 3.2 | -9.9 | -4.4 |
 | PHX | 7 | 2 | 3.1 | +3.7 | +9.1 |
-| DAL | 8 | 4 | 2.9 | -1.8 | -7.0 |
-| WAS | 8 | 4 | 2.8 | -4.0 | -9.8 |
-| UTA | 8 | 1 | 2.8 | -9.3 | -4.1 |
-| MIL | 8 | 1 | 2.7 | -1.2 | +4.8 |
+| WAS | 9 | 4 | 3.1 | -1.2 | -6.4 |
+| MIL | 9 | 1 | 3.0 | -1.2 | +4.7 |
+| SAC | 9 | 1 | 2.5 | -2.5 | +2.9 |
 | CHI | 8 | 1 | 2.3 | -0.6 | +9.2 |
-| SAC | 8 | 1 | 2.3 | -2.9 | +2.9 |
 | BKN | 8 | 2 | 2.3 | +1.2 | -1.1 |
 
 Small samples (a handful of games per team): differences of a few points are noise.
@@ -235,29 +244,29 @@ Small samples (a handful of games per team): differences of a few points are noi
 
 | stat | n | forecast avg | actual avg | bias | MAE | MAE last-10 avg | 50% range | 80% range |
 |---|---|---|---|---|---|---|---|---|
-| min | 3435 | 15.95 | 14.98 | -0.969 | 8.91 | 11.19 | 66.3% | 86.7% |
-| pts | 3435 | 7.69 | 7.13 | -0.555 | 5.19 | 6.71 | 69.8% | 90.2% |
-| reb | 3435 | 2.91 | 2.75 | -0.164 | 2.07 | 2.67 | 73.6% | 91.6% |
-| ast | 3435 | 1.76 | 1.68 | -0.089 | 1.37 | 1.76 | 79.1% | 93.4% |
-| stl | 3435 | 0.56 | 0.53 | -0.032 | 0.61 | 0.76 | 86.2% | 94.4% |
-| blk | 3435 | 0.32 | 0.31 | -0.014 | 0.41 | 0.49 | 88.2% | 95.2% |
-| tov | 3435 | 0.94 | 0.95 | +0.017 | 0.88 | 1.09 | 80.8% | 93.2% |
-| tpm | 3435 | 0.88 | 0.83 | -0.058 | 0.83 | 1.03 | 83.7% | 94.1% |
-| pra | 3435 | 12.36 | 11.55 | -0.807 | 7.67 | 9.94 | 68.5% | 88.5% |
+| min | 3687 | 15.99 | 15.10 | -0.882 | 8.77 | 11.04 | 66.1% | 86.8% |
+| pts | 3687 | 7.70 | 7.19 | -0.515 | 5.17 | 6.67 | 69.2% | 90.0% |
+| reb | 3687 | 2.92 | 2.76 | -0.154 | 2.06 | 2.66 | 73.2% | 91.5% |
+| ast | 3687 | 1.77 | 1.68 | -0.088 | 1.37 | 1.75 | 78.4% | 92.9% |
+| stl | 3687 | 0.57 | 0.53 | -0.036 | 0.62 | 0.76 | 86.5% | 94.5% |
+| blk | 3687 | 0.32 | 0.31 | -0.014 | 0.41 | 0.49 | 88.0% | 95.0% |
+| tov | 3687 | 0.95 | 0.96 | +0.015 | 0.88 | 1.09 | 80.4% | 93.5% |
+| tpm | 3687 | 0.88 | 0.83 | -0.049 | 0.83 | 1.02 | 83.7% | 94.2% |
+| pra | 3687 | 12.39 | 11.64 | -0.756 | 7.61 | 9.86 | 68.0% | 87.8% |
 
 ### Told who actually played (minutes shared among them): players who played
 
 | stat | n | forecast avg | actual avg | bias | MAE | MAE last-10 avg | 50% range | 80% range |
 |---|---|---|---|---|---|---|---|---|
-| min | 2705 | 21.79 | 21.67 | -0.119 | 5.16 | 5.81 | 45.8% | 76.4% |
-| pts | 2705 | 10.33 | 10.20 | -0.128 | 4.63 | 5.06 | 52.5% | 82.0% |
-| reb | 2705 | 4.04 | 3.96 | -0.075 | 1.88 | 2.00 | 64.1% | 87.5% |
-| ast | 2705 | 2.39 | 2.36 | -0.031 | 1.33 | 1.42 | 71.6% | 90.8% |
-| stl | 2705 | 0.78 | 0.76 | -0.014 | 0.71 | 0.74 | 85.1% | 93.7% |
-| blk | 2705 | 0.45 | 0.45 | +0.003 | 0.51 | 0.52 | 85.9% | 94.7% |
-| tov | 2705 | 1.32 | 1.37 | +0.045 | 0.94 | 1.00 | 76.4% | 92.4% |
-| tpm | 2705 | 1.18 | 1.18 | +0.002 | 0.91 | 0.93 | 77.7% | 93.1% |
-| pra | 2705 | 16.76 | 16.52 | -0.234 | 6.10 | 6.72 | 49.5% | 77.4% |
+| min | 2905 | 21.79 | 21.66 | -0.124 | 5.12 | 5.79 | 46.4% | 76.7% |
+| pts | 2905 | 10.32 | 10.20 | -0.117 | 4.62 | 5.05 | 53.1% | 82.3% |
+| reb | 2905 | 4.03 | 3.96 | -0.074 | 1.88 | 2.00 | 63.8% | 87.7% |
+| ast | 2905 | 2.39 | 2.36 | -0.039 | 1.33 | 1.42 | 71.3% | 90.7% |
+| stl | 2905 | 0.79 | 0.76 | -0.023 | 0.71 | 0.74 | 84.6% | 93.8% |
+| blk | 2905 | 0.45 | 0.45 | +0.000 | 0.51 | 0.52 | 85.9% | 94.7% |
+| tov | 2905 | 1.33 | 1.37 | +0.037 | 0.94 | 1.00 | 76.3% | 92.7% |
+| tpm | 2905 | 1.18 | 1.19 | +0.004 | 0.91 | 0.93 | 77.5% | 92.8% |
+| pra | 2905 | 16.75 | 16.52 | -0.229 | 6.09 | 6.71 | 49.4% | 77.8% |
 
 ### Players furthest from their points projection (5+ games, told who played)
 
@@ -265,24 +274,24 @@ Under-delivering:
 
 | name | games | forecast | actual | diff |
 |---|---|---|---|---|
-| Ousmane Dieng | 5 | 8.8 | 1.4 | -7.4 |
-| Nique Clifford | 6 | 7.4 | 0.3 | -7.1 |
-| Will Riley | 5 | 7.6 | 0.8 | -6.8 |
-| Jaden Hardy | 5 | 6.8 | 1.0 | -5.8 |
+| Ousmane Dieng | 5 | 8.7 | 1.4 | -7.3 |
+| Kyle Filipowski | 5 | 7.9 | 1.2 | -6.7 |
+| Nique Clifford | 7 | 7.1 | 1.0 | -6.1 |
 | Daeqwon Plowden | 5 | 8.0 | 2.2 | -5.8 |
-| DeMar DeRozan | 5 | 14.8 | 10.2 | -4.6 |
-| Jerami Grant | 7 | 13.3 | 8.9 | -4.5 |
-| Dennis Schroder | 8 | 13.5 | 9.1 | -4.4 |
+| Jaden Hardy | 5 | 6.8 | 1.0 | -5.8 |
+| Will Riley | 6 | 7.3 | 1.8 | -5.5 |
+| Scoot Henderson | 7 | 11.9 | 6.9 | -5.0 |
+| DeMar DeRozan | 5 | 14.7 | 10.2 | -4.5 |
 
 Over-delivering:
 
 | name | games | forecast | actual | diff |
 |---|---|---|---|---|
-| Luka Doncic | 7 | 27.8 | 40.0 | +12.2 |
+| Luka Doncic | 8 | 28.3 | 41.6 | +13.3 |
 | Stephen Curry | 6 | 19.7 | 31.0 | +11.3 |
-| Victor Wembanyama | 7 | 22.5 | 31.4 | +8.9 |
-| Tyrese Maxey | 8 | 20.8 | 28.0 | +7.2 |
-| Jamal Murray | 6 | 22.3 | 28.7 | +6.4 |
-| Isaiah Stewart | 6 | 6.9 | 13.2 | +6.3 |
-| Mikel Brown Jr. | 5 | 6.9 | 13.2 | +6.3 |
-| Davion Mitchell | 8 | 10.7 | 16.8 | +6.0 |
+| Victor Wembanyama | 8 | 23.0 | 31.2 | +8.2 |
+| Ajay Mitchell | 8 | 14.4 | 21.6 | +7.3 |
+| Kyshawn George | 8 | 12.0 | 19.1 | +7.1 |
+| Meleek Thomas | 5 | 5.3 | 12.2 | +6.9 |
+| Jamal Murray | 6 | 22.0 | 28.7 | +6.7 |
+| Darryn Peterson | 8 | 7.7 | 14.1 | +6.5 |
