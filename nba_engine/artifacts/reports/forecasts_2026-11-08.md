@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-08
-Data refresh: last successful run 2026-11-08T15:50:24Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-08T18:38:55Z UTC. Model nbaengine-0.1.0.
 
 - PHI at CHI (game 401909945): P(home) sim 0.384 / Elo 0.343; mean score 113.5-118.2 (total 231.7); margin 50% [-15.1, 5.1], 80% [-24.2, 14.2]; total 80% [207.6, 256.4]; P(OT) 0.045; projected final PHI 118 - CHI 114 (the average outcome, not a single exact score).
   - betting line: CHI margin -9.5, total 237.5; our simulator -4.7 (differs by +4.8); line-centred P(home) 0.259.

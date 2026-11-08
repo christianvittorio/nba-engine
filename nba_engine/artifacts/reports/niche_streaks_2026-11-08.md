@@ -5,14 +5,14 @@ Each line is a situation that describes tonight's game for that team, the team's
 **Reality check:** 430 unusual runs (6+ in a row) exist for tonight's games. A luck-only world, where results are redrawn from the model's probabilities, produces about 302 (max 407 in 6 worlds). So most of these are what chance produces when thousands of situations are scanned. In the 2023-24 vs 2025-26 test, team-specific niche trends did not carry over to later seasons. Treat these as descriptions of recent history, not predictions.
 
 ## PHI at CHI
-- **PHI**: has seen the game total stay under the projection 6 straight when venue=away (90-77 in 167 such games; chance of run 1.691%).
+- **PHI**: has seen the game total stay under the projection 6 straight when density=normal (125-124 in 249 such games; chance of run 1.691%).
 - **PHI**: has won 9 straight when favorite=fav (50-24 in 74 such games; chance of run 6.114%).
 - **CHI**: has lost 6 straight when venue=home and prev_result=lost by 10+ and streak=lost 3+ straight (5-12 in 17 such games; chance of run 2.111%).
 
 ## LAL at DET
 - **LAL**: has scored under its projection 8 straight when rest=1d and rest_edge=less rest and streak=won 3+ straight (0-8 in 8 such games; chance of run 0.395%).
 - **LAL**: has beaten the model's margin 8 straight when streak=won 3+ straight and next_day_game=no game tomorrow and density=normal (14-10 in 24 such games; chance of run 0.407%).
-- **LAL**: has seen the game total stay under the projection 6 straight when rest=1d and prev_result=won close and next_day_game=no game tomorrow (26-31 in 57 such games; chance of run 1.691%).
+- **LAL**: has seen the game total stay under the projection 6 straight when proj_total=225-230 and prev_result=won close and next_day_game=no game tomorrow (7-14 in 21 such games; chance of run 1.691%).
 - **DET**: has won 20 straight when favorite=fav and streak=no streak (20-0 in 20 such games; chance of run 0.101%).
 - **DET**: has beaten the model's margin 7 straight when streak=no streak and density=normal (79-68 in 147 such games; chance of run 0.741%).
 - **DET**: has seen the game total stay under the projection 7 straight when opp_rest=1d and rest_edge=more rest and streak=no streak (5-11 in 16 such games; chance of run 0.857%).
@@ -24,7 +24,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 - **MIN**: has won 8 straight when rest=1d and density=normal (103-62 in 165 such games; chance of run 0.757%).
 
 ## BKN at DAL
-- **BKN**: has scored under its projection 10 straight when venue=away and streak=no streak and next_day_game=no game tomorrow (37-55 in 92 such games; chance of run 0.095%).
+- **BKN**: has scored under its projection 10 straight when venue=away and opp_rest=1d and streak=no streak (25-39 in 64 such games; chance of run 0.095%).
 - **BKN**: has fallen short of the model's margin 8 straight when rest=B2B and favorite=dog (4-13 in 17 such games; chance of run 0.399%).
 - **BKN**: has lost 13 straight when rest=B2B and streak=no streak (12-28 in 40 such games; chance of run 0.632%).
 - **DAL**: has fallen short of the model's margin 8 straight when venue=home and rest_edge=more rest (18-28 in 46 such games; chance of run 0.359%).
