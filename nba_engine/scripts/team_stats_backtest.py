@@ -19,7 +19,11 @@ if os.environ.get("VSET") == "hl2":
     VARIANTS = {"hl12": ProfileParams(def_effect=("s3",), half_life_games=12.0), "hl18": ProfileParams(def_effect=("s3",), half_life_games=18.0),
                 "hl25r": ProfileParams(def_effect=("s3",), half_life_games=25.0, season_rollover=0.4),
                 "hl25q": ProfileParams(def_effect=("s3",), half_life_games=25.0, season_rollover=0.8)}
-SUFFIX = {"hl": "_hl", "hl2": "_hl2"}.get(os.environ.get("VSET"), "")
+if os.environ.get("VSET") == "all":      # full team-vs-team matchup: defence also moves FT%, FT-miss rebounds, 3PA rate
+    H = dict(half_life_games=25.0, season_rollover=0.4)
+    VARIANTS = {"s3": ProfileParams(def_effect=("s3",), **H), "all": ProfileParams(def_effect=("s3", "ft", "orebft"), **H),
+                "ft": ProfileParams(def_effect=("s3", "ft"), **H), "orebft": ProfileParams(def_effect=("s3", "orebft"), **H)}
+SUFFIX = {"hl": "_hl", "hl2": "_hl2", "all": "_all"}.get(os.environ.get("VSET"), "")
 
 
 def main(season, n_sims=200, limit=None):
