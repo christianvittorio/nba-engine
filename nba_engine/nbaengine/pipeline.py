@@ -188,7 +188,30 @@ class Engine:
         self._forecast_injury_adjusted(ug, sim, e, bt, n_sims, seed, cutoff)
         self._forecast_rest_adjusted(ug, sim, e, bt, n_sims, seed, cutoff)
         self._forecast_availability(ug, bt, n_sims, seed, cutoff)
+        self._forecast_market(ug, sim, n_sims, seed, cutoff)
         return "made"
+
+    MARKET_W = 0.10   # weight on our margin vs the line; 5 seasons of closing lines gave -0.09 +/- 0.10 (the line already holds what we know)
+
+    def _forecast_market(self, ug, sim, n_sims, seed, cutoff) -> None:
+        """`sim_mc_mkt`: our simulation re-centred on the betting line at forecast time:
+        margin = line + MARKET_W * (our margin - line). Same random draws as sim_mc; separate name, never replaces sim_mc. Never raises."""
+        try:
+            snap = (ug.market or {}).get("snapshot") or {}
+            ln = ((snap.get("pointSpread") or {}).get("home") or {}).get("close", {}).get("line")
+            if ln is None:
+                return
+            mkt = -float(str(ln).replace("+", ""))                       # home margin implied by the line (home -5.5 -> +5.5)
+            cal = summarize(apply_dispersion(sim, self.kappa_m, self.kappa_t, self.level_delta))
+            ours = cal["mean_home"] - cal["mean_away"]
+            shift = mkt + self.MARKET_W * (ours - mkt) - ours
+            sm = summarize(apply_dispersion(sim, self.kappa_m, self.kappa_t, self.level_delta, margin_shift=shift))
+            self.store.save_forecast(ug.season, ug.game_id, "sim_mc_mkt", MODEL_VERSION, cutoff, seed, n_sims, sm["p_home"], sm["mean_home"],
+                sm["mean_away"], sm["mean_total"], sm["p_ot"], q_margin=sm["q_margin"], q_total=sm["q_total"],
+                details={"market_margin": mkt, "model_margin": ours, "edge": ours - mkt, "w": self.MARKET_W, "total_line": snap.get("overUnder"),
+                         "date": ug.date, "home": ug.home, "away": ug.away})
+        except Exception:
+            pass
 
     def _sit_shift(self, ug) -> float | None:
         """Back-to-back + coming-off-a-big-win margin shift (home perspective), same rule as the `sit` forecasts. None if not fitted."""
@@ -388,6 +411,10 @@ def write_report(store: Store, today: date, path: str) -> str:
         lines.append(f"- {det['away']} at {det['home']} (game {gid}): P(home) sim {r[2]:.3f} / Elo {el:.3f}; mean score {r[3]:.1f}-{r[4]:.1f} (total {r[5]:.1f}); "
                      f"margin 50% [{sc(qm, '25', mis):.1f}, {sc(qm, '75', mis):.1f}], 80% [{sc(qm, '10', mis):.1f}, {sc(qm, '90', mis):.1f}]; total 80% [{sc(qt, '10', tis):.1f}, {sc(qt, '90', tis):.1f}]; "
                      f"P(OT) {min(0.25, r[6] * ots):.3f}; projected final {(det['away'] if r[4] > r[3] else det['home'])} {max(r[3], r[4]):.0f} - {(det['home'] if r[4] > r[3] else det['away'])} {min(r[3], r[4]):.0f} (the average outcome, not a single exact score).")
+        mk_ = m.get("sim_mc_mkt")
+        if mk_:
+            d_ = mk_[1]
+            lines.append(f"  - betting line: {d_['home']} margin {d_['market_margin']:+.1f}, total {d_.get('total_line')}; our simulator {d_['model_margin']:+.1f} (differs by {d_['edge']:+.1f}); line-centred P(home) {mk_[0][2]:.3f}.")
         ij = m.get("sim_mc_inj")
         if ij:
             d2 = ij[1]
