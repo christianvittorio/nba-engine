@@ -387,7 +387,7 @@ def write_report(store: Store, today: date, path: str) -> str:
         el = m["elo"][0][2] if "elo" in m else float("nan")
         lines.append(f"- {det['away']} at {det['home']} (game {gid}): P(home) sim {r[2]:.3f} / Elo {el:.3f}; mean score {r[3]:.1f}-{r[4]:.1f} (total {r[5]:.1f}); "
                      f"margin 50% [{sc(qm, '25', mis):.1f}, {sc(qm, '75', mis):.1f}], 80% [{sc(qm, '10', mis):.1f}, {sc(qm, '90', mis):.1f}]; total 80% [{sc(qt, '10', tis):.1f}, {sc(qt, '90', tis):.1f}]; "
-                     f"P(OT) {min(0.25, r[6] * ots):.3f}; most frequent exact score {det['modal_score'][0]}-{det['modal_score'][1]} (rarely hit).")
+                     f"P(OT) {min(0.25, r[6] * ots):.3f}; projected final {(det['away'] if r[4] > r[3] else det['home'])} {max(r[3], r[4]):.0f} - {(det['home'] if r[4] > r[3] else det['away'])} {min(r[3], r[4]):.0f} (the average outcome, not a single exact score).")
         ij = m.get("sim_mc_inj")
         if ij:
             d2 = ij[1]
