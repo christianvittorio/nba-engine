@@ -91,6 +91,7 @@ if summary["ok"]:
         subprocess.run([sys.executable, os.path.join(ROOT, "scripts/fit_p_play_cal.py"), "--write"], check=False, timeout=300)   # refit the live play-probability recalibration for the NEXT forecasts
         subprocess.run([sys.executable, os.path.join(ROOT, "scripts/player_ladder_backfill.py")], check=False, timeout=900)
         subprocess.run([sys.executable, os.path.join(ROOT, "scripts/player_ladder_calibration.py")], check=False, timeout=300)
+        subprocess.run([sys.executable, os.path.join(ROOT, "scripts/grade_picks.py")], check=False, timeout=300)
     except Exception as ex:
         print("ladder backfill/calibration failed (forecasts unaffected):", type(ex).__name__, ex)
     try:      # player projections in betting-market form (best effort)
