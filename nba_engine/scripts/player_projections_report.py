@@ -3,6 +3,8 @@ Usage: python scripts/player_projections_report.py [YYYY-MM-DD]  -> artifacts/re
 Means come from the player simulation; 2-pointers, PRA and the other combos are sums of the same simulated stats. 25-75% ranges where stored."""
 import os, sys, json, sqlite3
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
+from nbaengine.player_live import with_ladder as WL
 day = sys.argv[1] if len(sys.argv) > 1 else None
 live = sqlite3.connect(f"{ROOT}/artifacts/live.sqlite"); pl = sqlite3.connect(f"{ROOT}/artifacts/player_live.sqlite")
 if day is None:
@@ -22,7 +24,7 @@ PROPS = [("pts", "PTS"), ("reb", "REB"), ("ast", "AST"), ("pra", "PRA"), ("tpm",
 rng = lambda d, k: f"{d[k]['q'][2]:.0f}-{d[k]['q'][4]:.0f}"
 out = [f"# Player projections for {day}", "Means from the player simulation (2PM/2PA, PRA and combos are sums of the same simulated stats). Pts/Reb/Ast/3PM show the middle-50% range. p_play = chance the player is in the game.", ""]
 for gid in games:
-    rows = pl.execute("select team,name,proj_min,p_play,details_json from player_fc where game_id=? order by team, proj_min*p_play desc", (gid,)).fetchall()
+    rows = [(t, n, pm_, pp_, json.dumps(WL(pl, gid, pid, json.loads(dj)))) for t, n, pm_, pp_, dj, pid in pl.execute("select team,name,proj_min,p_play,details_json,player_id from player_fc where game_id=? order by team, proj_min*p_play desc", (gid,)).fetchall()]
     if not rows: continue
     a, h = teams.get(gid, ("?", "?"))
     out += [f"## {a} at {h} (game {gid})", "",

@@ -103,6 +103,20 @@ def _ladders(samp: dict) -> list:
     return out
 
 
+def with_ladder(con, gid: int, pid: int, det: dict) -> dict:
+    """det from player_fc, with market ladders merged in: stored at forecast time (new forecasts) or from the player_ladder table (re-simulated for older ones)."""
+    if "ov" in (det.get("pts") or {}):
+        return det
+    try:
+        r = con.execute("SELECT ladder_json FROM player_ladder WHERE game_id=? AND player_id=?", (gid, pid)).fetchone()
+    except sqlite3.OperationalError:
+        return det
+    if r:
+        for k, v in json.loads(r[0]).items():
+            x = det.setdefault(k, {"m": v["m"], "q": v["q"]}); x["t0"] = v["t0"]; x["ov"] = v["ov"]
+    return det
+
+
 def store_actuals(db_path: str, season: int, game_id: int, df: pd.DataFrame) -> None:
     con = connect(db_path)
     con.executemany("INSERT OR IGNORE INTO player_act VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",

@@ -86,6 +86,12 @@ if summary["ok"]:
         tsr = importlib.util.module_from_spec(spec); spec.loader.exec_module(tsr); tsr.build(DB)
     except Exception as ex:
         print("team stats report failed (forecasts unaffected):", type(ex).__name__, ex)
+    try:      # ladders for games that had already started when forecasts were made, then calibration vs box scores (best effort)
+        import subprocess
+        subprocess.run([sys.executable, os.path.join(ROOT, "scripts/player_ladder_backfill.py")], check=False, timeout=900)
+        subprocess.run([sys.executable, os.path.join(ROOT, "scripts/player_ladder_calibration.py")], check=False, timeout=300)
+    except Exception as ex:
+        print("ladder backfill/calibration failed (forecasts unaffected):", type(ex).__name__, ex)
     try:      # player projections in betting-market form (best effort)
         import subprocess
         subprocess.run([sys.executable, os.path.join(ROOT, "scripts/player_projections_report.py"), str(today)], check=True, timeout=300)
