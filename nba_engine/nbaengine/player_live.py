@@ -60,8 +60,11 @@ def forecast_slate(db_path: str, pm, av: dict | None, games: list[dict], n_sims:
             pr = pr.sort_values("base_min", ascending=False).head(top).reset_index(drop=True)
             samp = sample_players(pr, pm.p, n_sims, g["seed"] + ti, "unconfirmed")
             summ = summarize_samples(samp)
-            for row, d in zip(pr.itertuples(index=False), summ):
+            ladder = _ladders(samp)
+            for i, (row, d) in enumerate(zip(pr.itertuples(index=False), summ)):
                 det = {k: {"m": round(d[k]["mean"], 3), "q": [round(x, 2) for x in d[k]["q"]]} for k in KEEP if k in d}
+                for k, v in (ladder[i].items() if float(row.proj_min) >= 10 else ()):   # full market ladders (P over x.5) incl. combos and 2-pointers; rotation players only
+                    det.setdefault(k, {"m": v["m"], "q": v["q"]}).update(t0=v["t0"], ov=v["ov"])
                 try:
                     con.execute("INSERT OR IGNORE INTO player_fc VALUES(?,?,?,?,?,?,?,?,?,?)",
                                 (g["season"], g["game_id"], team, int(row.player_id), row.name, now, float(row.proj_min),
@@ -71,6 +74,32 @@ def forecast_slate(db_path: str, pm, av: dict | None, games: list[dict], n_sims:
                     pass
         out["games"] += 1
     con.commit(); con.close()
+    return out
+
+
+COMBOS = {"pr": ("pts", "reb"), "pa": ("pts", "ast"), "ra": ("reb", "ast"), "sb": ("stl", "blk")}
+
+
+def _ladders(samp: dict) -> list:
+    """per player: for every market stat (singles, 2-pointers, combos) the mean, quantiles and P(over t+0.5) for t = 0,1,2,... from the same
+    simulated draws, so a book's line can be priced directly. ov[j] = per-mille P(stat >= t0+j+1 | he plays) = P(over t0+j+0.5); below t0 it is above 98%, above the list under 2%."""
+    arr = {k: samp[k] for k in ("pts", "reb", "ast", "stl", "blk", "tov", "tpm", "tpa", "fgm", "fga", "ftm", "fta", "pra") if k in samp}
+    for k, (a, b) in COMBOS.items():
+        arr[k] = arr[a] + arr[b]
+    arr["fg2m"] = arr["fgm"] - arr["tpm"]; arr["fg2a"] = arr["fga"] - arr["tpa"]
+    P = next(iter(arr.values())).shape[0]; out = []
+    for i in range(P):
+        played = np.asarray(samp["min"][i], dtype=float) > 0
+        n_pl = max(int(played.sum()), 1)
+        d = {}
+        for k, x in arr.items():
+            xa = np.asarray(x[i], dtype=float)
+            allp = [float((xa >= t + 1).mean()) for t in range(int(min(xa.max(), 80)))]
+            cond = [min(1.0, float(((xa >= t + 1) & played).sum()) / n_pl) for t in range(len(allp))]   # P(over t+0.5 | he plays)
+            t0 = next((t for t, p in enumerate(cond) if p < 0.98), len(cond)); t1 = max((t for t, p in enumerate(cond) if p > 0.02), default=-1) + 1
+            d[k] = {"m": round(float(xa.mean()), 3), "q": [round(float(v), 2) for v in np.percentile(xa, QS)],
+                    "t0": t0, "ov": [int(round(p * 1000)) for p in cond[t0:t1]]}
+        out.append(d)
     return out
 
 
