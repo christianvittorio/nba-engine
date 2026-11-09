@@ -17,6 +17,10 @@ live = sqlite3.connect(f"{ROOT}/artifacts/live.sqlite"); pl = sqlite3.connect(f"
 commits = [l.split(" ", 1) for l in subprocess.check_output(["git", "log", "--format=%H %cI", "--", REL], cwd=REPO, text=True).splitlines()]
 commits = sorted(((datetime.fromisoformat(t), h) for h, t in commits))          # oldest first
 _cache = {}
+CAL = []
+if os.environ.get("PPLAY_CAL"):          # experiment: apply the live-pool play-probability recalibration, write to player_ladder_cal
+    c_ = json.load(open(f"{ROOT}/artifacts/p_play_cal.json")); CAL = [c_["a"], c_["b"]]
+TABLE = "player_ladder_cal" if CAL else "player_ladder"
 def model_at(made_at: str):
     t = datetime.strptime(made_at, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
     h = next((h for ct, h in commits if ct >= t), commits[-1][1])               # the commit written by the run that made this forecast
@@ -24,16 +28,16 @@ def model_at(made_at: str):
         f = tempfile.NamedTemporaryFile(suffix=".json", delete=False); f.write(subprocess.check_output(["git", "show", f"{h}:{REL}"], cwd=REPO)); f.close()
         _cache[h] = PlayerModel.load(f.name)
     return _cache[h], h
-pl.execute("CREATE TABLE IF NOT EXISTS player_ladder(game_id INTEGER, player_id INTEGER, team TEXT, src TEXT, ladder_json TEXT, PRIMARY KEY(game_id, player_id))")
+pl.execute(f"CREATE TABLE IF NOT EXISTS {TABLE}(game_id INTEGER, player_id INTEGER, team TEXT, src TEXT, ladder_json TEXT, PRIMARY KEY(game_id, player_id))")
 dates = sys.argv[1:] or [r[0] for r in live.execute("select distinct date from game_dates order by date")]
 done = skipped = 0
 for day in dates:
     for gid, in live.execute("select game_id from game_dates where date=?", (day,)).fetchall():
         rows = pl.execute("select team,player_id,made_at_utc,details_json from player_fc where game_id=?", (gid,)).fetchall()
-        if not rows or all("ov" in (json.loads(r[3]).get("pts") or {}) for r in rows) or pl.execute("select 1 from player_ladder where game_id=? limit 1", (gid,)).fetchone(): continue
+        if not rows or all("ov" in (json.loads(r[3]).get("pts") or {}) for r in rows) or pl.execute(f"select 1 from {TABLE} where game_id=? limit 1", (gid,)).fetchone(): continue
         sm = live.execute("select details_json, mean_home, mean_away from forecasts where game_id=? and model_name='sim_mc'", (gid,)).fetchone()
         d = json.loads(sm[0]); h, a = d["home"], d["away"]
-        pm, commit = model_at(rows[0][2]); ok, upd, diffs = True, [], []
+        pm, commit = model_at(rows[0][2]); pm.p.p_play_cal = CAL; ok, upd, diffs = True, [], []
         for ti, team in enumerate((h, a)):
             mine = [r for r in rows if r[0] == team]
             if not mine: continue
@@ -50,6 +54,6 @@ for day in dates:
         if not ok or not upd:
             skipped += 1; print("skip", gid, day, "(rebuild does not reproduce the stored forecast)"); continue
         for pid, team, L, s_ in upd:
-            pl.execute("INSERT OR REPLACE INTO player_ladder VALUES(?,?,?,?,?)", (gid, pid, team, f"re-simulated from state {commit[:7]}, 4000 draws", json.dumps(L)))
+            pl.execute(f"INSERT OR REPLACE INTO {TABLE} VALUES(?,?,?,?,?)", (gid, pid, team, f"re-simulated from state {commit[:7]}, 4000 draws", json.dumps(L)))
         pl.commit(); done += 1
 print("augmented", done, "games; skipped", skipped)

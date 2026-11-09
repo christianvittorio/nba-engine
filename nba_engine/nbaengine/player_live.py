@@ -10,6 +10,7 @@ Stored in a separate file (artifacts/player_live.sqlite) so the team database st
 from __future__ import annotations
 
 import json
+import os
 import sqlite3
 from datetime import datetime, timezone
 
@@ -44,6 +45,19 @@ def _out_ids(av: dict, team: str) -> set:
 def forecast_slate(db_path: str, pm, av: dict | None, games: list[dict], n_sims: int = 1000, top: int = 12) -> dict:
     """games: [{season, game_id, home, away, seed}] — only games not yet started. Returns counts."""
     out = {"games": 0, "rows": 0, "skipped_existing": 0}
+    cal_path = os.path.join(os.path.dirname(os.path.abspath(db_path)), "p_play_cal.json")
+    if os.path.exists(cal_path):          # live pool excludes players listed Out, so the all-roster play table understates P(play): recalibrate (scripts/fit_p_play_cal.py)
+        try:
+            c_ = json.load(open(cal_path)); pm.p.p_play_cal = [float(c_["a"]), float(c_["b"])]
+        except Exception:
+            pm.p.p_play_cal = []
+    try:
+        return _forecast_slate(db_path, pm, av, games, n_sims, top, out)
+    finally:
+        pm.p.p_play_cal = []              # never persisted into the saved player state
+
+
+def _forecast_slate(db_path, pm, av, games, n_sims, top, out) -> dict:
     con = connect(db_path)
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     for g in games:
@@ -103,12 +117,12 @@ def _ladders(samp: dict) -> list:
     return out
 
 
-def with_ladder(con, gid: int, pid: int, det: dict) -> dict:
+def with_ladder(con, gid: int, pid: int, det: dict, table: str = "player_ladder") -> dict:
     """det from player_fc, with market ladders merged in: stored at forecast time (new forecasts) or from the player_ladder table (re-simulated for older ones)."""
     if "ov" in (det.get("pts") or {}):
         return det
     try:
-        r = con.execute("SELECT ladder_json FROM player_ladder WHERE game_id=? AND player_id=?", (gid, pid)).fetchone()
+        r = con.execute(f"SELECT ladder_json FROM {table} WHERE game_id=? AND player_id=?", (gid, pid)).fetchone()
     except sqlite3.OperationalError:
         return det
     if r:

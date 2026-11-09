@@ -57,6 +57,7 @@ class PlayerParams:
     min_resid: list = field(default_factory=list)
     p_play: dict = field(default_factory=dict)
     sigma_shoot: float = 0.0
+    p_play_cal: list = field(default_factory=list)   # [a, b]: live-pool recalibration, p -> sigmoid(a + b*logit(p)); empty = off (replay and trend scripts never set it)
     p_play_pow: float = 1.0     # >1 shrinks the unconfirmed play probability (replay 2026-27: the table over-stated it)
 
 
@@ -263,6 +264,9 @@ class PlayerModel:
             st = self.pl.get(pid)
             miss = self.misses_last5(pid) if st else 2
             pp = p.p_play.get(f"{bucket(m0)}|{min(miss, 2)}", 0.85) ** p.p_play_pow if mode == "unconfirmed" else 1.0
+            if mode == "unconfirmed" and len(p.p_play_cal) == 2:
+                z = float(np.log(min(max(pp, 0.02), 0.98) / (1 - min(max(pp, 0.02), 0.98))))
+                pp = 1.0 / (1.0 + np.exp(-(p.p_play_cal[0] + p.p_play_cal[1] * z)))
             row = {"player_id": pid, "name": self.names.get(pid, str(pid)), "base_min": float(m0),
                    "proj_min": float(m), "p_play": float(pp), "is_new": pid in unknown, "f": f,
                    "n_games": st["n"] if st else 0}

@@ -88,6 +88,7 @@ if summary["ok"]:
         print("team stats report failed (forecasts unaffected):", type(ex).__name__, ex)
     try:      # ladders for games that had already started when forecasts were made, then calibration vs box scores (best effort)
         import subprocess
+        subprocess.run([sys.executable, os.path.join(ROOT, "scripts/fit_p_play_cal.py"), "--write"], check=False, timeout=300)   # refit the live play-probability recalibration for the NEXT forecasts
         subprocess.run([sys.executable, os.path.join(ROOT, "scripts/player_ladder_backfill.py")], check=False, timeout=900)
         subprocess.run([sys.executable, os.path.join(ROOT, "scripts/player_ladder_calibration.py")], check=False, timeout=300)
     except Exception as ex:

@@ -5,6 +5,7 @@ import os, sys, json, sqlite3
 import numpy as np, pandas as pd
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); sys.path.insert(0, ROOT)
 from nbaengine.player_live import with_ladder
+TABLE = os.environ.get("LADDER_TABLE", "player_ladder")
 pl = sqlite3.connect(f"{ROOT}/artifacts/player_live.sqlite")
 A = pd.read_sql_query("select * from player_act", pl); A = A[A["min"] > 0].set_index(["game_id", "player_id"])
 ACT = {"pts": lambda a: a.pts, "reb": lambda a: a.reb, "ast": lambda a: a.ast, "stl": lambda a: a.stl, "blk": lambda a: a.blk, "tov": lambda a: a.tov, "tpm": lambda a: a.tpm, "tpa": lambda a: a.tpa,
@@ -13,7 +14,7 @@ ACT = {"pts": lambda a: a.pts, "reb": lambda a: a.reb, "ast": lambda a: a.ast, "
 rows = []
 for gid, pid, dj in pl.execute("select game_id, player_id, details_json from player_fc"):
     if (gid, pid) not in A.index: continue
-    d = with_ladder(pl, gid, pid, json.loads(dj)); a = A.loc[(gid, pid)]
+    d = with_ladder(pl, gid, pid, json.loads(dj), TABLE); a = A.loc[(gid, pid)]
     for k, f in ACT.items():
         x = d.get(k)
         if not x or "ov" not in x: continue
@@ -34,4 +35,4 @@ n_games = R.game_id.nunique()
 md = [f"# Player market ladders: calibration", f"{n_games} games, {len(R)} (player, stat, line) cases; each case is a half-line within 2 of the projection; players who played only.", "",
       f"Brier score {brier:.4f} (always saying the base rate {R.over.mean():.2f}: {base:.4f}; lower is better).", "",
       "## Predicted P(over) vs how often it went over", "", T.to_markdown(), "", "## By stat", "", by.to_markdown(), ""]
-p = f"{ROOT}/artifacts/reports/player_ladder_calibration.md"; open(p, "w").write("\n".join(md)); print("\n".join(md[:14]))
+p = f"{ROOT}/artifacts/reports/player_ladder_calibration{"" if TABLE == "player_ladder" else "_" + TABLE}.md"; open(p, "w").write("\n".join(md)); print("\n".join(md[:14]))
