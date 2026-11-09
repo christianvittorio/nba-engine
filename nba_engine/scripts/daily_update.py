@@ -86,6 +86,11 @@ if summary["ok"]:
         tsr = importlib.util.module_from_spec(spec); spec.loader.exec_module(tsr); tsr.build(DB)
     except Exception as ex:
         print("team stats report failed (forecasts unaffected):", type(ex).__name__, ex)
+    try:      # player projections in betting-market form (best effort)
+        import subprocess
+        subprocess.run([sys.executable, os.path.join(ROOT, "scripts/player_projections_report.py"), str(today)], check=True, timeout=300)
+    except Exception as ex:
+        print("player projections report failed (forecasts unaffected):", type(ex).__name__, ex)
     try:      # calibration of team and player forecasts against results (reports + display constants; changes no stored forecast)
         import importlib.util
         spec = importlib.util.spec_from_file_location("calibration_report", os.path.join(ROOT, "scripts/calibration_report.py"))
