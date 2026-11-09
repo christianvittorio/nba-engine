@@ -42,5 +42,12 @@ ll = lambda p, y: float(-np.mean(y * np.log(np.clip(p, 1e-3, 1)) + (1 - y) * np.
 O = R[R.side == "OVER"]; md += ["", f"Log-loss on over outcomes: model {ll(O.p, O.won):.4f}, book no-vig {ll(O.fair, O.won):.4f} (lower is better)."]
 x_ = (O.p - O.fair).values; y_ = (O.won - O.fair).values; w_ = float((x_ * y_).sum() / (x_ * x_).sum()); se_ = float(np.sqrt(((y_ - w_ * x_) ** 2).sum() / (len(x_) - 1) / (x_ * x_).sum()))
 md += [f"Weight the model earns against the book (0 = trust the book, 1 = trust the model): {w_:.2f} +- {se_:.2f} on {len(O)} over-lines. Picks use max(0, this) as their blend weight."]
-json.dump({"w": w_, "se": se_, "n": int(len(O)), "games": int(R.game_id.nunique())}, open("artifacts/props_blend.json", "w"))
+per = {}
+for st_, d_ in O.groupby("stat"):          # per-stat weight: only a stat where the model has proven something should move off the book
+    xx, yy = (d_.p - d_.fair).values, (d_.won - d_.fair).values
+    if len(d_) < 60 or (xx * xx).sum() == 0: continue
+    ww = float((xx * yy).sum() / (xx * xx).sum()); ss = float(np.sqrt(((yy - ww * xx) ** 2).sum() / (len(xx) - 1) / (xx * xx).sum()))
+    per[st_] = {"w": ww, "se": ss, "n": int(len(d_)), "w_used": float(np.clip(ww - ss, 0.0, 1.0))}          # one standard error of caution
+md += ["", "Per-stat weight (used weight = estimate minus one standard error, floored at 0):", "", "| Stat | Lines | Weight | SE | Used |", "|---|---|---|---|---|"] + [f"| {k_} | {v_['n']} | {v_['w']:.2f} | {v_['se']:.2f} | {v_['w_used']:.2f} |" for k_, v_ in per.items()]
+json.dump({"w": w_, "se": se_, "n": int(len(O)), "games": int(R.game_id.nunique()), "stats": per}, open("artifacts/props_blend.json", "w"))
 open("artifacts/reports/props_backtest.md", "w").write("\n".join(md)); print("\n".join(md))

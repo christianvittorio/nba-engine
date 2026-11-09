@@ -30,3 +30,13 @@ By stat (edge > 5%):
 
 Log-loss on over outcomes: model 0.7048, book no-vig 0.6809 (lower is better).
 Weight the model earns against the book (0 = trust the book, 1 = trust the model): -0.23 +- 0.15 on 1424 over-lines. Picks use max(0, this) as their blend weight.
+
+Per-stat weight (used weight = estimate minus one standard error, floored at 0):
+
+| Stat | Lines | Weight | SE | Used |
+|---|---|---|---|---|
+| ast | 255 | -0.06 | 0.33 | 0.00 |
+| pts | 368 | -0.24 | 0.26 | 0.00 |
+| reb | 340 | -0.68 | 0.30 | 0.00 |
+| stl | 129 | -0.17 | 0.64 | 0.00 |
+| tpm | 287 | 0.33 | 0.38 | 0.00 |

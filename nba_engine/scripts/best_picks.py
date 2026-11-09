@@ -51,6 +51,11 @@ def pge(x, k):            # P(stat >= k | plays) from the stored ladder
     return 1.0 if j < 0 else (0.005 if j >= len(x["ov"]) else x["ov"][j] / 1000.0)
 real = []
 WBLEND = 0.0
+WSTAT = {}
+try:
+    WSTAT = {k: float(v["w_used"]) for k, v in json.load(open("artifacts/props_blend.json")).get("stats", {}).items()}
+except Exception:
+    pass
 try:
     WBLEND = float(np.clip(json.load(open("artifacts/props_blend.json"))["w"], 0.0, 1.0))        # weight the model has EARNED against the book (backtest on finished games)
 except Exception:
@@ -80,7 +85,7 @@ for g, pid, stat, line, op, up, book in lines_in:
         p_over, p_push = pge(x, int(np.ceil(line))), 0.0
     p_over = float(np.clip(p_over + GAP.get(stat, 0.0), 0.02, 0.98)); do, du = american_to_decimal(op), american_to_decimal(up)
     fair_o = (1 / do) / ((1 / do) + (1 / du))                                    # book's no-vig probability of the over
-    p_over = fair_o + WBLEND * (p_over - fair_o)                                  # shrink toward the book by the weight the model has earned
+    p_over = fair_o + WSTAT.get(stat, 0.0) * (p_over - fair_o)                     # shrink toward the book by the weight the model has earned for THIS stat
     p_under = max(0.0, 1.0 - p_over - p_push)
     for side, p, dec, fair in (("OVER", p_over, do, fair_o), ("UNDER", p_under, du, 1 - fair_o)):
         ev = p * (dec - 1) - (1 - p - p_push)                                     # per 1 staked
@@ -104,7 +109,7 @@ out = [f"# Best over/under leans and parlays (injury-adjusted projections, run {
        "A parlay's probability multiplies its legs, treating players as independent; real legs in one game are usually positively linked, so treat it as approximate. "
        "Legs are skipped when the model and recent form differ by more than 30% (more likely a model miss), when the model is more than 75% sure, and for 0.5 steal/block lines. Legs void if the player does not play; only players with P(play) of at least 0.85 and 18+ projected minutes are used.", ""]
 REAL = bool(real)
-NOEDGE = REAL and WBLEND < 0.05
+NOEDGE = REAL and max(WSTAT.values(), default=0.0) < 0.05
 if REAL:                       # one line per player-stat: DraftKings first, then FanDuel; keep only legs the model rates above the book's fair probability
     pref = {"draftkings": 0, "fanduel": 1}
     best = {}
@@ -119,7 +124,7 @@ games = sorted({l["gid"] for l in legs})
 if REAL:
     out = [f"# Best over/under picks and parlays with sportsbook lines (injury-adjusted projections, run {run} UTC)", "",
            "Lines and prices are the DraftKings prop lines on the board before tip-off (from ESPN's feed, no key). "
-           + (f"**Backtest verdict: the model has earned a weight of {WBLEND:.2f} against the book** (see props_backtest.md): its disagreements with DraftKings have not beaten the book on finished games, so picks are shrunk to the book and no leg shows value. Treat the lists below as the book's own most likely outcomes, which still lose to the vig. " if NOEDGE else f"The model has earned a weight of {WBLEND:.2f} against the book, so its probabilities are shrunk toward the book accordingly. ") + " For each prop the model's probability for each side is compared with the book: "
+           + (f"**Backtest verdict: the model has earned no weight against the book on any stat** (see props_backtest.md): its disagreements with DraftKings have not beaten the book on finished games, so picks are shrunk to the book and no leg shows value. Treat the lists below as the book's own most likely outcomes, which still lose to the vig. " if NOEDGE else f"The model has earned a weight against the book only on: {', '.join(f'{k} ({v:.2f})' for k, v in WSTAT.items() if v >= 0.05)}. Other stats are held at the book's probability, and every probability is shrunk toward the book by its stat's weight. ") + " For each prop the model's probability for each side is compared with the book: "
            "EV is the expected profit per 1 staked at the book's price, using the model's probability (corrected by the calibration bias measured so far). Only legs with EV above 0, a model probability between 52% and 75%, "
            "and a model projection within 35% of the line are kept. **The model has not been proven to beat the market** (the market's closing line beat it on team margins), so a positive EV here is the "
            "model disagreeing with the book, not a guaranteed edge. Every pick is logged and graded against results in `picks_grade.md`. Parlay probability multiplies the legs "
