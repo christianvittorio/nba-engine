@@ -1,0 +1,10 @@
+event 401909945 Philadelphia 76ers at Chicago Bulls
+
+== summary: 501 keys; error=None; prop/player-like keys: ['/boxscore/players', '/boxscore/players[]/team', '/boxscore/players[]/team/id', '/boxscore/players[]/team/uid', '/boxscore/players[]/team/slug', '/boxscore/players[]/team/location', '/boxscore/players[]/team/name', '/boxscore/players[]/team/abbreviation', '/boxscore/players[]/team/displayName', '/boxscore/players[]/team/shortDisplayName', '/boxscore/players[]/team/color', '/boxscore/players[]/team/alternateColor', '/boxscore/players[]/team/logo', '/boxscore/players[]/statistics', '/boxscore/players[]/displayOrder']
+
+== core odds: 122 keys; error=None; prop/player-like keys: ['/items[]/propBets', '/items[]/propBets/$ref']
+  provider Draft Kings | top keys ['$ref', 'awayTeamOdds', 'close', 'current', 'details', 'homeTeamOdds', 'links', 'moneylineWinner', 'open', 'overOdds', 'overUnder', 'propBets', 'provider', 'spread', 'spreadWinner', 'underOdds']
+   ref provider http://sports.core.api.espn.com/v2/sports/basketball/leagues/nba/providers/100?lang=en&region=us
+   ref propBets http://sports.core.api.espn.com/v2/sports/basketball/leagues/nba/events/401909945/competitions/401909945/odds/100/propBets?lang=en&region=us
+
+== core providers: 6 keys; error=None; prop/player-like keys: []
