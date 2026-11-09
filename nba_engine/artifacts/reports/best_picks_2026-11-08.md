@@ -11,9 +11,9 @@
 | Tyrese Maxey (PHI) UNDER 6.5 2-pointers made | 5.3 | 6.7 | 75% |
 | De'Andre Hunter (SAC) OVER 16.5 Pts+Reb | 20.2 | 16.0 | 75% |
 
-**Combined probability 31.3%** (fair odds about 3.2 to 1; a book's payout must beat that for it to be worth anything).
+**Combined probability 31.3% (fair odds about 3.2 to 1; a book's payout must beat that for it to be worth anything).**
 
-Safest 3-leg slate parlay: Noah Clowney (BKN) UNDER 1.5 Turnovers (75%); Sam Hauser (BOS) UNDER 9.5 Points (75%); Tyrese Maxey (PHI) UNDER 6.5 2-pointers made (75%) -> combined 42.0%.
+Safest 3-leg slate parlay: Noah Clowney (BKN) UNDER 1.5 Turnovers (75%); Sam Hauser (BOS) UNDER 9.5 Points (75%); Tyrese Maxey (PHI) UNDER 6.5 2-pointers made (75%). Combined probability 42.0% (fair odds about 2.4 to 1; a book's payout must beat that for it to be worth anything).
 
 ## PHI at CHI (game 401909945)
 
@@ -25,9 +25,9 @@ Safest 3-leg slate parlay: Noah Clowney (BKN) UNDER 1.5 Turnovers (75%); Sam Hau
 | Dean Wade (PHI) UNDER 1.5 Steals | 1.0 | 1.4 | 75% |
 | Tre Jones (CHI) UNDER 4.5 Free-throw attempts | 3.1 | 4.1 | 75% |
 
-Combined 41.6%.
+Combined probability 41.6% (fair odds about 2.4 to 1; a book's payout must beat that for it to be worth anything).
 
-Top single leans (over or under, whichever the model prefers):
+Top single picks (over or under, whichever the model prefers):
 
 - Tyrese Maxey (PHI) UNDER 6.5 2-pointers made: 75% (model 5.3 vs recent 6.7)
 - Dean Wade (PHI) UNDER 1.5 Steals: 75% (model 1.0 vs recent 1.4)
@@ -48,9 +48,9 @@ Top single leans (over or under, whichever the model prefers):
 | Duncan Robinson (DET) UNDER 18.5 Points | 15.0 | 18.0 | 74% |
 | Jake LaRavia (LAL) UNDER 1.5 3-pointers made | 1.0 | 1.2 | 73% |
 
-Combined 39.8%.
+Combined probability 39.8% (fair odds about 2.5 to 1; a book's payout must beat that for it to be worth anything).
 
-Top single leans (over or under, whichever the model prefers):
+Top single picks (over or under, whichever the model prefers):
 
 - Ausar Thompson (DET) UNDER 12.5 Reb+Ast: 74% (model 10.3 vs recent 12.1)
 - Duncan Robinson (DET) UNDER 18.5 Points: 74% (model 15.0 vs recent 18.0)
@@ -71,9 +71,9 @@ Top single leans (over or under, whichever the model prefers):
 | Darryn Peterson (UTA) UNDER 1.5 Steals | 1.1 | 1.1 | 72% |
 | Ace Bailey (UTA) UNDER 1.5 Blocks | 1.0 | 1.4 | 70% |
 
-Combined 37.0%.
+Combined probability 37.0% (fair odds about 2.7 to 1; a book's payout must beat that for it to be worth anything).
 
-Top single leans (over or under, whichever the model prefers):
+Top single picks (over or under, whichever the model prefers):
 
 - Jonathan Kuminga (MIN) UNDER 2.5 3-pointers made: 73% (model 1.8 vs recent 2.0)
 - Darryn Peterson (UTA) UNDER 1.5 Steals: 72% (model 1.1 vs recent 1.1)
@@ -94,9 +94,9 @@ Top single leans (over or under, whichever the model prefers):
 | Zaccharie Risacher (DAL) UNDER 1.5 Turnovers | 0.9 | 1.3 | 75% |
 | Daniel Gafford (DAL) UNDER 3.5 2-pointers made | 2.7 | 3.4 | 74% |
 
-Combined 41.5%.
+Combined probability 41.5% (fair odds about 2.4 to 1; a book's payout must beat that for it to be worth anything).
 
-Top single leans (over or under, whichever the model prefers):
+Top single picks (over or under, whichever the model prefers):
 
 - Noah Clowney (BKN) UNDER 1.5 Turnovers: 75% (model 0.9 vs recent 1.1)
 - Zaccharie Risacher (DAL) UNDER 1.5 Turnovers: 75% (model 0.9 vs recent 1.3)
@@ -117,9 +117,9 @@ Top single leans (over or under, whichever the model prefers):
 | AJ Green (MIL) UNDER 12.5 Pts+Reb+Ast | 9.7 | 12.7 | 74% |
 | Kyle Kuzma (MIL) UNDER 2.5 Turnovers | 1.7 | 2.1 | 74% |
 
-Combined 41.1%.
+Combined probability 41.1% (fair odds about 2.4 to 1; a book's payout must beat that for it to be worth anything).
 
-Top single leans (over or under, whichever the model prefers):
+Top single picks (over or under, whichever the model prefers):
 
 - Sam Hauser (BOS) UNDER 9.5 Points: 75% (model 7.2 vs recent 9.4)
 - AJ Green (MIL) UNDER 12.5 Pts+Reb+Ast: 74% (model 9.7 vs recent 12.7)
@@ -140,9 +140,9 @@ Top single leans (over or under, whichever the model prefers):
 | Saddiq Bey (NOP) UNDER 22.5 Pts+Reb | 18.2 | 22.2 | 74% |
 | Jeremiah Fears (NOP) UNDER 4.5 Free-throw attempts | 3.2 | 4.0 | 74% |
 
-Combined 41.1%.
+Combined probability 41.1% (fair odds about 2.4 to 1; a book's payout must beat that for it to be worth anything).
 
-Top single leans (over or under, whichever the model prefers):
+Top single picks (over or under, whichever the model prefers):
 
 - Zion Williamson (NOP) UNDER 0.5 3-pointers made: 75% (model 0.3 vs recent 0.3)
 - Saddiq Bey (NOP) UNDER 22.5 Pts+Reb: 74% (model 18.2 vs recent 22.2)
@@ -163,9 +163,9 @@ Top single leans (over or under, whichever the model prefers):
 | Davion Mitchell (MIA) UNDER 2.5 3-pointers made | 1.8 | 2.2 | 74% |
 | Pelle Larsson (MIA) UNDER 1.5 Steals | 1.0 | 1.3 | 73% |
 
-Combined 40.6%.
+Combined probability 40.6% (fair odds about 2.5 to 1; a book's payout must beat that for it to be worth anything).
 
-Top single leans (over or under, whichever the model prefers):
+Top single picks (over or under, whichever the model prefers):
 
 - De'Andre Hunter (SAC) OVER 16.5 Pts+Reb: 75% (model 20.2 vs recent 16.0)
 - Davion Mitchell (MIA) UNDER 2.5 3-pointers made: 74% (model 1.8 vs recent 2.2)

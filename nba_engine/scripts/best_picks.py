@@ -8,7 +8,9 @@ from itertools import combinations
 import numpy as np
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); sys.path.insert(0, ROOT); os.chdir(ROOT)
 from nbaengine.players import PlayerModel
-day = sys.argv[1] if len(sys.argv) > 1 else None
+from datetime import datetime
+from zoneinfo import ZoneInfo
+day = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1] else str(datetime.now(ZoneInfo("America/New_York")).date())
 pl = sqlite3.connect("artifacts/player_live.sqlite"); live = sqlite3.connect("artifacts/live.sqlite")
 run = pl.execute("select max(run_utc) from player_refresh").fetchone()[0]
 rows = pl.execute("select game_id,team,player_id,name,proj_min,p_play,details_json from player_refresh where run_utc=?", (run,)).fetchall()
@@ -43,15 +45,45 @@ for gid, team, pid, name, pmin, pp, dj in rows:
         if abs(x["m"] - rec) / max(rec, 1.0) > 0.30: continue              # the model and recent form disagree by more than 30%: more likely a model miss than an edge
         if k in ("stl", "blk", "tov") and ln < 1.5: continue               # 0.5 lines on rare events are near coin-flips with heavy juice, skip
         legs.append(dict(gid=gid, team=team, name=name, stat=k, line=ln, side=side, p=p, model=x["m"], recent=rec, pp=pp))
+from nbaengine.props import norm, american_to_decimal
+def pge(x, k):            # P(stat >= k | plays) from the stored ladder
+    j = k - 1 - x["t0"]
+    return 1.0 if j < 0 else (0.005 if j >= len(x["ov"]) else x["ov"][j] / 1000.0)
+real = []
+try:
+    pl.execute("select 1 from prop_lines limit 1")
+    have = {g for (g,) in pl.execute("select distinct game_id from prop_lines")}
+    latest = {g: pl.execute("select max(fetched_utc) from prop_lines where game_id=?", (g,)).fetchone()[0] for g in have}
+except sqlite3.OperationalError:
+    have, latest = set(), {}
+byname = {(gid, norm(name)): (team, pid, name, pmin, pp, json.loads(dj)) for gid, team, pid, name, pmin, pp, dj in rows}
+for g in have:
+    for book, pname, pkey, stat, line, op, up in pl.execute("select book,player,player_key,stat,line,over_price,under_price from prop_lines where game_id=? and fetched_utc=?", (g, latest[g])):
+        r = byname.get((g, pkey))
+        if not r: continue
+        team, pid, name, pmin, pp, d = r; x = d.get(stat)
+        if not x or "ov" not in x or pp < 0.80 or pmin < 15: continue
+        if line == int(line):                       # whole-number line: a push refunds the stake
+            p_over, p_push = pge(x, int(line) + 1), pge(x, int(line)) - pge(x, int(line) + 1)
+        else:
+            p_over, p_push = pge(x, int(np.ceil(line))), 0.0
+        p_over = float(np.clip(p_over + GAP.get(stat, 0.0), 0.02, 0.98)); p_under = max(0.0, 1.0 - p_over - p_push)
+        do, du = american_to_decimal(op), american_to_decimal(up)
+        fair_o = (1 / do) / ((1 / do) + (1 / du))                                    # book's no-vig probability of the over
+        for side, p, dec, fair in (("OVER", p_over, do, fair_o), ("UNDER", p_under, du, 1 - fair_o)):
+            ev = p * (dec - 1) - (1 - p - (p_push if p_push else 0))                  # per 1 staked
+            real.append(dict(gid=g, team=team, name=name, stat=stat, line=line, side=side, p=p, dec=dec, ev=ev, fair=fair, book=book, model=x["m"], recent=line,
+                             price=(op if side == "OVER" else up), pp=pp))
 def fmt(l): return f"{l['name']} ({l['team']}) {l['side']} {l['line']:g} {LABEL[l['stat']]}"
 def best_parlay(L, n, max_per_game=9):
-    L = sorted(L, key=lambda l: -l["p"]); pick, used, per = [], set(), {}
+    L = sorted(L, key=(lambda l: -l["ev"]) if REAL else (lambda l: -l["p"])); pick, used, per = [], set(), {}
     for l in L:
         if l["name"] in used or per.get(l["gid"], 0) >= max_per_game: continue
         pick.append(l); used.add(l["name"]); per[l["gid"]] = per.get(l["gid"], 0) + 1
         if len(pick) == n: break
     return pick
 prob = lambda P: float(np.prod([l["p"] for l in P]))
+pay = lambda P: float(np.prod([l.get("dec", 1.0) for l in P]))
 out = [f"# Best over/under leans and parlays (injury-adjusted projections, run {run} UTC)", "",
        "**Read this first.** I do not have sportsbook prop lines, so the line used for each leg is a stand-in: the player's last-10-game average rounded to the nearest half. "
        "Books price off recent form too, so a lean means the model, with the injuries and the opponent, disagrees with recent form. It does not mean there is a +EV bet: "
@@ -59,22 +91,45 @@ out = [f"# Best over/under leans and parlays (injury-adjusted projections, run {
        "Check real lines with `python scripts/prop_price.py \"<player>\" <stat> <line>`. Probabilities are shifted by the calibration bias measured so far (the ladders ran high on overs). "
        "A parlay's probability multiplies its legs, treating players as independent; real legs in one game are usually positively linked, so treat it as approximate. "
        "Legs are skipped when the model and recent form differ by more than 30% (more likely a model miss), when the model is more than 75% sure, and for 0.5 steal/block lines. Legs void if the player does not play; only players with P(play) of at least 0.85 and 18+ projected minutes are used.", ""]
+REAL = bool(real)
+if REAL:                       # one line per player-stat: DraftKings first, then FanDuel; keep only legs the model rates above the book's fair probability
+    pref = {"draftkings": 0, "fanduel": 1}
+    best = {}
+    for l in sorted(real, key=lambda l: pref.get(l["book"], 9)):
+        best.setdefault((l["gid"], l["name"], l["stat"], l["side"]), l)
+    legs = [l for l in best.values() if l["ev"] > 0 and 0.52 <= l["p"] <= 0.75 and abs(l["model"] - l["line"]) / max(l["line"], 1.0) <= 0.35]   # above 75% sure against a book is more likely a model miss
+    for l in legs: l["recent"] = l["line"]
 games = sorted({l["gid"] for l in legs})
-S = best_parlay(legs, 4, 1)
-out += ["## Best parlay across the whole slate (4 legs, one per game)", "", "| Leg | Model proj | Recent avg | Win prob |", "|---|---|---|---|"] + \
-       [f"| {fmt(l)} | {l['model']:.1f} | {l['recent']:.1f} | {l['p']:.0%} |" for l in S] + ["", f"**Combined probability {prob(S):.1%}** (fair odds about {1 / prob(S):.1f} to 1; a book's payout must beat that for it to be worth anything).", ""]
-S3 = best_parlay(legs, 3, 1)
-out += ["Safest 3-leg slate parlay: " + "; ".join(fmt(l) + f" ({l['p']:.0%})" for l in S3) + f" -> combined {prob(S3):.1%}.", ""]
+if REAL:
+    out = [f"# Best over/under picks and parlays with sportsbook lines (injury-adjusted projections, run {run} UTC)", "",
+           "Lines and prices are the sportsbook prop lines fetched before tip-off (DraftKings first, then FanDuel). For each prop the model's probability for each side is compared with the book: "
+           "EV is the expected profit per 1 staked at the book's price, using the model's probability (corrected by the calibration bias measured so far). Only legs with EV above 0, a model probability between 52% and 75%, "
+           "and a model projection within 35% of the line are kept. **The model has not been proven to beat the market** (the market's closing line beat it on team margins), so a positive EV here is the "
+           "model disagreeing with the book, not a guaranteed edge. Every pick is logged and graded against results in `picks_grade.md`. Parlay probability multiplies the legs "
+           "(players treated as independent; legs in one game are usually positively linked), and parlay odds multiply the legs' decimal prices.", ""]
+    HDR = ["| Leg | Book price | Model proj | Win prob | Book fair | EV per 1 |", "|---|---|---|---|---|---|"]
+    row = lambda l: f"| {fmt(l)} | {l['price']:+.0f} ({l['book']}) | {l['model']:.1f} | {l['p']:.0%} | {l['fair']:.0%} | {l['ev']:+.2f} |"
+    tail = lambda P: f"Combined probability {prob(P):.1%}; parlay pays {pay(P):.1f}x; expected profit per 1 staked {prob(P) * pay(P) - 1:+.2f}."
+else:
+    HDR = ["| Leg | Model proj | Recent avg | Win prob |", "|---|---|---|---|"]
+    row = lambda l: f"| {fmt(l)} | {l['model']:.1f} | {l['recent']:.1f} | {l['p']:.0%} |"
+    tail = lambda P: f"Combined probability {prob(P):.1%} (fair odds about {1 / max(prob(P), 1e-9):.1f} to 1; a book's payout must beat that for it to be worth anything)."
+S = best_parlay(legs, 4, 1); S3 = best_parlay(legs, 3, 1)
+out += ["## Best parlay across the whole slate (4 legs, one per game)", ""] + HDR + [row(l) for l in S] + ["", "**" + tail(S) + "**", "",
+        "Safest 3-leg slate parlay: " + "; ".join(fmt(l) + f" ({l['p']:.0%})" for l in S3) + ". " + tail(S3), ""]
 for gid in games:
     d = tm.get(gid, {}); L = [l for l in legs if l["gid"] == gid]
-    P = best_parlay(L, 3)
-    out += [f"## {d.get('away', '?')} at {d.get('home', '?')} (game {gid})", "", "**Best 3-leg parlay for this game:**", "", "| Leg | Model proj | Recent avg | Win prob |", "|---|---|---|---|"] + \
-           [f"| {fmt(l)} | {l['model']:.1f} | {l['recent']:.1f} | {l['p']:.0%} |" for l in P] + ["", f"Combined {prob(P):.1%}.", "",
-           "Top single leans (over or under, whichever the model prefers):", ""] + \
-           [f"- {fmt(l)}: {l['p']:.0%} (model {l['model']:.1f} vs recent {l['recent']:.1f})" for l in sorted(L, key=lambda l: -l["p"])[:8]] + [""]
+    P = best_parlay(L, 3, 9)
+    out += [f"## {d.get('away', '?')} at {d.get('home', '?')} (game {gid})", "", "**Best 3-leg parlay for this game:**", ""] + HDR + [row(l) for l in P] + ["", tail(P), "",
+           "Top single picks (over or under, whichever the model prefers):", ""] + \
+           [f"- {fmt(l)}: {l['p']:.0%}" + (f", EV {l['ev']:+.2f} at {l['price']:+.0f}" if REAL else f" (model {l['model']:.1f} vs recent {l['recent']:.1f})") for l in sorted(L, key=(lambda l: -l["ev"]) if REAL else (lambda l: -l["p"]))[:8]] + [""]
 pl.execute("CREATE TABLE IF NOT EXISTS picks_log(run_utc TEXT, game_id INTEGER, player_id INTEGER, name TEXT, stat TEXT, line REAL, side TEXT, p REAL, model REAL, recent REAL, in_parlay INTEGER, PRIMARY KEY(run_utc, game_id, name, stat))")
 inpar = {(l["gid"], l["name"], l["stat"]) for g in games for l in best_parlay([x for x in legs if x["gid"] == g], 3)} | {(l["gid"], l["name"], l["stat"]) for l in S}
+try:
+    pl.execute("ALTER TABLE picks_log ADD COLUMN price REAL"); pl.execute("ALTER TABLE picks_log ADD COLUMN book TEXT")
+except sqlite3.OperationalError:
+    pass
 for l in legs:      # every lean is logged before the games finish so it can be graded honestly later (scripts/grade_picks.py)
-    pl.execute("INSERT OR IGNORE INTO picks_log VALUES(?,?,?,?,?,?,?,?,?,?,?)", (run, l["gid"], 0, l["name"], l["stat"], l["line"], l["side"], l["p"], l["model"], l["recent"], int((l["gid"], l["name"], l["stat"]) in inpar)))
+    pl.execute("INSERT OR IGNORE INTO picks_log VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)", (run, l["gid"], 0, l["name"], l["stat"], l["line"], l["side"], l["p"], l["model"], l["recent"], int((l["gid"], l["name"], l["stat"]) in inpar), l.get("price"), l.get("book")))
 pl.commit()
 p = f"artifacts/reports/best_picks_{day or 'latest'}.md"; open(p, "w").write("\n".join(out)); print("wrote", p, len(legs), "legs", len(games), "games"); print("\n".join(out[7:20]))

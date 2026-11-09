@@ -15,6 +15,10 @@ L["hit"] = np.where(L.side == "OVER", L.act > L.line, L.act < L.line); L["push"]
 md = ["# Graded over/under leans", f"{len(G)} graded legs from {G.run_utc.nunique()} run(s); pushes and did-not-play legs excluded.", "",
       "Model said / actual hit rate:", "", G.groupby("side").agg(n=("hit", "size"), model_p=("p", "mean"), hit=("hit", "mean")).round(3).to_markdown(), "",
       G.assign(band=pd.cut(G.p, [0.5, .6, .7, .76])).groupby("band", observed=True).agg(n=("hit", "size"), model_p=("p", "mean"), hit=("hit", "mean")).round(3).to_markdown(), ""]
+if "price" in G and G.price.notna().any():
+    R_ = G[G.price.notna()].copy(); dec = np.where(R_.price > 0, 1 + R_.price / 100, 1 + 100 / R_.price.abs())
+    R_["profit"] = np.where(R_.hit, dec - 1, -1.0); R_["ev_model"] = R_.p * (dec - 1) - (1 - R_.p)
+    md += [f"Picks with a real book price: {len(R_)}; flat 1-unit staking returned {R_.profit.sum():+.2f} units (model expected {R_.ev_model.sum():+.2f}); hit {R_.hit.mean():.1%} vs model {R_.p.mean():.1%}.", ""]
 P = G[G.in_parlay == 1]
 if len(P): md += [f"Legs that were in a suggested parlay: {len(P)}, hit {P.hit.mean():.1%} (model {P.p.mean():.1%}).", ""]
 open("artifacts/reports/picks_grade.md", "w").write("\n".join(md)); print("\n".join(md))

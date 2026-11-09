@@ -1,5 +1,8 @@
 name: refresh-forecast
 on:
+  schedule:
+    - cron: "0 22 * * 1-5"    # 5pm ET on weekdays, before the 7pm tips
+    - cron: "0 16 * * 0,6"    # noon ET on weekends, before the early tips
   workflow_dispatch:
     inputs:
       date: {description: "US Eastern date YYYY-MM-DD (empty = today)", required: false, default: ""}
@@ -17,6 +20,12 @@ jobs:
       - run: pip install numpy pandas scipy
       - run: python scripts/refresh_forecast.py ${{ inputs.date }}
         working-directory: nba_engine
+      - name: Fetch sportsbook prop lines (skipped without the ODDS_API_KEY secret; never fails the job)
+        run: python scripts/fetch_prop_lines.py ${{ inputs.date }}
+        working-directory: nba_engine
+        continue-on-error: true
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
       - run: python scripts/best_picks.py ${{ inputs.date }}
         working-directory: nba_engine
       - name: Commit
