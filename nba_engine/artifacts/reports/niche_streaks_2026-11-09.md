@@ -45,7 +45,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 - **DEN**: has seen the game total go over the projection 12 straight when opp_rest=1d and favorite=pick'em (52-57 in 109 such games; chance of run 0.021%).
 - **DEN**: has beaten the model's margin 9 straight when rest_edge=equal rest and density=normal (67-65 in 132 such games; chance of run 0.197%).
 - **DEN**: has won 10 straight when rest=1d and density=normal (109-57 in 166 such games; chance of run 0.344%).
-- **HOU**: has seen the game total stay under the projection 10 straight when proj_total=225-230 and streak=no streak and density=normal (23-42 in 65 such games; chance of run 0.112%).
+- **HOU**: has seen the game total stay under the projection 10 straight when proj_total=225-230 and prev_result=lost close (9-18 in 27 such games; chance of run 0.112%).
 - **HOU**: has scored under its projection 9 straight when rest_edge=equal rest and proj_total=225-230 and next_day_game=no game tomorrow (18-33 in 51 such games; chance of run 0.204%).
 
 ## SAS at PHX
