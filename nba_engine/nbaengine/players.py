@@ -272,6 +272,17 @@ class PlayerModel:
                    "n_games": st["n"] if st else 0}
             row.update({f"r_{k}": v for k, v in r.items()})
             rows.append(row)
+        if mode == "unconfirmed" and rows and os.environ.get("NBA_MINFILL") == "1":   # OFF by default: tested neutral on ladder calibration (Brier 0.1956 vs 0.1955), rebounds worse
+            # Minutes fill: the pool excludes players who are out, so expected team minutes (sum of proj_min * p_play) fall short of the 240 that
+            # must be played (live forecasts: 219 projected vs 232 actual for the same players). Spread the shortfall over the players who play,
+            # proportionally to their usual minutes, capped.
+            for _ in range(6):
+                exp = sum(r["proj_min"] * r["p_play"] for r in rows)
+                if exp <= 0 or exp >= p.team_minutes * 0.995:
+                    break
+                sc = p.team_minutes / exp
+                for r in rows:
+                    r["proj_min"] = float(min(p.cap, r["proj_min"] * sc))
         if team_pts and rows:
             # Reconcile with the team simulation: scale shot volume (and assists, which follow made baskets) so that the players'
             # expected points add up to the team's simulated points. Replay 2026-27: player sums ran 7 points/team above the team

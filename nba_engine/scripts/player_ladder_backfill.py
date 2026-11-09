@@ -20,7 +20,7 @@ _cache = {}
 CAL = []
 if os.environ.get("PPLAY_CAL"):          # experiment: apply the live-pool play-probability recalibration, write to player_ladder_cal
     c_ = json.load(open(f"{ROOT}/artifacts/p_play_cal.json")); CAL = [c_["a"], c_["b"]]
-TABLE = "player_ladder_cal" if CAL else "player_ladder"
+TABLE = os.environ.get("LADDER_TABLE") or ("player_ladder_cal" if CAL else "player_ladder")
 def model_at(made_at: str):
     t = datetime.strptime(made_at, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
     h = next((h for ct, h in commits if ct >= t), commits[-1][1])               # the commit written by the run that made this forecast
