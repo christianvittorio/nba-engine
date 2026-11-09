@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-09T08:06:30Z",
+ "generated_utc": "2026-11-09T19:32:16Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -266,9 +266,9 @@
     {
      "name": "Mikel Brown Jr.",
      "nba_id": 1629650,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-08T04:04Z"
+     "date": "2026-11-09T15:46Z"
     },
     {
      "name": "Egor Demin",
@@ -504,7 +504,7 @@
      "nba_id": 1631217,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-08T22:31Z"
+     "date": "2026-11-09T17:32Z"
     },
     {
      "name": "Kon Knueppel",
@@ -645,16 +645,16 @@
     {
      "name": "Zach Collins",
      "nba_id": 1628380,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-07T21:24Z"
+     "date": "2026-11-09T15:41Z"
     },
     {
      "name": "Norman Powell",
      "nba_id": 1626181,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-08T18:55Z"
+     "date": "2026-11-09T15:41Z"
     }
    ]
   },
@@ -902,6 +902,13 @@
      "date": "2026-11-05T22:24Z"
     },
     {
+     "name": "Morez Johnson Jr.",
+     "nba_id": -4873153,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-09T18:50Z"
+    },
+    {
      "name": "Dereck Lively II",
      "nba_id": 1641726,
      "status": "Out",
@@ -1021,21 +1028,21 @@
      "nba_id": 1631128,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-08T22:46Z"
+     "date": "2026-11-09T19:23Z"
     },
     {
      "name": "DeMar DeRozan",
      "nba_id": 201942,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-08T22:51Z"
+     "date": "2026-11-09T19:20Z"
     },
     {
      "name": "Aaron Gordon",
      "nba_id": 203932,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-08T22:42Z"
+     "date": "2026-11-09T19:21Z"
     },
     {
      "name": "Cameron Johnson",
@@ -1049,14 +1056,14 @@
      "nba_id": 203999,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-08T22:36Z"
+     "date": "2026-11-09T19:21Z"
     },
     {
      "name": "Jamal Murray",
      "nba_id": 1627750,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-08T22:43Z"
+     "date": "2026-11-09T19:18Z"
     },
     {
      "name": "Julian Strawther",
@@ -1191,7 +1198,7 @@
      "nba_id": 1630198,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-07T21:59Z"
+     "date": "2026-11-09T18:54Z"
     }
    ]
   },
@@ -1320,6 +1327,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-10-16T16:14Z"
+    },
+    {
+     "name": "Gary Payton II",
+     "nba_id": 1627780,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-09T19:24Z"
     },
     {
      "name": "Kristaps Porzingis",
@@ -1463,6 +1477,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-08T22:56Z"
+    },
+    {
+     "name": "Oscar Tshiebwe",
+     "nba_id": 1631131,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-09T17:36Z"
     }
    ]
   },
@@ -1737,9 +1758,9 @@
     {
      "name": "Isaiah Jackson",
      "nba_id": 1630543,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-08T01:03Z"
+     "date": "2026-11-09T15:58Z"
     },
     {
      "name": "Jordan Miller",
@@ -1876,18 +1897,18 @@
    ],
    "injuries": [
     {
-     "name": "Luka Doncic",
-     "nba_id": 1629029,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-11-08T18:19Z"
-    },
-    {
      "name": "Quentin Grimes",
      "nba_id": 1629656,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-09T18:13Z"
+    },
+    {
+     "name": "Austin Reaves",
+     "nba_id": 1630559,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-09T02:01Z"
+     "date": "2026-11-09T18:09Z"
     }
    ]
   },
@@ -2254,9 +2275,9 @@
     {
      "name": "Gary Trent Jr.",
      "nba_id": 1629018,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-08T23:58Z"
+     "date": "2026-11-09T15:57Z"
     }
    ]
   },
@@ -3027,9 +3048,9 @@
     {
      "name": "Adem Bona",
      "nba_id": 1641737,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-07T23:07Z"
+     "date": "2026-11-09T15:41Z"
     },
     {
      "name": "Ariel Hukporti",
@@ -3408,9 +3429,9 @@
     {
      "name": "Domantas Sabonis",
      "nba_id": 1627734,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-09T01:03Z"
+     "date": "2026-11-09T16:00Z"
     },
     {
      "name": "Ben Simmons",
@@ -3544,9 +3565,9 @@
     {
      "name": "Devin Vassell",
      "nba_id": 1630170,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-09T00:20Z"
+     "date": "2026-11-09T18:41Z"
     }
    ]
   },
@@ -3676,6 +3697,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-04T00:14Z"
+    },
+    {
+     "name": "Collin Murray-Boyles",
+     "nba_id": 1642867,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-09T18:28Z"
     },
     {
      "name": "Immanuel Quickley",
@@ -3815,9 +3843,9 @@
     {
      "name": "Lauri Markkanen",
      "nba_id": 1628374,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-08T23:44Z"
+     "date": "2026-11-09T15:46Z"
     },
     {
      "name": "Jusuf Nurkic",
@@ -3955,6 +3983,13 @@
      "date": "2026-10-28T18:38Z"
     },
     {
+     "name": "Bilal Coulibaly",
+     "nba_id": 1641731,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-09T18:54Z"
+    },
+    {
      "name": "Anthony Davis",
      "nba_id": 203076,
      "status": "Day-To-Day",
@@ -4054,7 +4089,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 28,
-  "injuries_endpoint_entries": 95,
-  "embedded_injuries": 95
+  "injuries_endpoint_entries": 99,
+  "embedded_injuries": 100
  }
 }
