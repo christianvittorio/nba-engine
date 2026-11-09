@@ -1,0 +1,26 @@
+name: refresh-forecast
+on:
+  workflow_dispatch:
+    inputs:
+      date: {description: "US Eastern date YYYY-MM-DD (empty = today)", required: false, default: ""}
+permissions:
+  contents: write
+concurrency: nba-daily
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install numpy pandas scipy
+      - run: python scripts/refresh_forecast.py ${{ inputs.date }}
+        working-directory: nba_engine
+      - name: Commit
+        run: |
+          git config user.name "nba-engine-bot"
+          git config user.email "nba-engine-bot@users.noreply.github.com"
+          git add -f nba_engine/artifacts/reports/refresh_*.md nba_engine/artifacts/live.sqlite nba_engine/artifacts/player_live.sqlite nba_engine/artifacts/availability.json
+          git diff --cached --quiet || git commit -m "refresh forecast ${{ inputs.date }}"
+          for i in 1 2 3; do git pull --rebase && git push && break || sleep 5; done
