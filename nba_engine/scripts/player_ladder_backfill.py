@@ -31,6 +31,7 @@ def model_at(made_at: str):
 pl.execute(f"CREATE TABLE IF NOT EXISTS {TABLE}(game_id INTEGER, player_id INTEGER, team TEXT, src TEXT, ladder_json TEXT, PRIMARY KEY(game_id, player_id))")
 dates = sys.argv[1:] or [r[0] for r in live.execute("select distinct date from game_dates order by date")]
 done = skipped = 0
+skipped_ids = []
 for day in dates:
     for gid, in live.execute("select game_id from game_dates where date=?", (day,)).fetchall():
         rows = pl.execute("select team,player_id,made_at_utc,details_json from player_fc where game_id=?", (gid,)).fetchall()
@@ -52,8 +53,8 @@ for day in dates:
                 upd.append((int(pid), team, L, s_))
         ok = ok and bool(diffs) and sum(diffs) / len(diffs) < 0.8
         if not ok or not upd:
-            skipped += 1; print("skip", gid, day, "(rebuild does not reproduce the stored forecast)"); continue
+            skipped += 1; skipped_ids.append(gid); continue
         for pid, team, L, s_ in upd:
             pl.execute(f"INSERT OR REPLACE INTO {TABLE} VALUES(?,?,?,?,?)", (gid, pid, team, f"re-simulated from state {commit[:7]}, 4000 draws", json.dumps(L)))
         pl.commit(); done += 1
-print("augmented", done, "games; skipped", skipped)
+print("augmented", done, "games; left without a ladder (a rebuild would not match the stored forecast closely enough, so none is stored):", skipped, skipped_ids if skipped else "")
