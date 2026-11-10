@@ -3,6 +3,9 @@ around the projection (floor(mean)+0.5 and +/-1, +/-2) and compare the predicted
 Writes artifacts/reports/player_ladder_calibration.md"""
 import os, sys, json, sqlite3
 import numpy as np, pandas as pd
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from nbaengine.mdtable import md_table
+pd.DataFrame.to_markdown = lambda self, *a, **k: md_table(self)       # no tabulate dependency on the runner
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); sys.path.insert(0, ROOT)
 from nbaengine.player_live import with_ladder
 TABLE = os.environ.get("LADDER_TABLE", "player_ladder")

@@ -15,7 +15,7 @@ today = datetime.now(ZoneInfo("America/New_York")).date()
 store = Store(DB)
 eng = Engine.load(store, STATE)
 # First run on a fresh state: catch up on everything since the season opened (ingesting a game twice is a no-op).
-LOOKBACK = int(os.environ.get("LOOKBACK_DAYS") or (3 if (last_success(store) and os.path.exists("artifacts/player_applied.json")) else 21))
+LOOKBACK = int(os.environ.get("LOOKBACK_DAYS") or (7 if (last_success(store) and os.path.exists("artifacts/player_applied.json")) else 21))
 av = None
 # Rosters + injury statuses first (best effort, never fails the job): used for the injury-adjusted forecasts and the dashboard.
 try:

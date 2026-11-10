@@ -3,7 +3,6 @@ played ~ sigmoid(a + b*logit(p_play)) fitted on stored live forecasts vs box sco
 Prints a, b; writes artifacts/p_play_cal.json."""
 import os, sys, json, sqlite3
 import numpy as np, pandas as pd
-from sklearn.linear_model import LogisticRegression
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 pl = sqlite3.connect(f"{ROOT}/artifacts/player_live.sqlite"); live = sqlite3.connect(f"{ROOT}/artifacts/live.sqlite")
 F = pd.read_sql_query("select game_id,player_id,p_play,proj_min from player_fc", pl); A = pd.read_sql_query("select game_id,player_id,min from player_act", pl)
@@ -11,7 +10,13 @@ D = pd.read_sql_query("select game_id,date from game_dates", live)
 F = F[F.game_id.isin(set(A.game_id))].merge(A, on=["game_id", "player_id"], how="left").merge(D, on="game_id")
 F["y"] = (F["min"].fillna(0) > 0).astype(int); p = F.p_play.clip(0.02, 0.98); F["x"] = np.log(p / (1 - p))
 def fit(d):
-    m = LogisticRegression(C=1e6).fit(d[["x"]], d.y); return float(m.intercept_[0]), float(m.coef_[0][0])
+    """logistic regression of y on x (intercept + slope) by Newton's method; no sklearn needed"""
+    X = np.c_[np.ones(len(d)), d.x.values]; y = d.y.values.astype(float); b = np.zeros(2)
+    for _ in range(50):
+        q = 1 / (1 + np.exp(-X @ b)); g = X.T @ (q - y) + 1e-6 * b; H = (X * (q * (1 - q))[:, None]).T @ X + 1e-6 * np.eye(2)
+        step = np.linalg.solve(H, g); b -= step
+        if np.abs(step).max() < 1e-9: break
+    return float(b[0]), float(b[1])
 def pred(ab, x): return 1 / (1 + np.exp(-(ab[0] + ab[1] * x)))
 ll = lambda y, q: float(-(y * np.log(np.clip(q, 1e-4, 1 - 1e-4)) + (1 - y) * np.log(np.clip(1 - q, 1e-4, 1 - 1e-4))).mean())
 br = lambda y, q: float(((y - q) ** 2).mean())

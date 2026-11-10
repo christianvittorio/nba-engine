@@ -1,6 +1,9 @@
 """Grade logged over/under leans against box scores: hit rate by side and probability band, and parlay results. Writes artifacts/reports/picks_grade.md"""
 import os, sys, sqlite3
 import numpy as np, pandas as pd
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from nbaengine.mdtable import md_table
+pd.DataFrame.to_markdown = lambda self, *a, **k: md_table(self)       # no tabulate dependency on the runner
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); os.chdir(ROOT)
 pl = sqlite3.connect("artifacts/player_live.sqlite")
 L = pd.read_sql_query("select * from picks_log", pl)
