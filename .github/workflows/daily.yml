@@ -25,13 +25,22 @@ jobs:
         working-directory: nba_engine
         env:
           LOOKBACK_DAYS: ${{ inputs.lookback_days }}
+      - name: Injury refresh + keyless DraftKings props + best picks for today and tomorrow (never fails the job)
+        run: |
+          for d in $(date -u -d '-5 hours' +%F) $(date -u -d '+19 hours' +%F); do
+            python scripts/refresh_forecast.py $d || true
+            python scripts/fetch_espn_props.py $d || true
+            python scripts/best_picks.py $d || true
+          done
+        working-directory: nba_engine
+        continue-on-error: true
       - name: Commit updated state, database and report
         run: |
           git config user.name "nba-engine-bot"
           git config user.email "nba-engine-bot@users.noreply.github.com"
           git add -f nba_engine/artifacts/state.json nba_engine/artifacts/live.sqlite nba_engine/artifacts/reports
           [ -d nba_engine/artifacts/gamedata ] && git add -f nba_engine/artifacts/gamedata || true
-          for f in availability.json player_state.json player_applied.json player_id_map.json player_live.sqlite calibration.json p_play_cal.json; do
+          for f in availability.json player_state.json player_applied.json player_id_map.json player_live.sqlite calibration.json p_play_cal.json props_blend.json; do
             [ -f "nba_engine/artifacts/$f" ] && git add -f "nba_engine/artifacts/$f" || true
           done
           git diff --cached --quiet || git commit -m "daily update $(date -u +%F)"
