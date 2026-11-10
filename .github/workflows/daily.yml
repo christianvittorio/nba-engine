@@ -40,7 +40,7 @@ jobs:
           git config user.email "nba-engine-bot@users.noreply.github.com"
           git add -f nba_engine/artifacts/state.json nba_engine/artifacts/live.sqlite nba_engine/artifacts/reports
           [ -d nba_engine/artifacts/gamedata ] && git add -f nba_engine/artifacts/gamedata || true
-          for f in availability.json player_state.json player_applied.json player_id_map.json player_live.sqlite calibration.json p_play_cal.json props_blend.json; do
+          for f in availability.json player_state.json player_applied.json player_id_map.json player_live.sqlite calibration.json p_play_cal.json props_blend.json learned_biases.json; do
             [ -f "nba_engine/artifacts/$f" ] && git add -f "nba_engine/artifacts/$f" || true
           done
           git diff --cached --quiet || git commit -m "daily update $(date -u +%F)"
