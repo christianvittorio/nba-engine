@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-10
-Data refresh: last successful run 2026-11-10T08:44:09Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-10T16:50:12Z UTC. Model nbaengine-0.1.0.
 
 - MIL at NYK (game 401909960): P(home) sim 0.845 / Elo 0.895; mean score 116.0-102.2 (total 218.2); margin 50% [3.9, 24.1], 80% [-5.2, 33.2]; total 80% [194.7, 242.4]; P(OT) 0.036; projected final NYK 116 - MIL 102 (the average outcome, not a single exact score).
   - betting line: NYK margin +15.5, total 219.5; our simulator +13.8 (differs by -1.7); line-centred P(home) 0.873.

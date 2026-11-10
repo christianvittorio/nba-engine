@@ -5,8 +5,8 @@ Each line is a situation that describes tonight's game for that team, the team's
 **Reality check:** 337 unusual runs (6+ in a row) exist for tonight's games. A luck-only world, where results are redrawn from the model's probabilities, produces about 226 (max 318 in 6 worlds). So most of these are what chance produces when thousands of situations are scanned. In the 2023-24 vs 2025-26 test, team-specific niche trends did not carry over to later seasons. Treat these as descriptions of recent history, not predictions.
 
 ## MIL at NYK
-- **MIL**: has scored under its projection 13 straight when venue=away and rest=1d and next_day_game=no game tomorrow (31-58 in 89 such games; chance of run 0.012%).
-- **MIL**: has seen the game total stay under the projection 10 straight when venue=away and prev_result=lost by 10+ and next_day_game=no game tomorrow (8-28 in 36 such games; chance of run 0.112%).
+- **MIL**: has scored under its projection 13 straight when venue=away and prev_result=lost by 10+ and next_day_game=no game tomorrow (8-28 in 36 such games; chance of run 0.012%).
+- **MIL**: has seen the game total stay under the projection 10 straight when venue=away and streak=lost 3+ straight (1-12 in 13 such games; chance of run 0.112%).
 - **MIL**: has lost 6 straight when rest_edge=less rest and next_day_game=no game tomorrow and density=normal (20-19 in 39 such games; chance of run 0.658%).
 - **NYK**: has scored under its projection 11 straight when rest=2d and prev_result=won by 10+ and next_day_game=no game tomorrow (3-11 in 14 such games; chance of run 0.051%).
 - **NYK**: has lost 6 straight when opp_rest=1d and proj_total=220-225 and prev_result=won by 10+ (4-13 in 17 such games; chance of run 0.345%).
@@ -38,7 +38,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 
 ## ORL at SAC
 - **ORL**: has scored over its projection 11 straight when prev_result=lost close and streak=lost 3+ straight (13-5 in 18 such games; chance of run 0.045%).
-- **ORL**: has seen the game total go over the projection 8 straight when favorite=fav and density=normal (20-14 in 34 such games; chance of run 0.351%).
+- **ORL**: has seen the game total go over the projection 8 straight when prev_result=lost close and streak=lost 3+ straight (15-3 in 18 such games; chance of run 0.351%).
 - **ORL**: has lost 7 straight when opp_rest=1d and streak=lost 3+ straight and density=normal (5-11 in 16 such games; chance of run 0.361%).
 - **SAC**: has scored under its projection 12 straight when rest_edge=less rest and density=normal (19-28 in 47 such games; chance of run 0.026%).
 - **SAC**: has fallen short of the model's margin 10 straight when proj_total=225-230 and next_day_game=no game tomorrow (19-31 in 50 such games; chance of run 0.102%).
