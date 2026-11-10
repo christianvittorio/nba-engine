@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-10T03:58:42Z",
+ "generated_utc": "2026-11-10T08:44:46Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -1275,9 +1275,9 @@
     {
      "name": "Gary Payton II",
      "nba_id": 1627780,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-10T01:50Z"
+     "date": "2026-11-10T05:26Z"
     },
     {
      "name": "Kristaps Porzingis",
@@ -1292,6 +1292,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-10T01:26Z"
+    },
+    {
+     "name": "Brandon Williams",
+     "nba_id": 1630314,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-10T04:41Z"
     }
    ]
   },
@@ -1418,9 +1425,9 @@
     {
      "name": "Oscar Tshiebwe",
      "nba_id": 1631131,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-09T17:36Z"
+     "date": "2026-11-10T03:59Z"
     }
    ]
   },
@@ -2464,23 +2471,23 @@
     {
      "name": "Trey Murphy III",
      "nba_id": 1630530,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-09T20:49Z"
+     "date": "2026-11-10T05:28Z"
     },
     {
      "name": "Trendon Watford",
      "nba_id": 1630570,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-09T20:50Z"
+     "date": "2026-11-10T05:28Z"
     },
     {
      "name": "Zion Williamson",
      "nba_id": 1629627,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-09T21:49Z"
+     "date": "2026-11-10T05:27Z"
     }
    ]
   },
@@ -3524,9 +3531,9 @@
     {
      "name": "Devin Vassell",
      "nba_id": 1630170,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-09T18:41Z"
+     "date": "2026-11-10T04:32Z"
     }
    ]
   },
@@ -4042,6 +4049,6 @@
   ],
   "injuries_endpoint_teams": 29,
   "injuries_endpoint_entries": 94,
-  "embedded_injuries": 93
+  "embedded_injuries": 94
  }
 }
