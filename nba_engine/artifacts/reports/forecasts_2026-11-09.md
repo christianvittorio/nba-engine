@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-09
-Data refresh: last successful run 2026-11-09T23:16:31Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-10T02:31:33Z UTC. Model nbaengine-0.1.0.
 
 - LAL at ATL (game 401909952): P(home) sim 0.493 / Elo 0.564; mean score 116.5-116.6 (total 233.1); margin 50% [-10.0, 10.3], 80% [-19.0, 19.3]; total 80% [209.7, 257.4]; P(OT) 0.045; projected final LAL 117 - ATL 117 (the average outcome, not a single exact score).
   - betting line: ATL margin +1.5, total 236.5; our simulator -0.1 (differs by -1.6); line-centred P(home) 0.520.

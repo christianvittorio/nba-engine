@@ -1,6 +1,6 @@
 # Calibration report
 
-Generated 2026-11-09T23:16:41Z. Team layer: 4920 walk-forward games (2022-23 to 2025-26, each projected only from earlier games) plus the live season. Player layer: 2025-26 frozen-parameter evaluation plus live games as they accumulate.
+Generated 2026-11-10T02:31:44Z. Team layer: 4920 walk-forward games (2022-23 to 2025-26, each projected only from earlier games) plus the live season. Player layer: 2025-26 frozen-parameter evaluation plus live games as they accumulate.
 
 ## 1. Team layer on past games
 
@@ -108,23 +108,23 @@ Variants on the same live games (each only for games that had that variant store
 
 Per-player means are unbiased (bias is a few hundredths of a unit). Coverage of the discrete stats (steals, blocks, turnovers, threes) reads high because counts take whole values and a range edge on a whole number counts as inside; points, minutes and points+rebounds+assists are the informative rows, and they sit at or slightly above nominal. In the last fifth of the season points were under-projected by about 0.25 per player (+3%), a drift worth watching.
 
-### Live 2026-27 (39 games, 935 player rows)
+### Live 2026-27 (41 games, 983 player rows)
 
 | stat | n | mean_forecast | mean_actual | bias | mae | cov50 | cov80 | cov90 |
 |---|---|---|---|---|---|---|---|---|
-| min | 935 | 18.30 | 19.26 | +0.962 | 6.57 | 58.5% | 86.0% | 95.9% |
-| pts | 935 | 9.23 | 9.03 | -0.197 | 4.68 | 65.6% | 89.2% | 96.5% |
-| reb | 935 | 3.36 | 3.51 | +0.155 | 1.98 | 69.1% | 89.9% | 95.9% |
-| ast | 935 | 2.11 | 2.10 | -0.004 | 1.35 | 75.3% | 92.5% | 96.7% |
-| stl | 935 | 0.64 | 0.62 | -0.018 | 0.64 | 85.2% | 94.4% | 97.1% |
-| blk | 935 | 0.38 | 0.40 | +0.026 | 0.47 | 83.7% | 93.4% | 96.8% |
-| tov | 935 | 1.10 | 1.15 | +0.048 | 0.87 | 78.3% | 93.5% | 97.5% |
-| tpm | 935 | 1.05 | 1.05 | -0.002 | 0.85 | 81.7% | 93.9% | 97.8% |
-| fgm | 935 | 3.33 | 3.20 | -0.133 | 1.75 | 70.7% | 92.1% | 97.3% |
-| fga | 935 | 7.07 | 7.06 | -0.010 | 3.06 | 68.0% | 89.9% | 96.7% |
-| ftm | 935 | 1.52 | 1.59 | +0.071 | 1.29 | 76.6% | 91.4% | 95.7% |
-| fta | 935 | 1.94 | 2.02 | +0.080 | 1.57 | 73.6% | 91.2% | 95.6% |
-| pra | 935 | 14.69 | 14.65 | -0.046 | 6.51 | 63.5% | 88.0% | 96.7% |
+| min | 983 | 18.28 | 19.27 | +0.986 | 6.61 | 58.1% | 85.8% | 95.7% |
+| pts | 983 | 9.22 | 9.07 | -0.152 | 4.68 | 65.3% | 88.9% | 96.5% |
+| reb | 983 | 3.36 | 3.50 | +0.138 | 1.98 | 69.1% | 89.9% | 95.9% |
+| ast | 983 | 2.11 | 2.12 | +0.016 | 1.35 | 74.7% | 92.4% | 96.5% |
+| stl | 983 | 0.64 | 0.64 | -0.003 | 0.64 | 84.8% | 94.5% | 97.0% |
+| blk | 983 | 0.37 | 0.40 | +0.027 | 0.47 | 83.7% | 93.4% | 96.7% |
+| tov | 983 | 1.10 | 1.15 | +0.051 | 0.87 | 78.2% | 93.6% | 97.7% |
+| tpm | 983 | 1.05 | 1.07 | +0.012 | 0.85 | 81.3% | 93.8% | 97.8% |
+| fgm | 983 | 3.32 | 3.21 | -0.113 | 1.75 | 70.2% | 92.1% | 97.4% |
+| fga | 983 | 7.06 | 7.06 | +0.004 | 3.06 | 67.5% | 89.9% | 96.7% |
+| ftm | 983 | 1.51 | 1.57 | +0.062 | 1.27 | 76.7% | 91.5% | 95.9% |
+| fta | 983 | 1.93 | 2.00 | +0.067 | 1.56 | 73.7% | 91.5% | 95.7% |
+| pra | 983 | 14.68 | 14.68 | +0.002 | 6.53 | 63.4% | 87.7% | 96.6% |
 
 ## 5. What this does not cover
 
