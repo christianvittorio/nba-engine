@@ -94,8 +94,9 @@ for g, pid, stat, line, op, up, book in lines_in:
         real.append(dict(gid=g, team=team, name=name, stat=stat, line=line, side=side, p=p, dec=dec, ev=ev, fair=fair, book=book, model=x["m"], recent=line,
                          price=(op if side == "OVER" else up), pp=pp, praw=praw))
 def fmt(l): return f"{l['name']} ({l['team']}) {l['side']} {l['line']:g} {LABEL[l['stat']]}"
-def best_parlay(L, n, max_per_game=9):
-    L = sorted(L, key=(lambda l: -l["ev"]) if (REAL and not NOEDGE) else (lambda l: -l["p"])); pick, used, per = [], set(), {}
+def best_parlay(L, n, max_per_game=9, by_ev=None):
+    by_ev = (REAL and not NOEDGE) if by_ev is None else by_ev
+    L = sorted(L, key=(lambda l: -l["ev"]) if by_ev else (lambda l: -l["p"])); pick, used, per = [], set(), {}
     for l in L:
         if l["name"] in used or per.get(l["gid"], 0) >= max_per_game: continue
         pick.append(l); used.add(l["name"]); per[l["gid"]] = per.get(l["gid"], 0) + 1
@@ -153,7 +154,7 @@ if REAL:       # the model's own view: unshrunk probabilities, ranked by the mod
             "These use the simulator's probabilities as they are, not pulled toward the book, and rank legs by the model's expected profit at DraftKings' price. "
             "**The backtest says the model has not beaten the book, so treat this as the model's opinion, not a proven edge.** Every pick is logged and graded in `picks_grade.md`, so the track record builds up.", ""]
     for n_, ttl in ((2, "Best 2-leg"), (3, "Best 3-leg"), (4, "Best 4-leg")):
-        Pm = best_parlay(ML, n_, 1)
+        Pm = best_parlay(ML, n_, 1, by_ev=True)
         if len(Pm) == n_:
             out += [f"**{ttl} slate parlay (one leg per game, ranked by model edge)**", ""] + HDR + [row(l) for l in Pm] + ["", tail(Pm), ""]
     out += ["Top single picks by model edge:", ""] + [f"- {fmt(l)}: model {l['p']:.0%} vs book {l['fair']:.0%}, EV {l['ev']:+.2f} at {l['price']:+.0f} (projection {l['model']:.1f})" for l in ML[:12]] + [""]

@@ -23,31 +23,31 @@ These use the simulator's probabilities as they are, not pulled toward the book,
 
 | Leg | Book price | Model proj | Win prob | Book fair | EV per 1 |
 |---|---|---|---|---|---|
-| Grayson Allen (CHA) UNDER 1.5 Steals | -197 (DraftKings via ESPN) | 1.0 | 75% | 62% | +0.13 |
-| Victor Wembanyama (SAS) UNDER 1.5 Steals | -222 (DraftKings via ESPN) | 1.0 | 74% | 65% | +0.07 |
+| Saddiq Bey (NOP) UNDER 5.5 Rebounds | -105 (DraftKings via ESPN) | 4.4 | 69% | 48% | +0.34 |
+| Zach Edey (MEM) UNDER 9.5 Points | +101 (DraftKings via ESPN) | 8.2 | 66% | 47% | +0.33 |
 
-Combined probability 55.4%; parlay pays 2.2x; expected profit per 1 staked +0.21.
+Combined probability 45.4%; parlay pays 3.9x; expected profit per 1 staked +0.78.
 
 **Best 3-leg slate parlay (one leg per game, ranked by model edge)**
 
 | Leg | Book price | Model proj | Win prob | Book fair | EV per 1 |
 |---|---|---|---|---|---|
-| Grayson Allen (CHA) UNDER 1.5 Steals | -197 (DraftKings via ESPN) | 1.0 | 75% | 62% | +0.13 |
-| Victor Wembanyama (SAS) UNDER 1.5 Steals | -222 (DraftKings via ESPN) | 1.0 | 74% | 65% | +0.07 |
-| Kyshawn George (WAS) UNDER 2.5 3-pointers made | -189 (DraftKings via ESPN) | 1.8 | 73% | 61% | +0.11 |
+| Saddiq Bey (NOP) UNDER 5.5 Rebounds | -105 (DraftKings via ESPN) | 4.4 | 69% | 48% | +0.34 |
+| Zach Edey (MEM) UNDER 9.5 Points | +101 (DraftKings via ESPN) | 8.2 | 66% | 47% | +0.33 |
+| Julian Champagnie (SAS) UNDER 11.5 Points | -125 (DraftKings via ESPN) | 9.1 | 74% | 52% | +0.32 |
 
-Combined probability 40.2%; parlay pays 3.3x; expected profit per 1 staked +0.35.
+Combined probability 33.4%; parlay pays 7.1x; expected profit per 1 staked +1.36.
 
 **Best 4-leg slate parlay (one leg per game, ranked by model edge)**
 
 | Leg | Book price | Model proj | Win prob | Book fair | EV per 1 |
 |---|---|---|---|---|---|
-| Grayson Allen (CHA) UNDER 1.5 Steals | -197 (DraftKings via ESPN) | 1.0 | 75% | 62% | +0.13 |
-| Victor Wembanyama (SAS) UNDER 1.5 Steals | -222 (DraftKings via ESPN) | 1.0 | 74% | 65% | +0.07 |
-| Kyshawn George (WAS) UNDER 2.5 3-pointers made | -189 (DraftKings via ESPN) | 1.8 | 73% | 61% | +0.11 |
-| Jamal Shead (TOR) UNDER 11.5 Points | -118 (DraftKings via ESPN) | 9.5 | 71% | 51% | +0.31 |
+| Saddiq Bey (NOP) UNDER 5.5 Rebounds | -105 (DraftKings via ESPN) | 4.4 | 69% | 48% | +0.34 |
+| Zach Edey (MEM) UNDER 9.5 Points | +101 (DraftKings via ESPN) | 8.2 | 66% | 47% | +0.33 |
+| Julian Champagnie (SAS) UNDER 11.5 Points | -125 (DraftKings via ESPN) | 9.1 | 74% | 52% | +0.32 |
+| Cade Cunningham (DET) UNDER 25.5 Points | -106 (DraftKings via ESPN) | 22.7 | 66% | 49% | +0.28 |
 
-Combined probability 28.5%; parlay pays 6.2x; expected profit per 1 staked +0.76.
+Combined probability 22.0%; parlay pays 13.7x; expected profit per 1 staked +2.02.
 
 Top single picks by model edge:
 
