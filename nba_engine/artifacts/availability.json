@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-10T16:50:54Z",
+ "generated_utc": "2026-11-10T20:44:06Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -2230,6 +2230,13 @@
      "status": "Day-To-Day",
      "detail": "",
      "date": "2026-11-09T22:21Z"
+    },
+    {
+     "name": "Kel'el Ware",
+     "nba_id": 1642276,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-10T17:18Z"
     }
    ]
   },
@@ -2473,21 +2480,14 @@
      "nba_id": 1630530,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-10T05:28Z"
+     "date": "2026-11-10T19:22Z"
     },
     {
      "name": "Trendon Watford",
      "nba_id": 1630570,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-10T05:28Z"
-    },
-    {
-     "name": "Zion Williamson",
-     "nba_id": 1629627,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-10T05:27Z"
+     "date": "2026-11-10T19:26Z"
     }
    ]
   },
@@ -2602,7 +2602,7 @@
      "nba_id": 1628404,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-09T22:04Z"
+     "date": "2026-11-10T19:20Z"
     }
    ]
   },
@@ -2869,6 +2869,13 @@
      "date": "2026-10-24T16:47Z"
     },
     {
+     "name": "Tristan da Silva",
+     "nba_id": 1641783,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-10T16:50Z"
+    },
+    {
      "name": "Jonathan Isaac",
      "nba_id": 1628371,
      "status": "Out",
@@ -3133,13 +3140,6 @@
     }
    ],
    "injuries": [
-    {
-     "name": "Jordan Goodwin",
-     "nba_id": 1630692,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-11-10T00:21Z"
-    },
     {
      "name": "Mark Williams",
      "nba_id": 1631109,
@@ -3662,7 +3662,7 @@
      "nba_id": 202695,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-04T00:14Z"
+     "date": "2026-11-10T17:33Z"
     },
     {
      "name": "Collin Murray-Boyles",
@@ -3809,9 +3809,9 @@
     {
      "name": "Lauri Markkanen",
      "nba_id": 1628374,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-10T00:08Z"
+     "date": "2026-11-10T18:30Z"
     },
     {
      "name": "Jusuf Nurkic",
