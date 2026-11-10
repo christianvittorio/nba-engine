@@ -85,12 +85,14 @@ for g, pid, stat, line, op, up, book in lines_in:
         p_over, p_push = pge(x, int(np.ceil(line))), 0.0
     p_over = float(np.clip(p_over + GAP.get(stat, 0.0), 0.02, 0.98)); do, du = american_to_decimal(op), american_to_decimal(up)
     fair_o = (1 / do) / ((1 / do) + (1 / du))                                    # book's no-vig probability of the over
+    p_over_raw = p_over
     p_over = fair_o + WSTAT.get(stat, 0.0) * (p_over - fair_o)                     # shrink toward the book by the weight the model has earned for THIS stat
     p_under = max(0.0, 1.0 - p_over - p_push)
     for side, p, dec, fair in (("OVER", p_over, do, fair_o), ("UNDER", p_under, du, 1 - fair_o)):
         ev = p * (dec - 1) - (1 - p - p_push)                                     # per 1 staked
+        praw = p_over_raw if side == "OVER" else max(0.0, 1.0 - p_over_raw - p_push)
         real.append(dict(gid=g, team=team, name=name, stat=stat, line=line, side=side, p=p, dec=dec, ev=ev, fair=fair, book=book, model=x["m"], recent=line,
-                         price=(op if side == "OVER" else up), pp=pp))
+                         price=(op if side == "OVER" else up), pp=pp, praw=praw))
 def fmt(l): return f"{l['name']} ({l['team']}) {l['side']} {l['line']:g} {LABEL[l['stat']]}"
 def best_parlay(L, n, max_per_game=9):
     L = sorted(L, key=(lambda l: -l["ev"]) if (REAL and not NOEDGE) else (lambda l: -l["p"])); pick, used, per = [], set(), {}
@@ -141,6 +143,21 @@ if not S:
     out += ["No qualifying legs: no prop lines were available for these games yet (the lines are fetched before tip-off).", ""]
 out += ["## Best parlay across the whole slate (4 legs, one per game)", ""] + HDR + [row(l) for l in S] + ["", "**" + tail(S) + "**", "",
         "Safest 3-leg slate parlay: " + "; ".join(fmt(l) + f" ({l['p']:.0%})" for l in S3) + ". " + tail(S3), ""]
+if REAL:       # the model's own view: unshrunk probabilities, ranked by the model's expected profit at the book's price
+    M = {}
+    for l in best.values():
+        m = dict(l); m["p"] = m["praw"]; m["ev"] = m["p"] * (m["dec"] - 1) - (1 - m["p"])
+        if 0.52 <= m["p"] <= 0.75 and abs(m["model"] - m["line"]) / max(m["line"], 1.0) <= 0.35 and m["ev"] > 0: M[(m["gid"], m["name"], m["stat"], m["side"])] = m
+    ML = sorted(M.values(), key=lambda l: -l["ev"])
+    out += ["## Our model's own picks (unshrunk model probabilities)", "",
+            "These use the simulator's probabilities as they are, not pulled toward the book, and rank legs by the model's expected profit at DraftKings' price. "
+            "**The backtest says the model has not beaten the book, so treat this as the model's opinion, not a proven edge.** Every pick is logged and graded in `picks_grade.md`, so the track record builds up.", ""]
+    for n_, ttl in ((2, "Best 2-leg"), (3, "Best 3-leg"), (4, "Best 4-leg")):
+        Pm = best_parlay(ML, n_, 1)
+        if len(Pm) == n_:
+            out += [f"**{ttl} slate parlay (one leg per game, ranked by model edge)**", ""] + HDR + [row(l) for l in Pm] + ["", tail(Pm), ""]
+    out += ["Top single picks by model edge:", ""] + [f"- {fmt(l)}: model {l['p']:.0%} vs book {l['fair']:.0%}, EV {l['ev']:+.2f} at {l['price']:+.0f} (projection {l['model']:.1f})" for l in ML[:12]] + [""]
+    for l in ML: pass
 for gid in games:
     d = tm.get(gid, {}); L = [l for l in legs if l["gid"] == gid]
     P = best_parlay(L, 3, 9)

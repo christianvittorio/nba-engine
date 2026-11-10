@@ -15,6 +15,55 @@ Lines and prices are the DraftKings prop lines on the board before tip-off (from
 
 Safest 3-leg slate parlay: Dylan Harper (SAS) OVER 0.5 3-pointers made (66%); Kyrie Irving (DAL) UNDER 1.5 Steals (66%); Aaron Gordon (DEN) UNDER 0.5 Blocks (66%). Combined probability 28.8%; parlay pays 2.9x; expected profit per 1 staked -0.17.
 
+## Our model's own picks (unshrunk model probabilities)
+
+These use the simulator's probabilities as they are, not pulled toward the book, and rank legs by the model's expected profit at DraftKings' price. **The backtest says the model has not beaten the book, so treat this as the model's opinion, not a proven edge.** Every pick is logged and graded in `picks_grade.md`, so the track record builds up.
+
+**Best 2-leg slate parlay (one leg per game, ranked by model edge)**
+
+| Leg | Book price | Model proj | Win prob | Book fair | EV per 1 |
+|---|---|---|---|---|---|
+| Grayson Allen (CHA) UNDER 1.5 Steals | -197 (DraftKings via ESPN) | 1.0 | 75% | 62% | +0.13 |
+| Victor Wembanyama (SAS) UNDER 1.5 Steals | -222 (DraftKings via ESPN) | 1.0 | 74% | 65% | +0.07 |
+
+Combined probability 55.4%; parlay pays 2.2x; expected profit per 1 staked +0.21.
+
+**Best 3-leg slate parlay (one leg per game, ranked by model edge)**
+
+| Leg | Book price | Model proj | Win prob | Book fair | EV per 1 |
+|---|---|---|---|---|---|
+| Grayson Allen (CHA) UNDER 1.5 Steals | -197 (DraftKings via ESPN) | 1.0 | 75% | 62% | +0.13 |
+| Victor Wembanyama (SAS) UNDER 1.5 Steals | -222 (DraftKings via ESPN) | 1.0 | 74% | 65% | +0.07 |
+| Kyshawn George (WAS) UNDER 2.5 3-pointers made | -189 (DraftKings via ESPN) | 1.8 | 73% | 61% | +0.11 |
+
+Combined probability 40.2%; parlay pays 3.3x; expected profit per 1 staked +0.35.
+
+**Best 4-leg slate parlay (one leg per game, ranked by model edge)**
+
+| Leg | Book price | Model proj | Win prob | Book fair | EV per 1 |
+|---|---|---|---|---|---|
+| Grayson Allen (CHA) UNDER 1.5 Steals | -197 (DraftKings via ESPN) | 1.0 | 75% | 62% | +0.13 |
+| Victor Wembanyama (SAS) UNDER 1.5 Steals | -222 (DraftKings via ESPN) | 1.0 | 74% | 65% | +0.07 |
+| Kyshawn George (WAS) UNDER 2.5 3-pointers made | -189 (DraftKings via ESPN) | 1.8 | 73% | 61% | +0.11 |
+| Jamal Shead (TOR) UNDER 11.5 Points | -118 (DraftKings via ESPN) | 9.5 | 71% | 51% | +0.31 |
+
+Combined probability 28.5%; parlay pays 6.2x; expected profit per 1 staked +0.76.
+
+Top single picks by model edge:
+
+- Saddiq Bey (NOP) UNDER 5.5 Rebounds: model 69% vs book 48%, EV +0.34 at -105 (projection 4.4)
+- Zach Edey (MEM) UNDER 9.5 Points: model 66% vs book 47%, EV +0.33 at +101 (projection 8.2)
+- Julian Champagnie (SAS) UNDER 11.5 Points: model 74% vs book 52%, EV +0.32 at -125 (projection 9.1)
+- Miles Bridges (PHX) OVER 6.5 Rebounds: model 61% vs book 43%, EV +0.32 at +116 (projection 7.4)
+- Herbert Jones (NOP) UNDER 3.5 Rebounds: model 70% vs book 50%, EV +0.31 at -115 (projection 2.7)
+- Jamal Shead (TOR) UNDER 11.5 Points: model 71% vs book 51%, EV +0.31 at -118 (projection 9.5)
+- Jamal Shead (TOR) UNDER 8.5 Assists: model 62% vs book 45%, EV +0.29 at +108 (projection 7.5)
+- Cade Cunningham (DET) UNDER 25.5 Points: model 66% vs book 49%, EV +0.28 at -106 (projection 22.7)
+- Julian Champagnie (SAS) UNDER 2.5 3-pointers made: model 70% vs book 52%, EV +0.27 at -124 (projection 1.9)
+- Derik Queen (NOP) UNDER 7.5 Rebounds: model 67% vs book 49%, EV +0.26 at -112 (projection 6.1)
+- Evan Mobley (CLE) UNDER 0.5 Steals: model 57% vs book 42%, EV +0.26 at +121 (projection 0.6)
+- Alperen Sengun (HOU) OVER 0.5 3-pointers made: model 55% vs book 42%, EV +0.24 at +125 (projection 0.8)
+
 ## LAL at ATL (game 401909952)
 
 **Best 3-leg parlay for this game:**
