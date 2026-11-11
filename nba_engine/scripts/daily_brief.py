@@ -121,6 +121,6 @@ for gid, (ph, mh, ma, qj, dj) in sorted(M.items(), key=lambda kv: json.loads(kv[
     rng_ = f"between {nm(A)} by {-q['10'] if q['10'] < 0 else 0:.0f} and {nm(H)} by {q['90']:.0f}" if q else ""
     lo, hi = (q["10"], q["90"]) if q else (0, 0)
     rng_ = (f"the final margin lands between {nm(A)} by {-lo:.0f} and {nm(H)} by {hi:.0f}" if lo < 0 < hi else (f"the final margin lands between {nm(H)} by {lo:.0f} and {hi:.0f}" if lo >= 0 else f"the final margin lands between {nm(A)} by {-hi:.0f} and {-lo:.0f}")) if q else ""
-    lines += ["", f"**What could go wrong:** in 8 of 10 simulations {rng_}, so an upset is always live" + (f" ({1 - pf:.0%} for {nm(dog)})" if pf >= 0.53 else "") + ".", ""]
+    lines += ["", f"**What could go wrong:** in the middle 80% of the 10,000 simulations {rng_}, so an upset is always live" + (f" ({1 - pf:.0%} for {nm(dog)})" if pf >= 0.53 else "") + ".", ""]
 open(f"artifacts/reports/brief_{day}.md", "w").write("\n".join(lines))
 print("wrote", f"artifacts/reports/brief_{day}.md")
