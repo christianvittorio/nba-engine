@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-11T00:31:05Z",
+ "generated_utc": "2026-11-11T01:44:48Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -1695,9 +1695,9 @@
     {
      "name": "Cam Christie",
      "nba_id": 1642353,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-09T23:59Z"
+     "date": "2026-11-11T01:39Z"
     },
     {
      "name": "Brandon Ingram",
@@ -1729,6 +1729,12 @@
      "name": "Cameron Carr",
      "pos": "G",
      "nba_id": -5113969
+    },
+    {
+     "espn_id": "5105817",
+     "name": "Carson Cooper",
+     "pos": "C",
+     "nba_id": -5105817
     },
     {
      "espn_id": "3945274",
@@ -1777,12 +1783,6 @@
      "name": "Kevon Looney",
      "pos": "F",
      "nba_id": 1626172
-    },
-    {
-     "espn_id": "4596528",
-     "name": "Lawson Lovering",
-     "pos": "C",
-     "nba_id": 1643133
     },
     {
      "espn_id": "4278580",
@@ -1856,12 +1856,6 @@
      "name": "Cameron Boozer",
      "pos": "F",
      "nba_id": -5041935
-    },
-    {
-     "espn_id": "5105817",
-     "name": "Carson Cooper",
-     "pos": "C",
-     "nba_id": -5105817
     },
     {
      "espn_id": "4903027",
@@ -2102,15 +2096,7 @@
      "nba_id": 203952
     }
    ],
-   "injuries": [
-    {
-     "name": "Giannis Antetokounmpo",
-     "nba_id": 203507,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-11T00:24Z"
-    }
-   ]
+   "injuries": []
   },
   "MIL": {
    "roster": [
@@ -2858,9 +2844,9 @@
     {
      "name": "Tristan da Silva",
      "nba_id": 1641783,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-10T16:50Z"
+     "date": "2026-11-11T01:34Z"
     },
     {
      "name": "Jonathan Isaac",
@@ -4020,8 +4006,8 @@
    "status",
    "timestamp"
   ],
-  "injuries_endpoint_teams": 29,
-  "injuries_endpoint_entries": 91,
-  "embedded_injuries": 91
+  "injuries_endpoint_teams": 28,
+  "injuries_endpoint_entries": 90,
+  "embedded_injuries": 90
  }
 }
