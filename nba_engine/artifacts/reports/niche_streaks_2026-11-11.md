@@ -17,7 +17,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 - **NYK**: has scored under its projection 6 straight when venue=home and rest=B2B and rest_edge=less rest (7-12 in 19 such games; chance of run 1.708%).
 
 ## BOS at TOR
-- **BOS**: has seen the game total stay under the projection 9 straight when venue=away and rest=B2B and density=3-in-4 (11-18 in 29 such games; chance of run 0.220%).
+- **BOS**: has seen the game total stay under the projection 9 straight when venue=away and rest_edge=less rest (17-27 in 44 such games; chance of run 0.220%).
 - **BOS**: has scored under its projection 7 straight when prev_result=won by 10+ and density=3-in-4 (21-19 in 40 such games; chance of run 0.808%).
 - **TOR**: has fallen short of the model's margin 9 straight when favorite=pick'em and proj_total=<220 and density=normal (6-10 in 16 such games; chance of run 0.193%).
 - **TOR**: has scored over its projection 8 straight when rest=1d and favorite=pick'em and prev_result=lost by 10+ (14-7 in 21 such games; chance of run 0.372%).
@@ -26,7 +26,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 ## SAS at CHI
 - **SAS**: has beaten the model's margin 11 straight when venue=away and rest=1d and density=normal (41-33 in 74 such games; chance of run 0.044%).
 - **SAS**: has won 11 straight when venue=away and rest=1d and density=normal (27-47 in 74 such games; chance of run 0.094%).
-- **SAS**: has scored over its projection 7 straight when venue=away and rest_edge=less rest (20-19 in 39 such games; chance of run 0.796%).
+- **SAS**: has scored over its projection 7 straight when venue=away (87-81 in 168 such games; chance of run 0.796%).
 - **CHI**: has beaten the model's margin 8 straight when venue=home and rest=2d (15-7 in 22 such games; chance of run 0.424%).
 - **CHI**: has scored over its projection 7 straight when venue=home and rest=2d and next_day_game=no game tomorrow (15-4 in 19 such games; chance of run 0.703%).
 - **CHI**: has won 8 straight when venue=home and rest=2d (15-7 in 22 such games; chance of run 0.745%).
@@ -34,13 +34,13 @@ Each line is a situation that describes tonight's game for that team, the team's
 ## DEN at MEM
 - **DEN**: has won 11 straight when proj_total=235+ (72-31 in 103 such games; chance of run 0.684%).
 - **DEN**: has seen the game total go over the projection 7 straight when opp_rest=1d and proj_total=235+ and streak=no streak (24-22 in 46 such games; chance of run 0.711%).
-- **DEN**: has beaten the model's margin 7 straight when rest_edge=equal rest and proj_total=235+ and density=normal (20-17 in 37 such games; chance of run 0.805%).
+- **DEN**: has beaten the model's margin 7 straight when opp_rest=1d and proj_total=235+ and density=normal (23-22 in 45 such games; chance of run 0.805%).
 - **MEM**: has lost 12 straight when venue=home and streak=no streak (51-56 in 107 such games; chance of run 0.015%).
 - **MEM**: has fallen short of the model's margin 12 straight when favorite=dog and proj_total=235+ (1-13 in 14 such games; chance of run 0.024%).
 - **MEM**: has scored under its projection 7 straight when opp_rest=1d and streak=no streak and next_day_game=no game tomorrow (44-61 in 105 such games; chance of run 0.837%).
 
 ## LAL at MIL
-- **LAL**: has scored under its projection 7 straight when venue=away and prev_result=won by 10+ (20-22 in 42 such games; chance of run 0.767%).
+- **LAL**: has scored under its projection 7 straight when venue=away and rest=1d and prev_result=won by 10+ (12-15 in 27 such games; chance of run 0.767%).
 - **LAL**: has beaten the model's margin 7 straight when favorite=heavy fav (8-4 in 12 such games; chance of run 0.839%).
 - **LAL**: has won 12 straight when favorite=heavy fav (12-0 in 12 such games; chance of run 8.980%).
 - **MIL**: has seen the game total go over the projection 10 straight when venue=home and opp_rest=1d and density=3-in-4 (16-4 in 20 such games; chance of run 0.085%).
@@ -48,11 +48,11 @@ Each line is a situation that describes tonight's game for that team, the team's
 - **MIL**: has lost 7 straight when proj_total=225-230 and prev_result=lost by 10+ and next_day_game=no game tomorrow (4-12 in 16 such games; chance of run 1.544%).
 
 ## BKN at NOP
-- **BKN**: has scored under its projection 11 straight when venue=away and streak=no streak and next_day_game=no game tomorrow (37-56 in 93 such games; chance of run 0.047%).
+- **BKN**: has scored under its projection 11 straight when venue=away and opp_rest=1d and streak=no streak (25-40 in 65 such games; chance of run 0.047%).
 - **BKN**: has lost 18 straight when venue=away and proj_total=225-230 and streak=no streak (4-28 in 32 such games; chance of run 0.324%).
 - **BKN**: has seen the game total stay under the projection 6 straight when rest=2d and favorite=dog (5-6 in 11 such games; chance of run 1.692%).
 - **NOP**: has lost 11 straight when opp_rest=2d and streak=lost 3+ straight (1-11 in 12 such games; chance of run 0.345%).
-- **NOP**: has seen the game total go over the projection 7 straight when opp_rest=2d and streak=lost 3+ straight (9-3 in 12 such games; chance of run 0.711%).
+- **NOP**: has seen the game total go over the projection 7 straight when opp_rest=2d and prev_result=lost by 10+ and next_day_game=no game tomorrow (9-4 in 13 such games; chance of run 0.711%).
 - **NOP**: has scored under its projection 7 straight when rest=1d and favorite=fav and proj_total=225-230 (1-7 in 8 such games; chance of run 0.852%).
 
 ## ORL at UTA
@@ -76,5 +76,5 @@ Each line is a situation that describes tonight's game for that team, the team's
 - **OKC**: has scored over its projection 7 straight when rest_edge=equal rest and favorite=fav and streak=no streak (24-5 in 29 such games; chance of run 0.754%).
 - **OKC**: has fallen short of the model's margin 7 straight when rest=B2B and streak=no streak (12-22 in 34 such games; chance of run 0.773%).
 - **POR**: has beaten the model's margin 10 straight when opp_rest=B2B and favorite=dog and streak=no streak (13-3 in 16 such games; chance of run 0.094%).
-- **POR**: has seen the game total stay under the projection 7 straight when venue=home and next_day_game=no game tomorrow and density=normal (56-42 in 98 such games; chance of run 0.857%).
+- **POR**: has seen the game total stay under the projection 7 straight when venue=home and next_day_game=no game tomorrow (78-62 in 140 such games; chance of run 0.857%).
 - **POR**: has won 6 straight when streak=no streak and density=normal (67-104 in 171 such games; chance of run 1.722%).

@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-11
-Data refresh: last successful run 2026-11-11T16:56:25Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-11T21:03:19Z UTC. Model nbaengine-0.1.0.
 
 - WAS at IND (game 401909966): P(home) sim 0.633 / Elo 0.610; mean score 118.4-113.1 (total 231.5); margin 50% [-5.1, 15.1], 80% [-13.0, 24.2]; total 80% [206.6, 256.4]; P(OT) 0.052; projected final IND 118 - WAS 113 (the average outcome, not a single exact score).
   - betting line: IND margin +2.5, total 227.5; our simulator +5.3 (differs by +2.8); line-centred P(home) 0.581.
