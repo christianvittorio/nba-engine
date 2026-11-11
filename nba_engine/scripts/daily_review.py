@@ -104,6 +104,91 @@ else:
     surprise = pm[(pm["min"].fillna(0) > 0) & (pm.p_play < 0.5)]
     md += [f"- Availability: {len(dnp)} players we rated 80%+ to play did not ({', '.join(dnp.name.head(6)) or 'none'}); {len(surprise)} players we rated under 50% did play ({', '.join(surprise.name.head(6)) or 'none'}).", ""]
 
+
+import gzip
+GD_CACHE = {}
+def gd_game(date, gid):
+    """the stored ESPN game record (play-by-play, quarter scores, player lines) for one game, or None"""
+    if date not in GD_CACHE:
+        fp = f"artifacts/gamedata/{date}.jsonl.gz"; GD_CACHE[date] = {}
+        if os.path.exists(fp):
+            for l in gzip.open(fp, "rt"):
+                r = json.loads(l); GD_CACHE[date][str(r["game_id"])] = r
+    return GD_CACHE[date].get(str(gid))
+
+def _clock(c):
+    try:
+        m, s = str(c).split(":"); return int(m) * 60 + int(s)
+    except Exception:
+        return 0
+
+def game_story(rec, abbr_home, pa_rows):
+    """facts from the play-by-play: quarter scores, leads and runs, garbage time, key players against their projections. Returns bullet strings."""
+    out = []
+    FIX = {"GS": "GSW", "NY": "NYK", "NO": "NOP", "SA": "SAS", "WSH": "WAS", "UTAH": "UTA", "PHO": "PHX", "BRK": "BKN", "CHO": "CHA"}
+    tm = {tid: FIX.get(v["abbr"], v["abbr"]) for tid, v in rec["teams"].items()}
+    ls = {FIX.get(v["abbr"], v["abbr"]): [int(x) for x in v["linescores"]] for v in rec["teams"].values() if v.get("linescores")}
+    teams = list(ls)
+    if len(teams) == 2 and all(len(ls[x]) >= 4 for x in teams):
+        a, b = teams
+        out.append("- By quarter: " + "; ".join(f"Q{i + 1} {a} {ls[a][i]}-{ls[b][i]} {b}" for i in range(min(len(ls[a]), len(ls[b])))) + ".")
+    pl_ = rec.get("plays") or []
+    # leads and decisive stretch
+    sc = [(p["period"], _clock(p["clock"]), p["home"], p["away"]) for p in pl_ if p.get("home") is not None and p.get("away") is not None]
+    hname = abbr_home
+    if sc:
+        mar = [h - a_ for _, _, h, a_ in sc]
+        lead_changes = sum(1 for i in range(1, len(mar)) if mar[i] * mar[i - 1] < 0)
+        big_h, big_a = max(mar), -min(mar)
+        other = [x for x in teams if x != hname][0] if len(teams) == 2 else "visitor"
+        out.append(f"- Game flow: {hname} led by as much as {max(big_h, 0)}, {other} by as much as {max(big_a, 0)}; the lead changed hands {lead_changes} times.")
+        q3 = [m for (per, ck, h, a_), m in zip(sc, mar) if per == 3]
+        if q3:
+            end3 = q3[-1]
+            q4 = ls.get(hname, [0] * 4)[3] - ls.get(other, [0] * 4)[3] if len(ls.get(hname, [])) >= 4 else 0
+            out.append(f"- Entering the 4th quarter it was {hname if end3 > 0 else other} by {abs(end3)}; the 4th quarter went {hname} {ls[hname][3]}-{ls[other][3]} {other}." if len(teams) == 2 else "")
+        late = [(per, ck, m) for (per, ck, h, a_), m in zip(sc, mar) if per == 4 and ck <= 360 and abs(m) >= 20]
+        if late:
+            out.append(f"- Garbage time: the margin was already {abs(late[0][2])}+ with {late[0][1] // 60}:{late[0][1] % 60:02d} left in the 4th, so the final score includes minutes where the game was decided and benches played.")
+    # biggest scoring run per team (consecutive scoring by one team, other team scoreless)
+    runs = {}
+    cur_t, cur_v, start = None, 0, None
+    for p in pl_:
+        if not p.get("scoring") or not p.get("value"): continue
+        tid = p.get("team")
+        if tid == cur_t: cur_v += p["value"]
+        else: cur_t, cur_v, start = tid, p["value"], (p["period"], p["clock"])
+        if cur_v > runs.get(cur_t, (0,))[0]: runs[cur_t] = (cur_v, start, (p["period"], p["clock"]))
+    rl = [f"{tm.get(tid, tid)} {v[0]}-0 (from Q{v[1][0]} {v[1][1]} to Q{v[2][0]} {v[2][1]})" for tid, v in sorted(runs.items(), key=lambda kv: -kv[1][0]) if v[0] >= 10]
+    if rl: out.append("- Biggest unanswered scoring runs: " + "; ".join(rl) + ".")
+    # key players against their projections
+    byname = {}
+    for r in pa_rows:
+        byname[(r["team"], str(r["name"]).split()[-1].lower())] = r
+    notes = []
+    for pr in rec.get("players") or []:
+        st = pr.get("stats") or []
+        if len(st) < 13: continue
+        abbr = tm.get(pr["team"]); r = byname.get((abbr, str(pr["name"]).split()[-1].lower()))
+        if r is None: continue
+        try:
+            mins, pts = int(st[0]), int(st[1]); fgm_, fga_ = [int(x) for x in st[2].split("-")]; tov, pf = int(st[7]), int(st[12])
+        except Exception:
+            continue
+        pj = json.loads(r["details_json"]); pp_ = max(float(r["p_play"]), 0.05)
+        ppts = pj.get("pts", {}).get("m", np.nan) / pp_; pfga = pj.get("fga", {}).get("m", np.nan) / pp_; pmin = float(r["proj_min"])
+        if ppts < 12 and pts < 22: continue
+        why = []
+        if pf >= 5 or (pf >= 4 and mins < pmin - 6): why.append(f"foul trouble ({pf} fouls, {mins} min vs {pmin:.0f} projected)")
+        elif mins < pmin - 8: why.append(f"played only {mins} minutes vs {pmin:.0f} projected (blowout or injury)")
+        if not np.isnan(pfga) and fga_ <= pfga - 4: why.append(f"took {fga_} shots vs {pfga:.0f} expected")
+        if fga_ >= 8 and fgm_ / fga_ <= 0.33: why.append(f"shot {fgm_}-{fga_}")
+        if tov >= 5: why.append(f"{tov} turnovers")
+        if pts >= ppts + 12: why.append("took over the scoring" if fga_ >= (pfga if not np.isnan(pfga) else 0) else "shot far above his usual level")
+        if why: notes.append(f"{pr['name']} ({abbr}) scored {pts} vs {ppts:.0f} projected: " + ", ".join(why))
+    if notes: out.append("- Key players: " + "; ".join(notes[:5]) + ".")
+    return [o for o in out if o]
+
 # ---- why the misses happened (from box scores: this is what the data can show, not play-by-play or film)
 def why_section():
     out = ["## Why we missed (what the box scores show)", "",
@@ -146,6 +231,11 @@ def why_section():
         lines_ += [f"- Shooting: {g.home} {int(h.fgm)}/{int(h.fga)} FG, {int(h.fg3m)}/{int(h.fg3a)} from 3 (expected {ex['home']['fg3m']:.0f} threes); {g.away} {int(a_.fgm)}/{int(a_.fga)} FG, {int(a_.fg3m)}/{int(a_.fg3a)} from 3 (expected {ex['away']['fg3m']:.0f})."]
         lines_ += [f"- Possessions: turnovers {g.home} {int(h.tov)} (expected {ex['home']['tov']:.0f}), {g.away} {int(a_.tov)} (expected {ex['away']['tov']:.0f}); offensive rebounds {g.home} {int(h.oreb)} (expected {ex['home']['oreb']:.0f}), {g.away} {int(a_.oreb)} (expected {ex['away']['oreb']:.0f}); free throws made {g.home} {int(h.ftm)} (expected {ex['home']['ftm']:.0f}), {g.away} {int(a_.ftm)} (expected {ex['away']['ftm']:.0f})."]
         if parts: lines_ += ["- Biggest swings: " + "; ".join(parts) + "."]
+        rec = gd_game(g.date, g.game_id)
+        if rec:
+            lines_ += game_story(rec, g.home, [r for _, r in PA[PA.game_id == g.game_id].iterrows()])
+        else:
+            lines_ += ["- Play-by-play for this game is not stored yet, so the game flow is not shown."]
         # style from the extra box: fast-break and paint points
         eh, ea = EX.get((g.game_id, "home"), {}), EX.get((g.game_id, "away"), {})
         if eh and ea and "fastBreakPoints" in eh:
