@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-11T15:22:29Z",
+ "generated_utc": "2026-11-11T16:57:22Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -257,18 +257,18 @@
    ],
    "injuries": [
     {
+     "name": "Mikel Brown Jr.",
+     "nba_id": 1629650,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-11T16:40Z"
+    },
+    {
      "name": "Egor Demin",
      "nba_id": 1642856,
      "status": "Out",
      "detail": "",
      "date": "2026-11-10T22:51Z"
-    },
-    {
-     "name": "Grant Nelson",
-     "nba_id": 1641761,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-08T16:21Z"
     },
     {
      "name": "Nolan Traore",
@@ -2449,6 +2449,13 @@
    ],
    "injuries": [
     {
+     "name": "Bennedict Mathurin",
+     "nba_id": 1631097,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-11T16:29Z"
+    },
+    {
      "name": "Yves Missi",
      "nba_id": 1642274,
      "status": "Out",
@@ -4021,7 +4028,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 28,
-  "injuries_endpoint_entries": 91,
-  "embedded_injuries": 92
+  "injuries_endpoint_entries": 93,
+  "embedded_injuries": 93
  }
 }
