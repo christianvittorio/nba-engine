@@ -189,6 +189,61 @@ def game_story(rec, abbr_home, pa_rows):
     if notes: out.append("- Key players: " + "; ".join(notes[:5]) + ".")
     return [o for o in out if o]
 
+
+def lessons_section():
+    """what the day (and the season so far) says we should do differently. Every line is computed; actions are rule-based and say whether they are applied automatically."""
+    out = ["## What we learn from today and what to do next", ""]
+    acts = []
+    G = pd.read_sql_query("select * from review_game", pl); G = G[G.date.notna()]
+    G["em"] = G.mean_margin - G.act_margin; G["et"] = G.mean_total - G.act_total
+    # 1. us vs the book, cumulative
+    gm = G.dropna(subset=["mkt_margin"]); gt = G.dropna(subset=["mkt_total"])
+    if len(gm) >= 10:
+        us_m, bk_m = gm.em.abs().mean(), (gm.mkt_margin - gm.act_margin).abs().mean()
+        us_t, bk_t = gt.et.abs().mean(), (gt.mkt_total - gt.act_total).abs().mean()
+        out += [f"- **Us versus the book (all {len(gm)} games with a line):** margin miss {us_m:.1f} vs {bk_m:.1f}; total miss {us_t:.1f} vs {bk_t:.1f}. "
+                + ("The book is closer on totals, so our totals should be pulled toward the line." if bk_t < us_t - 0.3 else "We are level with or better than the line on totals.") + " "
+                + ("The book is closer on margins." if bk_m < us_m - 0.3 else "We are level with the line on margins.")]
+        if bk_t < us_t - 0.3: acts.append("Use the market-centred total (`sim_mc_mkt`) for total bets; our own total has been less accurate than the line.")
+    # 2. totals and margin bias over the season
+    for lab, col in (("margin", "em"), ("total", "et")):
+        m_, se_ = G[col].mean(), G[col].std() / np.sqrt(len(G))
+        if abs(m_) > 2 * se_: out += [f"- **{lab.capitalize()} bias:** we have been {'too high' if m_ > 0 else 'too low'} by {abs(m_):.1f} on average over {len(G)} games ({abs(m_) / se_:.1f} standard errors)."]
+        else: out += [f"- **{lab.capitalize()} bias:** {m_:+.1f} ± {se_:.1f} over {len(G)} games, so there is no bias to correct."]
+    # 3. how noisy today was
+    big = (D.err_margin.abs() >= 15).mean(); allbig = (G.em.abs() >= 15).mean()
+    out += [f"- **How much of today was luck:** {big:.0%} of today's games missed by 15+ points (season {allbig:.0%}); pure noise at our error size predicts about 29%. " + ("Today was no worse than normal variance." if big <= 0.4 else "Today was noisier than normal, so do not over-read it.")]
+    # 4. teams that surprised us today
+    sur = []
+    for g in D.itertuples():
+        sur.append((g.home, g.act_margin - g.mean_margin)); sur.append((g.away, -(g.act_margin - g.mean_margin)))
+    sur = sorted(sur, key=lambda x: -abs(x[1]))[:3]
+    out += ["- **Teams that surprised us:** " + "; ".join(f"{t} {'beat' if v > 0 else 'fell short of'} our projection by {abs(v):.0f}" for t, v in sur) + ". Elo and the team profiles absorb these results automatically tomorrow; a single result moves a rating only a few points."]
+    # 5. players
+    if 'td' in globals() and not td.empty:
+        sb = td.groupby("stat").err.mean(); ssb = {k: v for k, v in learned["player"].items()}
+        parts = []
+        for k in ("pts", "reb", "ast", "tpm", "stl", "blk", "tov"):
+            if k in sb.index and k in ssb: parts.append(f"{k} {sb[k]:+.2f} today, {ssb[k][0]:+.2f} season")
+        out += ["- **Player projections (projection minus actual, per player-game):** " + "; ".join(parts) + "."]
+        for k, (b, se, n) in ssb.items():
+            if k != "min" and se > 0 and abs(b / se) > 3 and abs(b) >= 0.15:
+                acts.append(f"Our {k} projections are {'too high' if b > 0 else 'too low'} by {abs(b):.2f} per player-game ({abs(b / se):.0f} standard errors over {n} player-games): shift the {k} ladders by that amount before pricing over/unders. (Ladder calibration covers part of this automatically; the rest is a pending change.)")
+    # 6. picks
+    if 'K' in globals() and len(K):
+        wrong = K[~K.hit]; by = K.groupby(["stat", "side"]).hit.agg(["size", "mean"])
+        bad = by[(by["size"] >= 3) & (by["mean"] <= 0.34)]
+        out += [f"- **Picks:** {int(K.hit.sum())} of {len(K)} legs hit today ({K.hit.mean():.0%}; the model expected {K.p.mean():.0%})."]
+        for (s_, sd), r in bad.iterrows(): acts.append(f"{sd} {s_} legs hit only {r['mean']:.0%} of {int(r['size'])} today: keep watching; if it repeats over several days, cap or drop that leg type.")
+    # 7. availability
+    if 'pm' in globals():
+        out += [f"- **Availability:** {len(dnp)} expected players sat and {len(surprise)} unexpected players played today. Each miss feeds the play-probability calibration automatically."]
+    out += ["", "**What changes next:**", ""]
+    out += [f"- {a}" for a in acts] or ["- Nothing new crosses the threshold today, so no change is proposed. The models still update from every result automatically."]
+    out += ["- Already automatic: Elo ratings, team style profiles, player rates, the scoring-level correction, and the ladder and play-probability calibration all update from today's results.",
+            "- Pending (see `miss_analysis_2026-11-11.md`): refit Elo's home advantage (80 to about 45), stretch win probabilities, blend with Elo, correct the points projection bias.", ""]
+    return out
+
 # ---- why the misses happened (from box scores: this is what the data can show, not play-by-play or film)
 def why_section():
     out = ["## Why we missed (what the box scores show)", "",
@@ -279,7 +334,8 @@ md += ["## What the engine does with this", "",
        "- Elo, team profiles and player rates update themselves from every result (that is the learning loop for the models).",
        "- Calibration shifts for the over/under ladders and the play probability are refit from these same results (`player_ladder_calibration`, `fit_p_play_cal`).",
        "- This report adds the check on top: biases are only flagged when their z-score is large. Season-to-date numbers are saved in `artifacts/learned_biases.json` so a correction can be added once a bias holds up over many games.", ""]
-md[WHY_AT:WHY_AT] = why_section()
+LS = lessons_section(); md[WHY_AT:WHY_AT] = why_section() + LS
+open('artifacts/lessons_latest.md','w').write('\n'.join(LS[2:]).replace('## ','### '))
 open(f"artifacts/reports/review_{day}.md", "w").write("\n".join(md))
 json.dump(learned, open("artifacts/learned_biases.json", "w"), indent=1)
 print("wrote", f"artifacts/reports/review_{day}.md")

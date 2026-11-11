@@ -75,6 +75,9 @@ def edge_lines(att, dfn):
 lines = [f"# NBA forecast brief for {day}", "",
          "Plain-English reasons behind each forecast. Every claim comes from the model's own numbers (ratings, team style profiles, recent results, injuries, the betting line). "
          "The technical per-model numbers are in `forecasts_" + day + ".md`. Ranks run 1 (best) to 30. Early in a season ranks lean on last year's data, so treat them loosely.", ""]
+if os.path.exists("artifacts/lessons_latest.md"):
+    les = open("artifacts/lessons_latest.md").read().strip()
+    if les: lines += ["## What the latest results taught us", "", "From the most recent end-of-day review. Items under 'What changes next' are the adjustments the engine is learning from the data.", "", les, ""]
 for gid, (ph, mh, ma, qj, dj) in sorted(M.items(), key=lambda kv: json.loads(kv[1][4]).get("tip_utc", "")):
     d = json.loads(dj); H, A = d["home"], d["away"]
     fav, dog, pf = (H, A, ph) if ph >= 0.5 else (A, H, 1 - ph)
