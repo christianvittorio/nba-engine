@@ -93,6 +93,7 @@ if summary["ok"]:
         subprocess.run([sys.executable, os.path.join(ROOT, "scripts/player_ladder_calibration.py")], check=False, timeout=300)
         subprocess.run([sys.executable, os.path.join(ROOT, "scripts/grade_picks.py")], check=False, timeout=300)
         subprocess.run([sys.executable, os.path.join(ROOT, "scripts/daily_review.py")], check=False, timeout=300)      # end-of-day review of the latest finished slate
+        subprocess.run([sys.executable, os.path.join(ROOT, "scripts/daily_brief.py"), str(today)], check=False, timeout=300)      # plain-English brief of today's games
     except Exception as ex:
         print("ladder backfill/calibration failed (forecasts unaffected):", type(ex).__name__, ex)
     try:      # player projections in betting-market form (best effort)

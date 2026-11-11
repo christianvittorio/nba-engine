@@ -50,6 +50,7 @@ if len(ok):
 worst = D.reindex(D.err_margin.abs().sort_values(ascending=False).index).head(3)
 md += ["- Biggest misses: " + "; ".join(f"{r.away} at {r.home} (projected {r.mean_margin:+.1f}, actual {r.act_margin:+.0f}" + (f", book {r.mkt_margin:+.1f}" if not np.isnan(r.mkt_margin) else "") + ")" for r in worst.itertuples()), ""]
 
+WHY_AT = len(md)
 # ---- season to date (all finished games): is there a bias we can trust?
 S = T.copy(); S["em"] = S.mean_margin - S.act_margin; S["et"] = S.mean_total - S.act_total
 learned = {"games": int(len(S)), "margin_bias": [float(S.em.mean()), float(S.em.std() / np.sqrt(len(S)))], "total_bias": [float(S.et.mean()), float(S.et.std() / np.sqrt(len(S)))], "player": {}, "teams": {}}
@@ -103,6 +104,67 @@ else:
     surprise = pm[(pm["min"].fillna(0) > 0) & (pm.p_play < 0.5)]
     md += [f"- Availability: {len(dnp)} players we rated 80%+ to play did not ({', '.join(dnp.name.head(6)) or 'none'}); {len(surprise)} players we rated under 50% did play ({', '.join(surprise.name.head(6)) or 'none'}).", ""]
 
+# ---- why the misses happened (from box scores: this is what the data can show, not play-by-play or film)
+def why_section():
+    out = ["## Why we missed (what the box scores show)", "",
+           "Games where the winner was wrong or the margin missed by 8+ points. The causes are read from the box score against what the simulation expected; "
+           "things like double-teams, scheme or in-game injuries are not in the data we have, so they are not claimed.", ""]
+    TB = pd.read_sql_query("select game_id, side, team, pts, fga, fgm, fg3a, fg3m, fta, ftm, tov, oreb, dreb from team_box", live)
+    EX = {(r[0], r[1]): json.loads(r[2]) for r in live.execute("select game_id, side, stats_json from team_box_extra")}
+    bad = D[((D.p_home > .5) != (D.win == 1)) | (D.err_margin.abs() >= 8)].sort_values("err_margin", key=lambda s: -s.abs())
+    if bad.empty:
+        return out + ["No game missed by that much today.", ""]
+    for g in bad.itertuples():
+        d = json.loads(F.set_index("game_id").loc[g.game_id, "details_json"]); ex = (d.get("team_box") or {})
+        tb = TB[TB.game_id == g.game_id].set_index("side")
+        if "home" not in tb.index or "away" not in tb.index or not ex:
+            continue
+        winner = g.home if g.act_margin > 0 else g.away
+        proj_w = g.home if g.mean_margin > 0 else g.away
+        head = f"### {g.away} at {g.home}: we had {proj_w} by {abs(g.mean_margin):.1f}; {winner} won by {abs(g.act_margin):.0f}" + ("" if winner == proj_w else " (wrong winner)")
+        # swing in points for the HOME team versus expectation, by cause
+        sw = {}
+        for s, sign in (("home", 1), ("away", -1)):
+            a, e = tb.loc[s], ex.get(s, {})
+            if not e: continue
+            a3, e3 = a.fg3m, e["fg3m"]; a2, e2 = a.fgm - a.fg3m, e["fgm"] - e["fg3m"]
+            sw["3-point shooting"] = sw.get("3-point shooting", 0) + sign * 3 * (a3 - e3)
+            sw["2-point shooting"] = sw.get("2-point shooting", 0) + sign * 2 * (a2 - e2)
+            sw["free throws"] = sw.get("free throws", 0) + sign * (a.ftm - e["ftm"])
+            sw["turnovers"] = sw.get("turnovers", 0) + sign * 1.1 * (e["tov"] - a.tov)
+            sw["offensive rebounds"] = sw.get("offensive rebounds", 0) + sign * 1.1 * (a.oreb - e["oreb"])
+        # margin error in points explained (home-team view): positive = home did better than we expected
+        resid = g.act_margin - g.mean_margin
+        items = sorted(sw.items(), key=lambda kv: -abs(kv[1]))[:3]
+        parts = []
+        for k, v in items:
+            if abs(v) < 2: continue
+            who = g.home if v > 0 else g.away
+            parts.append(f"{k} favoured {who} by about {abs(v):.0f} points versus what we expected")
+        lines_ = [head, ""]
+        h, a_ = tb.loc["home"], tb.loc["away"]
+        lines_ += [f"- Shooting: {g.home} {int(h.fgm)}/{int(h.fga)} FG, {int(h.fg3m)}/{int(h.fg3a)} from 3 (expected {ex['home']['fg3m']:.0f} threes); {g.away} {int(a_.fgm)}/{int(a_.fga)} FG, {int(a_.fg3m)}/{int(a_.fg3a)} from 3 (expected {ex['away']['fg3m']:.0f})."]
+        lines_ += [f"- Possessions: turnovers {g.home} {int(h.tov)} (expected {ex['home']['tov']:.0f}), {g.away} {int(a_.tov)} (expected {ex['away']['tov']:.0f}); offensive rebounds {g.home} {int(h.oreb)} (expected {ex['home']['oreb']:.0f}), {g.away} {int(a_.oreb)} (expected {ex['away']['oreb']:.0f}); free throws made {g.home} {int(h.ftm)} (expected {ex['home']['ftm']:.0f}), {g.away} {int(a_.ftm)} (expected {ex['away']['ftm']:.0f})."]
+        if parts: lines_ += ["- Biggest swings: " + "; ".join(parts) + "."]
+        # style from the extra box: fast-break and paint points
+        eh, ea = EX.get((g.game_id, "home"), {}), EX.get((g.game_id, "away"), {})
+        if eh and ea and "fastBreakPoints" in eh:
+            lines_ += [f"- Where the points came from: fast breaks {g.home} {eh['fastBreakPoints']:.0f}, {g.away} {ea['fastBreakPoints']:.0f}; in the paint {g.home} {eh['pointsInPaint']:.0f}, {g.away} {ea['pointsInPaint']:.0f}; off turnovers {g.home} {eh.get('turnoverPoints', 0):.0f}, {g.away} {ea.get('turnoverPoints', 0):.0f}."]
+        # players: biggest over/under-performers and surprise absences
+        pp = PA[PA.game_id == g.game_id].copy()
+        pp["proj_pts"] = [json.loads(x).get("pts", {}).get("m", np.nan) / max(pl_, 0.05) for x, pl_ in zip(pp.details_json, pp.p_play)]
+        pp["d"] = pp.pts - pp.proj_pts
+        pl_ = pp[pp["min"].fillna(0) > 0].sort_values("d", key=lambda s: -s.abs()).head(3)
+        if len(pl_): lines_ += ["- Players who moved the result: " + "; ".join(f"{r['name']} ({r['team']}) scored {r['pts']:.0f} vs {r['proj_pts']:.0f} projected in {r['min']:.0f} min" for _, r in pl_.iterrows()) + "."]
+        dnp = pp[(pp["min"].fillna(0) == 0) & (pp.p_play >= 0.8)].sort_values("proj_min", ascending=False).head(3)
+        surp = pp[(pp["min"].fillna(0) >= 12) & (pp.p_play < 0.5)].sort_values("min", ascending=False).head(3)
+        if len(dnp): lines_ += ["- We expected these players and they did not play: " + ", ".join(f"{r['name']} ({r['team']}, {r['proj_min']:.0f} min projected)" for _, r in dnp.iterrows()) + "."]
+        if len(surp): lines_ += ["- Played more than we expected: " + ", ".join(f"{r['name']} ({r['team']}, {r['min']:.0f} min, we gave {r['p_play']:.0%} to play)" for _, r in surp.iterrows()) + "."]
+        total_swing = sum(sw.values())
+        lines_ += [f"- Reading: these swings add up to about {abs(total_swing):.0f} points against a {abs(resid):.0f}-point miss. Most of a miss like this is shooting luck (makes and misses against the shots we expected); what the data cannot show is why a team shot that way, such as double-teams, defensive scheme, in-game injuries or garbage time."]
+        out += lines_ + [""]
+    return out
+
 # ---- picks
 try:
     K = pd.read_sql_query("select * from picks_log", pl).merge(T[["game_id", "date"]], on="game_id")
@@ -127,6 +189,7 @@ md += ["## What the engine does with this", "",
        "- Elo, team profiles and player rates update themselves from every result (that is the learning loop for the models).",
        "- Calibration shifts for the over/under ladders and the play probability are refit from these same results (`player_ladder_calibration`, `fit_p_play_cal`).",
        "- This report adds the check on top: biases are only flagged when their z-score is large. Season-to-date numbers are saved in `artifacts/learned_biases.json` so a correction can be added once a bias holds up over many games.", ""]
+md[WHY_AT:WHY_AT] = why_section()
 open(f"artifacts/reports/review_{day}.md", "w").write("\n".join(md))
 json.dump(learned, open("artifacts/learned_biases.json", "w"), indent=1)
 print("wrote", f"artifacts/reports/review_{day}.md")
