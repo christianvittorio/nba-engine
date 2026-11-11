@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-11T01:44:48Z",
+ "generated_utc": "2026-11-11T15:22:29Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -1150,6 +1150,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-09T18:54Z"
+    },
+    {
+     "name": "Ugonna Onyenso",
+     "nba_id": null,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-11T15:16Z"
     }
    ]
   },
@@ -1695,9 +1702,9 @@
     {
      "name": "Cam Christie",
      "nba_id": 1642353,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-11T01:39Z"
+     "date": "2026-11-11T14:59Z"
     },
     {
      "name": "Brandon Ingram",
@@ -2213,9 +2220,9 @@
     {
      "name": "Tyler Herro",
      "nba_id": 1629639,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-10T23:24Z"
+     "date": "2026-11-11T14:58Z"
     }
    ]
   },
@@ -2844,9 +2851,9 @@
     {
      "name": "Tristan da Silva",
      "nba_id": 1641783,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-11T01:34Z"
+     "date": "2026-11-11T15:00Z"
     },
     {
      "name": "Jonathan Isaac",
@@ -3352,6 +3359,13 @@
    ],
    "injuries": [
     {
+     "name": "Precious Achiuwa",
+     "nba_id": 1630173,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-11T14:44Z"
+    },
+    {
      "name": "Maxime Raynaud",
      "nba_id": 1642875,
      "status": "Out",
@@ -3761,9 +3775,9 @@
     {
      "name": "Keyonte George",
      "nba_id": 1641718,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-10T00:08Z"
+     "date": "2026-11-11T15:00Z"
     },
     {
      "name": "Jaren Jackson Jr.",
@@ -3775,9 +3789,9 @@
     {
      "name": "Lauri Markkanen",
      "nba_id": 1628374,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-10T18:30Z"
+     "date": "2026-11-11T14:45Z"
     },
     {
      "name": "Jusuf Nurkic",
@@ -4007,7 +4021,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 28,
-  "injuries_endpoint_entries": 90,
-  "embedded_injuries": 90
+  "injuries_endpoint_entries": 91,
+  "embedded_injuries": 92
  }
 }
