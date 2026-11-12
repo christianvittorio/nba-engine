@@ -1,4 +1,5 @@
 - **Us versus the book (all 98 games with a line):** margin miss 11.6 vs 11.0; total miss 14.8 vs 13.5. The book is closer on totals, so our totals should be pulled toward the line. The book is closer on margins.
+- **Live scoreboard (log-loss, lower is better, 63 finished games with every version):** sim_mc_all 0.519, sim_mc 0.535. Small sample, so treat gaps under about 0.03 as noise.
 - **Margin bias:** -0.5 ± 1.5 over 99 games, so there is no bias to correct.
 - **Total bias:** we have been too high by 3.9 on average over 99 games (2.1 standard errors).
 - **How much of today was luck:** 10% of today's games missed by 15+ points (season 31%); pure noise at our error size predicts about 29%. Today was no worse than normal variance.
