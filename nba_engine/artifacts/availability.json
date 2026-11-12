@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-12T17:25:24Z",
+ "generated_utc": "2026-11-12T21:19:37Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -500,13 +500,6 @@
    ],
    "injuries": [
     {
-     "name": "Moussa Diabate",
-     "nba_id": 1631217,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-12T00:10Z"
-    },
-    {
      "name": "Kon Knueppel",
      "nba_id": 1642851,
      "status": "Out",
@@ -526,13 +519,6 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-08T22:26Z"
-    },
-    {
-     "name": "Grant Williams",
-     "nba_id": 1629684,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-11-12T00:12Z"
     }
    ]
   },
@@ -1712,7 +1698,7 @@
      "nba_id": 1627742,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-10T00:00Z"
+     "date": "2026-11-12T21:05Z"
     },
     {
      "name": "Jordan Miller",
@@ -2118,7 +2104,22 @@
      "nba_id": 203952
     }
    ],
-   "injuries": []
+   "injuries": [
+    {
+     "name": "Pelle Larsson",
+     "nba_id": 1641796,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-12T18:35Z"
+    },
+    {
+     "name": "Klay Thompson",
+     "nba_id": 202691,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-12T18:32Z"
+    }
+   ]
   },
   "MIL": {
    "roster": [
@@ -2475,28 +2476,35 @@
      "nba_id": 1631097,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-12T15:03Z"
+     "date": "2026-11-12T20:53Z"
+    },
+    {
+     "name": "Bryce McGowens",
+     "nba_id": 1631121,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-12T20:56Z"
     },
     {
      "name": "Yves Missi",
      "nba_id": 1642274,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-05T20:47Z"
+     "date": "2026-11-12T20:50Z"
     },
     {
      "name": "Trey Murphy III",
      "nba_id": 1630530,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-12T15:02Z"
+     "date": "2026-11-12T20:48Z"
     },
     {
      "name": "Trendon Watford",
      "nba_id": 1630570,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-12T15:02Z"
+     "date": "2026-11-12T20:53Z"
     }
    ]
   },
@@ -3057,9 +3065,9 @@
     {
      "name": "LeBron James",
      "nba_id": 2544,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-12T16:32Z"
+     "date": "2026-11-12T18:07Z"
     }
    ]
   },
@@ -3683,7 +3691,7 @@
      "nba_id": 1630567,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-10T21:48Z"
+     "date": "2026-11-12T18:05Z"
     },
     {
      "name": "Nate Bittle",
@@ -3695,9 +3703,9 @@
     {
      "name": "Trayce Jackson-Davis",
      "nba_id": 1631218,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-12T03:01Z"
+     "date": "2026-11-12T18:09Z"
     },
     {
      "name": "Kawhi Leonard",
@@ -4067,8 +4075,8 @@
    "status",
    "timestamp"
   ],
-  "injuries_endpoint_teams": 28,
-  "injuries_endpoint_entries": 98,
-  "embedded_injuries": 98
+  "injuries_endpoint_teams": 29,
+  "injuries_endpoint_entries": 99,
+  "embedded_injuries": 99
  }
 }
