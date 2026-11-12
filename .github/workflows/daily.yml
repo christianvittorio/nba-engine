@@ -30,6 +30,7 @@ jobs:
           for d in $(date -u -d '-5 hours' +%F) $(date -u -d '+19 hours' +%F); do
             python scripts/refresh_forecast.py $d || true
             python scripts/fetch_espn_props.py $d || true
+            python scripts/backfill_elo2.py $d || true
             python scripts/best_picks.py $d || true
             python scripts/daily_brief.py $d || true
           done

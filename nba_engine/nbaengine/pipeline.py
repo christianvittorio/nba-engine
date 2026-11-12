@@ -48,6 +48,7 @@ class Engine:
         self.kappa_m, self.kappa_t, self.level_delta = kappa_m, kappa_t, level_delta
         self.base, self.sds, self.applied = base, sds, applied
         self.alpha = ALPHA_LATE
+        self.elo2 = None      # modern-era Elo (home advantage 45); optional, restored from state when present
         self.level_n = 0             # games used to learn the scoring level in the current season
         self.level_season = None     # season the level belongs to; it restarts at 0 when the season changes
         self.last_margin = {}        # team -> [ISO date, margin] of its latest game seen (for the after-a-10+-win effect)
@@ -62,6 +63,7 @@ class Engine:
         p = self.prof
         return {"version": 1, "model_version": MODEL_VERSION,
                 "elo": {"params": vars(self.elo.params), "ratings": self.elo.ratings, "season": self.elo.season},
+                **({"elo2": {"params": vars(self.elo2.params), "ratings": self.elo2.ratings, "season": self.elo2.season}} if self.elo2 else {}),
                 "prof": {"params": vars(p.p), "off": p.off, "deff": p.deff, "pace_w": p.pace_w, "lg_side": p.lg_side,
                          "lg_pace": p.lg_pace, "pace_sq": p.pace_sq, "season": p.season},
                 "kappa_m": self.kappa_m, "kappa_t": self.kappa_t, "level_delta": self.level_delta,
@@ -83,6 +85,8 @@ class Engine:
             setattr(prof, k, d["prof"][k])
         eng = cls(store, elo, prof, d["kappa_m"], d["kappa_t"], d["level_delta"], d["base"],
                   {k: _sd_from(v) for k, v in d["sds"].items()}, set(d["applied"]))
+        if d.get("elo2"):
+            eng.elo2 = Elo(EloParams(**d["elo2"]["params"])); eng.elo2.ratings = d["elo2"]["ratings"]; eng.elo2.season = d["elo2"]["season"]
         eng.last_played = dict(d.get("last_played", {}))
         eng.last_margin = dict(d.get("last_margin", {}))
         eng.level_n, eng.level_season = d.get("level_n", 0), d.get("level_season")
@@ -143,6 +147,9 @@ class Engine:
             self.sds["base_m"].add(am - b[0]); self.sds["base_t"].add(at - b[1])
         self.base["n"] += 1; self.base["hw"] += float(am > 0); self.base["m"] += am; self.base["t"] += at
         self.elo.update(fg.home, fg.away, fg.home_pts, fg.away_pts)
+        if self.elo2:
+            self.elo2.new_season(fg.season) if self.elo2.season != fg.season else None
+            self.elo2.update(fg.home, fg.away, fg.home_pts, fg.away_pts)
         self.prof.record_pace_residual(pred_poss, gd)
         self.prof.update(gd)
         self.applied.add(key)
@@ -159,6 +166,7 @@ class Engine:
             if parse(ug.tip_utc) <= parse(now_iso):
                 return "late"
         self.elo.new_season(ug.season); self.prof.new_season(ug.season)
+        if self.elo2: self.elo2.new_season(ug.season)
         self._roll_level(ug.season)
         s, gid, h, a = ug.season, ug.game_id, ug.home, ug.away
         cutoff = now_iso
@@ -185,11 +193,29 @@ class Engine:
                         "home": h, "away": a,
                         "team_box": {sd: {k: round(float(v.mean()), 2) for k, v in sim["box_" + sd].items()} for sd in ("home", "away")}})
         con.execute("INSERT OR IGNORE INTO game_dates VALUES(?,?,?)", (s, gid, ug.date))
+        self._forecast_elo2(ug, cal, bt, n_sims, seed, cutoff)
         self._forecast_injury_adjusted(ug, sim, e, bt, n_sims, seed, cutoff)
         self._forecast_rest_adjusted(ug, sim, e, bt, n_sims, seed, cutoff)
         self._forecast_availability(ug, bt, n_sims, seed, cutoff)
         self._forecast_market(ug, sim, n_sims, seed, cutoff)
         return "made"
+
+    BLEND_W_SIM = 0.30   # weight on the simulation in `blend_v2`; corrected Elo carries the rest (2,460 stored forecasts: sim 0.6162, Elo 0.6098, blend 0.6098 log-loss)
+
+    def _forecast_elo2(self, ug, cal, bt, n_sims, seed, cutoff) -> None:
+        """`elo_v2` (Elo with the modern home advantage) and `blend_v2` (30% simulation, 70% elo_v2). New names; sim_mc and elo are untouched. Never raises."""
+        try:
+            if not self.elo2: return
+            e2 = self.elo2.predict(ug.home, ug.away); sd = self.sds["elo"].sd()
+            det = {"date": ug.date, "home": ug.home, "away": ug.away, "elo_diff": e2["elo_diff"]}
+            self.store.save_forecast(ug.season, ug.game_id, "elo_v2", MODEL_VERSION, cutoff, None, None, e2["p_home"], (bt + e2["exp_margin"]) / 2,
+                (bt - e2["exp_margin"]) / 2, None, None, q_margin=_norm_q(e2["exp_margin"], sd), details=det)
+            w = self.BLEND_W_SIM; ph = w * cal["p_home"] + (1 - w) * e2["p_home"]; mm = w * (cal["mean_home"] - cal["mean_away"]) + (1 - w) * e2["exp_margin"]
+            mt = cal["mean_total"]
+            self.store.save_forecast(ug.season, ug.game_id, "blend_v2", MODEL_VERSION, cutoff, None, None, ph, (mt + mm) / 2, (mt - mm) / 2, mt, None,
+                q_margin=_norm_q(mm, sd), details={**det, "w_sim": w})
+        except Exception:
+            pass
 
     MARKET_W = 0.10   # weight on our margin vs the line; 5 seasons of closing lines gave -0.09 +/- 0.10 (the line already holds what we know)
 

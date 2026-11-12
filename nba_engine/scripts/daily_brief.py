@@ -42,6 +42,7 @@ def latest(model):
     q = "select f.game_id, f.p_home, f.mean_home, f.mean_away, f.q_margin_json, f.details_json from forecasts f join (select game_id, max(forecast_id) m from forecasts where model_name=? and json_extract(details_json,'$.date')=? group by game_id) l on l.m=f.forecast_id"
     return {r[0]: r[1:] for r in live.execute(q, (model, day))}
 M, AV = latest("sim_mc"), latest("sim_mc_av")
+BL = latest("blend_v2")
 if not M:
     print("no forecasts for", day); sys.exit(0)
 ref_run = pl.execute("select max(run_utc) from player_refresh").fetchone()[0]
@@ -87,6 +88,8 @@ for gid, (ph, mh, ma, qj, dj) in sorted(M.items(), key=lambda kv: json.loads(kv[
     head = f"## {nm(A)} at {nm(H)}: " + (f"{nm(fav)} favoured ({pf:.0%})" if pf >= 0.53 else "too close to call")
     lines += [head, "", f"**Projected final:** {nm(A)} {ma:.0f}, {nm(H)} {mh:.0f} (the average outcome; total {mh + ma:.0f}). {nm(fav)} are {conf}" + (f", about {margin:.1f} points ahead on average." if pf >= 0.53 else f"; the model sees them about {margin:.1f} points apart.")]
     why = []
+    if gid in BL:
+        pb = BL[gid][0]; why.append(f"**Blended view.** Mixing the simulation with the updated Elo (home advantage 45, the modern setting) gives {nm(H) if pb >= 0.5 else nm(A)} a {max(pb, 1 - pb):.0%} chance. This blend is the better-scoring forecast in testing (log-loss 0.610 vs 0.616 for the simulation alone).")
     ef, ed = elo[fav], elo[dog]
     why.append(f"**Team strength.** {nm(fav)} are rated {ef:.0f} ({ord_(erank[fav])} of 30) against {nm(dog)} at {ed:.0f} ({ord_(erank[dog])})."
                + f" Home court is worth roughly 3 points to {nm(H)}.")
