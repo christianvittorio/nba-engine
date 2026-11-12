@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-12T16:36:04Z",
+ "generated_utc": "2026-11-12T17:25:24Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -1283,9 +1283,9 @@
     {
      "name": "Stephen Curry",
      "nba_id": 201939,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-12T05:39Z"
+     "date": "2026-11-12T17:03Z"
     },
     {
      "name": "Moses Moody",
@@ -3031,21 +3031,21 @@
      "nba_id": 1631230,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-04T22:41Z"
+     "date": "2026-11-12T16:37Z"
     },
     {
      "name": "Adem Bona",
      "nba_id": 1641737,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-11T22:10Z"
+     "date": "2026-11-12T16:36Z"
     },
     {
      "name": "Joel Embiid",
      "nba_id": 203954,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-11T22:06Z"
+     "date": "2026-11-12T16:34Z"
     },
     {
      "name": "Ariel Hukporti",
@@ -3059,7 +3059,7 @@
      "nba_id": 2544,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-11T22:06Z"
+     "date": "2026-11-12T16:32Z"
     }
    ]
   },
