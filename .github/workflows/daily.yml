@@ -31,6 +31,7 @@ jobs:
             python scripts/refresh_forecast.py $d || true
             python scripts/fetch_espn_props.py $d || true
             python scripts/backfill_elo2.py $d || true
+            python scripts/make_final.py || true
             python scripts/best_picks.py $d || true
             python scripts/daily_brief.py $d || true
           done

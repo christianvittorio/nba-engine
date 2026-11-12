@@ -43,7 +43,7 @@ def latest(model):
     return {r[0]: r[1:] for r in live.execute(q, (model, day))}
 M, AV = latest("sim_mc"), latest("sim_mc_av")
 BL = latest("blend_v2")
-ALL = latest("sim_mc_all"); RST = latest("sim_mc_rest")
+ALL = latest("sim_mc_all"); RST = latest("sim_mc_rest"); FIN = latest("final_v2")
 CUR = json.load(open("artifacts/availability.json"))["teams"] if os.path.exists("artifacts/availability.json") else {}
 if not M:
     print("no forecasts for", day); sys.exit(0)
@@ -84,17 +84,15 @@ if os.path.exists("artifacts/lessons_latest.md"):
 for gid, (ph, mh, ma, qj, dj) in sorted(M.items(), key=lambda kv: json.loads(kv[1][4]).get("tip_utc", "")):
     d = json.loads(dj); H, A = d["home"], d["away"]
     ph_raw, mh_raw, ma_raw = ph, mh, ma
-    adj = gid in ALL
-    if adj: ph, mh, ma, qj = ALL[gid][0], ALL[gid][1], ALL[gid][2], ALL[gid][3]      # lead with the forecast that includes rest, injuries and sitting risk
+    src = FIN if gid in FIN else (ALL if gid in ALL else None); adj = src is not None
+    if adj: ph, mh, ma, qj = src[gid][0], src[gid][1], src[gid][2], src[gid][3]      # lead with the final forecast: 30% simulation + 70% updated Elo, adjusted for rest, injuries and rest-day risk
     fav, dog, pf = (H, A, ph) if ph >= 0.5 else (A, H, 1 - ph)
     pf_home = fav == H
     margin = abs(mh - ma)
     conf = "a clear favourite" if pf >= 0.75 else ("a solid favourite" if pf >= 0.62 else ("a slight favourite" if pf >= 0.53 else "a coin flip"))
     head = f"## {nm(A)} at {nm(H)}: " + (f"{nm(fav)} favoured ({pf:.0%})" if pf >= 0.53 else "too close to call")
-    lines += [head, "", (f"**Forecast basis:** adjusted for rest, injuries and rest-day risk. The unadjusted simulation says {nm(H if ph_raw >= 0.5 else A)} {max(ph_raw, 1 - ph_raw):.0%} (projected {nm(A)} {ma_raw:.0f}, {nm(H)} {mh_raw:.0f}).\n" if adj else ""), f"**Projected final:** {nm(A)} {ma:.0f}, {nm(H)} {mh:.0f} (the average outcome; total {mh + ma:.0f}). {nm(fav)} are {conf}" + (f", about {margin:.1f} points ahead on average." if pf >= 0.53 else f"; the model sees them about {margin:.1f} points apart.")]
+    lines += [head, "", (f"**Forecast basis:** the engine's final forecast (30% simulation, 70% Elo with the modern home advantage, adjusted for rest, injuries and rest-day risk). The unadjusted simulation says {nm(H if ph_raw >= 0.5 else A)} {max(ph_raw, 1 - ph_raw):.0%} (projected {nm(A)} {ma_raw:.0f}, {nm(H)} {mh_raw:.0f}).\n" if adj else ""), f"**Projected final:** {nm(A)} {ma:.0f}, {nm(H)} {mh:.0f} (the average outcome; total {mh + ma:.0f}). {nm(fav)} are {conf}" + (f", about {margin:.1f} points ahead on average." if pf >= 0.53 else f"; the model sees them about {margin:.1f} points apart.")]
     why = []
-    if gid in BL:
-        pb = BL[gid][0]; why.append(f"**Blended view.** Mixing the simulation with the updated Elo (home advantage 45, the modern setting) gives {nm(H) if pb >= 0.5 else nm(A)} a {max(pb, 1 - pb):.0%} chance. This blend is the better-scoring forecast in testing (log-loss 0.610 vs 0.616 for the simulation alone).")
     ef, ed = elo[fav], elo[dog]
     why.append(f"**Team strength.** {nm(fav)} are rated {ef:.0f} ({ord_(erank[fav])} of 30) against {nm(dog)} at {ed:.0f} ({ord_(erank[dog])})."
                + f" Home court is worth roughly 3 points to {nm(H)}.")

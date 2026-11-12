@@ -205,6 +205,16 @@ def lessons_section():
                 + ("The book is closer on totals, so our totals should be pulled toward the line." if bk_t < us_t - 0.3 else "We are level with or better than the line on totals.") + " "
                 + ("The book is closer on margins." if bk_m < us_m - 0.3 else "We are level with the line on margins.")]
         if bk_t < us_t - 0.3: acts.append("Use the market-centred total (`sim_mc_mkt`) for total bets; our own total has been less accurate than the line.")
+    # 1b. live scoreboard: the final forecast against the raw simulation and the other variants
+    try:
+        sc = pd.read_sql_query("select f.game_id, f.model_name m, f.p_home p, (r.home_pts>r.away_pts)*1.0 w from forecasts f join results r on r.game_id=f.game_id and r.season=f.season where f.model_name in ('sim_mc','elo_v2','blend_v2','final_v2','sim_mc_all')", live)
+        both = sc.groupby("game_id").m.nunique(); ids = both[both == sc.m.nunique()].index
+        if len(ids) >= 5:
+            z = sc[sc.game_id.isin(ids)]; f_ = lambda x: float(-np.mean(x.w * np.log(np.clip(x.p, 1e-4, 1 - 1e-4)) + (1 - x.w) * np.log(1 - np.clip(x.p, 1e-4, 1 - 1e-4))))
+            tb_ = {m_: f_(x) for m_, x in z.groupby("m")}
+            out += [f"- **Live scoreboard (log-loss, lower is better, {len(ids)} finished games with every version):** " + ", ".join(f"{m_} {v:.3f}" for m_, v in sorted(tb_.items(), key=lambda kv: kv[1])) + ". Small sample, so treat gaps under about 0.03 as noise."]
+    except Exception:
+        pass
     # 2. totals and margin bias over the season
     for lab, col in (("margin", "em"), ("total", "et")):
         m_, se_ = G[col].mean(), G[col].std() / np.sqrt(len(G))
