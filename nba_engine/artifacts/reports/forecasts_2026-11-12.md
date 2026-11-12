@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-12
-Data refresh: last successful run 2026-11-12T16:29:37Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-12T16:33:42Z UTC. Model nbaengine-0.1.0.
 
 - TOR at PHI (game 401909976): P(home) sim 0.508 / Elo 0.652; mean score 110.9-110.5 (total 221.4); margin 50% [-9.1, 10.0], 80% [-18.2, 19.0]; total 80% [197.7, 245.4]; P(OT) 0.047; projected final PHI 111 - TOR 111 (the average outcome, not a single exact score).
   - betting line: PHI margin +8.5, total 223.5; our simulator +0.4 (differs by -8.1); line-centred P(home) 0.711.
