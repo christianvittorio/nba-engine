@@ -43,6 +43,8 @@ def latest(model):
     return {r[0]: r[1:] for r in live.execute(q, (model, day))}
 M, AV = latest("sim_mc"), latest("sim_mc_av")
 BL = latest("blend_v2")
+ALL = latest("sim_mc_all"); RST = latest("sim_mc_rest")
+CUR = json.load(open("artifacts/availability.json"))["teams"] if os.path.exists("artifacts/availability.json") else {}
 if not M:
     print("no forecasts for", day); sys.exit(0)
 ref_run = pl.execute("select max(run_utc) from player_refresh").fetchone()[0]
@@ -81,12 +83,15 @@ if os.path.exists("artifacts/lessons_latest.md"):
     if les: lines += ["## What the latest results taught us", "", "From the most recent end-of-day review. Items under 'What changes next' are the adjustments the engine is learning from the data.", "", les, ""]
 for gid, (ph, mh, ma, qj, dj) in sorted(M.items(), key=lambda kv: json.loads(kv[1][4]).get("tip_utc", "")):
     d = json.loads(dj); H, A = d["home"], d["away"]
+    ph_raw, mh_raw, ma_raw = ph, mh, ma
+    adj = gid in ALL
+    if adj: ph, mh, ma, qj = ALL[gid][0], ALL[gid][1], ALL[gid][2], ALL[gid][3]      # lead with the forecast that includes rest, injuries and sitting risk
     fav, dog, pf = (H, A, ph) if ph >= 0.5 else (A, H, 1 - ph)
     pf_home = fav == H
     margin = abs(mh - ma)
     conf = "a clear favourite" if pf >= 0.75 else ("a solid favourite" if pf >= 0.62 else ("a slight favourite" if pf >= 0.53 else "a coin flip"))
     head = f"## {nm(A)} at {nm(H)}: " + (f"{nm(fav)} favoured ({pf:.0%})" if pf >= 0.53 else "too close to call")
-    lines += [head, "", f"**Projected final:** {nm(A)} {ma:.0f}, {nm(H)} {mh:.0f} (the average outcome; total {mh + ma:.0f}). {nm(fav)} are {conf}" + (f", about {margin:.1f} points ahead on average." if pf >= 0.53 else f"; the model sees them about {margin:.1f} points apart.")]
+    lines += [head, "", (f"**Forecast basis:** adjusted for rest, injuries and rest-day risk. The unadjusted simulation says {nm(H if ph_raw >= 0.5 else A)} {max(ph_raw, 1 - ph_raw):.0%} (projected {nm(A)} {ma_raw:.0f}, {nm(H)} {mh_raw:.0f}).\n" if adj else ""), f"**Projected final:** {nm(A)} {ma:.0f}, {nm(H)} {mh:.0f} (the average outcome; total {mh + ma:.0f}). {nm(fav)} are {conf}" + (f", about {margin:.1f} points ahead on average." if pf >= 0.53 else f"; the model sees them about {margin:.1f} points apart.")]
     why = []
     if gid in BL:
         pb = BL[gid][0]; why.append(f"**Blended view.** Mixing the simulation with the updated Elo (home advantage 45, the modern setting) gives {nm(H) if pb >= 0.5 else nm(A)} a {max(pb, 1 - pb):.0%} chance. This blend is the better-scoring forecast in testing (log-loss 0.610 vs 0.616 for the simulation alone).")
@@ -102,8 +107,23 @@ for gid, (ph, mh, ma, qj, dj) in sorted(M.items(), key=lambda kv: json.loads(kv[
     pc = (pace.get(H), pace.get(A))
     mp = d.get("mean_poss")
     if mp: why.append(f"**Pace.** The model expects about {mp:.0f} possessions, " + ("a fast game" if mp >= 100 else ("a slow game" if mp <= 96 else "a typical pace")) + ", which sets the scoring environment.")
+    rs = RST.get(gid)
+    if rs:
+        rd = json.loads(rs[4]); b2h, b2a = rd.get("home_b2b"), rd.get("away_b2b")
+        if b2h or b2a:
+            who = [nm(x) for x, f in ((H, b2h), (A, b2a)) if f]
+            why.append(f"**Rest.** {' and '.join(who)} {'play' if len(who) == 1 else 'both play'} the second night of a back-to-back; the rest adjustment moves the margin by {abs(rd.get('shift', 0)):.1f} points toward {nm(A if (b2h and not b2a) else H) if (b2h != b2a) else 'neither team'}.")
+    def cur(t_):
+        inj = (CUR.get(t_) or {}).get("injuries") or []
+        return [i["name"] for i in inj if i["status"] in ("Out", "Doubtful")], [f'{i["name"]} ({i["status"].lower()})' for i in inj if i["status"] not in ("Out", "Doubtful")]
+    if CUR:
+        ho_, hq_ = cur(H); ao_, aq_ = cur(A)
+        segs = []
+        for t_, o_, q_ in ((H, ho_, hq_), (A, ao_, aq_)):
+            if o_ or q_: segs.append(f"{nm(t_)}: " + ("out " + ", ".join(o_) if o_ else "") + ("; " if o_ and q_ else "") + ("uncertain " + ", ".join(q_) if q_ else ""))
+        why.append("**Injury report (latest).** " + (" | ".join(segs) if segs else "no one listed out on either side") + ". Both teams' absences are counted, so a depleted opponent does not help if your own side is thin too.")
     av = AV.get(gid)
-    if av:
+    if av and not CUR:
         ad = json.loads(av[4]); ho, ao = ad.get("home_out") or [], ad.get("away_out") or []
         parts = []
         if ho: parts.append(f"{nm(H)} without " + ", ".join(f"{n} ({lvl(v)})" for n, v in ho))
