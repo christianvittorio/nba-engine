@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-12T23:51:54Z",
+ "generated_utc": "2026-11-13T02:27:15Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -133,7 +133,7 @@
      "nba_id": 1631243,
      "status": "Out",
      "detail": "",
-     "date": "2026-10-19T19:38Z"
+     "date": "2026-11-13T00:06Z"
     },
     {
      "name": "Asa Newell",
@@ -1708,13 +1708,6 @@
      "date": "2026-10-15T01:03Z"
     },
     {
-     "name": "Cam Christie",
-     "nba_id": 1642353,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-11T14:59Z"
-    },
-    {
      "name": "Brandon Ingram",
      "nba_id": 1627742,
      "status": "Out",
@@ -2308,6 +2301,12 @@
      "nba_id": 1630162
     },
     {
+     "espn_id": "5061585",
+     "name": "Isaiah Evans",
+     "pos": "F",
+     "nba_id": -5061585
+    },
+    {
      "espn_id": "3032976",
      "name": "Rudy Gobert",
      "pos": "C",
@@ -2759,14 +2758,14 @@
      "nba_id": 1642349,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-12T15:04Z"
+     "date": "2026-11-13T01:03Z"
     },
     {
      "name": "Thomas Sorber",
      "nba_id": null,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-03T22:45Z"
+     "date": "2026-11-13T01:07Z"
     },
     {
      "name": "Cason Wallace",
@@ -3329,9 +3328,9 @@
     {
      "name": "Chris Youngblood",
      "nba_id": 1642959,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-12T15:04Z"
+     "date": "2026-11-13T01:06Z"
     }
    ]
   },
@@ -3446,7 +3445,7 @@
      "nba_id": 1630173,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-11T14:44Z"
+     "date": "2026-11-13T00:22Z"
     },
     {
      "name": "Maxime Raynaud",
@@ -4096,7 +4095,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 28,
-  "injuries_endpoint_entries": 102,
-  "embedded_injuries": 102
+  "injuries_endpoint_entries": 101,
+  "embedded_injuries": 101
  }
 }
