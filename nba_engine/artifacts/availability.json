@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-13T02:27:15Z",
+ "generated_utc": "2026-11-13T17:00:42Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -516,9 +516,9 @@
     {
      "name": "Brandon Miller",
      "nba_id": 1641706,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-12T00:06Z"
+     "date": "2026-11-13T04:46Z"
     },
     {
      "name": "Dennis Schroder",
@@ -3077,9 +3077,9 @@
     {
      "name": "LeBron James",
      "nba_id": 2544,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-12T18:07Z"
+     "date": "2026-11-13T03:28Z"
     }
    ]
   },
@@ -3189,6 +3189,13 @@
     }
    ],
    "injuries": [
+    {
+     "name": "Drew Timme",
+     "nba_id": 1631166,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-13T16:22Z"
+    },
     {
      "name": "Mark Williams",
      "nba_id": 1631109,
@@ -3722,9 +3729,9 @@
     {
      "name": "Trayce Jackson-Davis",
      "nba_id": 1631218,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-12T18:09Z"
+     "date": "2026-11-13T03:27Z"
     },
     {
      "name": "Kawhi Leonard",
@@ -3732,6 +3739,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-11T22:33Z"
+    },
+    {
+     "name": "Kevin McCullar Jr.",
+     "nba_id": 1641755,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-13T15:37Z"
     }
    ]
   },
@@ -3997,6 +4011,13 @@
      "date": "2026-11-02T18:22Z"
     },
     {
+     "name": "Bub Carrington",
+     "nba_id": 1642267,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-13T03:26Z"
+    },
+    {
      "name": "Justin Champagnie",
      "nba_id": 1630551,
      "status": "Out",
@@ -4095,7 +4116,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 28,
-  "injuries_endpoint_entries": 101,
-  "embedded_injuries": 101
+  "injuries_endpoint_entries": 104,
+  "embedded_injuries": 104
  }
 }

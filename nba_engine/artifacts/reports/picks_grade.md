@@ -1,19 +1,19 @@
 # Graded over/under leans
-2328 graded legs from 12 run(s); pushes and did-not-play legs excluded.
+2831 graded legs from 19 run(s); pushes and did-not-play legs excluded.
 
 Model said / actual hit rate:
 
 | side | n | model_p | hit |
 |---|---|---|---|
-| OVER | 884 | 0.582 | 0.578 |
-| UNDER | 1444 | 0.6 | 0.616 |
+| OVER | 1109 | 0.582 | 0.596 |
+| UNDER | 1722 | 0.598 | 0.61 |
 
 | band | n | model_p | hit |
 |---|---|---|---|
-| (0.5, 0.6] | 1479 | 0.565 | 0.588 |
-| (0.6, 0.7] | 777 | 0.634 | 0.618 |
+| (0.5, 0.6] | 1855 | 0.566 | 0.595 |
+| (0.6, 0.7] | 904 | 0.633 | 0.616 |
 | (0.7, 0.76] | 69 | 0.727 | 0.739 |
 
-Picks with a real book price: 1521; flat 1-unit staking returned -14.51 units (model expected -95.88); hit 62.3% vs model 59.1%.
+Picks with a real book price: 2024; flat 1-unit staking returned -17.37 units (model expected -127.67); hit 62.3% vs model 58.9%.
 
-Legs that were in a suggested parlay: 274, hit 66.4% (model 64.5%).
+Legs that were in a suggested parlay: 354, hit 65.3% (model 64.2%).
