@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-13T17:00:42Z",
+ "generated_utc": "2026-11-13T20:47:21Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -2127,25 +2127,18 @@
    ],
    "injuries": [
     {
-     "name": "Giannis Antetokounmpo",
-     "nba_id": 203507,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-12T21:22Z"
-    },
-    {
      "name": "Pelle Larsson",
      "nba_id": 1641796,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-12T21:20Z"
+     "date": "2026-11-13T18:20Z"
     },
     {
      "name": "Klay Thompson",
      "nba_id": 202691,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-12T21:23Z"
+     "date": "2026-11-13T18:22Z"
     }
    ]
   },
@@ -2495,28 +2488,35 @@
      "nba_id": 1631097,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-12T20:53Z"
+     "date": "2026-11-13T18:10Z"
     },
     {
      "name": "Bryce McGowens",
      "nba_id": 1631121,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-12T20:56Z"
+     "date": "2026-11-13T18:12Z"
     },
     {
      "name": "Yves Missi",
      "nba_id": 1642274,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-12T20:50Z"
+     "date": "2026-11-13T18:11Z"
     },
     {
      "name": "Trey Murphy III",
      "nba_id": 1630530,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-12T20:48Z"
+     "date": "2026-11-13T18:07Z"
+    },
+    {
+     "name": "Dejounte Murray",
+     "nba_id": 1627749,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-13T20:19Z"
     },
     {
      "name": "Trendon Watford",
@@ -2908,14 +2908,14 @@
      "nba_id": 1631288,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-12T22:04Z"
+     "date": "2026-11-13T17:12Z"
     },
     {
      "name": "Tristan da Silva",
      "nba_id": 1641783,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-12T22:07Z"
+     "date": "2026-11-13T17:09Z"
     },
     {
      "name": "Jonathan Isaac",
@@ -2943,7 +2943,7 @@
      "nba_id": 1630591,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-12T22:03Z"
+     "date": "2026-11-13T17:08Z"
     }
    ]
   },

@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-13
-Data refresh: last successful run 2026-11-13T16:59:43Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-13T20:46:24Z UTC. Model nbaengine-0.1.0.
 
 - NYK at IND (game 401909296): P(home) sim 0.294 / Elo 0.272; mean score 106.9-114.8 (total 221.7); margin 50% [-18.1, 2.1], 80% [-27.2, 11.2]; total 80% [197.7, 246.4]; P(OT) 0.051; projected final NYK 115 - IND 107 (the average outcome, not a single exact score).
   - betting line: IND margin -8.5, total 219.5; our simulator -7.9 (differs by +0.6); line-centred P(home) 0.282.
