@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-14T02:00:01Z",
+ "generated_utc": "2026-11-14T15:38:32Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -114,6 +114,13 @@
     }
    ],
    "injuries": [
+    {
+     "name": "Kingston Flemings",
+     "nba_id": -5149077,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-14T03:20Z"
+    },
     {
      "name": "Keshon Gilbert",
      "nba_id": 1642933,
@@ -637,16 +644,23 @@
     {
      "name": "Tobe Awaka",
      "nba_id": -5105555,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-12T21:40Z"
+     "date": "2026-11-14T15:00Z"
+    },
+    {
+     "name": "Jalen Smith",
+     "nba_id": 1630188,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-14T03:50Z"
     },
     {
      "name": "Dailyn Swain",
      "nba_id": -4848625,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-14T00:17Z"
+     "date": "2026-11-14T15:00Z"
     },
     {
      "name": "Caleb Wilson",
@@ -773,9 +787,9 @@
     {
      "name": "Evan Mobley",
      "nba_id": 1630596,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-12T22:08Z"
+     "date": "2026-11-14T15:01Z"
     },
     {
      "name": "Nae'Qwan Tomlin",
@@ -1578,6 +1592,13 @@
      "date": "2026-11-11T22:29Z"
     },
     {
+     "name": "Aaron Nesmith",
+     "nba_id": 1630174,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-14T03:02Z"
+    },
+    {
      "name": "Ben Sheppard",
      "nba_id": 1641767,
      "status": "Out",
@@ -1997,9 +2018,9 @@
     {
      "name": "Zach Edey",
      "nba_id": 1641744,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-12T23:16Z"
+     "date": "2026-11-14T15:02Z"
     },
     {
      "name": "Scotty Pippen Jr.",
@@ -2011,9 +2032,9 @@
     {
      "name": "Quinten Post",
      "nba_id": 1642366,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-12T23:17Z"
+     "date": "2026-11-14T15:02Z"
     },
     {
      "name": "Richie Saunders",
@@ -2133,16 +2154,16 @@
     {
      "name": "Pelle Larsson",
      "nba_id": 1641796,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-13T23:04Z"
+     "date": "2026-11-14T15:02Z"
     },
     {
      "name": "Klay Thompson",
      "nba_id": 202691,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-13T23:21Z"
+     "date": "2026-11-14T15:01Z"
     }
    ]
   },
@@ -2393,7 +2414,7 @@
      "espn_id": "4712862",
      "name": "Malik Dia",
      "pos": "F",
-     "nba_id": null
+     "nba_id": -4712862
     },
     {
      "espn_id": "5144091",
@@ -2496,9 +2517,9 @@
     {
      "name": "Bryce McGowens",
      "nba_id": 1631121,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-13T18:12Z"
+     "date": "2026-11-14T14:59Z"
     },
     {
      "name": "Yves Missi",
@@ -2761,7 +2782,7 @@
      "nba_id": 1642349,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-13T01:03Z"
+     "date": "2026-11-14T15:07Z"
     },
     {
      "name": "Thomas Sorber",
@@ -3317,9 +3338,9 @@
     {
      "name": "Chris Youngblood",
      "nba_id": 1642959,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-13T01:06Z"
+     "date": "2026-11-14T15:05Z"
     }
    ]
   },
@@ -3432,9 +3453,9 @@
     {
      "name": "Precious Achiuwa",
      "nba_id": 1630173,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-13T21:20Z"
+     "date": "2026-11-14T15:05Z"
     },
     {
      "name": "Maxime Raynaud",
@@ -3837,6 +3858,13 @@
      "date": "2026-11-12T15:42Z"
     },
     {
+     "name": "Jaxson Hayes",
+     "nba_id": 1629637,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-14T02:58Z"
+    },
+    {
      "name": "Jaren Jackson Jr.",
      "nba_id": 1628991,
      "status": "Out",
@@ -4026,7 +4054,6 @@
   "MIA:Tre Donaldson",
   "MIA:Vladislav Goldin",
   "MIL:Kam Jones",
-  "NOP:Malik Dia",
   "NYK:Tyler Nickel",
   "OKC:Thomas Sorber",
   "ORL:Izaiyah Nelson",
@@ -4075,8 +4102,8 @@
    "weight"
   ],
   "embedded_injury_sample": {
-   "status": "Out",
-   "date": "2026-11-12T23:10Z"
+   "status": "Day-To-Day",
+   "date": "2026-11-14T03:20Z"
   },
   "injuries_top_keys": [
    "injuries",
@@ -4085,7 +4112,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 28,
-  "injuries_endpoint_entries": 96,
-  "embedded_injuries": 96
+  "injuries_endpoint_entries": 100,
+  "embedded_injuries": 100
  }
 }
