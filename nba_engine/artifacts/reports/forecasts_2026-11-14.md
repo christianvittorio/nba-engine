@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-14
-Data refresh: last successful run 2026-11-14T15:37:50Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-14T18:57:31Z UTC. Model nbaengine-0.1.0.
 
 - DEN at NOP (game 401909980): P(home) sim 0.318 / Elo 0.284; mean score 114.7-121.8 (total 236.4); margin 50% [-17.1, 3.1], 80% [-26.2, 12.2]; total 80% [212.7, 261.4]; P(OT) 0.044; projected final DEN 122 - NOP 115 (the average outcome, not a single exact score).
   - betting line: NOP margin -12.5, total 234.5; our simulator -7.1 (differs by +5.4); line-centred P(home) 0.192.

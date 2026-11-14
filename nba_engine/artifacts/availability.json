@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-14T15:38:32Z",
+ "generated_utc": "2026-11-14T18:58:10Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -268,7 +268,7 @@
      "nba_id": 1629650,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-13T22:08Z"
+     "date": "2026-11-14T17:19Z"
     },
     {
      "name": "Nolan Traore",
@@ -644,23 +644,30 @@
     {
      "name": "Tobe Awaka",
      "nba_id": -5105555,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-14T18:10Z"
+    },
+    {
+     "name": "Nic Claxton",
+     "nba_id": 1629651,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-14T15:00Z"
+     "date": "2026-11-14T18:08Z"
+    },
+    {
+     "name": "Norman Powell",
+     "nba_id": 1626181,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-14T17:57Z"
     },
     {
      "name": "Jalen Smith",
      "nba_id": 1630188,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-14T03:50Z"
-    },
-    {
-     "name": "Dailyn Swain",
-     "nba_id": -4848625,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-14T15:00Z"
+     "date": "2026-11-14T18:00Z"
     },
     {
      "name": "Caleb Wilson",
@@ -778,6 +785,20 @@
    ],
    "injuries": [
     {
+     "name": "Jarrett Allen",
+     "nba_id": 1628386,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-14T18:31Z"
+    },
+    {
+     "name": "James Harden",
+     "nba_id": 201935,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-14T18:28Z"
+    },
+    {
      "name": "Sam Merrill",
      "nba_id": 1630241,
      "status": "Out",
@@ -785,11 +806,18 @@
      "date": "2026-11-10T22:12Z"
     },
     {
-     "name": "Evan Mobley",
-     "nba_id": 1630596,
+     "name": "Donovan Mitchell",
+     "nba_id": 1628378,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-14T15:01Z"
+     "date": "2026-11-14T18:31Z"
+    },
+    {
+     "name": "Evan Mobley",
+     "nba_id": 1630596,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-14T18:33Z"
     },
     {
      "name": "Nae'Qwan Tomlin",
@@ -797,6 +825,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-10-20T15:11Z"
+    },
+    {
+     "name": "Peyton Watson",
+     "nba_id": 1631212,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-14T18:38Z"
     }
    ]
   },
@@ -924,7 +959,7 @@
      "nba_id": 1631108,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-13T22:06Z"
+     "date": "2026-11-14T18:23Z"
     },
     {
      "name": "Sergio de Larrea",
@@ -2152,18 +2187,25 @@
    ],
    "injuries": [
     {
+     "name": "Giannis Antetokounmpo",
+     "nba_id": 203507,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-14T18:07Z"
+    },
+    {
      "name": "Pelle Larsson",
      "nba_id": 1641796,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-14T15:02Z"
+     "date": "2026-11-14T18:12Z"
     },
     {
      "name": "Klay Thompson",
      "nba_id": 202691,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-14T15:01Z"
+     "date": "2026-11-14T18:10Z"
     }
    ]
   },
@@ -2517,23 +2559,23 @@
     {
      "name": "Bryce McGowens",
      "nba_id": 1631121,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-14T14:59Z"
+     "date": "2026-11-14T17:55Z"
     },
     {
      "name": "Yves Missi",
      "nba_id": 1642274,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-13T18:11Z"
+     "date": "2026-11-14T18:01Z"
     },
     {
      "name": "Trey Murphy III",
      "nba_id": 1630530,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-13T18:07Z"
+     "date": "2026-11-14T17:53Z"
     },
     {
      "name": "Dejounte Murray",
@@ -2547,7 +2589,7 @@
      "nba_id": 1630570,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-12T20:53Z"
+     "date": "2026-11-14T17:58Z"
     }
    ]
   },
@@ -2946,7 +2988,7 @@
      "nba_id": 1642869,
      "status": "Out",
      "detail": "",
-     "date": "2026-10-17T22:19Z"
+     "date": "2026-11-14T17:33Z"
     }
    ]
   },
@@ -3706,7 +3748,7 @@
      "nba_id": 1630567,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-12T18:05Z"
+     "date": "2026-11-14T17:33Z"
     },
     {
      "name": "Nate Bittle",
@@ -4112,7 +4154,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 28,
-  "injuries_endpoint_entries": 100,
-  "embedded_injuries": 100
+  "injuries_endpoint_entries": 106,
+  "embedded_injuries": 106
  }
 }

@@ -287,3 +287,4 @@ Means from the player simulation (2PM/2PA, PRA and combos are sums of the same s
 | Bones Hyland | MIN | o10.5 46% | o1.5 56% | o3.5 40% | o15.5 48% | o1.5 52% | o1.5 54% | o1.5 47% | o0.5 54% | o0.5 56% | o12.5 45% | o13.5 48% | o4.5 56% |
 | Terrence Shannon Jr. | MIN | o6.5 76% | o1.5 73% | o1.5 68% | o9.5 82% | o0.5 71% | o1.5 65% | o1.5 72% | o0.5 44% | o0.5 57% | o7.5 82% | o7.5 81% | o2.5 83% |
 | Cody Williams | MIN | o2.5 56% | o0.5 66% | o0.5 61% | o3.5 65% | o0.5 28% | o0.5 66% | o0.5 51% | o0.5 28% | o0.5 37% | o2.5 68% | o2.5 67% | o1.5 62% |
+| Rocco Zikarsky | MIN | o1.5 54% | o0.5 71% | o0.5 39% | o2.5 63% | o0.5 22% | o0.5 41% | o0.5 41% | o0.5 13% | o0.5 26% | o1.5 71% | o0.5 73% | o0.5 79% |
