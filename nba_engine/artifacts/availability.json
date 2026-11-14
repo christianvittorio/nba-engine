@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-14T18:58:10Z",
+ "generated_utc": "2026-11-14T20:13:41Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -2055,7 +2055,21 @@
      "nba_id": 1641744,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-14T15:02Z"
+     "date": "2026-11-14T19:45Z"
+    },
+    {
+     "name": "Jerami Grant",
+     "nba_id": 203924,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-14T19:46Z"
+    },
+    {
+     "name": "Ty Jerome",
+     "nba_id": 1629660,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-14T19:44Z"
     },
     {
      "name": "Scotty Pippen Jr.",
@@ -2067,9 +2081,9 @@
     {
      "name": "Quinten Post",
      "nba_id": 1642366,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-14T15:02Z"
+     "date": "2026-11-14T19:47Z"
     },
     {
      "name": "Richie Saunders",
@@ -4154,7 +4168,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 28,
-  "injuries_endpoint_entries": 106,
-  "embedded_injuries": 106
+  "injuries_endpoint_entries": 108,
+  "embedded_injuries": 108
  }
 }
