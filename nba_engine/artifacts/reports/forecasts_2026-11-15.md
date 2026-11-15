@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-15
-Data refresh: last successful run 2026-11-15T16:07:58Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-15T19:33:41Z UTC. Model nbaengine-0.1.0.
 
 - IND at PHI (game 401909985): P(home) sim 0.662 / Elo 0.822; mean score 116.7-110.4 (total 227.1); margin 50% [-4.1, 16.1], 80% [-12.0, 25.2]; total 80% [202.6, 251.4]; P(OT) 0.048; projected final PHI 117 - IND 110 (the average outcome, not a single exact score).
   - betting line: PHI margin +7.5, total 225.5; our simulator +6.3 (differs by -1.2); line-centred P(home) 0.690.

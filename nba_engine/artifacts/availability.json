@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-15T16:09:01Z",
+ "generated_utc": "2026-11-15T19:34:23Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -134,6 +134,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-13T00:06Z"
+    },
+    {
+     "name": "Jock Landale",
+     "nba_id": 1629111,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-15T17:55Z"
     },
     {
      "name": "Asa Newell",
@@ -919,6 +926,13 @@
    ],
    "injuries": [
     {
+     "name": "Santi Aldama",
+     "nba_id": 1630583,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-15T18:19Z"
+    },
+    {
      "name": "Tarik Biberovic",
      "nba_id": null,
      "status": "Out",
@@ -930,7 +944,7 @@
      "nba_id": 1631108,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-15T15:22Z"
+     "date": "2026-11-15T18:18Z"
     },
     {
      "name": "Sergio de Larrea",
@@ -944,7 +958,14 @@
      "nba_id": 1629655,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-15T15:22Z"
+     "date": "2026-11-15T18:09Z"
+    },
+    {
+     "name": "Kyrie Irving",
+     "nba_id": 202681,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-15T18:14Z"
     },
     {
      "name": "Dereck Lively II",
@@ -1462,13 +1483,6 @@
    ],
    "injuries": [
     {
-     "name": "Steven Adams",
-     "nba_id": 203500,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-11-14T21:52Z"
-    },
-    {
      "name": "Clint Capela",
      "nba_id": 203991,
      "status": "Out",
@@ -1612,25 +1626,11 @@
      "date": "2026-11-11T22:29Z"
     },
     {
-     "name": "T.J. McConnell",
-     "nba_id": 204456,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-14T21:23Z"
-    },
-    {
      "name": "Andrew Nembhard",
      "nba_id": 1629614,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-15T01:14Z"
-    },
-    {
-     "name": "Aaron Nesmith",
-     "nba_id": 1630174,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-14T21:21Z"
+     "date": "2026-11-15T16:44Z"
     },
     {
      "name": "Ben Sheppard",
@@ -2326,6 +2326,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-14T22:40Z"
+    },
+    {
+     "name": "Ryan Rollins",
+     "nba_id": 1631157,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-15T17:23Z"
     }
    ]
   },
@@ -2988,7 +2995,7 @@
      "nba_id": 1628371,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-09T23:10Z"
+     "date": "2026-11-15T18:22Z"
     },
     {
      "name": "Izaiyah Nelson",
@@ -3643,6 +3650,13 @@
    ],
    "injuries": [
     {
+     "name": "De'Aaron Fox",
+     "nba_id": 1628368,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-15T18:27Z"
+    },
+    {
      "name": "Tobias Harris",
      "nba_id": 202699,
      "status": "Out",
@@ -4181,7 +4195,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 28,
-  "injuries_endpoint_entries": 110,
-  "embedded_injuries": 110
+  "injuries_endpoint_entries": 112,
+  "embedded_injuries": 112
  }
 }

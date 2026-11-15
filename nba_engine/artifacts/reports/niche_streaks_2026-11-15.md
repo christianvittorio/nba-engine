@@ -39,7 +39,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 - **DAL**: has fallen short of the model's margin 18 straight when venue=away and rest_edge=less rest (13-28 in 41 such games; chance of run 0.000%).
 - **DAL**: has lost 17 straight when venue=away and rest_edge=less rest (13-28 in 41 such games; chance of run 0.076%).
 - **DAL**: has scored under its projection 9 straight when venue=away and rest_edge=less rest (23-18 in 41 such games; chance of run 0.191%).
-- **BOS**: has fallen short of the model's margin 7 straight when venue=home and prev_result=won close and streak=won 3+ straight (7-10 in 17 such games; chance of run 0.721%).
+- **BOS**: has fallen short of the model's margin 7 straight when venue=home and favorite=heavy fav and prev_result=won close (3-14 in 17 such games; chance of run 0.721%).
 - **BOS**: has won 13 straight when opp_rest=B2B and proj_total=220-225 (13-0 in 13 such games; chance of run 1.109%).
 - **BOS**: has seen the game total stay under the projection 6 straight when proj_total=220-225 (45-45 in 90 such games; chance of run 1.683%).
 
