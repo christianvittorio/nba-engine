@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-15T19:34:23Z",
+ "generated_utc": "2026-11-15T20:38:57Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -1913,20 +1913,6 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-15T00:17Z"
-    },
-    {
-     "name": "Collin Sexton",
-     "nba_id": 1629012,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-15T00:27Z"
-    },
-    {
-     "name": "Adou Thiero",
-     "nba_id": 1642876,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-15T00:40Z"
     }
    ]
   },
@@ -2325,7 +2311,7 @@
      "nba_id": 1631172,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-14T22:40Z"
+     "date": "2026-11-15T20:13Z"
     },
     {
      "name": "Ryan Rollins",
@@ -3521,13 +3507,6 @@
      "date": "2026-11-15T00:57Z"
     },
     {
-     "name": "Keegan Murray",
-     "nba_id": 1631099,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-15T01:00Z"
-    },
-    {
      "name": "Maxime Raynaud",
      "nba_id": 1642875,
      "status": "Out",
@@ -3652,9 +3631,9 @@
     {
      "name": "De'Aaron Fox",
      "nba_id": 1628368,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-15T18:27Z"
+     "date": "2026-11-15T20:32Z"
     },
     {
      "name": "Tobias Harris",
@@ -4077,13 +4056,6 @@
      "date": "2026-11-02T18:22Z"
     },
     {
-     "name": "Bub Carrington",
-     "nba_id": 1642267,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-14T21:05Z"
-    },
-    {
      "name": "Justin Champagnie",
      "nba_id": 1630551,
      "status": "Out",
@@ -4096,13 +4068,6 @@
      "status": "Day-To-Day",
      "detail": "",
      "date": "2026-11-14T21:09Z"
-    },
-    {
-     "name": "Alex Sarr",
-     "nba_id": 1642259,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-14T21:24Z"
     },
     {
      "name": "Tristan Vukcevic",
@@ -4195,7 +4160,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 28,
-  "injuries_endpoint_entries": 112,
-  "embedded_injuries": 112
+  "injuries_endpoint_entries": 107,
+  "embedded_injuries": 107
  }
 }
