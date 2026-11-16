@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-16T19:21:45Z",
+ "generated_utc": "2026-11-16T23:13:10Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -373,9 +373,9 @@
     {
      "name": "Neemias Queta",
      "nba_id": 1629674,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-16T18:12Z"
+     "date": "2026-11-16T22:10Z"
     }
    ]
   },
@@ -627,13 +627,6 @@
      "date": "2026-11-15T21:30Z"
     },
     {
-     "name": "Jalen Smith",
-     "nba_id": 1630188,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-15T21:29Z"
-    },
-    {
      "name": "Caleb Wilson",
      "nba_id": -5095151,
      "status": "Out",
@@ -760,7 +753,7 @@
      "nba_id": 1630596,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-15T21:58Z"
+     "date": "2026-11-16T22:06Z"
     },
     {
      "name": "Nae'Qwan Tomlin",
@@ -772,16 +765,9 @@
     {
      "name": "Jaylon Tyson",
      "nba_id": 1642281,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-16T17:35Z"
-    },
-    {
-     "name": "Peyton Watson",
-     "nba_id": 1631212,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-15T22:04Z"
+     "date": "2026-11-16T22:39Z"
     }
    ]
   },
@@ -1170,18 +1156,32 @@
      "date": "2026-11-08T16:05Z"
     },
     {
+     "name": "Ronald Holland II",
+     "nba_id": 1641842,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-16T22:53Z"
+    },
+    {
      "name": "Isaiah Joe",
      "nba_id": 1630198,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-09T18:54Z"
+     "date": "2026-11-16T22:40Z"
+    },
+    {
+     "name": "Taurean Prince",
+     "nba_id": 1627752,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-16T22:58Z"
     },
     {
      "name": "Duncan Robinson",
      "nba_id": 1629130,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-15T15:58Z"
+     "date": "2026-11-16T22:37Z"
     }
    ]
   },
@@ -2167,16 +2167,16 @@
     {
      "name": "Nikola Jovic",
      "nba_id": 1631107,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-16T17:41Z"
+     "date": "2026-11-16T22:50Z"
     },
     {
      "name": "Pelle Larsson",
      "nba_id": 1641796,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-16T17:39Z"
+     "date": "2026-11-16T22:49Z"
     }
    ]
   },
@@ -3228,6 +3228,13 @@
    ],
    "injuries": [
     {
+     "name": "Ryan Dunn",
+     "nba_id": 1642346,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-16T20:18Z"
+    },
+    {
      "name": "Mark Williams",
      "nba_id": 1631109,
      "status": "Out",
@@ -3622,18 +3629,11 @@
    ],
    "injuries": [
     {
-     "name": "De'Aaron Fox",
-     "nba_id": 1628368,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-16T14:44Z"
-    },
-    {
      "name": "Tobias Harris",
      "nba_id": 202699,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-10T22:46Z"
+     "date": "2026-11-16T19:26Z"
     },
     {
      "name": "Jayden Quaintance",
@@ -3890,7 +3890,7 @@
      "nba_id": 1641725,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-12T15:42Z"
+     "date": "2026-11-16T22:43Z"
     },
     {
      "name": "Jaxson Hayes",
@@ -4049,13 +4049,6 @@
      "date": "2026-10-28T18:38Z"
     },
     {
-     "name": "Tre Johnson",
-     "nba_id": 1642848,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-16T18:18Z"
-    },
-    {
      "name": "Tristan Vukcevic",
      "nba_id": 1641774,
      "status": "Out",
@@ -4147,7 +4140,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 28,
-  "injuries_endpoint_entries": 105,
-  "embedded_injuries": 105
+  "injuries_endpoint_entries": 103,
+  "embedded_injuries": 104
  }
 }

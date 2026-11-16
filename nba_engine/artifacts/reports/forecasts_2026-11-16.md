@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-16
-Data refresh: last successful run 2026-11-16T19:20:34Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-16T23:12:17Z UTC. Model nbaengine-0.1.0.
 
 - ORL at BOS (game 401909994): P(home) sim 0.771 / Elo 0.826; mean score 112.9-102.4 (total 215.2); margin 50% [-0.3, 20.0], 80% [-8.2, 29.0]; total 80% [191.7, 239.4]; P(OT) 0.040; projected final BOS 113 - ORL 102 (the average outcome, not a single exact score).
   - betting line: BOS margin +8.5, total 212.5; our simulator +10.5 (differs by +2.0); line-centred P(home) 0.737.

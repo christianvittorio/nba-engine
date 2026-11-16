@@ -9,7 +9,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 - **ORL**: has lost 8 straight when venue=away and proj_total=<220 and prev_result=won close (2-9 in 11 such games; chance of run 0.480%).
 - **ORL**: has scored over its projection 6 straight when streak=won 3+ straight and next_day_game=no game tomorrow (23-14 in 37 such games; chance of run 1.536%).
 - **BOS**: has seen the game total stay under the projection 10 straight when rest_edge=less rest and prev_result=won by 10+ and streak=won 3+ straight (5-12 in 17 such games; chance of run 0.110%).
-- **BOS**: has fallen short of the model's margin 6 straight when opp_rest=2d and rest_edge=less rest and streak=won 3+ straight (4-7 in 11 such games; chance of run 1.526%).
+- **BOS**: has fallen short of the model's margin 6 straight when opp_rest=2d and prev_result=won by 10+ and streak=won 3+ straight (2-9 in 11 such games; chance of run 1.526%).
 - **BOS**: has scored under its projection 6 straight when rest_edge=less rest and streak=won 3+ straight (11-15 in 26 such games; chance of run 1.562%).
 
 ## CHI at CLE
