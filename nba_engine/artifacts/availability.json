@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-17T04:21:56Z",
+ "generated_utc": "2026-11-17T18:14:32Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -1202,7 +1202,7 @@
      "nba_id": 1629130,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-16T22:37Z"
+     "date": "2026-11-17T16:25Z"
     }
    ]
   },
@@ -3120,6 +3120,13 @@
      "date": "2026-11-12T16:36Z"
     },
     {
+     "name": "Jaylen Brown",
+     "nba_id": 1627759,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-17T04:56Z"
+    },
+    {
      "name": "Ariel Hukporti",
      "nba_id": 1630574,
      "status": "Out",
@@ -3758,6 +3765,13 @@
    ],
    "injuries": [
     {
+     "name": "Scottie Barnes",
+     "nba_id": 1630567,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-17T17:29Z"
+    },
+    {
      "name": "Nate Bittle",
      "nba_id": null,
      "status": "Out",
@@ -4043,6 +4057,13 @@
      "date": "2026-10-28T18:38Z"
     },
     {
+     "name": "Felix Okpara",
+     "nba_id": -5105841,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-17T16:38Z"
+    },
+    {
      "name": "Tristan Vukcevic",
      "nba_id": 1641774,
      "status": "Out",
@@ -4134,7 +4155,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 28,
-  "injuries_endpoint_entries": 104,
-  "embedded_injuries": 104
+  "injuries_endpoint_entries": 107,
+  "embedded_injuries": 107
  }
 }
