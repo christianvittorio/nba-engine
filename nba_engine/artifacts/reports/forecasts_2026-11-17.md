@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-17
-Data refresh: last successful run 2026-11-17T18:13:48Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-17T22:01:09Z UTC. Model nbaengine-0.1.0.
 
 - NYK at TOR (game 401910002): P(home) sim 0.439 / Elo 0.465; mean score 107.2-109.5 (total 216.7); margin 50% [-12.0, 8.3], 80% [-21.0, 17.3]; total 80% [192.7, 241.4]; P(OT) 0.049; projected final NYK 109 - TOR 107 (the average outcome, not a single exact score).
   - betting line: TOR margin -3.5, total 214.5; our simulator -2.2 (differs by +1.3); line-centred P(home) 0.411.
