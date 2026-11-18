@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-18T17:52:43Z",
+ "generated_utc": "2026-11-18T21:44:37Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -784,16 +784,16 @@
     {
      "name": "Jaylon Tyson",
      "nba_id": 1642281,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-17T22:15Z"
+     "date": "2026-11-18T18:21Z"
     },
     {
      "name": "Peyton Watson",
      "nba_id": 1631212,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-17T22:13Z"
+     "date": "2026-11-18T18:24Z"
     }
    ]
   },
@@ -1188,6 +1188,13 @@
    ],
    "injuries": [
     {
+     "name": "Cade Cunningham",
+     "nba_id": 1630595,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-18T19:09Z"
+    },
+    {
      "name": "Jalen Duren",
      "nba_id": 1631105,
      "status": "Out",
@@ -1197,23 +1204,23 @@
     {
      "name": "Ronald Holland II",
      "nba_id": 1641842,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-18T15:05Z"
+     "date": "2026-11-18T19:04Z"
     },
     {
      "name": "Isaiah Joe",
      "nba_id": 1630198,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-17T18:33Z"
+     "date": "2026-11-18T19:08Z"
     },
     {
      "name": "Taurean Prince",
      "nba_id": 1627752,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-18T15:05Z"
+     "date": "2026-11-18T19:05Z"
     },
     {
      "name": "Duncan Robinson",
@@ -1919,18 +1926,11 @@
    ],
    "injuries": [
     {
-     "name": "Walker Kessler",
-     "nba_id": 1631117,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-18T15:02Z"
-    },
-    {
      "name": "Austin Reaves",
      "nba_id": 1630559,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-18T15:02Z"
+     "date": "2026-11-18T21:03Z"
     }
    ]
   },
@@ -2190,25 +2190,11 @@
    ],
    "injuries": [
     {
-     "name": "Bam Adebayo",
-     "nba_id": 1628389,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-17T21:32Z"
-    },
-    {
      "name": "Myron Gardner",
      "nba_id": 1642066,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-17T21:35Z"
-    },
-    {
-     "name": "Nikola Jovic",
-     "nba_id": 1631107,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-17T21:34Z"
+     "date": "2026-11-18T18:09Z"
     }
    ]
   },
@@ -2330,6 +2316,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-15T23:46Z"
+    },
+    {
+     "name": "Ryan Rollins",
+     "nba_id": 1631157,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-18T18:10Z"
     }
    ]
   },
@@ -3150,6 +3143,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-10-06T19:17Z"
+    },
+    {
+     "name": "Dean Wade",
+     "nba_id": 1629731,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-18T18:06Z"
     }
    ]
   },
@@ -3518,20 +3518,6 @@
    ],
    "injuries": [
     {
-     "name": "Precious Achiuwa",
-     "nba_id": 1630173,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-18T00:29Z"
-    },
-    {
-     "name": "De'Andre Hunter",
-     "nba_id": 1629631,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-18T00:33Z"
-    },
-    {
      "name": "Maxime Raynaud",
      "nba_id": 1642875,
      "status": "Out",
@@ -3794,7 +3780,7 @@
      "nba_id": 1629628,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-18T17:47Z"
+     "date": "2026-11-18T17:49Z"
     },
     {
      "name": "Nate Bittle",
@@ -3809,13 +3795,6 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-17T22:25Z"
-    },
-    {
-     "name": "Kevin McCullar Jr.",
-     "nba_id": 1641755,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-13T15:37Z"
     }
    ]
   },
@@ -3936,7 +3915,7 @@
      "nba_id": 1629637,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-18T14:59Z"
+     "date": "2026-11-18T21:05Z"
     },
     {
      "name": "Jaren Jackson Jr.",
@@ -4188,7 +4167,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 27,
-  "injuries_endpoint_entries": 109,
-  "embedded_injuries": 109
+  "injuries_endpoint_entries": 106,
+  "embedded_injuries": 106
  }
 }

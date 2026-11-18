@@ -21,7 +21,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 - **IND**: has seen the game total stay under the projection 8 straight when opp_rest=1d and proj_total=225-230 and streak=no streak (9-18 in 27 such games; chance of run 0.430%).
 
 ## MIL at MIA
-- **MIL**: has scored under its projection 12 straight when venue=away and density=normal (50-73 in 123 such games; chance of run 0.024%).
+- **MIL**: has scored under its projection 12 straight when venue=away and streak=lost 3+ straight (1-14 in 15 such games; chance of run 0.024%).
 - **MIL**: has seen the game total stay under the projection 12 straight when venue=away and streak=lost 3+ straight (1-14 in 15 such games; chance of run 0.028%).
 - **MIL**: has lost 8 straight when rest=2d and rest_edge=more rest and next_day_game=no game tomorrow (12-13 in 25 such games; chance of run 0.990%).
 - **MIA**: has scored over its projection 7 straight when venue=home (88-80 in 168 such games; chance of run 0.704%).
@@ -57,7 +57,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 - **DET**: has seen the game total stay under the projection 10 straight when rest_edge=less rest and prev_result=won by 10+ and streak=no streak (3-13 in 16 such games; chance of run 0.110%).
 - **NOP**: has lost 19 straight when rest=1d and favorite=dog and density=normal (1-31 in 32 such games; chance of run 0.148%).
 - **NOP**: has seen the game total go over the projection 8 straight when streak=no streak and density=normal (79-81 in 160 such games; chance of run 0.354%).
-- **NOP**: has beaten the model's margin 8 straight when venue=home and rest_edge=more rest and proj_total=230-235 (8-0 in 8 such games; chance of run 0.425%).
+- **NOP**: has beaten the model's margin 8 straight when venue=home and streak=no streak (57-42 in 99 such games; chance of run 0.425%).
 
 ## ATL at OKC
 - **ATL**: has won 7 straight when venue=away and rest=2d (15-8 in 23 such games; chance of run 0.068%).

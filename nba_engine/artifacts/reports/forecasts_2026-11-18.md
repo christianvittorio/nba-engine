@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-18
-Data refresh: last successful run 2026-11-18T17:51:33Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-18T21:43:20Z UTC. Model nbaengine-0.1.0.
 
 - MEM at CLE (game 401910007): P(home) sim 0.656 / Elo 0.724; mean score 121.9-115.8 (total 237.8); margin 50% [-4.1, 16.1], 80% [-13.2, 25.2]; total 80% [213.5, 263.4]; P(OT) 0.046; projected final CLE 122 - MEM 116 (the average outcome, not a single exact score).
   - betting line: CLE margin +4.5, total 237.5; our simulator +6.1 (differs by +1.6); line-centred P(home) 0.637.
