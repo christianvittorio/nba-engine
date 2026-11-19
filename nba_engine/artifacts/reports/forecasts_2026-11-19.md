@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-19
-Data refresh: last successful run 2026-11-19T18:00:38Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-19T21:59:00Z UTC. Model nbaengine-0.1.0.
 
 - GSW at MEM (game 401910019): P(home) sim 0.524 / Elo 0.624; mean score 116.4-115.3 (total 231.8); margin 50% [-9.1, 11.1], 80% [-18.2, 20.2]; total 80% [206.6, 256.4]; P(OT) 0.049; projected final MEM 116 - GSW 115 (the average outcome, not a single exact score).
   - betting line: MEM margin +6.5, total 225.5; our simulator +1.1 (differs by -5.4); line-centred P(home) 0.659.

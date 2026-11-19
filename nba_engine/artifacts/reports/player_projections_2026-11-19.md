@@ -57,6 +57,7 @@ Means from the player simulation (2PM/2PA, PRA and combos are sums of the same s
 | Isaiah Stewart | MEM | o4.5 76% | o1.5 81% | o0.5 67% | o6.5 85% | o0.5 48% | o1.5 70% | o0.5 72% | o0.5 22% | o0.5 60% | o5.5 86% | o4.5 82% | o2.5 77% |
 | Olivier-Maxence Prosper | MEM | o4.5 61% | o1.5 56% | o0.5 57% | o6.5 64% | o0.5 46% | o1.5 43% | o1.5 47% | o0.5 15% | o0.5 37% | o5.5 66% | o5.5 58% | o2.5 53% |
 | Jahmai Mashack | MEM | o2.5 72% | o0.5 79% | o0.5 78% | o4.5 76% | o0.5 44% | o0.5 71% | o0.5 54% | o0.5 48% | o0.5 66% | o3.5 74% | o3.5 75% | o1.5 79% |
+| Quinten Post | MEM | o1.5 69% | o0.5 72% | o0.5 47% | o3.5 66% | o0.5 45% | o0.5 55% | o0.5 33% | o0.5 17% | o0.5 37% | o1.5 77% | o1.5 72% | o0.5 79% |
 
 ## POR at MIL (game 401910020)
 
