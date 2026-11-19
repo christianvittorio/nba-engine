@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-19T02:57:35Z",
+ "generated_utc": "2026-11-19T18:01:17Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -117,9 +117,9 @@
     {
      "name": "Kingston Flemings",
      "nba_id": -5149077,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-17T23:06Z"
+     "date": "2026-11-19T14:50Z"
     },
     {
      "name": "Mouhamed Gueye",
@@ -131,9 +131,9 @@
     {
      "name": "Jock Landale",
      "nba_id": 1629111,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-17T23:07Z"
+     "date": "2026-11-19T14:50Z"
     },
     {
      "name": "CJ McCollum",
@@ -269,7 +269,15 @@
      "nba_id": 1642874
     }
    ],
-   "injuries": []
+   "injuries": [
+    {
+     "name": "Grant Nelson",
+     "nba_id": 1641761,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-19T15:45Z"
+    }
+   ]
   },
   "BOS": {
    "roster": [
@@ -770,16 +778,16 @@
     {
      "name": "Jaylon Tyson",
      "nba_id": 1642281,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-18T18:21Z"
+     "date": "2026-11-19T14:45Z"
     },
     {
      "name": "Peyton Watson",
      "nba_id": 1631212,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-18T23:17Z"
+     "date": "2026-11-19T14:44Z"
     }
    ]
   },
@@ -912,9 +920,9 @@
     {
      "name": "Tobi Lawal",
      "nba_id": -5106040,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-18T23:59Z"
+     "date": "2026-11-19T14:51Z"
     },
     {
      "name": "Dereck Lively II",
@@ -1155,9 +1163,9 @@
     {
      "name": "Cade Cunningham",
      "nba_id": 1630595,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-19T00:37Z"
+     "date": "2026-11-19T14:49Z"
     },
     {
      "name": "Jalen Duren",
@@ -1169,16 +1177,23 @@
     {
      "name": "Ronald Holland II",
      "nba_id": 1641842,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-18T19:04Z"
+     "date": "2026-11-19T14:49Z"
+    },
+    {
+     "name": "Ugonna Onyenso",
+     "nba_id": null,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-19T16:15Z"
     },
     {
      "name": "Taurean Prince",
      "nba_id": 1627752,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-18T19:05Z"
+     "date": "2026-11-19T14:49Z"
     },
     {
      "name": "Duncan Robinson",
@@ -1316,11 +1331,18 @@
      "date": "2026-11-12T17:03Z"
     },
     {
+     "name": "Draymond Green",
+     "nba_id": 203110,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-19T14:59Z"
+    },
+    {
      "name": "Al Horford",
      "nba_id": 201143,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-18T23:38Z"
+     "date": "2026-11-19T14:51Z"
     },
     {
      "name": "Moses Moody",
@@ -1590,9 +1612,9 @@
     {
      "name": "Andrew Nembhard",
      "nba_id": 1629614,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-18T22:27Z"
+     "date": "2026-11-19T14:45Z"
     },
     {
      "name": "Ben Sheppard",
@@ -2021,9 +2043,9 @@
     {
      "name": "Isaiah Stewart",
      "nba_id": 1630191,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-17T22:10Z"
+     "date": "2026-11-19T14:44Z"
     }
    ]
   },
@@ -2136,9 +2158,9 @@
     {
      "name": "Myron Gardner",
      "nba_id": 1642066,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-18T18:09Z"
+     "date": "2026-11-19T14:45Z"
     }
    ]
   },
@@ -2264,9 +2286,9 @@
     {
      "name": "Ryan Rollins",
      "nba_id": 1631157,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-18T18:10Z"
+     "date": "2026-11-19T14:45Z"
     }
    ]
   },
@@ -2782,6 +2804,13 @@
    ],
    "injuries": [
     {
+     "name": "Alex Caruso",
+     "nba_id": 1627936,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-19T14:50Z"
+    },
+    {
      "name": "Chet Holmgren",
      "nba_id": 1631096,
      "status": "Out",
@@ -3084,16 +3113,16 @@
     {
      "name": "Tyrese Maxey",
      "nba_id": 1630178,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-18T23:33Z"
+     "date": "2026-11-19T14:46Z"
     },
     {
      "name": "Dean Wade",
      "nba_id": 1629731,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-18T23:19Z"
+     "date": "2026-11-19T14:47Z"
     }
    ]
   },
@@ -3365,7 +3394,7 @@
      "nba_id": 1642959,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-17T19:19Z"
+     "date": "2026-11-19T15:06Z"
     }
    ]
   },
@@ -3602,7 +3631,7 @@
      "nba_id": 1642844,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-18T23:05Z"
+     "date": "2026-11-19T17:40Z"
     },
     {
      "name": "Tobias Harris",
@@ -3729,16 +3758,16 @@
     {
      "name": "Scottie Barnes",
      "nba_id": 1630567,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-18T17:46Z"
+     "date": "2026-11-19T14:48Z"
     },
     {
      "name": "RJ Barrett",
      "nba_id": 1629628,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-18T22:55Z"
+     "date": "2026-11-19T14:48Z"
     },
     {
      "name": "Nate Bittle",
@@ -4115,8 +4144,8 @@
    "weight"
   ],
   "embedded_injury_sample": {
-   "status": "Out",
-   "date": "2026-11-17T23:06Z"
+   "status": "Day-To-Day",
+   "date": "2026-11-19T14:50Z"
   },
   "injuries_top_keys": [
    "injuries",
@@ -4124,8 +4153,8 @@
    "status",
    "timestamp"
   ],
-  "injuries_endpoint_teams": 27,
-  "injuries_endpoint_entries": 99,
-  "embedded_injuries": 100
+  "injuries_endpoint_teams": 28,
+  "injuries_endpoint_entries": 104,
+  "embedded_injuries": 104
  }
 }
