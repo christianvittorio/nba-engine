@@ -31,7 +31,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 ## TOR at DET
 - **TOR**: has won 6 straight when venue=away and streak=lost 3+ straight (11-19 in 30 such games; chance of run 0.259%).
 - **TOR**: has beaten the model's margin 7 straight when venue=away and streak=lost 3+ straight (16-14 in 30 such games; chance of run 0.734%).
-- **TOR**: has seen the game total stay under the projection 6 straight when venue=away and rest_edge=equal rest and favorite=dog (11-13 in 24 such games; chance of run 1.679%).
+- **TOR**: has seen the game total stay under the projection 6 straight when venue=away and favorite=dog and next_day_game=no game tomorrow (15-21 in 36 such games; chance of run 1.679%).
 - **DET**: has beaten the model's margin 10 straight when favorite=fav and streak=no streak and opp_record=middling opp (10-0 in 10 such games; chance of run 0.103%).
 - **DET**: has won 16 straight when streak=no streak and density=3-in-4 (26-28 in 54 such games; chance of run 0.146%).
 - **DET**: has seen the game total go over the projection 7 straight when rest_edge=equal rest and proj_total=220-225 and opp_record=middling opp (9-2 in 11 such games; chance of run 0.718%).
@@ -50,7 +50,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 - **NOP**: has won 9 straight when rest_edge=equal rest and opp_record=middling opp and record=middling (11-8 in 19 such games; chance of run 0.368%).
 - **OKC**: has seen the game total stay under the projection 9 straight when venue=home and proj_total=230-235 and opp_record=middling opp (7-12 in 19 such games; chance of run 0.217%).
 - **OKC**: has won 17 straight when proj_total=230-235 and opp_record=middling opp and next_day_game=no game tomorrow (27-5 in 32 such games; chance of run 0.462%).
-- **OKC**: has scored over its projection 6 straight when venue=home and rest=1d and record=middling (12-5 in 17 such games; chance of run 1.422%).
+- **OKC**: has scored over its projection 6 straight when venue=home and opp_record=middling opp and record=middling (13-7 in 20 such games; chance of run 1.422%).
 
 ## PHX at UTA
 - **PHX**: has beaten the model's margin 10 straight when rest_edge=equal rest and proj_total=230-235 and density=normal (24-22 in 46 such games; chance of run 0.096%).

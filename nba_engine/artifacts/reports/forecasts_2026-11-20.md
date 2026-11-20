@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-20
-Data refresh: last successful run 2026-11-20T17:36:22Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-20T21:41:32Z UTC. Model nbaengine-0.1.0.
 
 - CHA at ATL (game 401909305): P(home) sim 0.625 / Elo 0.725; mean score 114.0-109.0 (total 223.1); margin 50% [-5.1, 15.1], 80% [-14.2, 24.2]; total 80% [198.6, 247.4]; P(OT) 0.050; projected final ATL 114 - CHA 109 (the average outcome, not a single exact score).
   - betting line: ATL margin +7.5, total 218.5; our simulator +5.0 (differs by -2.5); line-centred P(home) 0.693.
