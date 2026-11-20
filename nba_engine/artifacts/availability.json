@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-20T02:53:03Z",
+ "generated_utc": "2026-11-20T17:37:24Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -1354,9 +1354,9 @@
     {
      "name": "Draymond Green",
      "nba_id": 203110,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-19T18:51Z"
+     "date": "2026-11-20T03:53Z"
     },
     {
      "name": "Moses Moody",
@@ -1744,7 +1744,7 @@
      "espn_id": "5108024",
      "name": "Yanic Konan Niederhauser",
      "pos": "C",
-     "nba_id": null
+     "nba_id": -5108024
     },
     {
      "espn_id": "4398390",
@@ -2043,9 +2043,9 @@
     {
      "name": "Zach Edey",
      "nba_id": 1641744,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-19T19:09Z"
+     "date": "2026-11-20T03:53Z"
     },
     {
      "name": "Jerami Grant",
@@ -2321,16 +2321,16 @@
     {
      "name": "Kyle Kuzma",
      "nba_id": 1628398,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-19T19:20Z"
+     "date": "2026-11-20T03:55Z"
     },
     {
      "name": "Myles Turner",
      "nba_id": 1626167,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-19T19:15Z"
+     "date": "2026-11-20T03:55Z"
     }
    ]
   },
@@ -2853,6 +2853,13 @@
      "date": "2026-11-18T00:01Z"
     },
     {
+     "name": "Nikola Topic",
+     "nba_id": 1642260,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-20T17:02Z"
+    },
+    {
      "name": "Cason Wallace",
      "nba_id": 1641717,
      "status": "Out",
@@ -3115,7 +3122,7 @@
      "nba_id": 1631230,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-17T22:12Z"
+     "date": "2026-11-20T17:20Z"
     },
     {
      "name": "Adem Bona",
@@ -3129,7 +3136,7 @@
      "nba_id": 1627759,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-18T22:21Z"
+     "date": "2026-11-20T17:26Z"
     },
     {
      "name": "Ariel Hukporti",
@@ -3143,14 +3150,7 @@
      "nba_id": 1630178,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-19T14:46Z"
-    },
-    {
-     "name": "Dean Wade",
-     "nba_id": 1629731,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-19T14:47Z"
+     "date": "2026-11-20T17:28Z"
     }
    ]
   },
@@ -3378,9 +3378,9 @@
     {
      "name": "Deni Avdija",
      "nba_id": 1630166,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-20T00:21Z"
+     "date": "2026-11-20T03:55Z"
     },
     {
      "name": "Vit Krejci",
@@ -3406,9 +3406,9 @@
     {
      "name": "Robert Williams III",
      "nba_id": 1629057,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-18T22:58Z"
+     "date": "2026-11-20T03:55Z"
     },
     {
      "name": "Chris Youngblood",
@@ -4117,7 +4117,6 @@
   "DAL:Tarik Biberovic",
   "DET:Ugonna Onyenso",
   "HOU:Quadir Copeland",
-  "LAC:Yanic Konan Niederhauser",
   "LAL:Arthur Kaluma",
   "LAL:AK Okereke",
   "MEM:Richie Saunders",
