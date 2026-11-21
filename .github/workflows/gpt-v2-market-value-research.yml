@@ -1,6 +1,7 @@
 name: gpt-v2-market-value-research
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     paths:
       - "gpt_engine/v2/market_value.py"
       - "gpt_engine/v2/market_probabilities.py"
