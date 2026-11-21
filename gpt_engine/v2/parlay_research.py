@@ -19,7 +19,7 @@ from zoneinfo import ZoneInfo
 
 from .contracts import iso, utc
 
-VERSION = "gpt-v2-parlay-research-0.1"
+VERSION = "gpt-v2-parlay-research-0.2"
 EASTERN = ZoneInfo("America/New_York")
 _ALLOWED_MARKETS = frozenset({"moneyline", "spread", "total"})
 _ALLOWED_DECISIONS = frozenset({"RESEARCH_ONLY", "REVIEW_POSITIVE_EV"})
@@ -104,7 +104,7 @@ def build_parlay_board(report: dict, *, date_eastern: str | None = None,
                        minimum_joint_win_probability: float = 0.10,
                        max_decimal_odds: float = 5,
                        maximum_results: int = 5) -> dict:
-    """Find top raw expected-ROI tickets within limited, verifiable scope.
+    """Find the highest modeled win-chance among positive-value research tickets.
 
     A ticket is NOT a recommendation. Independence across DIFFERENT NBA
     games is an assumption, not a measured joint distribution. Push returns
@@ -186,9 +186,12 @@ def build_parlay_board(report: dict, *, date_eastern: str | None = None,
                     ),
                     "actionable": False,
                 })
+    # Primary objective: chance every leg wins. Expected ROI is only
+    # an eligibility gate and tie breaker, NEVER the ranking target.
+    # This typically favors two-leg combinations over three-leg tickets.
     eligible.sort(key=lambda x: (
-        -x["estimated_roi_independent"],
         -x["full_win_probability_independent"],
+        -x["estimated_roi_independent"],
         x["leg_count"], x["book"],
         tuple((p["game_id"],p["market_id"],p["selection"]) for p in x["legs"])
     ))
@@ -199,7 +202,8 @@ def build_parlay_board(report: dict, *, date_eastern: str | None = None,
         "date_eastern": date_eastern,
         "eligible_single_legs": len(candidates),
         "candidate_tickets_screened": considered,
-        "ranking_metric": "estimated_roi_independent",
+        "ranking_metric": "full_win_probability_independent",
+        "ranking_policy": "MAX_HIT_PROBABILITY_SUBJECT_TO_POSITIVE_ESTIMATED_VALUE",
         "filters": {
             "minimum_leg_roi": minimum_leg_roi,
             "minimum_joint_win_probability": minimum_joint_win_probability,
@@ -219,7 +223,7 @@ def build_parlay_board(report: dict, *, date_eastern: str | None = None,
         "status": ("RESEARCH_RANKING_AVAILABLE" if best
                    else "NO_QUALIFYING_PARLAY"),
         "limitations": [
-            "Ranking maximizes model-estimated ROI, not observed betting profit.",
+            "Ranking maximizes model-estimated full-win probability among positive raw EV tickets, not ROI.",
             "Live possession model is uncalibrated. A research leader is NOT a pick.",
             "Inter-game independence is assumed; common news/pace can correlate outcomes.",
             "Full-win odds assume every leg wins; push refunds reduce settlement payout.",
@@ -244,7 +248,7 @@ def render_markdown(board: dict) -> str:
                    "fresh, individually positive-EV legs meet the filters.")
     else:
         out.extend([
-            f"## Highest model-estimated ROI — {first['book']}, "
+            f"## Highest modeled full-win probability with positive raw EV — {first['book']}, "
             f"{first['leg_count']} legs",
             "", "| Game | Market | Side | Line | Model P | Quoted odds |",
             "|---|---|---|---:|---:|---:|",
@@ -257,12 +261,12 @@ def render_markdown(board: dict) -> str:
                        f"{leg['decimal_odds']:.2f} |")
         out.extend(["",
             f"Combined decimal price (all win): **{first['full_win_decimal_odds']:.2f}**.",
-            f"Estimated all-win probability (independence): "
+            f"Estimated all-win probability — ranking metric (independence): "
             f"**{first['full_win_probability_independent']:.1%}**.",
-            f"Raw model-estimated ROI (pushes accounted for): "
+            f"Raw model-estimated ROI — eligibility check, NOT ranking metric (pushes accounted for): "
             f"**{first['estimated_roi_independent']:+.1%}**.",
             f"Validation: **{first['validation_status']}**.",
-            "", "This number is NOT a calibrated edge or expected real-world return.",
+            "", "Neither modeled hit probability nor raw ROI is a calibrated real-world guarantee.",
         ])
     out.extend(["", "## Method and exclusions", ""])
     out.extend("- " + item for item in board["limitations"])
