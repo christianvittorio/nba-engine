@@ -1,6 +1,94 @@
 # GPT v2 — sportsbook market value research lane
 
 
+## Usage-led 90% season-hit alternate player prop watchlist
+
+New experimental, **research-only** scanner:
+`python -m gpt_engine.v2.alt_prop_research`. It reads the existing NBA
+SQLite warehouse, original pregame stat samples and (when available) actual
+independently captured alternate player prop odds.
+
+**Hard qualification requirements**
+
+- Current season: at least **12 completed prior games** for this player on
+  the actual team in today's game, with a credible recent minutes record;
+  no after-tip or same-day box scores.
+- High usage: at least **24% weighted observed/estimated usage**, and
+  top **two** of the team's qualified rotation players by season usage.
+  Published `usg_pct` is used when present; otherwise a documented
+  box-score FGA + .44 FTA + TOV and team denominator approximation is used.
+  Neither is a future usage guarantee.
+- Position matchup: opponent must rank **bottom five defensively for
+  this statistic** among all 30 teams, defined as the five teams
+  allowing the *most* PTS / AST / REB per 48 group minutes. Only unambiguous
+  published **G / F / C** roster labels are currently supported.
+  Missing or ambiguous PG/SG/SF/PF labels are **never guessed**. The
+  defensive metric is opposing players' box-score productivity by broad
+  position, **not attribution to a specific defender**.
+- Alternate OVER stat line: highest meaningful half-point PTS / AST /
+  REB threshold historically beaten in **at least 90%** of observed
+  current-season games, with last-five observed hit rate >=80%.
+  Defaults prevent trivial `over 0.5` ladders. Displays exact hit counts,
+  not just percentages, and a descriptive Wilson confidence bound.
+- Player flagged **out, doubtful or questionable** in a sourced pregame
+  injury snapshot is omitted. Unknown/no snapshot means *unconfirmed*
+  and must not be presented as a confirmed starter.
+- Same-opponent hit counts are reported separately. One or two historical
+  games versus tonight's opponent are **not** described as 90% H2H proof.
+
+**Odds and parlay treatment**
+
+The threshold derived from historical stats is explicitly an
+**UNPRICED statistical alt line**, not a guarantee a bookmaker offers
+it. The anonymous ESPN feed previously used for the daily run only
+demonstrated regular game moneyline/spread coverage. It has not
+demonstrated free reliable alternate player prop coverage.
+
+The optional event-scoped The Odds API normalizer now recognizes
+`player_points_alternate`, `player_assists_alternate` and
+`player_rebounds_alternate` **if** an original provider response is
+separately available; this does not require users to register or buy
+anything for ordinary daily scans. It does not magically make those
+alt odds available for free. Standard and alternate contracts use
+separate market identities.
+
+For an actual **source-priced** two-leg parlay, we additionally
+require two opposing side prices at the exact alternate threshold
+from one named sportsbook, a player-ID and NBA game-ID match,
+retrieval BEFORE the immutable model cutoff, supported player
+statistic simulation histograms, positive raw model EV, two different
+games, and the same Eastern slate date. We never combine two player
+props from the same game using independence arithmetic.
+
+If the exact odds or valid defense rankings cannot be verified,
+the scanner outputs a watchlist (or no verified candidates),
+**not** made-up odds or a forced parlay. This can legitimately output
+`STATISTICAL_WATCHLIST_ONLY` or `NO_VERIFIED_90_PERCENT_MATCHUP`.
+
+Do not read observed 90% season hits as a 90% probability next game.
+Choosing the highest line *after viewing the same game logs*
+creates selection bias, and 12/12 has a Wilson 95% lower descriptive
+bound well below 90%. The opponent's defense role label and expected
+minutes introduce further uncertainty. Research outputs are never
+approved wagering advice and cannot demonstrate profitable ROI.
+
+Files generated within each scheduled daily run, not published:
+`/tmp/gpt-v2-usage-dvp-alt-prop.json` and
+`/tmp/gpt-v2-usage-dvp-alt-prop.md`. The GitHub CI log shows a
+redacted count and candidate overview with actual source quality flags.
+
+```bash
+python -m gpt_engine.v2.alt_prop_research \
+  --db /tmp/gpt-v2-daily.sqlite \
+  --forecast-ledger gpt_engine/v2/artifacts/forecast_log.jsonl \
+  --odds-ledger /tmp/gpt-v2-odds-log.jsonl \
+  --root . \
+  --output-json /tmp/gpt-v2-usage-dvp-alt-prop.json \
+  --output-md /tmp/gpt-v2-usage-dvp-alt-prop.md
+```
+
+---
+
 ## Daily high-hit singles + small-positive-EV parlay research
 
 The no-key daily engine outputs **two separate rankings**, both using only
