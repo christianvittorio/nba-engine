@@ -74,6 +74,12 @@ jobs:
                   "odds_keys":sorted(sample) if isinstance(sample,dict) else [],
                   "home_keys":sorted(h) if isinstance(h,dict) else [],
                   "away_keys":sorted(a) if isinstance(a,dict) else [],
-                  "provider_name":(sample.get("provider") or {}).get("name") if isinstance(sample,dict) else None
+                  "provider_name":(sample.get("provider") or {}).get("name") if isinstance(sample,dict) else None,
+                  "nested_market_keys":{
+                      name: sorted(sample[name])
+                            if isinstance(sample.get(name),dict)
+                            else type(sample.get(name)).__name__
+                      for name in ("moneyline","pointSpread","total")
+                  } if isinstance(sample,dict) else {}
               })
           PY
