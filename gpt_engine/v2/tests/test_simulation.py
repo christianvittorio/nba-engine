@@ -61,6 +61,10 @@ class TestSimulation(unittest.TestCase):
         self.assertLessEqual(r["home_win_probability"],1)
         self.assertEqual(r["total"]["interval_80"].__len__(),2)
         self.assertIn("20",r["player_statistics"]["home:player:0"]["threshold_probabilities"]["pts"])
+        shooting=r["player_statistics"]["home:player:0"]["field_goal_percentage"]
+        self.assertGreater(shooting["eligible_simulations"],0)
+        self.assertGreaterEqual(shooting["ratio_of_expected_totals"],0)
+        self.assertLessEqual(shooting["ratio_of_expected_totals"],1)
 
     def test_reproducible_across_batch_sizes(self):
         h=sample_roster("home");a=sample_roster("away")
