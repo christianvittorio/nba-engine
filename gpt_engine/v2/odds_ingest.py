@@ -23,8 +23,15 @@ SPORT = "basketball_nba"
 ODDS_URL = f"https://api.the-odds-api.com/v4/sports/{SPORT}/odds"
 EVENT_URL = f"https://api.the-odds-api.com/v4/sports/{SPORT}/events"
 FEATURED = frozenset({"h2h", "spreads", "totals"})
-PROPS = {"player_points": "pts", "player_rebounds": "reb",
-         "player_assists": "ast", "player_threes": "fg3m"}
+PROPS = {
+    "player_points": "pts", "player_rebounds": "reb",
+    "player_assists": "ast", "player_threes": "fg3m",
+    # Exact alternate player ladders are supported only when the provider
+    # actually supplies them for the event. No free ESPN alt feed is implied.
+    "player_points_alternate": "pts",
+    "player_rebounds_alternate": "reb",
+    "player_assists_alternate": "ast",
+}
 VERSION = "gpt-v2-odds-ingestion-0.1"
 
 
@@ -123,7 +130,10 @@ def _market_outcome(event: dict, market: dict, outcome: dict,
             return None
         line = float(point)
         stat = PROPS[key]
-        return {"market_id": f"player:{stat}:{player_id}:{line:g}",
+        # Prevent ordinary and alternate contracts at the same numerical
+        # line from overwriting one another in the immutable quote ledger.
+        namespace = "alt" if key.endswith("_alternate") else "standard"
+        return {"market_id": f"player:{namespace}:{stat}:{player_id}:{line:g}",
                 "market_type": "player_prop", "selection": name.lower(),
                 "player_id": player_id, "line": line}
     return None
