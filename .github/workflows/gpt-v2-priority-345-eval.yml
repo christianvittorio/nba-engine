@@ -34,6 +34,12 @@ jobs:
             gpt_engine/v2/tests/test_advanced_event_matchup_ensemble.py \
             gpt_engine/v2/tests/test_simulation.py \
             gpt_engine/v2/tests/test_calibration_ablation.py
+      - name: Small historical player shot-type simulation ablation
+        run: |
+          python -m gpt_engine.v2.shot_mix_eval \
+            --start 2026-02-01 --end 2026-02-08 \
+            --max-games 16 --n 120 \
+            --output /tmp/gpt-v2-player-shot-mix-smoke.json
       - name: Evaluate four opponent-aware possession event rates on frozen NBA holdout
         run: |
           python -m gpt_engine.v2.event_rate_eval \
@@ -50,6 +56,11 @@ jobs:
           import json
           event=json.load(open("/tmp/gpt-v2-opponent-event-rate-holdout.json"))
           ensemble=json.load(open("/tmp/gpt-v2-elo-ridge-ensemble-holdout.json"))
+          shot=json.load(open("/tmp/gpt-v2-player-shot-mix-smoke.json"))
+          assert shot["matched_games"]>=8
+          assert shot["deployment"]["automatic_promotion"] is False
+          assert set(shot["aggregate_mean_per_game_errors"])=={
+              "fg3a","fg3m","fta","total_error","margin_error"}
           assert event["production_simulator_changed"] is False
           assert event["counts"]["test"]>=1000
           assert ensemble["counts"]["test"]>=1000
@@ -71,4 +82,5 @@ jobs:
           path: |
             /tmp/gpt-v2-opponent-event-rate-holdout.json
             /tmp/gpt-v2-elo-ridge-ensemble-holdout.json
+            /tmp/gpt-v2-player-shot-mix-smoke.json
           if-no-files-found: error
