@@ -20,7 +20,7 @@ VERSION = "feature-v2.1"
 BASIC = ("off_rating", "def_rating", "net_rating", "pace", "poss",
          "efg_pct", "ts_pct", "three_point_rate", "fta_rate", "ast",
          "tov", "oreb", "dreb", "opp_fg3a", "opp_fg3m", "opp_ast",
-         "opp_efg_pct", "tm_tov_pct", "oreb_pct", "dreb_pct")
+         "opp_efg_pct", "opp_three_pct_allowed", "tm_tov_pct", "oreb_pct", "dreb_pct")
 
 def _number(value: Any, fallback: float) -> float:
     try:
@@ -122,6 +122,12 @@ def build_team_features(team_games: pd.DataFrame, game: GameContext,
     df = team_games.copy()
     df["game_date"] = df.game_date.astype(str).str[:10]
     df["season"] = pd.to_numeric(df.season)
+    # True opponent 3P defense: makes divided by opponent attempts per game.
+    # Distinct from simply conceding many attempts.
+    if "opp_fg3m" in df and "opp_fg3a" in df:
+        df["opp_three_pct_allowed"]=pd.to_numeric(
+            df["opp_fg3m"],errors="coerce") / pd.to_numeric(
+            df["opp_fg3a"],errors="coerce").replace(0,float("nan"))
     # Day gate is stricter than timestamp: no current-date or later result,
     # even for a game that tipped earlier on the same Eastern day.
     prior = df[(df.game_date < game.game_date_eastern) &
@@ -143,7 +149,7 @@ def build_team_features(team_games: pd.DataFrame, game: GameContext,
             "ts_pct":0.57,"three_point_rate":0.38,"fta_rate":0.24,
             "ast":25.0,"tov":13.0,"oreb":10.0,"dreb":33.0,
             "opp_fg3a":34.0,"opp_fg3m":12.0,"opp_ast":25.0,
-            "opp_efg_pct":0.54,"tm_tov_pct":0.13,"oreb_pct":0.25,
+            "opp_efg_pct":0.54,"opp_three_pct_allowed":0.36,"tm_tov_pct":0.13,"oreb_pct":0.25,
             "dreb_pct":0.75
         }[key])
     h=_hist_group(prior,game.season,game.home_team_id,game.game_date_eastern)
