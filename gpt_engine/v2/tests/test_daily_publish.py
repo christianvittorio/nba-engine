@@ -121,7 +121,9 @@ def test_current_conditional_run_excludes_nonmatching_games_and_future():
     # Two previous home games after exactly 2 full days' rest are both wins.
     label=_situation(games,"team:nba:1","2026-11-02",2027,"home")
     assert "2–0" in label
-    assert "current conditional run: 2 consecutive wins" in label
+    assert "last 2 qualifying games: WIN outcomes in a row among MATCHING games only" in label
+    assert "2026-10-30 (W)" in label
+    assert "2026-10-27 (W)" in label
     # Include a future loss: as-of date report must remain unchanged.
     poisoned=pd.concat([games,pd.DataFrame([{
         "game_id":"0022699999","game_date":"2026-11-02",
@@ -135,6 +137,37 @@ def test_current_conditional_run_excludes_nonmatching_games_and_future():
         "won":1,"true_rest_days":2
     }])],ignore_index=True)
     assert _situation(poisoned,"team:nba:1","2026-11-02",2027,"home")==label
+
+
+def test_last_five_one_four_can_coexist_with_dated_matching_wins():
+    # Last five matches: 1 W, 4 L. Genuine CURRENT overall streak: L4.
+    # Last two home games following exactly two full days off: both W.
+    dates=["2026-10-01","2026-10-04","2026-10-05",
+           "2026-10-07","2026-10-10","2026-10-11",
+           "2026-10-13","2026-10-15","2026-10-17"]
+    winners=["A","A","B","B","A","B","B","B","B"]
+    home_dates={"2026-10-01","2026-10-04","2026-10-10"}
+    rows=[]
+    for i,(date,winner) in enumerate(zip(dates,winners)):
+        for team in ("A","B"):
+            rows.append({
+                "game_id":f"002260{i:04d}", "game_date":date,
+                "season":2027, "team_id":team,
+                "home":((date in home_dates)==(team=="A")),
+                "pts":114 if team==winner else 97,
+            })
+    finished=add_finished_game_context(pd.DataFrame(rows))
+    from gpt_engine.v2.daily_publish import _recent_form
+    form=_recent_form(finished,"team:nba:A","2026-10-20")
+    assert "last 5: 1–4" in form
+    assert "current overall streak (uninterrupted games): **L4**" in form
+    situation=_situation(finished,"team:nba:A","2026-10-20",2027,"home")
+    assert "exactly 2 full rest days" in situation
+    assert "**2–0**" in situation
+    assert "2026-10-10 (W)" in situation
+    assert "2026-10-04 (W)" in situation
+    assert "not an overall streak" in situation
+    assert "NOT a calibrated probability" in situation
 
 
 def test_append_only_ledger_no_future_issued_forecasts():
