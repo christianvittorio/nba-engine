@@ -6,7 +6,7 @@ This is a **data extraction and validation pipeline**, not a prediction model. I
 
 We use season-partitioned public NBA stats data from [llimllib/nba_data](https://github.com/llimllib/nba_data), available as Parquet at [basketball-data.billmill.org](https://basketball-data.billmill.org/nba/). The archive derives its team and player game logs from the NBA's official stats and advanced box scores. Season `2020` is **2019–20**, and `2026` is **2025–26**.
 
-Each backfill runs for 2019–20 through 2025–26, preserving regular season **and** playoffs/play-in separately. The pandemic seasons have **1059 games (2019–20)** and **1080 games (2020–21)**, not 1230. Every full 82-game regular season from 2021–22 through 2025–26 is expected to have 1230.
+Each backfill runs for 2019–20 through the current 2026–27 season, preserving regular season **and** playoffs/play-in separately. The pandemic seasons have **1059 games (2019–20)** and **1080 games (2020–21)**, not 1230. Every full 82-game regular season from 2021–22 through 2025–26 is expected to have 1230; **2026–27 is partial** and explicitly labeled, never claimed complete.
 
 ### Outputs per season
 
@@ -29,10 +29,10 @@ A position of `F` or `G-F` remains exactly that: it is **not** silently split in
 python -m pip install duckdb pandas pytest
 pytest -q data_foundation/tests
 python -m data_foundation.build --seasons 2020 2021
-python -m data_foundation.build --seasons 2020 2021 2022 2023 2024 2025 2026
+python -m data_foundation.build --seasons 2020 2021 2022 2023 2024 2025 2026 2027
 ```
 
-The GitHub workflow `data-foundation-backfill` imports actual historical NBA data in pull requests, validating completeness and matchup feed schema, and imports all seasons on merge to main. Any incomplete season or missing team/player game ID raises an error. Data is not represented as complete until the manifest is committed by a successful run.
+The GitHub workflow `data-foundation-backfill` imports actual NBA data in pull requests, validating completeness and matchup feed schema, and imports all seasons on merge to main. It then refreshes the 2026–27 season automatically each day at 15:45 UTC without deleting the older seasons' manifest entries. Any incomplete season or missing team/player game ID raises an error. Data is not represented as complete until the manifest is committed by a successful run.
 
 ### What this does NOT supply
 
