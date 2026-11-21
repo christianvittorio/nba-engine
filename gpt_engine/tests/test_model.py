@@ -6,7 +6,8 @@ from tempfile import TemporaryDirectory
 import unittest
 
 from gpt_engine.model import Game, TeamModel, build_model, evaluate_saved, history_before, load_games
-from gpt_engine.run import existing_forecasts, markdown_report
+from gpt_engine.run import markdown_report
+from gpt_engine.compare import compare
 
 
 class TestModel(unittest.TestCase):
@@ -70,6 +71,20 @@ class TestModel(unittest.TestCase):
         future = dict(base, made_at_utc="2026-11-21T20:00:00Z")
         self.assertEqual(evaluate_saved([past], games)["n"], 1)
         self.assertEqual(evaluate_saved([future], games)["n"], 0)
+
+    def test_matched_comparison_excludes_post_tip_and_missing_games(self):
+        finals = [Game(2026, 100, "BOS", "ATL", 110, 100, "2026-11-20")]
+        initial = {"season": 2026, "game_id": 100, "p_home": 0.6,
+                   "mean_margin": 3.0, "mean_total": 211.0,
+                   "made_at_utc": "2026-11-20T19:00:00Z",
+                   "tip_utc": "2026-11-20T20:00:00Z"}
+        claude = dict(initial, p_home=0.7, mean_margin=6.0, mean_total=210.0)
+        result = compare([initial], {(2026, 100): claude}, finals)
+        self.assertEqual(result["gpt"]["n"], 1)
+        self.assertEqual(result["claude"]["n"], 1)
+        result = compare([dict(initial, made_at_utc="2026-11-20T21:00:00Z")],
+                         {(2026, 100): claude}, finals)
+        self.assertEqual(result["gpt"]["n"], 0)
 
     def test_report_does_not_repeat_previous_day(self):
         report = markdown_report("2026-11-21", [], {}, {"n": 0}, 0, 0)
