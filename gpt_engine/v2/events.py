@@ -91,7 +91,7 @@ def import_events(con:sqlite3.Connection,season:int,games:list[str],include_rota
                     (gid,pid,tid,int(r["_source_stint_index"]),float(r.in_time),
                      float(r.out_time),_clean(r.get("pts")),
                      "nba_stats_archive",timestamp,
-                     canonical_json(["matches_box_score="+str(r.get("matches_box_score"))])))
+                     canonical_json(["matches_box_score="+str(r.get("matches_box_score"))]))
                 )
                 counts["rotation_stints"]+=1
     return counts
