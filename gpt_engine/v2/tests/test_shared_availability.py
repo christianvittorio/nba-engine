@@ -120,6 +120,25 @@ def test_append_only_archive_and_original_time():
         assert latest_asof_archive(one.parent,"2026-11-18T17:00:00Z") is None
         assert latest_asof_archive(one.parent,"2026-11-22T18:01:00Z") is None
 
+def test_player_removed_from_injury_list_is_not_stale_out_forever():
+    con=warehouse()
+    first=compact_snapshot(shared_source(),cutoff_utc=NOW)
+    ingest_availability_snapshot(con,GAME,NOW,first)
+    updated=shared_source()
+    updated["generated_utc"]="2026-11-21T19:00:00Z"
+    updated["teams"]["ATL"]["injuries"]=[
+        x for x in updated["teams"]["ATL"]["injuries"]
+        if x.get("nba_id")!=101
+    ]
+    next_snapshot=compact_snapshot(updated,cutoff_utc=NOW)
+    ingest_availability_snapshot(con,GAME,NOW,next_snapshot)
+    rows=asof_availability(con,GAME,NOW)
+    latest={r["player_id"]:r for r in rows}
+    assert latest["player:nba:101"]["normalized_status"]=="unknown"
+    assert latest["player:nba:101"]["provider_status"]=="not_listed_in_injury_feed"
+    assert latest["player:nba:101"]["report_utc"]=="2026-11-21T19:00:00Z"
+    assert asof_lineup(con,GAME,NOW)==[]
+
 def test_malformed_source_incomplete_team_rejected_when_missing():
     src=shared_source()
     src["problems"]=["roster unavailable"]
