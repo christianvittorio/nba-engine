@@ -1,5 +1,91 @@
 # GPT v2 — sportsbook market value research lane
 
+## FREE default: no paid API needed (added November 21, 2026)
+
+The NBA Engine's **default odds workflow now uses HoopsAPI's permanent
+€0 Free tier**. Published offer (November 21, 2026): 10 API requests
+per rolling day, NBA moneylines/spreads/totals, bookmaker refresh
+roughly every 10 minutes, no credit card. The free API key requires
+a one-time **free account registration**; it cannot be obtained or
+invented by this project. Configure the GitHub Actions secret
+`HOOPSAPI_KEY` or an environment variable with the same name.
+**We do not call any paid API in the default workflow.**
+
+### Five bookmakers available without payment
+
+- FanDuel
+- 1xBet
+- Betway
+- Pinnacle
+- Unibet
+
+Other books (Smarkets/Cloudbet) may appear if the provider's actual
+response contains them. **Stake, MelBet and bet365 are NOT part of this
+free provider feed.** The original requested five-book board can still
+show those names but leaves their cells missing, never substituting
+another sportsbook's prices. A separate five-book **free-provider**
+board lists the five above when they have valid pretip quotations.
+
+### Free API setup (no credit card)
+
+1. Open https://hoopsapi.com/sign-up and obtain a free account/API key.
+2. In the GitHub repo open **Settings → Secrets and variables → Actions**.
+3. Create a repository secret named `HOOPSAPI_KEY` with that key.
+4. After this PR passes tests and is merged, the existing pretip daily
+   schedule calls the free API once per run (up to 3 scheduled requests
+   on weekdays; below the published free quota).
+5. Alternatively, run locally using environment `HOOPSAPI_KEY` and:
+
+```bash
+python -m gpt_engine.v2.hoopsapi_free \
+  --nba-db /tmp/gpt-v2-daily.sqlite \
+  --ledger /tmp/gpt-v2-odds-log.jsonl \
+  --report /tmp/gpt-v2-free-odds-capture.json
+```
+
+The program rejects provider prices retrieved after tip, validates
+per-book `captured_at` timestamps, matches actual official NBA
+team IDs/tips in the warehouse, preserves exact decimal market prices
+and applies the same no-lookahead EV gates as the paid prototype.
+
+Offline mode uses an original API response (JSON with `games` array)
+and its REAL retrieval timestamp:
+
+```bash
+python -m gpt_engine.v2.hoopsapi_free \
+  --nba-db /tmp/gpt-v2-daily.sqlite \
+  --source-json /tmp/captured_hoopsapi_response.json \
+  --retrieved-at-utc 2026-11-21T20:05:00Z \
+  --ledger /tmp/frozen_free_odds.jsonl \
+  --report /tmp/free_odds_report.json
+```
+
+Use the `--book-set free` option to produce the free five-book
+side-by-side report from `five_book_board.py`:
+
+```bash
+python -m gpt_engine.v2.five_book_board \
+  --asof-report /tmp/gpt-v2-market-asof-latest.json \
+  --book-set free \
+  --output-json /tmp/gpt-v2-free-five-book.json \
+  --output-md /tmp/gpt-v2-free-five-book.md
+```
+
+No actual authenticated HoopsAPI request or CI smoke run has yet
+been verified here. Free-tier use has restrictions: its Terms prohibit
+raw odds redistribution and operating a competing odds aggregation
+service. This pipeline is research-only, never publishes the raw
+sportsbook data in the public GitHub repository, and requires license
+review before any commercial product release.
+
+Provider documentation:
+- https://hoopsapi.com/leagues/nba
+- https://hoopsapi.com/docs
+- https://hoopsapi.com/legal/terms
+
+---
+
+
 This component compares **actual timestamped bookmaker quotes** with
 **separately supplied line-specific probability estimates**. It computes
 break-even probabilities, a two-sided proportional no-vig benchmark, raw
@@ -287,8 +373,8 @@ deployment follows a successful historical test.
 
 The existing `gpt-v2-daily-report.yml` workflow now:
 1. Builds the NBA source warehouse as before;
-2. Fetches pretip odds only when `THE_ODDS_API_KEY` exists
-   (no odds invented on missing key);
+2. Fetches pretip odds only when a FREE `HOOPSAPI_KEY` exists
+   (no money spent or odds invented on missing key);
 3. Generates immutable first-issue pretip forecasts as before;
 4. Publishes a *separate* model-vs-market Markdown/JSON with no EV on
    markets where the exact-line probabilities are unavailable;
@@ -416,11 +502,11 @@ python -m gpt_engine.v2.five_book_board \
   --output-md /tmp/gpt-v2-five-book-board.md
 ```
 
-Scheduled GitHub runs prefer `ODDS_API_IO_KEY`, and use the legacy
-`THE_ODDS_API_KEY` only as a fallback (never claiming that a partial
-fallback covers all five). Both are configured only as GitHub Actions
-secrets. Price data and details stay in /tmp, never uploaded to this
-public repository.
+**Historical note:** The paid five-book `odds_api_io.py` adapter
+remains available as an inactive research option, but the scheduled
+workflow no longer uses it or requests its key. Free `HOOPSAPI_KEY`
+is now the only scheduled odds source. Price data and details stay in
+/tmp, never uploaded to this public repository.
 
 Pricing and terms, which may change, must be reviewed before subscribing:
 https://docs.odds-api.io/ (5-bookmaker Starter currently advertised as
