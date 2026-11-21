@@ -11,15 +11,18 @@ import json
 from pathlib import Path
 
 from .odds_api_io import BOOKS
+from .hoopsapi_free import FREE_BOOKS
 
 VERSION = "gpt-v2-five-book-side-by-side-0.1"
 
 
-def build_board(report: dict) -> dict:
+def build_board(report: dict, *, books: tuple[str,...] = BOOKS) -> dict:
+    if not books or len(books)!=len(set(books)):
+        raise ValueError("Require unique comparison book names")
     groups = defaultdict(dict)
     for row in report.get("markets",[]):
         book = row.get("book")
-        if book not in BOOKS:
+        if book not in books:
             continue
         key = (row["game_id"], row["market_id"], row["market_type"],
                row["selection"], row.get("line"), row.get("player_id"))
@@ -38,13 +41,13 @@ def build_board(report: dict) -> dict:
                 "decision":row.get("decision"),
                 "observed_at_utc":row["observed_at_utc"],
             } if (row:=books.get(book)) else None
-            for book in BOOKS
+            for book in books
         }
         best_price = max(
             (float(r["decimal_odds"]) for r in books.values()),
             default=None,
         )
-        best_books = [name for name in BOOKS
+        best_books = [name for name in books
                       if name in books and
                       float(books[name]["decimal_odds"])==best_price]
         probabilities = {
@@ -71,7 +74,7 @@ def build_board(report: dict) -> dict:
     return {
         "version":VERSION,
         "research_only":True,
-        "books":list(BOOKS),
+        "books":list(books),
         "market_count":len(markets),
         "markets":markets,
         "notes":[
@@ -85,7 +88,8 @@ def build_board(report: dict) -> dict:
 
 
 def to_markdown(board: dict) -> str:
-    columns=" | ".join(BOOKS)
+    books=board["books"]
+    columns=" | ".join(books)
     lines=[
         "# NBA GPT v2 — Five Sportsbooks vs Model",
         "",
@@ -95,7 +99,7 @@ def to_markdown(board: dict) -> str:
         "",
         "| NBA game | Market | Selection | Line | Model P* | "+
             columns+" | Best available |",
-        "|---|---|---|---:|---:|"+("---:|"*len(BOOKS))+"---|",
+        "|---|---|---|---:|---:|"+("---:|"*len(books))+"---|",
     ]
     for row in board["markets"]:
         model = row["model_probability_uncalibrated"]
@@ -103,7 +107,7 @@ def to_markdown(board: dict) -> str:
         prices = [
             (f"{row['books'][book]['decimal_odds']:.2f}"
              if row["books"][book] is not None else "—")
-            for book in BOOKS
+            for book in books
         ]
         best=(f"{row['best_decimal_odds']:.2f} "
               + ", ".join(row["books_tied_for_best_price"])
@@ -124,11 +128,14 @@ def to_markdown(board: dict) -> str:
 def main(argv=None):
     ap=argparse.ArgumentParser()
     ap.add_argument("--asof-report",type=Path,required=True)
+    ap.add_argument("--book-set",choices=("requested","free"),default="requested",
+                    help="requested=FanDuel/Stake/MelBet/1xbet/Bet365; free=HoopsAPI five")
     ap.add_argument("--output-json",type=Path,required=True)
     ap.add_argument("--output-md",type=Path,required=True)
     a=ap.parse_args(argv)
     report=json.loads(a.asof_report.read_text(encoding="utf-8"))
-    board=build_board(report)
+    books=FREE_BOOKS if a.book_set=="free" else BOOKS
+    board=build_board(report,books=books)
     a.output_json.parent.mkdir(parents=True,exist_ok=True)
     a.output_md.parent.mkdir(parents=True,exist_ok=True)
     a.output_json.write_text(json.dumps(board,indent=2,allow_nan=False)+"\n",
