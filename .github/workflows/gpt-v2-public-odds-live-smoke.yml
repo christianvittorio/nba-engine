@@ -60,6 +60,28 @@ jobs:
               print("WARNING: valid scoreboard has no NBA events for this day")
           if not priced:
               print("WARNING: no sportsbook moneylines currently included")
+          for event in games[:1]:
+              for comp in event.get("competitions") or []:
+                  for quoted in comp.get("odds") or []:
+                      if not isinstance(quoted,dict):continue
+                      for market,sides in (
+                          ("moneyline",("home","away")),
+                          ("pointSpread",("home","away")),
+                          ("total",("over","under"))
+                      ):
+                          obj=quoted.get(market) or {}
+                          for side in sides:
+                              d=obj.get(side) or {}
+                              close=d.get("close") or {}
+                              odds=close.get("odds")
+                              line=close.get("line")
+                              print("MARKET_PRICE_TYPES",{
+                                  "market":market,"side":side,
+                                  "odds_type":type(odds).__name__,
+                                  "odds_object_keys":sorted(odds) if isinstance(odds,dict) else [],
+                                  "line_type":type(line).__name__,
+                                  "line_object_keys":sorted(line) if isinstance(line,dict) else [],
+                              })
           # Keys/types only. Do NOT log sportsbook prices or raw feed.
           for event in games[:3]:
               comps=event.get("competitions") or []
