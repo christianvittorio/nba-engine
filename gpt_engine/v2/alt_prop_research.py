@@ -334,17 +334,22 @@ def build_alt_prop_research(con: sqlite3.Connection, *,
     candidates=[]
     coverage_reports=[]
     excluded=defaultdict(int)
-    teams={r[0] for r in con.execute(
-        "SELECT DISTINCT home_team_id FROM games WHERE season=? "
-        "UNION SELECT DISTINCT away_team_id FROM games WHERE season=?",
-        (games[0]["season"],games[0]["season"])
-    )}
+    # The forward-looking schedule may contain placeholder / non-regular
+    # team IDs. Rank only the 30 teams that actually have sourced, finished
+    # current-season regular game-box evidence by this specific as-of date.
+    # Never let an extra unplayed schedule entity fabricate a 31st defense.
     cache={}
     for g in games:
         season=int(g["season"]);day=g["game_date_eastern"]
         key=(season,day)
         if key not in cache:
             history, teamstats=_history(con,season,day)
+            positions=tuple(sorted({x["team_id"] for x in history} |
+                                   {x["opponent_id"] for x in history}))
+            verified_teams={x[1] for x in teamstats}
+            # The current-season source may have 30 actual teams even if
+            # the full future schedule mentions an additional placeholder.
+            teams={tid for tid in positions if tid in verified_teams}
             pos=_positions(con,season)
             rankings,coverage=defense_ranks(
                 history,pos,teams,minimum_defense_games=min_defense_games
