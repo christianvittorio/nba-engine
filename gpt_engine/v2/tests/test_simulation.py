@@ -14,7 +14,7 @@ from gpt_engine.v2.evaluation import evaluate,paired_compare,odds_edge
 def sample_roster(team):
     vals=[]
     for i,minutes in enumerate([41,38,35,32,29,25,22,18]):
-        rate={"pts":.5,"reb":.14,"ast":.105,"stl":.024,
+        rate={"pts":(.75 if i==0 else .42),"reb":.14,"ast":.105,"stl":.024,
               "blk":.015,"tov":.055,"fgm":.17,"fga":.34,
               "fg3m":.065,"fg3a":.15,"ftm":.09,"fta":.11}
         vals.append(PlayerProjection(
