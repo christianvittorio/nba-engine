@@ -19,14 +19,14 @@ import sqlite3
 
 import pandas as pd
 
-from .contracts import GameContext, Prediction, display_tip, iso
+from .contracts import GameContext, Prediction, FeatureSnapshot, display_tip, iso
 from .features import build_team_features
 from .players import estimate_player,allocate_minutes
 from .simulation import TeamSettings,Matchup,simulate_game
 from .warehouse import connect,asof_availability,asof_lineup,save_snapshot,save_model_version,save_prediction
 from .shared_availability import (
     ARCHIVE, CLAUDE_SNAPSHOT, compact_snapshot, latest_asof_archive,
-    ingest_availability_snapshot, _team_codes
+    ingest_availability_snapshot, _team_codes, SOURCE
 )
 
 VERSION="gpt-v2-research-0.1"
@@ -142,7 +142,16 @@ def run_day(db_path:str,day:str,n:int=1000,seed:int=20261121):
         avail=asof_availability(con,gc.game_id,now)
         lineups=asof_lineup(con,gc.game_id,now)
         known={r["player_id"]:r["normalized_status"] for r in avail}
-        snap=build_team_features(team_data,gc,now,availability=avail,lineup=lineups)
+        base_snap=build_team_features(
+            team_data,gc,now,availability=avail,lineup=lineups)
+        # Preserve the source provenance and failed-source evidence in the
+        # immutable snapshot itself, not only the human-readable forecast.
+        snap=FeatureSnapshot(
+            base_snap.game_id,base_snap.cutoff_utc,base_snap.definition_version,
+            base_snap.features,base_snap.missingness,
+            tuple(dict.fromkeys(base_snap.sources+((SOURCE,) if shared else ()))),
+            tuple(dict.fromkeys(base_snap.quality_flags+tuple(source_quality)))
+        )
         roster_for_team={}
         if shared:
             for team_id in (gc.home_team_id,gc.away_team_id):
