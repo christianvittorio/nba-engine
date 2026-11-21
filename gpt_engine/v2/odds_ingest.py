@@ -132,8 +132,8 @@ def _market_outcome(event: dict, market: dict, outcome: dict,
         stat = PROPS[key]
         # Prevent ordinary and alternate contracts at the same numerical
         # line from overwriting one another in the immutable quote ledger.
-        namespace = "alt" if key.endswith("_alternate") else "standard"
-        return {"market_id": f"player:{namespace}:{stat}:{player_id}:{line:g}",
+        prefix = f"player:alt:{stat}" if key.endswith("_alternate") else f"player:{stat}"
+        return {"market_id": f"{prefix}:{player_id}:{line:g}",
                 "market_type": "player_prop", "selection": name.lower(),
                 "player_id": player_id, "line": line}
     return None
