@@ -1,6 +1,68 @@
 # GPT v2 — sportsbook market value research lane
 
 
+## Archived unified daily Markdown (new default)
+
+The daily V2 workflow already writes a dated detailed game-simulation Markdown:
+
+- **gpt_engine/v2/artifacts/reports/daily_YYYY-MM-DD.md** (Eastern date)
+
+After sportsbook comparisons, highest-hit singles, game parlay research,
+usage/DvP 90%-hit player alt screening, and outcome validation, the workflow
+now ALSO generates and automatically commits:
+
+- **gpt_engine/v2/artifacts/reports/research_YYYY-MM-DD.md**
+
+This consolidated report includes source and timestamp health, historical
+final-boxscore coverage, named-book market availability, the best model-ranked
+priced singles, the highest independent modeled hit-chance parlay specific to
+that day's slate, high-usage vs bottom-five G/F/C defensive player-alt
+candidates with exact past hit counts, confirmed vs missing alternate prices,
+independent outcome grading and the complete original game-by-game
+simulation report with its injury/lineup and situational information.
+
+A two-Eastern-day pipeline makes TWO separate research Markdown reports.
+The top parlay for one date is never recycled into the other date.
+**No raw provider prices or sportsbook vendor payloads are published**;
+derived probabilities and EVs remain research-only and uncalibrated.
+Missing alt-prop prices are reported as NO SOURCE-VERIFIED
+ALTERNATE-PROP PARLAY, not fabricated. Missing original daily forecast
+Markdown makes the consolidated run fail safely.
+
+The original per-game JSON snapshots and forecast ledger remain immutable.
+Scheduled/non-PR GitHub runs commit both dated Markdown views; PR CI
+attaches the reports as a temporary verification artifact.
+
+CLI: python -m gpt_engine.v2.daily_master_report --db /tmp/gpt-v2-daily.sqlite
+--report-dir gpt_engine/v2/artifacts/reports --asof-report
+/tmp/gpt-v2-market-asof-latest.json --parlay-json
+/tmp/gpt-v2-parlay-research-latest.json --alt-prop-json
+/tmp/gpt-v2-usage-dvp-alt-prop.json --evaluation-json
+/tmp/gpt-v2-market-evaluation-latest.json
+
+### Hashtag Basketball DvP: five-position source-readiness
+
+The supplied page is https://hashtagbasketball.com/nba-defense-vs-position.
+Its publicly discoverable material describes PG/SG/SF/PF/C defensive
+stats allowed per 48 minutes, including PTS, REB and AST. This is
+more granular than our current independently archived G/F/C role groups.
+
+**It is an external research cross-check, NOT an input to the engine.**
+Direct page access has returned HTTP 403. No documented permission or
+licensed automatic API/export or commercial data reuse has been verified,
+and the source does not furnish a verifiable point-in-time snapshot
+through our existing free pipeline. We do not bypass access controls,
+republish its table, mislabel historical numbers as pretip sourced or
+guess players' PG/SG/SF/PF identities.
+
+Future authorized integration needs: permitted source data access,
+timestamped immutable snapshots, unambiguous per-player five-position
+mappings, complete 30-team x 5-position defense coverage by each stat,
+clear per-48 metric semantics, as-of cutoffs, and source provenance.
+Until then the engine conservatively uses observed G/F/C data.
+
+---
+
 ## Usage-led 90% season-hit alternate player prop watchlist
 
 New experimental, **research-only** scanner:
