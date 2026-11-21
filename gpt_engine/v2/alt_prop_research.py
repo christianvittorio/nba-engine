@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import argparse
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from itertools import combinations
 import json
 from math import isfinite, prod, sqrt
@@ -320,7 +320,7 @@ def build_alt_prop_research(con: sqlite3.Connection, *,
     # distant future fixtures when there are no imminent games.
     if date_eastern is None:
         today=now.astimezone(ET).date()
-        valid_dates={today.isoformat(),__import__("datetime").timedelta(days=1).__radd__(today).isoformat()}
+        valid_dates={today.isoformat(),(today+timedelta(days=1)).isoformat()}
         games=[g for g in games if g["game_date_eastern"] in valid_dates]
     if not games:
         return {
@@ -362,9 +362,6 @@ def build_alt_prop_research(con: sqlite3.Connection, *,
             if len(records)<minimum_season_games:
                 excluded["INSUFFICIENT_PLAYER_SEASON_GAMES"]+=1
                 continue
-            if pos.get((pid,tid)) not in POSITIONS:
-                excluded["NO_EXACT_BROAD_ROLE_LABEL"]+=1
-                continue
             avg_mins=sum(r["min"] for r in records)/len(records)
             recent_mins=sum(r["min"] for r in records[-5:])/min(5,len(records))
             if avg_mins<20 or recent_mins<minimum_recent_minutes:
@@ -393,6 +390,9 @@ def build_alt_prop_research(con: sqlite3.Connection, *,
                 top[(tid,item[0])]=rank
         for pid,tid,records,usage,avg_mins,recent_mins in qualified:
             rank=top[(tid,pid)]
+            if pos.get((pid,tid)) not in POSITIONS:
+                excluded["NO_EXACT_BROAD_ROLE_LABEL"]+=1
+                continue
             if rank>max_team_usage_rank:
                 excluded["NOT_TOP_TEAM_USAGE"]+=1
                 continue
