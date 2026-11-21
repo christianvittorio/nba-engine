@@ -45,3 +45,21 @@ def test_inconsistent_model_predictions_raise():
         build_board({"markets":[a,b]})
     with pytest.raises(ValueError,match="Duplicate"):
         build_board({"markets":[a,a]})
+
+
+def test_zero_cost_bookset_preserves_all_five_even_if_some_are_missing():
+    from gpt_engine.v2.hoopsapi_free import FREE_BOOKS
+    a=quote("FanDuel",1.95)
+    b=quote("1xbet",2.05)
+    board=build_board({"markets":[a,b]},books=FREE_BOOKS)
+    assert board["books"]==list(FREE_BOOKS)
+    assert board["market_count"]==1
+    market=board["markets"][0]
+    assert market["books"]["Unibet"] is None
+    assert market["books"]["Betway"] is None
+    assert market["books"]["Pinnacle"] is None
+    assert market["books_tied_for_best_price"]==["1xbet"]
+    assert market["available_book_count"]==2
+    markdown=to_markdown(board)
+    assert "Unibet" in markdown
+    assert "Stake" not in markdown
