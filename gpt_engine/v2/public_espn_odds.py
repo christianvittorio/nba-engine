@@ -131,7 +131,7 @@ def normalize_public_scoreboards(
             if not isinstance(e,dict) or not e.get("id") or not e.get("date"):
                 continue
             comps=e.get("competitions") or []
-            if len(comps)!=1 or not isinstance(comps[0],dict):
+            if not isinstance(comps,list) or len(comps)!=1 or not isinstance(comps[0],dict):
                 skipped.append({"event":str(e.get("id")),"reason":"AMBIGUOUS_COMPETITION"})
                 continue
             comp=comps[0]
@@ -140,8 +140,15 @@ def normalize_public_scoreboards(
                 skipped.append({"event":str(e["id"]),"reason":"UNKNOWN_HOME_AWAY"})
                 continue
             home,away=identity
-            status=(e.get("status") or {}).get("type") or {}
-            if status.get("state")!="pre" or utc(e["date"])<=utc(captured):
+            raw_status=e.get("status") or {}
+            status=(raw_status.get("type") or {}) if isinstance(raw_status,dict) else {}
+            try:
+                valid_pretip=(isinstance(status,dict)
+                              and status.get("state")=="pre"
+                              and utc(e["date"])>utc(captured))
+            except (ValueError,TypeError):
+                valid_pretip=False
+            if not valid_pretip:
                 skipped.append({"event":str(e["id"]),"reason":"NOT_PREGAME"})
                 continue
             event_id=str(e["id"])
@@ -171,6 +178,8 @@ def normalize_public_scoreboards(
                 h=data.get("homeTeamOdds") or {}
                 a=data.get("awayTeamOdds") or {}
                 if not isinstance(h,dict) or not isinstance(a,dict):
+                    skipped.append({"event":event_id,"book":str(book),
+                                    "reason":"MALFORMED_TEAM_ODDS"})
                     continue
                 proposed.append((event_id,captured,source_update,
                                  str(book).strip(),data,home,away))
