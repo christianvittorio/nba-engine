@@ -2,6 +2,7 @@
 import pandas as pd
 import pytest
 
+from data_foundation.matchups import matchup_layers
 from data_foundation.build import (
     classify_game, defense_vs_position, normalize_players, normalize_teams,
     season_url
@@ -83,3 +84,21 @@ def test_team_rejects_incomplete_opponent_pair():
     with pytest.raises(ValueError, match="two team rows"):
         normalize_teams(raw, pd.DataFrame(
             {"team_id": ["1", "2"], "nba_abbrev": ["BOS", "NYK"]}), 2020)
+
+def test_tracked_player_defender_assists_and_possessions():
+    teams, players = _sample()
+    raw = pd.DataFrame([{
+        "game_id": "0021900001", "off_team_id": "1", "def_team_id": "2",
+        "off_person_id": "100", "def_person_id": "101",
+        "off_position": "F", "partial_possessions": 11.5,
+        "matchup_assists": 2, "matchup_potential_assists": 4,
+        "player_points": 8, "matchup_field_goals_attempted": 5
+    }])
+    tracked, game, season, audit = matchup_layers(raw, teams, 2020)
+    assert audit["matchup_rows"] == 1
+    assert audit["tracked_games"] == 1
+    assert game.iloc[0].defense_team == "NYK"
+    assert game.iloc[0].matchup_assists == 2
+    assert season.iloc[0].matchup_assists_per_game == 2
+    assert abs(season.iloc[0].matchup_assists_per_100_matchup_possessions - 200 / 11.5) < 0.01
+
