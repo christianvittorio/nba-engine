@@ -359,5 +359,7 @@ BEGIN
  THEN RAISE(ABORT,'prediction game must match feature snapshot')
  WHEN EXISTS(SELECT 1 FROM games WHERE game_id=NEW.game_id AND tip_utc IS NOT NULL
  AND NEW.cutoff_utc >= tip_utc) THEN RAISE(ABORT,'prediction cutoff must be before tipoff')
+ WHEN EXISTS(SELECT 1 FROM games WHERE game_id=NEW.game_id AND tip_utc IS NOT NULL
+ AND NEW.created_at_utc >= tip_utc) THEN RAISE(ABORT,'prediction creation must be before tipoff')
  END;
 END;
