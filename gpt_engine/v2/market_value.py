@@ -89,6 +89,10 @@ def _validate_prediction(row: dict) -> dict:
         if not 0 <= lower <= pred["probability"]:
             raise ValueError("Lower probability bound invalid")
     pred["probability_lower"] = lower
+    push = _number(pred.get("push_probability", 0), "push_probability")
+    if not 0 <= push <= 1 - pred["probability"]:
+        raise ValueError("Win and push probabilities must sum to at most 1")
+    pred["push_probability"] = push
     status = pred.get("calibration_status", "uncalibrated")
     if status not in STATUSES:
         raise ValueError("Unknown calibration_status")
@@ -185,6 +189,7 @@ def compare_markets(
             "model_probability": None, "model_probability_lower": None,
             "model_vs_no_vig_probability_gap": None,
             "expected_roi": None, "conservative_expected_roi": None,
+            "push_probability": None, "unconditional_win_break_even": None,
             "decision": "NO_MODEL_PROBABILITY",
             "warnings": [],
         }
@@ -200,13 +205,27 @@ def compare_markets(
         age = abs((utc(q["observed_at_utc"]) - utc(p["asof_utc"])).total_seconds()) / 60
         prob = p["probability"]
         lower = p["probability_lower"]
+        push = p["push_probability"]
+        # Whole-number lines can push (stake refunded); the standard
+        # p*odds - 1 formula is only valid when push probability is zero.
+        if (p["market_type"] != "moneyline"
+                and float(p["line"]).is_integer()
+                and "push_probability" not in next(
+                    item for item in predictions if _identity(_validate_common(item)) == _identity(p)
+                )):
+            record["warnings"].append(
+                "Whole-number line: explicit push probability unavailable"
+            )
         record.update({
             "model_probability": prob, "model_probability_lower": lower,
             "model_asof_utc": p["asof_utc"],
             "model_version": p["model_version"],
             "calibration_status": p["calibration_status"],
             "snapshot_gap_minutes": round(age, 3),
-            "expected_roi": prob*price - 1,
+            "push_probability": push,
+            "unconditional_win_break_even": (1-push)/price,
+            "expected_roi": prob*price + push - 1,
+            # Bound is conservative: it does not credit uncertain pushes.
             "conservative_expected_roi": (
                 lower*price - 1 if lower is not None else None
             ),
@@ -215,9 +234,13 @@ def compare_markets(
             record["model_vs_no_vig_probability_gap"] = (
                 prob - record["no_vig_market_probability"]
             )
+        missing_push = any("explicit push probability unavailable" in w
+                           for w in record["warnings"])
         if age > gap_limit:
             record["decision"] = "STALE_COMPARISON"
             record["warnings"].append("Market and model snapshots too far apart")
+        elif missing_push:
+            record["decision"] = "MISSING_PUSH_PROBABILITY"
         elif p["calibration_status"] != "forward_validated":
             record["decision"] = "RESEARCH_ONLY"
             record["warnings"].append(
@@ -245,7 +268,8 @@ def compare_markets(
         "price_snapshot_count": len(qq),
         "model_prediction_count": len(pp),
         "markets": sorted(rows, key=lambda r: (
-            r["expected_roi"] is None, -(r["expected_roi"] or -999),
+            r["expected_roi"] is None,
+            -(r["expected_roi"] if r["expected_roi"] is not None else 0),
             r["game_id"], r["market_id"], r["book"]
         )),
         "limitations": [
