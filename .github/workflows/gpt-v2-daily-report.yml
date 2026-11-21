@@ -127,7 +127,7 @@ jobs:
             --book-set observed \
             --output-json /tmp/gpt-v2-five-book-board.json \
             --output-md /tmp/gpt-v2-five-book-board.md
-      - name: Rank highest-hit-probability positive-value Parlay of the Day (research only)
+      - name: Rank positive-value single picks and highest-hit-probability parlay (research only)
         env:
           GPT_REPORT_DATE: ${{ inputs.date }}
         run: |
@@ -154,6 +154,7 @@ jobs:
         run: |
           python - <<'PY'
           import json
+          import sqlite3
           from pathlib import Path
           report=json.loads(Path("/tmp/gpt-v2-market-asof-latest.json").read_text())
           graded=json.loads(Path("/tmp/gpt-v2-market-evaluation-latest.json").read_text())
@@ -164,6 +165,38 @@ jobs:
           assert parlays["actionable"] is False
           assert parlays["betting_recommendation"] is None
           assert parlays["ranking_metric"] == "full_win_probability_independent"
+          assert parlays["single_ranking_metric"] == "model_probability"
+          assert parlays["filters"]["minimum_leg_roi"] > 0
+          assert all(item["model_probability"] >=
+                     parlays["filters"]["minimum_single_win_probability"]
+                     for item in parlays["ranked_high_hit_singles"])
+          # Public team names from the independently sourced NBA database;
+          # never publish a provider's raw odds or sportsbook source payload.
+          con=sqlite3.connect("/tmp/gpt-v2-daily.sqlite")
+          lookup={gid:f"{away} @ {home}" for gid,away,home in con.execute(
+            "SELECT g.game_id,a.current_name,h.current_name FROM games g "
+            "JOIN teams a ON a.team_id=g.away_team_id "
+            "JOIN teams h ON h.team_id=g.home_team_id")}
+          con.close()
+          print("PRIVATE_HIGH_HIT_SINGLES",json.dumps({
+             "status":parlays["single_selection_status"],
+             "ranking_metric":parlays["single_ranking_metric"],
+             "minimum_model_probability":parlays["filters"]["minimum_single_win_probability"],
+             "minimum_model_roi":parlays["filters"]["minimum_leg_roi"],
+             "singles":[{
+                 "matchup":lookup.get(leg["game_id"],leg["game_id"]),
+                 "game_id":leg["game_id"],
+                 "market_type":leg["market_type"],
+                 "side":leg["selection"],
+                 "line":leg["line"],
+                 "book":leg["book"],
+                 "model_win_probability":round(leg["model_probability"],4),
+                 "bookmaker_break_even_probability":round(
+                     leg["bookmaker_break_even_win_probability"],4),
+                 "model_estimated_roi":round(leg["individual_research_roi"],4),
+             } for leg in parlays["ranked_high_hit_singles"]],
+             "unvalidated_model":True,
+          }))
           best=parlays["best_research_combination"]
           print("PRIVATE_PARLAY_RESEARCH",json.dumps({
              "status":parlays["status"],
@@ -176,6 +209,8 @@ jobs:
              "single_sportsbook":best["book"] if best else None,
              "legs":([{
                  "game_id":l["game_id"],
+                 "matchup":lookup.get(l["game_id"],l["game_id"]),
+                 "model_win_probability":round(l["model_probability"],4),
                  "market_type":l["market_type"],
                  "side":l["selection"],
                  "line":l["line"],
