@@ -275,8 +275,11 @@ def append_odds_ledger(path: Path, quotes: list[dict]) -> dict:
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--event-map", type=Path, required=True,
-                        help="Explicit provider-ID to NBA-ID mapping with confirmed teams and tip")
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--event-map", type=Path,
+                       help="Explicit provider IDs, canonical game IDs and verified tip")
+    group.add_argument("--nba-db", type=Path,
+                       help="Build verified event mapping from the NBA warehouse")
     parser.add_argument("--ledger", type=Path, required=True)
     parser.add_argument("--report", type=Path, required=True)
     parser.add_argument("--source-json", type=Path,
@@ -287,7 +290,6 @@ def main(argv=None):
     parser.add_argument("--markets", default="h2h,spreads,totals")
     parser.add_argument("--event-id", default="")
     args = parser.parse_args(argv)
-    mapping = json.loads(args.event_map.read_text(encoding="utf-8"))
     if args.source_json:
         if not args.retrieved_at_utc:
             parser.error("--retrieved-at-utc required with --source-json")
@@ -303,10 +305,21 @@ def main(argv=None):
                                   markets=tuple(args.markets.split(",")),
                                   event_id=args.event_id or None)
         stamp = iso(datetime.now(timezone.utc))
+    if args.event_map:
+        mapping = json.loads(args.event_map.read_text(encoding="utf-8"))
+        map_skipped = []
+    else:
+        import sqlite3
+        from .odds_map import map_provider_events
+        with sqlite3.connect(args.nba_db) as con:
+            mapping = map_provider_events(payload, con)
+        map_skipped = mapping["skipped"]
     result = normalize_provider_events(payload, mapping, retrieved_at_utc=stamp)
     saved = append_odds_ledger(args.ledger, result["quotes"])
     report = {k:v for k,v in result.items() if k != "quotes"}
     report.update(saved)
+    report["event_mapping_skipped"] = map_skipped
+    report["mapped_event_count"] = len(mapping.get("events", {}))
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report, indent=2, allow_nan=False)+"\n",
                            encoding="utf-8")
