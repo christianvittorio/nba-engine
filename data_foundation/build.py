@@ -124,7 +124,7 @@ def normalize_players(raw: pd.DataFrame, meta: pd.DataFrame,
                       teams: pd.DataFrame, season: int) -> pd.DataFrame:
     required(raw, ("game_id", "player_id", "team_id", "opp_team_id", "pts",
                    "ast", "reb", "min"), "player_game_logs")
-    required(meta, ("player_id", "position"), "player_seasons")
+    required(meta, ("player_id",), "player_seasons")
     data = raw.copy()
     data["season"] = season
     data["game_id"] = data.game_id.astype(str).str.zfill(10)
@@ -134,7 +134,9 @@ def normalize_players(raw: pd.DataFrame, meta: pd.DataFrame,
     data["team_id"] = data.team_id.astype(str)
     data["opp_team_id"] = data.opp_team_id.astype(str)
     original_n = len(data)
-    positions = meta[["player_id", "position"]].copy()
+    positions = meta[["player_id"] + (["position"] if "position" in meta else [])].copy()
+    if "position" not in positions:
+        positions["position"] = "UNKNOWN"  # older NBA archive has no position: never invent one
     positions["player_id"] = positions.player_id.astype(str)
     positions = positions.drop_duplicates(subset=["player_id"])
     data = data.merge(positions, on="player_id", how="left",
