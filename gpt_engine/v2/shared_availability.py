@@ -62,10 +62,13 @@ def verify_source_snapshot(av:dict,cutoff_utc:str, *,
 
 def _team_codes(con:sqlite3.Connection,season:int) -> dict[str,str]:
     """Map official NBA team IDs by stored official team-game abbreviations."""
+    # Historical ingestion registers official team abbreviations in
+    # teams.current_name. The stats JSON intentionally excludes the duplicated
+    # 'team' column, so reading it from JSON would silently return no teams.
     rows=con.execute(
-        "SELECT team_id,json_extract(stats_json,'$.team') AS abbrev "
-        "FROM team_game_stats WHERE season=? AND json_extract(stats_json,'$.team') IS NOT NULL "
-        "GROUP BY team_id,abbrev",(season,)
+        "SELECT DISTINCT t.team_id,t.current_name AS abbrev FROM teams t "
+        "JOIN team_game_stats s ON s.team_id=t.team_id "
+        "WHERE s.season=? AND t.current_name IS NOT NULL",(season,)
     ).fetchall()
     result={}
     for row in rows:
