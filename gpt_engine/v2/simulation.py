@@ -323,6 +323,25 @@ def simulate_game(matchup:Matchup,home:list[PlayerProjection],
     for player in home+away:
         raw=per_player[player.player_id]
         p_stats={k:_distribution(np.asarray(v,dtype=float)) for k,v in raw.items()}
+        # Shooting percentages are meaningful only in simulations with an
+        # actual attempt. Conditioning prevents 0/0 from becoming a made-up 0%.
+        for label,made,attempt in (
+            ("field_goal_percentage","fgm","fga"),
+            ("three_point_percentage","fg3m","fg3a"),
+            ("free_throw_percentage","ftm","fta")
+        ):
+            made_values=np.asarray(raw[made],dtype=float)
+            attempted=np.asarray(raw[attempt],dtype=float)
+            eligible=attempted>0
+            p_stats[label]={
+                "eligible_simulations":int(np.sum(eligible)),
+                "ratio_of_expected_totals":round(
+                    float(np.sum(made_values)/np.sum(attempted)),4)
+                    if np.sum(attempted)>0 else None,
+                "conditional_distribution":_distribution(
+                    made_values[eligible]/attempted[eligible])
+                    if np.any(eligible) else None,
+            }
         p_stats["availability"]=player.availability
         p_stats["sample_games"]=player.sample_games
         p_stats["quality_flags"]=list(player.flags)
