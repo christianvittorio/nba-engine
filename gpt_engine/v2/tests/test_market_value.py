@@ -131,3 +131,34 @@ def test_reject_invalid_prices_probs_duplicate_models_and_fake_validation():
         compare_markets([], [p,p])
     with pytest.raises(ValueError,match="documented reference"):
         compare_markets([], [prediction("home",.6,status="forward_validated")])
+
+
+def test_whole_number_total_push_adjusts_expected_return():
+    market_id = "game:total:230"
+    q = [quote("over", 2.0, market_id=market_id,
+               market_type="total", line=230)]
+    # p(win)=.48, p(push)=.10, p(loss)=.42
+    p = [prediction("over", .48, line=230, market_id=market_id,
+                    market_type="total", lower=.42,
+                    status="forward_validated",
+                    validation_reference="documented-forward-sample")]
+    assert compare_markets(q, p)["markets"][0]["decision"] == "MISSING_PUSH_PROBABILITY"
+    p[0]["push_probability"] = .10
+    item = compare_markets(q, p)["markets"][0]
+    assert item["expected_roi"] == pytest.approx(.06)
+    assert item["break_even_probability"] == pytest.approx(.5)
+    assert item["unconditional_win_break_even"] == pytest.approx(.45)
+    assert item["conservative_expected_roi"] == pytest.approx(-.16)
+    assert item["decision"] == "NO_ROBUST_EDGE"
+
+
+def test_exact_market_and_best_book_price_never_invented():
+    q = [quote("home", 1.95, book="Book A"),
+         quote("home", 2.05, book="Book B")]
+    p = [prediction("home", .53)]
+    rows = compare_markets(q, p)["markets"]
+    assert rows[0]["book"] == "Book B"
+    assert rows[0]["expected_roi"] == pytest.approx(.53*2.05-1)
+    assert rows[1]["expected_roi"] == pytest.approx(.53*1.95-1)
+    assert rows[0]["no_vig_market_probability"] is None
+    assert rows[1]["no_vig_market_probability"] is None
