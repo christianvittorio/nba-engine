@@ -1,0 +1,119 @@
+name: data-foundation-backfill
+
+on:
+  pull_request:
+    paths:
+      - "data_foundation/**"
+      - ".github/workflows/data-foundation.yml"
+  push:
+    branches: [main]
+    paths:
+      - "data_foundation/build.py"
+      - "data_foundation/style.py"
+      - "data_foundation/__init__.py"
+      - ".github/workflows/data-foundation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-foundation-backfill
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install reproducible ingestion dependencies
+        run: python -m pip install "duckdb>=1.4,<3" "pandas>=2.2,<3" "pytest>=8,<10"
+      - name: Run offline data-integrity tests
+        run: python -m pytest data_foundation/tests -q
+      - name: Inspect actual source columns before import
+        if: github.event_name == 'pull_request'
+        run: |
+          python - <<'PY'
+          import duckdb
+          from data_foundation.build import read_season
+          con = duckdb.connect()
+          for name in ("team_game_logs", "player_game_logs", "team_seasons", "player_seasons"):
+              data = read_season(con, name, 2020)
+              print(name, data.shape, list(data.columns), flush=True)
+              for candidate in ("position", "start_position", "nba_abbrev", "player_position", "team_id"):
+                  if candidate in data:
+                      print("  ", candidate, data[candidate].dropna().astype(str).unique()[:25], flush=True)
+          PY
+      - name: Inspect published NBA rosters and coaching source schemas
+        if: github.event_name == 'pull_request'
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          for tag, label in (("nba_stats_rosters", "rosters"), ("nba_stats_coaches", "coaches")):
+              url = "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/" + tag + "/" + label + "_2020.csv"
+              print("FETCH", url, flush=True)
+              try:
+                  df = pd.read_csv(url)
+                  print("SCHEMA", tag, df.shape, list(df.columns), flush=True)
+                  print("SAMPLE", df.head(2).to_dict("records"), flush=True)
+              except Exception as exc:
+                  print("FETCH FAILURE", type(exc).__name__, str(exc), flush=True)
+          PY
+      - name: Inspect actual defender matchup dataset
+        if: github.event_name == 'pull_request'
+        run: |
+          python - <<'PY'
+          import urllib.request, tempfile, duckdb, os
+          url = 'https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_matchups/game_matchups_2020.parquet'
+          try:
+              with urllib.request.urlopen(url, timeout=60) as response:
+                  payload = response.read()
+              with tempfile.NamedTemporaryFile(suffix=".parquet") as f:
+                  f.write(payload); f.flush()
+                  db = duckdb.connect()
+                  dat = db.execute("SELECT * FROM read_parquet(?) LIMIT 3", [f.name]).df()
+                  n = db.execute("SELECT count(*) FROM read_parquet(?)", [f.name]).fetchone()[0]
+                  print("MATCHUP SCHEMA", n, list(dat.columns), flush=True)
+                  print("MATCHUP SAMPLE", dat.head(1).to_dict("records"), flush=True)
+          except Exception as exc:
+              print("MATCHUP NOT AVAILABLE", type(exc).__name__, str(exc), flush=True)
+          PY
+      - name: Validate all NBA seasons 2019-20 through 2025-26
+        if: github.event_name == 'pull_request'
+        run: python -m data_foundation.build --seasons 2020 2021 2022 2023 2024 2025 2026 --out /tmp/nba-foundation-smoke
+      - name: Backfill NBA 2019-20 through 2025-26
+        if: github.event_name != 'pull_request'
+        run: python -m data_foundation.build --seasons 2020 2021 2022 2023 2024 2025 2026
+      - name: Upload validation manifest for inspection
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-foundation-seven-season-validation
+          path: /tmp/nba-foundation-smoke/manifest.json
+          if-no-files-found: error
+      - name: Commit verified historical data (no prediction files)
+        if: github.event_name != 'pull_request'
+        run: |
+          git config user.name "nba-data-foundation-bot"
+          git config user.email "nba-data-foundation-bot@users.noreply.github.com"
+          git add -f data_foundation/artifacts/
+          if git diff --cached --quiet; then
+            echo "No new historical data."
+            exit 0
+          fi
+          git commit -m "data: verified 2020s NBA history, advanced stats and positional opponent splits"
+          for attempt in 1 2 3 4; do
+            if git pull --rebase && git push; then
+              echo "Historical data backfill published."
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Unable to publish backfill after retries."
+          exit 1
