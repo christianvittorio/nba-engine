@@ -191,6 +191,8 @@ def evaluate_outcomes(asof_report: dict, odds_history: list[dict],
             "prediction_id": row["prediction_id"],
             "entry_decimal_odds": odds, "entry_retrieved_at_utc": row["retrieved_at_utc"],
             "expected_roi_uncalibrated": row.get("expected_roi"),
+            "model_win_probability": row.get("model_probability"),
+            "model_push_probability": row.get("push_probability"),
             "screening_decision": row.get("decision"),
             "settlement": outcome, "unit_return": unit_return,
             "closing_decimal_odds": closing_odds,
@@ -214,6 +216,64 @@ def evaluate_outcomes(asof_report: dict, odds_history: list[dict],
                 old["entry_decimal_odds"],old["book"]):
             chosen[key] = row
     cohort = list(chosen.values())
+
+    # Score probabilities once per unique game/market/line/selection,
+    # not once per bookmaker quote. Pushing is a third possible outcome;
+    # assigning it a probability of zero would hide calibration errors.
+    distinct_contracts = {}
+    for row in graded:
+        win_p = row["model_win_probability"]
+        push_p = row["model_push_probability"]
+        if (win_p is None or push_p is None
+                or row["settlement"] not in ("WIN","LOSS","PUSH")):
+            continue
+        win_p, push_p = float(win_p), float(push_p)
+        lose_p = 1-win_p-push_p
+        if (not 0 <= win_p <= 1 or not 0 <= push_p <= 1
+                or lose_p < -1e-9):
+            raise ValueError("Market probabilities fail win/push/loss accounting")
+        key = (row["game_id"],row["market_id"],row["market_type"],
+               row["selection"],row.get("line"),row.get("player_id"))
+        old = distinct_contracts.get(key)
+        if old is not None:
+            if (old["probabilities"] != (win_p,push_p,lose_p)
+                    or old["settlement"] != row["settlement"]):
+                raise ValueError("Inconsistent probability for same frozen contract")
+            continue
+        distinct_contracts[key] = {
+            "market_type":row["market_type"],
+            "settlement":row["settlement"],
+            "probabilities":(win_p,push_p,max(0.0,lose_p))
+        }
+    scored_by_type = defaultdict(list)
+    for contract in distinct_contracts.values():
+        probs = contract["probabilities"]
+        outcomes = ("WIN","PUSH","LOSS")
+        status = contract["settlement"]
+        truth = tuple(float(name==status) for name in outcomes)
+        score = {
+            "categorical_brier":sum((p-y)**2 for p,y in zip(probs,truth)),
+            "categorical_log_loss":-log(max(1e-9,probs[outcomes.index(status)])),
+            "binary_brier_nonpush":(
+                (probs[0]/max(1e-9,1-probs[1])-truth[0])**2
+                if status!="PUSH" and probs[1]<1 else None
+            )
+        }
+        scored_by_type[contract["market_type"]].append(score)
+
+    def market_type_score(rows):
+        average=lambda key: (
+            sum(r[key] for r in rows if r[key] is not None)/
+            sum(r[key] is not None for r in rows)
+            if any(r[key] is not None for r in rows) else None
+        )
+        return {
+            "distinct_settled_contracts":len(rows),
+            "categorical_brier":average("categorical_brier"),
+            "categorical_log_loss":average("categorical_log_loss"),
+            "binary_brier_nonpush":average("binary_brier_nonpush"),
+            "enough_for_accuracy_claim":len(rows)>=200,
+        }
 
     # Game-level calibration measures: once per immutable game, never count
     # multiple bookmakers as independent win observations.
@@ -271,6 +331,10 @@ def evaluate_outcomes(asof_report: dict, odds_history: list[dict],
         ),
         "market_audit": _summary(graded),
         "hypothetical_positive_raw_ev_cohort": _summary(cohort),
+        "market_probability_scoring": {
+            key:market_type_score(value)
+            for key,value in sorted(scored_by_type.items())
+        },
         "calibration": {
             "settled_game_count": len(quality),
             "model_brier": mean([r["brier"] for r in quality]),
@@ -302,6 +366,7 @@ def evaluate_outcomes(asof_report: dict, odds_history: list[dict],
             "Same-book, same-line, pretip captured close is required; no line interpolation.",
             "Missing market/grade data is not treated as a loss or push.",
             "Must use genuinely out-of-time frozen predictions and market snapshots.",
+            "Categorical Brier/log loss accounts for push probability; bookmaker duplicates are collapsed per exact contract.",
             "No claim of profitability or verified forward model calibration.",
         ],
     }
