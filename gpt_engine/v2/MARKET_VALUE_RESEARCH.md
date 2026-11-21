@@ -13,9 +13,12 @@ selection from any game is allowed; same-game correlations and player props
 are excluded. Stale prices, unsupported markets, one-sided quotes and
 post-tip results are rejected.
 
-The ranker measures **model-estimated expected ROI per unit staked**
-conditional on the model being correct; it also reports the probability
-that every leg wins. Given independently modeled different games:
+The ranker prioritizes the **highest modeled probability of all legs winning**
+among same-book combinations whose individual legs have positive **raw
+model-estimated value** (at least +1% research ROI by default). It uses raw
+ROI only to break ties, not to chase the highest payout. As a consequence,
+two-leg combinations often rank ahead of three-leg combinations. Given
+independently modeled different games:
 
 ```
 P(all legs win) = product(P_i(win))
@@ -28,8 +31,8 @@ independence assumption is a research simplification, not proven
 independence of NBA results and price factors. A high **projected** ROI is
 not high certainty, and our possession model is **not forward validated**.
 
-The optimizer bounds the selection problem to avoid tiny-hit-rate lottery
-combinations: 2–3 legs, at least 1% *raw research* individual EV on each
+The optimizer prioritizes hit probability while excluding negative raw-value
+legs and tiny-hit-rate lottery combinations: 2–3 legs, at least 1% *raw research* individual EV on each
 leg, minimum 10% full-hit probability, price <=5.0 per leg, and a
 30-minute original quote age cap. These are configurable engineering
 thresholds, **not a wagering strategy**. It reports an explicit
@@ -47,10 +50,12 @@ Generated private files (never committed as raw sportsbook evidence):
 - `/tmp/gpt-v2-parlay-research-latest.json`
 - `/tmp/gpt-v2-parlay-research-latest.md`
 
-The public GitHub Actions log prints a **redacted summary**: best
-same-book combination market identities and lines, modeled hit-rate,
-model-only ROI, and explicit research status, without actual quoted
-prices or raw provider payloads.
+The public GitHub Actions log prints a **redacted summary**: the highest
+modeled hit-probability same-book combination, its market identities and lines,
+modeled hit-rate, model-only ROI, and explicit research status, without
+actual quoted prices or raw provider payloads. The selection is **not**
+a real-world best-win-probability claim: player availability and possession
+model calibration remain unresolved.
 
 ```bash
 python -m gpt_engine.v2.parlay_research \
