@@ -179,7 +179,12 @@ def append_pregame_situational_features(team_games:pd.DataFrame,
             "rest_bucket":bucket,"won":int(row.won),
         })
     out=d.copy()
-    vals=pd.DataFrame.from_dict(values,orient="index")
+    # The chronological loop interleaves two teams while d is grouped by
+    # team. Reindex by original source ROW ID rather than assigning insertion
+    # order; otherwise home/away records can be silently swapped.
+    vals=pd.DataFrame.from_dict(values,orient="index").reindex(out.index)
+    if vals.isna().all(axis=1).any():
+        raise ValueError("Lost a team-row situational feature identity")
     for col in NUMERIC_FEATURES:
         out[col]=vals[col].to_numpy()
     return out
