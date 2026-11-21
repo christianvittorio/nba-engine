@@ -127,7 +127,7 @@ jobs:
             --book-set observed \
             --output-json /tmp/gpt-v2-five-book-board.json \
             --output-md /tmp/gpt-v2-five-book-board.md
-      - name: Rank same-book Parlay of the Day (research only, no wager)
+      - name: Rank highest-hit-probability positive-value Parlay of the Day (research only)
         env:
           GPT_REPORT_DATE: ${{ inputs.date }}
         run: |
@@ -163,10 +163,12 @@ jobs:
           assert parlays["research_only"] is True
           assert parlays["actionable"] is False
           assert parlays["betting_recommendation"] is None
+          assert parlays["ranking_metric"] == "full_win_probability_independent"
           best=parlays["best_research_combination"]
           print("PRIVATE_PARLAY_RESEARCH",json.dumps({
              "status":parlays["status"],
              "screened":parlays["candidate_tickets_screened"],
+             "ranking_metric":parlays["ranking_metric"],
              "best_raw_roi_independent":(
                   round(best["estimated_roi_independent"],4) if best else None),
              "joint_full_win_probability":(
