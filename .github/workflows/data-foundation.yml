@@ -1,0 +1,71 @@
+name: data-foundation-backfill
+
+on:
+  pull_request:
+    paths:
+      - "data_foundation/**"
+      - ".github/workflows/data-foundation.yml"
+  push:
+    branches: [main]
+    paths:
+      - "data_foundation/build.py"
+      - "data_foundation/style.py"
+      - "data_foundation/__init__.py"
+      - ".github/workflows/data-foundation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-foundation-backfill
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install reproducible ingestion dependencies
+        run: python -m pip install "duckdb>=1.4,<3" "pandas>=2.2,<3" "pytest>=8,<10"
+      - name: Run offline data-integrity tests
+        run: python -m pytest data_foundation/tests -q
+      - name: Validate actual NBA archive source (2019-20 smoke test)
+        if: github.event_name == 'pull_request'
+        run: python -m data_foundation.build --seasons 2020 --out /tmp/nba-foundation-smoke
+      - name: Backfill NBA 2019-20 through 2025-26
+        if: github.event_name != 'pull_request'
+        run: python -m data_foundation.build --seasons 2020 2021 2022 2023 2024 2025 2026
+      - name: Upload validation manifest for inspection
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-foundation-2020-smoke
+          path: /tmp/nba-foundation-smoke/manifest.json
+          if-no-files-found: error
+      - name: Commit verified historical data (no prediction files)
+        if: github.event_name != 'pull_request'
+        run: |
+          git config user.name "nba-data-foundation-bot"
+          git config user.email "nba-data-foundation-bot@users.noreply.github.com"
+          git add -f data_foundation/artifacts/
+          if git diff --cached --quiet; then
+            echo "No new historical data."
+            exit 0
+          fi
+          git commit -m "data: verified 2020s NBA history, advanced stats and positional opponent splits"
+          for attempt in 1 2 3 4; do
+            if git pull --rebase && git push; then
+              echo "Historical data backfill published."
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Unable to publish backfill after retries."
+          exit 1
