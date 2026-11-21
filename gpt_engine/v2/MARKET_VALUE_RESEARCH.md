@@ -256,7 +256,7 @@ The research implementation now includes:
 **These new steps have not been promoted to production**, and do not
 retroactively create prices or calibration that were never captured.
 
-### Credentials and API costs
+### INACTIVE OPTIONAL PAID ADAPTER: credentials and API costs
 
 Set the GitHub repository Actions secret `THE_ODDS_API_KEY` or export the
 same environment variable to use live ingestion. **Never commit the key**.
@@ -361,8 +361,8 @@ deployment follows a successful historical test.
 
 The existing `gpt-v2-daily-report.yml` workflow now:
 1. Builds the NBA source warehouse as before;
-2. Fetches pretip odds only when a FREE `HOOPSAPI_KEY` exists
-   (no money spent or odds invented on missing key);
+2. Fetches ESPN's public pretip NBA odds without an account or secret;
+   if the public feed is unavailable, records the failure and zero prices;
 3. Generates immutable first-issue pretip forecasts as before;
 4. Publishes a *separate* model-vs-market Markdown/JSON with no EV on
    markets where the exact-line probabilities are unavailable;
@@ -377,7 +377,8 @@ reports and core model parameters are unchanged.
 
 ### Release gates still missing
 
-- A real key and verified live provider access (none assumed).
+- Reliable permitted public odds access and independently documented
+  commercial redistribution rights (not assumed).
 - Forward sample sizes, locked holdout dates and reproducible evaluation
   showing calibrated probabilities outperform a market baseline after costs.
 - Live exact-line spread/total/prop probabilities and their push mass;
@@ -492,9 +493,9 @@ python -m gpt_engine.v2.five_book_board \
 
 **Historical note:** The paid five-book `odds_api_io.py` adapter
 remains available as an inactive research option, but the scheduled
-workflow no longer uses it or requests its key. Free `HOOPSAPI_KEY`
-is now the only scheduled odds source. Price data and details stay in
-/tmp, never uploaded to this public repository.
+workflow no longer uses it or requests its key. The scheduled collector
+now uses `public_espn_odds.py` with no API key or signup. Price data and
+details stay in /tmp, never uploaded to this public repository.
 
 Pricing and terms, which may change, must be reviewed before subscribing:
 https://docs.odds-api.io/ (5-bookmaker Starter currently advertised as
