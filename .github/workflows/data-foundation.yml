@@ -13,6 +13,8 @@ on:
       - "data_foundation/__init__.py"
       - ".github/workflows/data-foundation.yml"
   workflow_dispatch:
+  schedule:
+    - cron: "45 15 * * *"   # Refresh current NBA season daily; historical seasons remain immutable
 
 permissions:
   contents: write
@@ -84,12 +86,15 @@ jobs:
           except Exception as exc:
               print("MATCHUP NOT AVAILABLE", type(exc).__name__, str(exc), flush=True)
           PY
-      - name: Validate all NBA seasons 2019-20 through 2025-26
+      - name: Validate all NBA seasons 2019-20 through 2026-27
         if: github.event_name == 'pull_request'
-        run: python -m data_foundation.build --seasons 2020 2021 2022 2023 2024 2025 2026 --out /tmp/nba-foundation-smoke
-      - name: Backfill NBA 2019-20 through 2025-26
-        if: github.event_name != 'pull_request'
-        run: python -m data_foundation.build --seasons 2020 2021 2022 2023 2024 2025 2026
+        run: python -m data_foundation.build --seasons 2020 2021 2022 2023 2024 2025 2026 2027 --out /tmp/nba-foundation-smoke
+      - name: Backfill historical NBA seasons and current 2026-27 season
+        if: github.event_name != 'pull_request' && github.event_name != 'schedule'
+        run: python -m data_foundation.build --seasons 2020 2021 2022 2023 2024 2025 2026 2027
+      - name: Refresh only the current NBA season
+        if: github.event_name == 'schedule'
+        run: python -m data_foundation.build --seasons 2027
       - name: Upload validation manifest for inspection
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
