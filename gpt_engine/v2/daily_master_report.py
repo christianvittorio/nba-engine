@@ -107,8 +107,13 @@ def render_master_report(
 
     # Re-rank the exact frozen market/quotes for THIS date; a combined
     # two-day global leader must never be advertised for both dates.
+    current_day_market={
+        **market_report,
+        "markets":[x for x in market_report.get("markets",[])
+                   if x.get("game_id") in matchups],
+    }
     filtered_board=build_parlay_board(
-        market_report,date_eastern=day,
+        current_day_market,date_eastern=day,
         now_utc=parlay_report["generated_at_utc"]
     )
     singles=[x for x in filtered_board["ranked_high_hit_singles"]
@@ -120,7 +125,7 @@ def render_master_report(
          if x["date_eastern"]==day and x["game_id"] in matchups]
     alt.sort(key=lambda x:(-x["raw_season_hit_rate"],
                            -x["estimated_usage_percent"],
-                           x["game_id"],x["player_id"],x["stat"]))
+                           x["game_id"],x.get("player_id",""),x["stat"]))
     alt_priced=[x for x in alt_report.get("priced_alternate_legs",[])
                 if x.get("date_eastern")==day and x["game_id"] in matchups]
     alt_ticket=alt_report.get("same_book_parlay")
