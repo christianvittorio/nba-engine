@@ -66,6 +66,28 @@ class TestSimulation(unittest.TestCase):
         self.assertGreaterEqual(shooting["ratio_of_expected_totals"],0)
         self.assertLessEqual(shooting["ratio_of_expected_totals"],1)
 
+    def test_market_histograms_are_exact_and_do_not_change_original_draws(self):
+        h=sample_roster("home");a=sample_roster("away")
+        original=simulate_game(sample_game(),h,a,n=55,seed=93,
+                               include_samples=True)
+        saved=simulate_game(sample_game(),h,a,n=55,seed=93,
+                            include_samples=True,
+                            include_market_distributions=True)
+        self.assertEqual(saved["_samples"],original["_samples"])
+        self.assertEqual(saved["home_win_probability"],
+                         original["home_win_probability"])
+        self.assertEqual(saved["expected_home_score"],
+                         original["expected_home_score"])
+        dist=saved["market_distributions"]
+        self.assertEqual(sum(dist["home_margin_counts"].values()),55)
+        self.assertEqual(sum(dist["game_total_counts"].values()),55)
+        for p in h+a:
+            for stat in ("pts","reb","ast","fg3m"):
+                self.assertEqual(sum(dist["player_counts"][p.player_id][stat].values()),55)
+        for i,row in enumerate(original["_samples"]):
+            self.assertGreater(dist["home_margin_counts"][str(int(row[3]))],0)
+            self.assertGreater(dist["game_total_counts"][str(int(row[2]))],0)
+
     def test_reproducible_across_batch_sizes(self):
         h=sample_roster("home");a=sample_roster("away")
         one=simulate_game(sample_game(),h,a,50,123,7)
