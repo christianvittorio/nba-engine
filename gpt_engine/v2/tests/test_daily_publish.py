@@ -93,6 +93,8 @@ def test_daily_readable_report_has_projected_score_streaks_injuries_players():
     assert "3 prior matching games" not in markdown or "NOT a calibrated probability" in markdown
     assert "Out Example: out" in markdown
     assert "Starter Example †" in markdown
+    assert "| Team | Player | Min | PTS | REB | AST | 3PM | TOV |" in markdown
+    assert "| HOM | Starter Example † |" in markdown
     assert "23.8" in markdown
     assert "| Out Example" not in markdown
     assert "uncalibrated" in markdown.lower()
@@ -113,6 +115,27 @@ def test_streak_report_excludes_current_game_result():
          "venue":"away","rest_bucket":"2","won":1,"true_rest_days":2},
     ])],ignore_index=True)
     assert _situation(extra,"team:nba:1","2026-11-21",2027,"home")==label
+
+def test_current_conditional_run_excludes_nonmatching_games_and_future():
+    games=_teams()
+    # Two previous home games after exactly 2 full days' rest are both wins.
+    label=_situation(games,"team:nba:1","2026-11-02",2027,"home")
+    assert "2–0" in label
+    assert "current conditional run: 2 consecutive wins" in label
+    # Include a future loss: as-of date report must remain unchanged.
+    poisoned=pd.concat([games,pd.DataFrame([{
+        "game_id":"0022699999","game_date":"2026-11-02",
+        "season":2027,"team_id":"1","home":True,"pts":12,
+        "venue_valid":True,"venue":"home","rest_bucket":"2",
+        "won":0,"true_rest_days":2
+    },{
+        "game_id":"0022699999","game_date":"2026-11-02",
+        "season":2027,"team_id":"2","home":False,"pts":111,
+        "venue_valid":True,"venue":"away","rest_bucket":"2",
+        "won":1,"true_rest_days":2
+    }])],ignore_index=True)
+    assert _situation(poisoned,"team:nba:1","2026-11-02",2027,"home")==label
+
 
 def test_append_only_ledger_no_future_issued_forecasts():
     row={"game_id":"game:nba:0022600300",
