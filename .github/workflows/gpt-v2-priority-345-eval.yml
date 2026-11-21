@@ -1,0 +1,74 @@
+name: gpt-v2-priority-345-experiments
+on:
+  pull_request:
+    paths:
+      - "gpt_engine/v2/simulation.py"
+      - "gpt_engine/v2/feature_ablation.py"
+      - "gpt_engine/v2/event_rate_eval.py"
+      - "gpt_engine/v2/ensemble_eval.py"
+      - "gpt_engine/v2/tests/test_advanced_event_matchup_ensemble.py"
+      - ".github/workflows/gpt-v2-priority-345-eval.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: gpt-v2-priority-345-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  verify-and-evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: gpt_engine/v2/requirements-test.txt
+      - name: Install full V2 research dependencies
+        run: python -m pip install -r gpt_engine/v2/requirements-test.txt
+      - name: Check candidate accounting, baseline reproducibility and leakage protections
+        run: |
+          python -m compileall -q gpt_engine/v2
+          python -m pytest -q \
+            gpt_engine/v2/tests/test_advanced_event_matchup_ensemble.py \
+            gpt_engine/v2/tests/test_simulation.py \
+            gpt_engine/v2/tests/test_calibration_ablation.py
+      - name: Evaluate four opponent-aware possession event rates on frozen NBA holdout
+        run: |
+          python -m gpt_engine.v2.event_rate_eval \
+            --years 2022 2023 2024 2025 2026 \
+            --output /tmp/gpt-v2-opponent-event-rate-holdout.json
+      - name: Evaluate fully time-split Elo-Ridge ensemble, Platt and score intervals
+        run: |
+          python -m gpt_engine.v2.ensemble_eval \
+            --years 2022 2023 2024 2025 2026 \
+            --output /tmp/gpt-v2-elo-ridge-ensemble-holdout.json
+      - name: Verify evaluation stages and research-only promotion gate
+        run: |
+          python - <<'PY'
+          import json
+          event=json.load(open("/tmp/gpt-v2-opponent-event-rate-holdout.json"))
+          ensemble=json.load(open("/tmp/gpt-v2-elo-ridge-ensemble-holdout.json"))
+          assert event["production_simulator_changed"] is False
+          assert event["counts"]["test"]>=1000
+          assert ensemble["counts"]["test"]>=1000
+          assert ensemble["promotion_gate"]["auto_deploy"] is False
+          assert ensemble["promotion_gate"]["not_equivalent_to_calibrating_possession_monte_carlo"]
+          assert event["counts"]["selection"]>100
+          assert ensemble["counts"]["selection"]>100
+          assert 0<=ensemble["blend_weight_selected_on_selection_only"]["selected"]["elo_weight"]<=1
+          for name,data in event["results"].items():
+              assert data["frozen_holdout"]["own_only"]["n_valid"]>=1000,name
+              assert data["frozen_holdout"]["candidate"]["n_valid"]>=1000,name
+              assert data["frozen_holdout"]["own_only"]["mae"] is not None,name
+          print("RESEARCH_ONLY_HOLDOUT_GATES_PASS",event["counts"],ensemble["counts"])
+          PY
+      - name: Publish separate matchup-event and calibrated-ensemble reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpt-v2-priorities-345-frozen-test-results
+          path: |
+            /tmp/gpt-v2-opponent-event-rate-holdout.json
+            /tmp/gpt-v2-elo-ridge-ensemble-holdout.json
+          if-no-files-found: error
