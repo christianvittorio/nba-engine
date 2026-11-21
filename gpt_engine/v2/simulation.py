@@ -424,8 +424,8 @@ def simulate_game(matchup:Matchup,home:list[PlayerProjection],
         # line-specific evaluations without replaying a stochastic model.
         def histogram(values):
             values=np.asarray(values,dtype=float)
-            if len(values)!=n or not np.all(np.isfinite(values)) or \\
-                    not np.all(values==np.round(values)):
+            if (len(values)!=n or not np.all(np.isfinite(values))
+                    or not np.all(values==np.round(values))):
                 raise ValueError("Invalid integer-valued market simulation samples")
             unique,counts=np.unique(values.astype(np.int64),return_counts=True)
             result={str(int(v)):int(c) for v,c in zip(unique,counts)}
