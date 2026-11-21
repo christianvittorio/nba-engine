@@ -65,6 +65,25 @@ jobs:
               except Exception as exc:
                   print("FETCH FAILURE", type(exc).__name__, str(exc), flush=True)
           PY
+      - name: Inspect actual defender matchup dataset
+        if: github.event_name == 'pull_request'
+        run: |
+          python - <<'PY'
+          import urllib.request, tempfile, duckdb, os
+          url = 'https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_matchups/game_matchups_2020.parquet'
+          try:
+              with urllib.request.urlopen(url, timeout=60) as response:
+                  payload = response.read()
+              with tempfile.NamedTemporaryFile(suffix=".parquet") as f:
+                  f.write(payload); f.flush()
+                  db = duckdb.connect()
+                  dat = db.execute("SELECT * FROM read_parquet(?) LIMIT 3", [f.name]).df()
+                  n = db.execute("SELECT count(*) FROM read_parquet(?)", [f.name]).fetchone()[0]
+                  print("MATCHUP SCHEMA", n, list(dat.columns), flush=True)
+                  print("MATCHUP SAMPLE", dat.head(1).to_dict("records"), flush=True)
+          except Exception as exc:
+              print("MATCHUP NOT AVAILABLE", type(exc).__name__, str(exc), flush=True)
+          PY
       - name: Validate actual NBA archive source (2019-20 smoke test)
         if: github.event_name == 'pull_request'
         run: python -m data_foundation.build --seasons 2020 --out /tmp/nba-foundation-smoke
