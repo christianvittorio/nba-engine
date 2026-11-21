@@ -228,6 +228,18 @@ def evaluate_ensemble(frame:pd.DataFrame)->dict:
         ]
     }
 
+def _require_json_finite(data,path="$"):
+    """Reject non-finite model diagnostics without silently rewriting NaN."""
+    if isinstance(data,dict):
+        for k,v in data.items():
+            _require_json_finite(v,path+"."+str(k))
+    elif isinstance(data,(list,tuple)):
+        for i,v in enumerate(data):
+            _require_json_finite(v,path+f"[{i}]")
+    elif isinstance(data,(float,np.floating)) and not np.isfinite(data):
+        raise ValueError(f"Non-finite ensemble metric at {path}: {data!r}")
+
+
 def main(argv=None):
     ap=argparse.ArgumentParser()
     ap.add_argument("--years",type=int,nargs="+",
@@ -236,6 +248,7 @@ def main(argv=None):
     a=ap.parse_args(argv)
     frame=game_feature_frame(a.years)
     report=evaluate_ensemble(frame)
+    _require_json_finite(report)
     path=Path(a.output);path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text(json.dumps(report,indent=2,allow_nan=False)+"\n")
     print("ENSEMBLE_HOLDOUT "+json.dumps({
