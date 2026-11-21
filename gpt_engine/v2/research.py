@@ -128,9 +128,11 @@ def run_day(db_path:str,day:str,n:int=1000,seed:int=20261121):
                        row["tip_utc"],row["home_team_id"],row["away_team_id"],
                        bool(row["neutral_site"]))
         source_quality=[]
+        imported_shared_source=False
         if shared is not None:
             try:
                 imported=ingest_availability_snapshot(con,gc.game_id,now,shared)
+                imported_shared_source=True
                 source_quality.append("espn_source_observed_at_"+imported["source_generated_utc"])
                 if imported["unmatched_player_ids"]:
                     source_quality.append(
@@ -149,11 +151,11 @@ def run_day(db_path:str,day:str,n:int=1000,seed:int=20261121):
         snap=FeatureSnapshot(
             base_snap.game_id,base_snap.cutoff_utc,base_snap.definition_version,
             base_snap.features,base_snap.missingness,
-            tuple(dict.fromkeys(base_snap.sources+((SOURCE,) if shared else ()))),
+            tuple(dict.fromkeys(base_snap.sources+((SOURCE,) if imported_shared_source else ()))),
             tuple(dict.fromkeys(base_snap.quality_flags+tuple(source_quality)))
         )
         roster_for_team={}
-        if shared:
+        if imported_shared_source:
             for team_id in (gc.home_team_id,gc.away_team_id):
                 code=team_id_to_code.get(team_id)
                 if code and code in shared["teams"]:
