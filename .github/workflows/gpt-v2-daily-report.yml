@@ -24,6 +24,7 @@ on:
       - "gpt_engine/v2/odds_ingest.py"
       - "gpt_engine/v2/odds_api_io.py"
       - "gpt_engine/v2/five_book_board.py"
+      - "gpt_engine/v2/hoopsapi_free.py"
       - "gpt_engine/v2/odds_map.py"
       - "gpt_engine/v2/market_run.py"
       - "gpt_engine/v2/market_grade.py"
@@ -60,27 +61,19 @@ jobs:
           python -m gpt_engine.v2.ingest \
             --seasons 2024 2025 2026 2027 \
             --output /tmp/gpt-v2-daily.sqlite
-      - name: Capture five NBA sportsbooks before forecasts (optional)
+      - name: Capture FREE NBA bookmaker odds before forecasts (optional)
         if: github.event_name != 'pull_request'
         env:
-          ODDS_API_IO_KEY: ${{ secrets.ODDS_API_IO_KEY }}
-          THE_ODDS_API_KEY: ${{ secrets.THE_ODDS_API_KEY }}
+          HOOPSAPI_KEY: ${{ secrets.HOOPSAPI_KEY }}
         run: |
-          if [ -n "${ODDS_API_IO_KEY}" ]; then
-            # Five requested books: FanDuel, Stake, MelBet, 1xbet, Bet365.
-            python -m gpt_engine.v2.odds_api_io \
+          if [ -z "${HOOPSAPI_KEY}" ]; then
+            echo "No free-tier HoopsAPI key; skip live feed (no invented sportsbook odds)"
+          else
+            # One free-tier request for the full NBA slate. Free quota = 10/day.
+            python -m gpt_engine.v2.hoopsapi_free \
               --nba-db /tmp/gpt-v2-daily.sqlite \
               --ledger /tmp/gpt-v2-odds-log.jsonl \
               --report /tmp/gpt-v2-odds-capture.json
-          elif [ -n "${THE_ODDS_API_KEY}" ]; then
-            # Legacy single-feed option; does NOT claim all five books.
-            python -m gpt_engine.v2.odds_ingest \
-              --nba-db /tmp/gpt-v2-daily.sqlite \
-              --ledger /tmp/gpt-v2-odds-log.jsonl \
-              --report /tmp/gpt-v2-odds-capture.json \
-              --markets h2h,spreads,totals --region us
-          else
-            echo "No configured odds API secret; skip live feed (no synthetic odds)"
           fi
       - name: Generate GPT v2 predictions and human-readable matchup reports
         env:
@@ -114,6 +107,7 @@ jobs:
         run: |
           python -m gpt_engine.v2.five_book_board \
             --asof-report /tmp/gpt-v2-market-asof-latest.json \
+            --book-set free \
             --output-json /tmp/gpt-v2-five-book-board.json \
             --output-md /tmp/gpt-v2-five-book-board.md
       - name: Grade independently verified final NBA scores (no bets)
