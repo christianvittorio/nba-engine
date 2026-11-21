@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-21T03:00:27Z",
+ "generated_utc": "2026-11-21T16:40:01Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -273,16 +273,16 @@
     {
      "name": "Grant Nelson",
      "nba_id": 1641761,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-19T21:18Z"
+     "date": "2026-11-21T14:51Z"
     },
     {
      "name": "Nolan Traore",
      "nba_id": 1642849,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-21T02:25Z"
+     "date": "2026-11-21T14:51Z"
     }
    ]
   },
@@ -523,9 +523,9 @@
     {
      "name": "Grayson Allen",
      "nba_id": 1628960,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-19T22:02Z"
+     "date": "2026-11-21T14:49Z"
     },
     {
      "name": "Kon Knueppel",
@@ -544,9 +544,9 @@
     {
      "name": "Grant Williams",
      "nba_id": 1629684,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-19T22:21Z"
+     "date": "2026-11-21T14:49Z"
     }
    ]
   },
@@ -672,9 +672,9 @@
     {
      "name": "Jalen Smith",
      "nba_id": 1630188,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-20T23:19Z"
+     "date": "2026-11-21T14:54Z"
     },
     {
      "name": "Caleb Wilson",
@@ -956,9 +956,9 @@
     {
      "name": "Tobi Lawal",
      "nba_id": -5106040,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-19T14:51Z"
+     "date": "2026-11-21T15:08Z"
     },
     {
      "name": "Dereck Lively II",
@@ -1220,9 +1220,9 @@
     {
      "name": "Ebuka Okorie",
      "nba_id": -5258459,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-19T21:43Z"
+     "date": "2026-11-21T14:53Z"
     },
     {
      "name": "Ugonna Onyenso",
@@ -1639,6 +1639,13 @@
      "date": "2026-11-20T20:41Z"
     },
     {
+     "name": "T.J. McConnell",
+     "nba_id": 204456,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-21T14:51Z"
+    },
+    {
      "name": "Ben Sheppard",
      "nba_id": 1641767,
      "status": "Out",
@@ -2037,9 +2044,9 @@
     {
      "name": "Jerami Grant",
      "nba_id": 203924,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-20T02:08Z"
+     "date": "2026-11-21T08:08Z"
     },
     {
      "name": "GG Jackson",
@@ -2696,7 +2703,7 @@
      "nba_id": 1628384,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-20T22:10Z"
+     "date": "2026-11-21T16:09Z"
     },
     {
      "name": "Jordan Clarkson",
@@ -2704,6 +2711,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-20T22:21Z"
+    },
+    {
+     "name": "Karl-Anthony Towns",
+     "nba_id": -3136195,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-21T16:05Z"
     }
    ]
   },
@@ -2822,9 +2836,9 @@
     {
      "name": "Alex Caruso",
      "nba_id": 1627936,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-20T23:24Z"
+     "date": "2026-11-21T14:54Z"
     },
     {
      "name": "Chet Holmgren",
@@ -2843,9 +2857,9 @@
     {
      "name": "Nikola Topic",
      "nba_id": 1642260,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-20T17:02Z"
+     "date": "2026-11-21T14:54Z"
     },
     {
      "name": "Cason Wallace",
@@ -3138,7 +3152,7 @@
      "nba_id": 1630178,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-20T22:07Z"
+     "date": "2026-11-21T16:25Z"
     },
     {
      "name": "Dean Wade",
@@ -3255,6 +3269,13 @@
     }
    ],
    "injuries": [
+    {
+     "name": "Ryan Dunn",
+     "nba_id": 1642346,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-21T14:55Z"
+    },
     {
      "name": "Mark Williams",
      "nba_id": 1631109,
@@ -3516,9 +3537,9 @@
     {
      "name": "Precious Achiuwa",
      "nba_id": 1630173,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-20T21:21Z"
+     "date": "2026-11-21T14:55Z"
     },
     {
      "name": "Maxime Raynaud",
@@ -3795,9 +3816,9 @@
     {
      "name": "Collin Murray-Boyles",
      "nba_id": 1642867,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-19T21:41Z"
+     "date": "2026-11-21T14:52Z"
     }
    ]
   },
@@ -4065,9 +4086,9 @@
     {
      "name": "Felix Okpara",
      "nba_id": -5105841,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-21T00:43Z"
+     "date": "2026-11-21T14:54Z"
     },
     {
      "name": "Tristan Vukcevic",
@@ -4162,7 +4183,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 30,
-  "injuries_endpoint_entries": 106,
-  "embedded_injuries": 105
+  "injuries_endpoint_entries": 108,
+  "embedded_injuries": 108
  }
 }
