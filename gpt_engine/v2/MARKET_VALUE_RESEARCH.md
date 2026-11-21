@@ -356,3 +356,107 @@ differences only, explicitly reporting that a line-specific probability
 is unavailable. `market_grade` evaluates categorical WIN/PUSH/LOSS
 probability scoring without counting multiple bookmakers as
 independent model predictions.
+
+
+## Five named sportsbooks: FanDuel, Stake, MelBet, 1xbet, Bet365
+
+An additional provider adapter, `odds_api_io.py`, targets Odds-API.io
+v3 because its November 2026 coverage list explicitly includes all five
+books in a single API. This is a **separate provider** from
+`odds_ingest.py` (The Odds API). We do not blend bookmaker prices
+without preserved provider provenance and timestamps.
+
+Current requested books (case-sensitive API names):
+`FanDuel,Stake,MelBet,1xbet,Bet365`.
+
+The official /v3/events + /v3/odds/multi workflow uses up to 10
+events per request, with `ML,Spread,Totals` markets. Player props
+are currently supported only when explicitly mapped and available;
+the v3 five-book adapter deliberately does not infer generic "Player
+Props" into player/market identities.
+
+The adapter:
+- Restricts to pending NBA league events and verifies the NBA warehouse
+  home/away teams and UTC tipoff, never guessing from city/date alone;
+- Excludes already-live events, three-way regulation-only ML, invalid
+  prices, incomplete 2-sided spread/total pairs and missing quote
+  source timestamps;
+- Maps source home handicap (`hdp`) and total line (`max`) into
+  exact signed handicaps and totals;
+- Records every named sportsbook independently, leaving absent books
+  empty instead of inventing odds;
+- Reuses the immutable quote ledger, frozen forecast comparison and
+  research EV evaluator;
+- Produces `five_book_board.py` reports with one column per sportsbook
+  plus actual best available price, without mixing different markets
+  or point lines.
+
+### Live five-book data
+
+The API key **must be supplied externally**, and is never written into
+source code or GitHub commits. For local or securely deployed runs:
+
+```bash
+export ODDS_API_IO_KEY="KEY_FROM_PROVIDER"
+python -m gpt_engine.v2.odds_api_io \
+  --nba-db /tmp/gpt-v2-daily.sqlite \
+  --ledger /tmp/gpt-v2-odds-log.jsonl \
+  --report /tmp/gpt-v2-five-book-capture.json
+
+python -m gpt_engine.v2.market_run \
+  --forecast-ledger gpt_engine/v2/artifacts/forecast_log.jsonl \
+  --root . \
+  --odds-ledger /tmp/gpt-v2-odds-log.jsonl \
+  --output-json /tmp/gpt-v2-market-asof-latest.json \
+  --output-md /tmp/gpt-v2-market-asof-latest.md
+
+python -m gpt_engine.v2.five_book_board \
+  --asof-report /tmp/gpt-v2-market-asof-latest.json \
+  --output-json /tmp/gpt-v2-five-book-board.json \
+  --output-md /tmp/gpt-v2-five-book-board.md
+```
+
+Scheduled GitHub runs prefer `ODDS_API_IO_KEY`, and use the legacy
+`THE_ODDS_API_KEY` only as a fallback (never claiming that a partial
+fallback covers all five). Both are configured only as GitHub Actions
+secrets. Price data and details stay in /tmp, never uploaded to this
+public repository.
+
+Pricing and terms, which may change, must be reviewed before subscribing:
+https://docs.odds-api.io/ (5-bookmaker Starter currently advertised as
+£99/month). There is no new free API key plan presently advertised.
+Check each book and basketball NBA league market availability against
+actual authenticated API responses; listed provider support is not
+proof that every book quotes every game.
+
+The official source references:
+- https://docs.odds-api.io/quickstart
+- https://docs.odds-api.io/guides/fetching-odds
+- https://odds-api.io/sportsbooks/fanduel
+- https://odds-api.io/sportsbooks/stake
+- https://odds-api.io/sportsbooks/melbet
+- https://odds-api.io/sportsbooks/1xbet
+- https://odds-api.io/sportsbooks/bet365
+
+### Offline five-book test
+
+For a genuine saved provider response, create a JSON file containing
+`{"events":[...],"odds":[...]}`, preserving the original
+time of retrieval. Provide a correct, verified NBA warehouse and run:
+
+```bash
+python -m gpt_engine.v2.odds_api_io \
+  --nba-db /tmp/gpt-v2-daily.sqlite \
+  --fixture-json /tmp/saved_five_book_api.json \
+  --retrieved-at-utc 2026-11-21T20:05:00Z \
+  --ledger /tmp/five_book_offline.jsonl \
+  --report /tmp/five_book_offline_report.json
+
+python -m pytest -q \
+  gpt_engine/v2/tests/test_odds_api_io.py \
+  gpt_engine/v2/tests/test_five_book_board.py
+```
+
+The offline tests use **synthetic NBA game and price fixtures**. They
+prove normalization and safeguards only, not that a live authenticated
+five-book request succeeded, or that the model's EV is profitable.
