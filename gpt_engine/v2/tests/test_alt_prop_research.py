@@ -243,3 +243,32 @@ def test_future_placeholder_team_id_not_ranked_as_31st_nba_defense():
     # teams listed solely in future source schedules are never counted.
     assert coverage["G"]["required_teams"]==1
     assert coverage["G"]["rankable"] is False
+
+
+def test_missing_latest_completed_team_game_blocks_false_twelve_of_twelve():
+    db=bare_db()
+    # The statistical archive may be from before last night's boxscore.
+    # A game with tip more than 4 hours ago is still scheduled in the
+    # warehouse: 12/12 must NOT be represented as complete season form.
+    db.execute("INSERT INTO games VALUES (?,?,?,?,?,?,?,?)",(
+        "unsettled-yesterday",2027,"2026-11-20","2026-11-21T01:00:00Z",
+        "team-attack","team-def","scheduled","regular_season"))
+    report=build_alt_prop_research(db,now_utc=NOW,date_eastern="2026-11-21")
+    assert report["prior_final_freshness"][0]["missing_due_final_games"]==1
+    assert report["prior_final_freshness"][0][
+        "candidate_teams_with_unsettled_past_game"]["team-attack"]==1
+    assert report["exclusion_counts"]["UNSETTLED_PRIOR_GAME_MISSING_FINAL_BOXSCORE"]>0
+    assert report["candidates"]==[]
+    assert report["same_book_parlay"] is None
+
+
+def test_not_yet_completed_tip_does_not_count_as_stale_final():
+    db=bare_db()
+    db.execute("INSERT INTO games VALUES (?,?,?,?,?,?,?,?)",(
+        "too-fresh-to-call-final",2027,"2026-11-20","2026-11-21T15:00:00Z",
+        "team-attack","team-def","scheduled","regular_season"))
+    report=build_alt_prop_research(db,now_utc=NOW,date_eastern="2026-11-21")
+    assert report["prior_final_freshness"][0]["missing_due_final_games"]==0
+    assert report["exclusion_counts"].get(
+       "UNSETTLED_PRIOR_GAME_MISSING_FINAL_BOXSCORE",0
+    )==0
