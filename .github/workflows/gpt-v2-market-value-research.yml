@@ -7,10 +7,14 @@ on:
       - "gpt_engine/v2/odds_map.py"
       - "gpt_engine/v2/market_run.py"
       - "gpt_engine/v2/market_grade.py"
+      - "gpt_engine/v2/market_results.py"
+      - "gpt_engine/v2/forward_calibration.py"
       - "gpt_engine/v2/tests/test_market_value.py"
       - "gpt_engine/v2/tests/test_odds_ingest.py"
       - "gpt_engine/v2/tests/test_market_run.py"
       - "gpt_engine/v2/tests/test_market_grade.py"
+      - "gpt_engine/v2/tests/test_market_results.py"
+      - "gpt_engine/v2/tests/test_forward_calibration.py"
       - "gpt_engine/v2/MARKET_VALUE_RESEARCH.md"
       - ".github/workflows/gpt-v2-market-value-research.yml"
   workflow_dispatch:
@@ -25,10 +29,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install unit-test dependency
-        run: python -m pip install pytest
+      - name: Install GPT v2 research dependencies
+        run: python -m pip install -r gpt_engine/v2/requirements-test.txt
       - name: Compile market comparator
-        run: python -m compileall -q gpt_engine/v2/market_value.py gpt_engine/v2/odds_ingest.py gpt_engine/v2/odds_map.py gpt_engine/v2/market_run.py gpt_engine/v2/market_grade.py
+        run: >-
+          python -m compileall -q
+          gpt_engine/v2/market_value.py
+          gpt_engine/v2/odds_ingest.py
+          gpt_engine/v2/odds_map.py
+          gpt_engine/v2/market_run.py
+          gpt_engine/v2/market_grade.py
+          gpt_engine/v2/market_results.py
+          gpt_engine/v2/forward_calibration.py
       - name: Verify odds, vig, push, timestamp and calibration safeguards
         run: >-
           python -m pytest -q
@@ -36,3 +48,5 @@ jobs:
           gpt_engine/v2/tests/test_odds_ingest.py
           gpt_engine/v2/tests/test_market_run.py
           gpt_engine/v2/tests/test_market_grade.py
+          gpt_engine/v2/tests/test_market_results.py
+          gpt_engine/v2/tests/test_forward_calibration.py
