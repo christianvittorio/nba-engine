@@ -14,6 +14,8 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+from .situational_streaks import append_pregame_situational_features
+
 REPO=Path(__file__).resolve().parents[2]
 SOURCE=REPO/"data_foundation"/"artifacts"
 ROLLING=(5,10,20)
@@ -53,6 +55,12 @@ FEATURE_GROUPS={
         f"tracked_{position}_{stat}" for position in ("G","F","C")
         for stat in ("assists_per100","potential_assists_per100",
                      "points_per100","matchup_possessions","sample_games")
+    ],
+    "situational_streaks":[
+        "situation_rest_days",
+        "situation_venue_games","situation_venue_prior",
+        "situation_sample","situation_shrunk_win_rate",
+        "situation_edge","situation_low_sample",
     ],
 }
 CROSS_FEATURES=(
@@ -188,6 +196,9 @@ def append_tracked_features(teams:pd.DataFrame,tracking:pd.DataFrame)->pd.DataFr
 
 def game_feature_frame(years:list[int],*,with_tracking=True)->pd.DataFrame:
     teams=rolling_team_features(load_teams(years))
+    # Exact venue/rest conditional records calculated using earlier games
+    # only; postgame team scores are never seen by the current row's feature.
+    teams=append_pregame_situational_features(teams)
     if with_tracking:
         tracking=load_tracking(years)
         teams=append_tracked_features(teams,tracking)
@@ -247,7 +258,7 @@ def ablation_feature_sets(frame:pd.DataFrame)->dict[str,list[str]]:
         raise ValueError("Core prior-game columns missing")
     sets={"core":core}
     for group in ("shooting","rebounding_turnovers","observed_tactics",
-                  "tracked_defender_matchups"):
+                  "tracked_defender_matchups","situational_streaks"):
         extra=[f"{side}__{col}" for side in ("home","away")
                for col in FEATURE_GROUPS[group]]
         sets["core+"+group]=core+extra
