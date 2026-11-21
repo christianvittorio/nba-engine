@@ -6,7 +6,7 @@ python -m gpt_engine.run                  # today and tomorrow, US Eastern
 from __future__ import annotations
 
 import argparse
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 import json
 from pathlib import Path
 import sqlite3
@@ -108,7 +108,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("--date", help="US Eastern game date; default today and tomorrow")
     args = parser.parse_args(argv)
-    days = [args.date] if args.date else [
+    days = [date.fromisoformat(args.date).isoformat()] if args.date else [
         str(datetime.now(NY).date() + timedelta(days=i)) for i in (0, 1)]
     OUT.mkdir(parents=True, exist_ok=True)
     REPORTS.mkdir(parents=True, exist_ok=True)
