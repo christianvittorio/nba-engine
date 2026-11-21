@@ -1,0 +1,130 @@
+name: gpt-v2-daily-readable-report
+
+on:
+  schedule:
+    - cron: "30 10 * * *"      # Early US morning, ahead of weekend early tips
+    - cron: "30 17 * * *"      # Midday ET follow-up for not-yet-logged games
+    - cron: "30 22 * * 1-5"    # Weekday evening, after Claude's pretip injury refresh
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "US Eastern date YYYY-MM-DD (blank = Eastern today and tomorrow)"
+        required: false
+        default: ""
+      simulations:
+        description: "Per-game simulation count (>=50; recommended 1000)"
+        required: false
+        default: "1000"
+  pull_request:
+    paths:
+      - "gpt_engine/v2/daily_publish.py"
+      - "gpt_engine/v2/research.py"
+      - "gpt_engine/v2/tests/test_daily_publish.py"
+      - ".github/workflows/gpt-v2-daily-report.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gpt-v2-daily-report-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  forecast-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: gpt_engine/v2/requirements-test.txt
+      - name: Install GPT v2 dependencies
+        run: python -m pip install -r gpt_engine/v2/requirements-test.txt
+      - name: Verify report/immutable-ledger and time-cutoff tests
+        run: |
+          python -m compileall -q gpt_engine/v2
+          python -m pytest -q gpt_engine/v2/tests/test_daily_publish.py
+      - name: Build independent four-season NBA warehouse with official tip times
+        run: |
+          python -m gpt_engine.v2.ingest \
+            --seasons 2024 2025 2026 2027 \
+            --output /tmp/gpt-v2-daily.sqlite
+      - name: Generate GPT v2 predictions and human-readable matchup reports
+        env:
+          GPT_REPORT_DATE: ${{ inputs.date }}
+          GPT_REPORT_SIMS: ${{ inputs.simulations }}
+        run: |
+          SIMS="${GPT_REPORT_SIMS:-1000}"
+          if [ "$SIMS" -lt 50 ] || [ "$SIMS" -gt 10000 ]; then
+            echo "Simulation count must be between 50 and 10000"
+            exit 1
+          fi
+          if [ -n "$GPT_REPORT_DATE" ]; then
+            python -m gpt_engine.v2.daily_publish \
+              --db /tmp/gpt-v2-daily.sqlite \
+              --date "$GPT_REPORT_DATE" --n "$SIMS"
+          else
+            python -m gpt_engine.v2.daily_publish \
+              --db /tmp/gpt-v2-daily.sqlite --n "$SIMS"
+          fi
+      - name: Check every saved pretip forecast and generated Markdown report
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from gpt_engine.v2.daily_publish import REPORTS,read_ledger
+          from gpt_engine.v2.contracts import utc
+          forecasts=read_ledger()
+          found=list(REPORTS.glob("daily_*.md"))
+          assert found,"Expected a daily Markdown file even when there are no scheduled games"
+          for f in forecasts:
+              detail=json.loads(Path(f["file"]).read_text())
+              assert utc(detail["cutoff_utc"])<utc(detail["tip_utc"])
+              assert detail["prediction_id"]==f["prediction_id"]
+              assert detail["model_version"]==f["model_version"]
+              assert "player_statistics" in detail["result"]
+              assert detail.get("confirmed_starting_lineups") is False
+          for path in found:
+              md=path.read_text()
+              assert "Slate at a glance" in md
+              assert "Game-by-game breakdown" in md
+              assert "Situational" in md or "situational" in md
+              assert "RESEARCH / UNCALIBRATED" in md
+          print("Valid immutable pretip forecast rows:",len(forecasts))
+          print("Readable daily reports:",len(found))
+          PY
+      - name: Publish reports and immutable forecast ledger to GitHub
+        if: github.event_name != 'pull_request'
+        run: |
+          git config user.name "gpt-v2-report-bot"
+          git config user.email "gpt-v2-report-bot@users.noreply.github.com"
+          git add -f gpt_engine/v2/artifacts/reports/
+          if [ -f gpt_engine/v2/artifacts/forecast_log.jsonl ]; then
+            git add -f gpt_engine/v2/artifacts/forecast_log.jsonl
+          fi
+          if git diff --cached --quiet; then
+            echo "No GPT v2 reports to publish"
+            exit 0
+          fi
+          git commit -m "gpt v2: dated human-readable pretip NBA report"
+          for attempt in 1 2 3 4; do
+            if git pull --rebase && git push; then
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Unable to push GPT v2 forecasts; no pregame reports claimed published"
+          exit 1
+      - name: Attach report artifacts for pull-request verification
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpt-v2-readable-daily-report-smoke
+          path: |
+            gpt_engine/v2/artifacts/reports/
+            gpt_engine/v2/artifacts/forecast_log.jsonl
+          if-no-files-found: error
