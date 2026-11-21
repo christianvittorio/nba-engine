@@ -90,7 +90,8 @@ def estimate_rotation(hist,team,day,season,status,rostered_ids=None):
                     season=season,availability=status.get(pid,"unknown")))
     return allocate_minutes(parts)
 
-def run_day(db_path:str,day:str,n:int=1000,seed:int=20261121):
+def run_day(db_path:str,day:str,n:int=1000,seed:int=20261121,
+            skip_game_ids:set[str]|None=None):
     now=iso(datetime.now(timezone.utc))
     con=connect(db_path)
     games=con.execute("SELECT * FROM games WHERE game_date_eastern=? "
@@ -124,6 +125,8 @@ def run_day(db_path:str,day:str,n:int=1000,seed:int=20261121):
     team_id_to_code={v:k for k,v in official_codes.items()}
     outcomes=[]
     for row in games:
+        if row["game_id"] in (skip_game_ids or set()):
+            continue
         gc=GameContext(row["game_id"],int(row["season"]),row["game_date_eastern"],
                        row["tip_utc"],row["home_team_id"],row["away_team_id"],
                        bool(row["neutral_site"]))
@@ -185,8 +188,11 @@ def run_day(db_path:str,day:str,n:int=1000,seed:int=20261121):
         quality=list(snap.quality_flags)+source_quality+[
             "UNVALIDATED_RESEARCH_MODEL",
             "recent_participants_not_confirmed_lineup",
-            "absence_of_live_injury_report_requires_conditional_interpretation",
         ]
+        if not imported_shared_source:
+            quality.append("no_valid_live_availability_feed")
+        else:
+            quality.append("unconfirmed_lineup_status_scenarios_needed")
         sid=save_snapshot(con,snap,generated_at_utc=now)
         pred=Prediction(gc.game_id,sid,VERSION,now,now,"recent_participants_conditional",{
             "home_win_probability":sim["home_win_probability"],
@@ -215,8 +221,19 @@ def run_day(db_path:str,day:str,n:int=1000,seed:int=20261121):
         report.write_text(json.dumps({
             "game_id":gc.game_id,"tip_utc":gc.tip_utc,
             "tip_manila":display_tip(gc.tip_utc),
+            "game_date_eastern":gc.game_date_eastern,
+            "home_team_id":gc.home_team_id,
+            "away_team_id":gc.away_team_id,
             "cutoff_utc":now,"model_version":VERSION,"prediction_id":pid,
             "result":sim,"quality_flags":quality,
+            "availability_reports":[{
+                "player_id":r["player_id"],
+                "normalized_status":r["normalized_status"],
+                "provider_status":r["provider_status"],
+                "report_utc":r["report_utc"],
+                "source_id":r["source_id"],
+            } for r in avail],
+            "confirmed_starting_lineups":False,
             "betting_recommendation":False,
         },indent=2)+"\n",encoding="utf-8")
         outcomes.append({
