@@ -101,7 +101,7 @@ def _synthetic_experiment():
            list(pd.date_range("2024-10-15",periods=100))+
            list(pd.date_range("2025-02-01",periods=100))+
            list(pd.date_range("2025-11-01",periods=100)))
-    from gpt_engine.v2.feature_ablation import CROSS_FEATURES
+    from gpt_engine.v2.feature_ablation import CROSS_FEATURES, EVENT_CROSS_FEATURES
     frame=pd.DataFrame({
         "game_id":[f"game-{i}" for i in range(len(dates))],
         "game_date":[str(d.date()) for d in dates],
@@ -111,7 +111,8 @@ def _synthetic_experiment():
     sets={key:[f"{side}__{c}" for c in cols for side in ("home","away")]
           for key,cols in FEATURE_GROUPS.items()}
     allnames=list(dict.fromkeys(sum(sets.values(),[])+
-                                list(CROSS_FEATURES)+["home_court_advantage"]))
+                                list(CROSS_FEATURES)+list(EVENT_CROSS_FEATURES)
+                                +["home_court_advantage"]))
     for name in allnames:
         frame[name]=rng.normal(0,1,len(frame))
     strength=3*frame["home__rolling20_off_rating"]-2*frame["away__rolling20_off_rating"]

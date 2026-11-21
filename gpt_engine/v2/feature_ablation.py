@@ -26,6 +26,8 @@ BASE_PRIORS={
     "oreb_pct":.26,"dreb_pct":.74,"tm_tov_pct":.13,
     "fta_rate":.25,"ast":25.0,"tov":13.0,"oreb":10.0,
     "dreb":33.0,"opp_oreb":10.0,
+    "opp_3pa_rate_allowed":.37,"opp_fta_rate_allowed":.25,
+    "opp_tov_rate_forced":.13,"opp_oreb_rate_allowed":.27,
 }
 FEATURE_GROUPS={
     "core":[
@@ -45,6 +47,10 @@ FEATURE_GROUPS={
         "rolling20_tm_tov_pct","rolling20_oreb",
         "rolling20_dreb","rolling20_tov",
     ],
+    "defensive_event_allowances":[
+        "rolling20_opp_3pa_rate_allowed","rolling20_opp_fta_rate_allowed",
+        "rolling20_opp_tov_rate_forced","rolling20_opp_oreb_rate_allowed",
+    ],
     "observed_tactics":[
         "rolling5_pace","rolling10_pace","rolling5_three_point_rate",
         "rolling10_three_point_rate","rolling5_opp_ast",
@@ -63,6 +69,16 @@ FEATURE_GROUPS={
         "situation_edge","situation_low_sample",
     ],
 }
+EVENT_CROSS_FEATURES=(
+    "home_3pa_pressure_vs_away_3pa_allowed",
+    "away_3pa_pressure_vs_home_3pa_allowed",
+    "home_fta_pressure_vs_away_fta_allowed",
+    "away_fta_pressure_vs_home_fta_allowed",
+    "home_tov_vs_away_tov_forced",
+    "away_tov_vs_home_tov_forced",
+    "home_oreb_vs_away_oreb_allowed",
+    "away_oreb_vs_home_oreb_allowed",
+)
 CROSS_FEATURES=(
     "home_3pa_vs_away_3pa_allowed",
     "away_3pa_vs_home_3pa_allowed",
@@ -100,10 +116,29 @@ def load_teams(years:list[int])->pd.DataFrame:
     for c in set(BASE_PRIORS)-{"opp_three_pct_allowed"}:
         if c not in d:d[c]=np.nan
         d[c]=pd.to_numeric(d[c],errors="coerce")
-    d["opp_three_pct_allowed"]=(
-        pd.to_numeric(d.opp_fg3m,errors="coerce")/
-        pd.to_numeric(d.opp_fg3a,errors="coerce").replace(0,np.nan)
-    )
+    # Possession-event defensive allowances: ratios of opponent boxscore
+    # events against this team's defense, on the same *past* source game.
+    # Rolling features subsequently shift each row by one prior game.
+    # If a historical source column is absent, retain NaN and shrink to
+    # prespecified league priors. Never substitute future rates.
+    def raw(name):
+        return (pd.to_numeric(d[name],errors="coerce") if name in d
+                else pd.Series(np.nan,index=d.index,dtype=float))
+    opp_fga=raw("opp_fga").replace(0,np.nan)
+    opp_fta=raw("opp_fta")
+    opp_tov=raw("opp_tov")
+    opp_oreb=raw("opp_oreb")
+    own_dreb=raw("dreb")
+    opp_poss=(opp_fga+.44*opp_fta+opp_tov-opp_oreb).where(
+        lambda x:x>20)
+    d["opp_three_pct_allowed"]=raw("opp_fg3m")/raw("opp_fg3a").replace(0,np.nan)
+    d["opp_3pa_rate_allowed"]=raw("opp_fg3a")/opp_fga
+    d["opp_fta_rate_allowed"]=opp_fta/opp_fga
+    d["opp_tov_rate_forced"]=opp_tov/opp_poss
+    d["opp_oreb_rate_allowed"]=opp_oreb/(opp_oreb+own_dreb).replace(0,np.nan)
+    for key in ("opp_3pa_rate_allowed","opp_fta_rate_allowed",
+                "opp_tov_rate_forced","opp_oreb_rate_allowed"):
+        d[key]=d[key].where(d[key].between(0,1))
     d["home"]=d.home.astype(str).str.lower().isin(("true","1"))
     return d.sort_values(["game_date","game_id","team_id"]).reset_index(drop=True)
 
@@ -242,12 +277,42 @@ def game_feature_frame(years:list[int],*,with_tracking=True)->pd.DataFrame:
     }
     for name,(left,right) in pairs.items():
         out[name]=out[left]*out[right]
+    out=append_opponent_event_cross_features(out)
     out["winner_home"]=(out.home_score>out.away_score).astype(int)
     out["margin"]=out.home_score-out.away_score
     out["total"]=out.home_score+out.away_score
     if out[["home_score","away_score"]].isna().any().any():
         raise ValueError("Missing score labels")
     return out.sort_values(["game_date","game_id"]).reset_index(drop=True)
+
+def append_opponent_event_cross_features(out:pd.DataFrame)->pd.DataFrame:
+    """Signed offense-vs-defense style interactions from PREGAME rolling data.
+
+    All required columns are produced through a shift(1) on each team's
+    prior completed games. Do not call this helper on current-game raw rates.
+    The source-side mapping follows home/away identities explicitly.
+    """
+    d=out.copy()
+    specifications=(
+        ("3pa_pressure","three_point_rate","opp_3pa_rate_allowed",.37,.37),
+        ("fta_pressure","fta_rate","opp_fta_rate_allowed",.25,.25),
+        ("tov","tm_tov_pct","opp_tov_rate_forced",.13,.13),
+        ("oreb","oreb_pct","opp_oreb_rate_allowed",.26,.27),
+    )
+    for prefix,off,allowed,mu_off,mu_allowed in specifications:
+        for offense,defense in (("home","away"),("away","home")):
+            name=(f"{offense}_{prefix}_vs_{defense}_"
+                  f"{'3pa_allowed' if prefix=='3pa_pressure' else 'fta_allowed' if prefix=='fta_pressure' else 'tov_forced' if prefix=='tov' else 'oreb_allowed'}")
+            lhs=f"{offense}__rolling20_{off}"
+            rhs=f"{defense}__rolling20_{allowed}"
+            if lhs not in d or rhs not in d:
+                raise ValueError("Opponent event feature missing "+lhs+"/"+rhs)
+            d[name]=(pd.to_numeric(d[lhs],errors="coerce")-mu_off)*(
+                pd.to_numeric(d[rhs],errors="coerce")-mu_allowed)
+    if not set(EVENT_CROSS_FEATURES)<=set(d):
+        raise AssertionError("Event mismatch feature naming drift")
+    return d
+
 
 def ablation_feature_sets(frame:pd.DataFrame)->dict[str,list[str]]:
     core=["home_court_advantage"] + [
@@ -257,12 +322,14 @@ def ablation_feature_sets(frame:pd.DataFrame)->dict[str,list[str]]:
     if any(c not in frame for c in core):
         raise ValueError("Core prior-game columns missing")
     sets={"core":core}
-    for group in ("shooting","rebounding_turnovers","observed_tactics",
-                  "tracked_defender_matchups","situational_streaks"):
+    for group in ("shooting","rebounding_turnovers","defensive_event_allowances",
+                  "observed_tactics","tracked_defender_matchups","situational_streaks"):
         extra=[f"{side}__{col}" for side in ("home","away")
                for col in FEATURE_GROUPS[group]]
         sets["core+"+group]=core+extra
     sets["core+offense_defense_crossmatchups"]=core+list(CROSS_FEATURES)
+    sets["core+shot_possession_matchups"]=core+list(EVENT_CROSS_FEATURES)
+    sets["core+all_matchup_cross"]=core+list(CROSS_FEATURES)+list(EVENT_CROSS_FEATURES)
     sets["all_evidence"]=list(dict.fromkeys(
         core+sum([v for k,v in sets.items() if k!="core"],[])
     ))

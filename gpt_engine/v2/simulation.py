@@ -106,10 +106,31 @@ def _player_arrays(players:list[PlayerProjection],mins:np.ndarray):
                      for p,m in zip(players,mins)])
     rebounds=np.array([max(.001,p.rates_per_min.get("reb",.1)*m)
                        for p,m in zip(players,mins)])
-    for arr in (usage,ast,steals,blocks,rebounds):
+    # Optional v3 candidate: distribute three-point/two-point attempts
+    # across players using THEIR prior attempts, not one team-wide 3PA mix
+    # indiscriminately applied to every shooter. Shot totals remain driven
+    # by the same possession events; only assignment among eligible players
+    # changes. Shrink uncertain per-minute rates toward league priors.
+    three=np.asarray([
+        .70*max(0,p.rates_per_min.get("fg3a",.13))+.30*.13 for p in players])
+    fga=np.asarray([
+        .70*max(.001,p.rates_per_min.get("fga",.32))+.30*.32
+        for p in players])
+    frac=np.clip(three/np.maximum(fga,.01),.02,.90)
+    two=np.maximum(.02,1-frac)
+    shots_three=usage*np.clip(frac/.37,.18,2.8)
+    shots_two=usage*np.clip(two/.63,.18,2.8)
+    ft_rate=np.asarray([
+        .70*max(0,p.rates_per_min.get("fta",.10))+.30*.10 for p in players])
+    ft_takers=usage*np.clip(ft_rate/.10,.18,2.8)
+    for arr in (usage,ast,steals,blocks,rebounds,
+                shots_three,shots_two,ft_takers):
         arr[mins<=0]=0
     return {"usage":usage,"assists":ast,"steals":steals,
-            "blocks":blocks,"rebounds":rebounds}
+            "blocks":blocks,"rebounds":rebounds,
+            "three_point_shooters":shots_three,
+            "two_point_shooters":shots_two,
+            "free_throw_shooters":ft_takers}
 
 def _empty_box(players:list[PlayerProjection],mins:np.ndarray):
     return {p.player_id:{"minutes":float(m),**{key:0 for key in STAT_COLS}}
@@ -118,7 +139,8 @@ def _empty_box(players:list[PlayerProjection],mins:np.ndarray):
 def _attempt(rng,attacking:TeamSettings,defending:TeamSettings,
              attack:list[PlayerProjection],defense:list[PlayerProjection],
              aw:dict,dw:dict,ab:dict,db:dict, team_state:dict,
-             opponent_state:dict, location_advantage:float=0):
+             opponent_state:dict, location_advantage:float=0,
+             event_model:str="baseline"):
     """One possession with possible ORB retries; only explicit shot/FT events score."""
     usage=aw["usage"]
     if usage.sum()<1e-12: raise ValueError("No eligible attackers")
@@ -136,10 +158,17 @@ def _attempt(rng,attacking:TeamSettings,defending:TeamSettings,
             db[defense[taker].player_id]["stl"]+=1
         return
     for second_chance in range(4):
+        # Baseline is intentionally unchanged for existing published
+        # forecasts. The research-only candidate uses shot-type-dependent
+        # prior player volume, not uniform team 3PA specialization.
         shooter=_weighted_pick(rng,usage)
         p=attack[shooter]
         box=ab[p.player_id]
         if rng.random()<attacking.free_throw_trip_probability:
+            if event_model=="player_shot_mix":
+                shooter=_weighted_pick(rng,aw["free_throw_shooters"])
+                p=attack[shooter]
+                box=ab[p.player_id]
             # Free throw trip: two attempts, or rarely three on a 3PA foul.
             three_foul=(rng.random()<attacking.three_attempt_rate*.11)
             attempts=3 if three_foul else 2
@@ -170,6 +199,12 @@ def _attempt(rng,attacking:TeamSettings,defending:TeamSettings,
                     rr["dreb"]+=1
             return
         is_three=(rng.random()<attacking.three_attempt_rate)
+        if event_model=="player_shot_mix":
+            shooter=_weighted_pick(rng,aw[
+                "three_point_shooters" if is_three else "two_point_shooters"
+            ])
+            p=attack[shooter]
+            box=ab[p.player_id]
         box["fga"]+=1
         box["fg3a"]+=int(is_three)
         p_make=(p.three_point_pct if is_three else
@@ -213,7 +248,8 @@ def _attempt(rng,attacking:TeamSettings,defending:TeamSettings,
         return
 
 def _roll_single(rng,match:Matchup,home:list[PlayerProjection],
-                 away:list[PlayerProjection],overrides:dict[str,dict]|None=None):
+                 away:list[PlayerProjection],overrides:dict[str,dict]|None=None,
+                 event_model:str="baseline"):
     hp=_minutes_draw(rng,home)
     ap=_minutes_draw(rng,away)
     H=_empty_box(home,hp);A=_empty_box(away,ap)
@@ -228,9 +264,11 @@ def _roll_single(rng,match:Matchup,home:list[PlayerProjection],
     def period(possessions,pace_factor=1.0):
         for _ in range(possessions):
             _attempt(rng,match.home,match.away,home,away,hw,aw,H,A,h_state,a_state,
-                     (match.home_court_points/2+match.rest_effect_home))
+                     (match.home_court_points/2+match.rest_effect_home),
+                     event_model=event_model)
             _attempt(rng,match.away,match.home,away,home,aw,hw,A,H,a_state,h_state,
-                     (-match.home_court_points/2+match.rest_effect_away))
+                     (-match.home_court_points/2+match.rest_effect_away),
+                     event_model=event_model)
     period(n)
     def score(box):
         return sum(r["pts"] for r in box.values())
@@ -287,7 +325,10 @@ def simulate_game(matchup:Matchup,home:list[PlayerProjection],
                   away:list[PlayerProjection],n:int=10000,
                   seed:int=20261121,batch_size:int=500,
                   thresholds:dict[str,dict[str,list[float]]]|None=None,
-                  include_samples:bool=False) -> dict:
+                  include_samples:bool=False,
+                  event_model:str="baseline") -> dict:
+    if event_model not in ("baseline","player_shot_mix"):
+        raise ValueError("Only baseline or research player_shot_mix supported")
     if not isinstance(n,int) or n<50:
         raise ValueError("At least 50 simulations required")
     if not isinstance(batch_size,int) or batch_size<=0:
@@ -306,7 +347,7 @@ def simulate_game(matchup:Matchup,home:list[PlayerProjection],
                 for p in home+away}
     for start in range(0,n,batch_size):
         for _ in range(min(batch_size,n-start)):
-            r=_roll_single(rng,matchup,home,away)
+            r=_roll_single(rng,matchup,home,away,event_model=event_model)
             all_rows.append((r["home_score"],r["away_score"],
                              r["total"],r["margin"],r["overtimes"]))
             for box in (r["home"],r["away"]):
@@ -317,6 +358,8 @@ def simulate_game(matchup:Matchup,home:list[PlayerProjection],
     h=arr[:,0];a=arr[:,1];p=float(np.mean(h>a))
     out={
         "simulation_version":BASKETBALL_RULES_VERSION,
+        "event_model":event_model,
+        "experimental_player_shot_mix":event_model=="player_shot_mix",
         "seed":seed,"simulation_count":n,"batch_size":batch_size,
         "home_team_id":matchup.home.team_id,"away_team_id":matchup.away.team_id,
         "home_win_probability":round(p,5),
@@ -338,7 +381,9 @@ def simulate_game(matchup:Matchup,home:list[PlayerProjection],
             "Simulation parameters are initial physical priors, NOT holdout-calibrated.",
             "Larger simulation counts reduce Monte Carlo noise, not model bias.",
             "Shot/role selection and overtime allocations are approximate, not full clock-and-lineup tracking."
-        ],
+        ]+([
+            "Research-only player-specific 2PA/3PA/FTA assignment; not tuned or holdout validated; daily baseline unchanged."
+        ] if event_model=="player_shot_mix" else []),
     }
     for player in home+away:
         raw=per_player[player.player_id]
