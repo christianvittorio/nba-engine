@@ -68,7 +68,7 @@ jobs:
           else
             python -m gpt_engine.v2.odds_ingest \
               --nba-db /tmp/gpt-v2-daily.sqlite \
-              --ledger gpt_engine/v2/artifacts/market/odds_log.jsonl \
+              --ledger /tmp/gpt-v2-odds-log.jsonl \
               --report /tmp/gpt-v2-odds-capture.json \
               --markets h2h,spreads,totals --region us
           fi
@@ -96,9 +96,9 @@ jobs:
           python -m gpt_engine.v2.market_run \
             --forecast-ledger gpt_engine/v2/artifacts/forecast_log.jsonl \
             --root . \
-            --odds-ledger gpt_engine/v2/artifacts/market/odds_log.jsonl \
-            --output-json gpt_engine/v2/artifacts/market/market_asof_latest.json \
-            --output-md gpt_engine/v2/artifacts/market/market_asof_latest.md
+            --odds-ledger /tmp/gpt-v2-odds-log.jsonl \
+            --output-json /tmp/gpt-v2-market-asof-latest.json \
+            --output-md /tmp/gpt-v2-market-asof-latest.md
       - name: Grade independently verified final NBA scores (no bets)
         if: github.event_name != 'pull_request'
         run: |
@@ -106,10 +106,27 @@ jobs:
             --db /tmp/gpt-v2-daily.sqlite \
             --output /tmp/gpt-v2-market-finals.json
           python -m gpt_engine.v2.market_grade \
-            --asof-report gpt_engine/v2/artifacts/market/market_asof_latest.json \
-            --odds-ledger gpt_engine/v2/artifacts/market/odds_log.jsonl \
+            --asof-report /tmp/gpt-v2-market-asof-latest.json \
+            --odds-ledger /tmp/gpt-v2-odds-log.jsonl \
             --finals-json /tmp/gpt-v2-market-finals.json \
-            --output gpt_engine/v2/artifacts/market/market_evaluation_latest.json
+            --output /tmp/gpt-v2-market-evaluation-latest.json
+      - name: Audit private market research output without publishing provider prices
+        if: github.event_name != 'pull_request'
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path("/tmp/gpt-v2-market-asof-latest.json").read_text())
+          graded=json.loads(Path("/tmp/gpt-v2-market-evaluation-latest.json").read_text())
+          assert report["research_only"] is True
+          assert graded["research_only"] is True
+          print("PRIVATE_MARKET_RUN",json.dumps({
+             "slate_games":len(report["games"]),
+             "price_observations_before_cutoff":report["usable_asof_quote_count"],
+             "graded_games":graded["calibration"]["settled_game_count"],
+             "provisional_status":"UNCALIBRATED_RESEARCH"
+          }))
+          PY
       - name: Check every saved pretip forecast and generated Markdown report
         run: |
           python - <<'PY'
@@ -142,9 +159,6 @@ jobs:
           git config user.name "gpt-v2-report-bot"
           git config user.email "gpt-v2-report-bot@users.noreply.github.com"
           git add -f gpt_engine/v2/artifacts/reports/
-          if [ -d gpt_engine/v2/artifacts/market ]; then
-            git add -f gpt_engine/v2/artifacts/market/
-          fi
           if [ -f gpt_engine/v2/artifacts/forecast_log.jsonl ]; then
             git add -f gpt_engine/v2/artifacts/forecast_log.jsonl
           fi
