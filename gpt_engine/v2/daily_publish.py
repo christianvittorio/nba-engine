@@ -26,7 +26,7 @@ from .contracts import iso, utc, display_tip
 from .feature_ablation import load_teams
 from .research import ROOT, REPORTS, VERSION, run_day
 from .situational_streaks import (
-    add_finished_game_context, matchup_record_asof,
+    add_finished_game_context, matchup_record_asof, current_matching_run,
     season_from_eastern_date
 )
 
@@ -140,11 +140,17 @@ def _situation(finished:pd.DataFrame,team_id:str,day:str,
     if record["sample"]==0:
         return f"{venue.title()}, {wording}: no matching games in three-season sample"
     sample_note="; small sample" if record["low_sample"] else ""
+    run=current_matching_run(
+        finished,_short_id(team_id),day,season,venue,rest
+    )
+    run_note=(f"; current conditional run: {run['length']} consecutive "
+              f"{'wins' if run['result']=='win' else 'losses'}"
+              if run["length"] else "")
     return (f"{venue.title()}, {wording}: **{wins}–{losses}** "
             f"in {record['sample']} prior matching games "
             f"({100*wins/record['sample']:.1f}% raw; "
             f"{100*record['shrunk_win_rate']:.1f}% shrunk descriptive rate"
-            f"{sample_note}). NOT a calibrated probability")
+            f"{sample_note}{run_note}). NOT a calibrated probability")
 
 def _recent_form(finished:pd.DataFrame,team_id:str,day:str)->str:
     previous=finished[(finished.team_id.astype(str)==_short_id(team_id))&
@@ -285,15 +291,15 @@ def render_report(day:str,docs:list[dict],*,team_names:dict[str,str],
             lines.append(f"- **{code}:** "+_injuries(doc,team_id,player_names))
         lines+=["","**Projected player box-score means (conditional on playing):**",
                 "",
-                "| Player | Min | PTS | REB | AST | 3PM | TOV |",
-                "|---|---:|---:|---:|---:|---:|---:|"]
+                "| Team | Player | Min | PTS | REB | AST | 3PM | TOV |",
+                "|---|---|---:|---:|---:|---:|---:|---:|"]
         for team_id,code in ((away,a),(home,h)):
             rows=_top_player_lines(sim["player_statistics"],team_id,
                                    player_names,player_team)
             if not rows:
-                lines.append(f"| {code}: insufficient mapped player history | — | — | — | — | — | — |")
+                lines.append(f"| {code} | insufficient mapped player history | — | — | — | — | — | — |")
             else:
-                lines.extend("| "+" | ".join(row)+" |" for row in rows)
+                lines.extend("| "+code+" | "+" | ".join(row)+" |" for row in rows)
         lines+=["",
                 "† Unconfirmed playing time; treat this as a **conditional** projection, "
                 "not a confident player prop.",
