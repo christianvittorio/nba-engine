@@ -31,6 +31,21 @@ def _stat_value(source: dict, key: str) -> float | None:
         return None
 
 
+def _minutes_value(stats: dict) -> float | None:
+    for key in ("min", "minutes"):
+        raw = stats.get(key)
+        if isinstance(raw, str) and ":" in raw:
+            parts = raw.split(":")
+            if len(parts) == 2 and all(x.isdigit() for x in parts):
+                minutes = int(parts[0]) + int(parts[1])/60
+                if 0 <= minutes <= 65 and 0 <= int(parts[1]) < 60:
+                    return minutes
+        value = _stat_value(stats, key)
+        if value is not None and value <= 65:
+            return value
+    return None
+
+
 def _score_consistent(stats: dict, actual: int) -> bool:
     try:
         if not all(k in stats for k in ("fgm", "fg3m", "ftm", "pts")):
@@ -78,10 +93,6 @@ def extract_final_outcomes(connection: sqlite3.Connection, *,
                              "reason":"INVALID_TEAM_SCORE_COMPONENTS"})
             continue
         home_score, away_score = int(g["home_score"]), int(g["away_score"])
-        reconciled = [
-            _score_consistent(json.loads(r["stats_json"]), score)
-            for r, score in zip(stat_rows, [home_score,away_score])
-        ]
         # Team stats order is not guaranteed! Verify against actual
         # home/away IDs, never compare positional rows.
         sides = connection.execute(
@@ -104,9 +115,7 @@ def extract_final_outcomes(connection: sqlite3.Connection, *,
         ).fetchall()
         for p in player_rows:
             stats = json.loads(p["stats_json"])
-            minutes = _stat_value(stats, "min")
-            if minutes is None:
-                minutes = _stat_value(stats, "minutes")
+            minutes = _minutes_value(stats)
             entry = {"status": "unknown"}
             if minutes is not None and minutes > 0:
                 entry["status"] = "played"
