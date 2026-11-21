@@ -1,0 +1,56 @@
+name: gpt-v2-situational-streak-research
+on:
+  pull_request:
+    paths:
+      - "gpt_engine/v2/situational_streaks.py"
+      - "gpt_engine/v2/feature_ablation.py"
+      - "gpt_engine/v2/tests/test_situational_streaks.py"
+      - ".github/workflows/gpt-v2-streak-research.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate-and-discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: gpt_engine/v2/requirements-test.txt
+      - name: Install scientific tests
+        run: python -m pip install -r gpt_engine/v2/requirements-test.txt
+      - name: Compile feature code
+        run: python -m compileall -q gpt_engine/v2
+      - name: Prove point-in-time streak feature and source accounting
+        run: python -m pytest -q gpt_engine/v2/tests/test_situational_streaks.py
+      - name: Discover original three-season venue/rest patterns as of November 21
+        run: |
+          python -m gpt_engine.v2.situational_streaks             --asof 2026-11-21 --seasons 2024 2025 2026 2027             --min-games 10 --output /tmp/gpt-v2-streaks-asof-2026-11-21.json             | tee /tmp/gpt-v2-streak-discovery.log
+      - name: Validate report is observation only, never a fabricated market probability
+        run: |
+          python - <<'PY'
+          import json
+          data=json.load(open('/tmp/gpt-v2-streaks-asof-2026-11-21.json'))
+          assert data["asof_eastern_date"]=="2026-11-21"
+          assert data["seasons_included"]==[2025,2027]
+          assert data["conditions_per_team"]==8
+          assert data["n_tests_up_to"]>=200
+          for r in data["all_patterns"]:
+              assert r["games"]==r["wins"]+r["losses"]
+              assert r["games"]>=10
+              assert 0<r["shrunk_rate"]<1
+              assert r["rest_bucket"] in ("0","1","2","3+")
+              assert r["venue"] in ("home","away")
+          print("Validated",data["result_count"],"real as-of home/rest patterns")
+          PY
+      - name: Publish as-of situational streaks, supporting sample size and shrinkage
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpt-v2-situational-streaks-nov21
+          path: |
+            /tmp/gpt-v2-streaks-asof-2026-11-21.json
+            /tmp/gpt-v2-streak-discovery.log
+          if-no-files-found: error
