@@ -161,7 +161,15 @@ def evaluate_ensemble(frame:pd.DataFrame)->dict:
     pb,mb,tb=blend(elot.elo_p,rt,elot.elo_margin,mt,tt,w)
     calibrated_p=calibrator.predict(pb)
     # Use existing v2 metric definitions for apples-to-apples holdout.
-    baseline_elo=_metrics(elot.elo_p,elot.elo_margin,elot.elo_total,test)
+    # Force positional numeric arrays: test retains original historical
+    # row indices, whereas the game-ID-aligned Elo merge has 0..N indices.
+    # Subtracting pandas Series would silently align on unrelated indices,
+    # yielding NaN MAE despite otherwise valid predictions.
+    baseline_elo=_metrics(
+        elot.elo_p.to_numpy(dtype=float),
+        elot.elo_margin.to_numpy(dtype=float),
+        elot.elo_total.to_numpy(dtype=float),test
+    )
     ridge_metrics=_metrics(rt,mt,tt,test)
     raw_metrics=_metrics(pb,mb,tb,test)
     calibrated_metrics=_metrics(calibrated_p,mb,tb,test)
