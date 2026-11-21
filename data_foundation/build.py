@@ -19,6 +19,8 @@ import sys
 
 import pandas as pd
 
+from .style import build_style_snapshots
+
 BASE = "https://basketball-data.billmill.org/nba/stats"
 PROJECT = Path(__file__).resolve().parents[1]
 OUTPUT = PROJECT / "data_foundation" / "artifacts"
@@ -206,15 +208,16 @@ def validate(teams: pd.DataFrame, players: pd.DataFrame, season: int) -> dict:
     if expected and n_games != expected:
         raise ValueError(f"{season}: expected {expected} regular games, found {n_games}")
     # Also verify final points in opponent row and scoring identity, not only row count.
-    mirror = regular.loc[:, ["game_id", "team_id", "pts", "opp_pts"]]
-    opponent_recon = int((mirror["pts"] != mirror["opp_pts"]).sum())  # different by design; not an integrity check
     calc = 2 * teams.fgm + teams.fg3m + teams.ftm
     different = (calc != teams.pts).fillna(True)
     scoring_mismatch = int(different.sum())
     # Missing game IDs/score rows are fatal; minor source boxscore anomalies are disclosed.
-    count_players = int(players.game_id.nunique())
-    if count_players < n_games:
-        raise ValueError(f"{season}: players only cover {count_players} of {n_games} regular games")
+    completed_ids = set(regular.game_id)
+    player_ids = set(players.loc[players.game_type == "regular_season", "game_id"])
+    missing_player_games = completed_ids - player_ids
+    if missing_player_games:
+        raise ValueError(f"{season}: missing player logs for {len(missing_player_games)} regular games: "
+                         f"{sorted(missing_player_games)[:8]}")
     if teams["team"].nunique() < 30 or players.player_id.nunique() < 300:
         raise ValueError(f"{season}: suspiciously low team/player coverage")
     return {
@@ -267,11 +270,13 @@ def run(seasons: list[int], out_dir: Path = OUTPUT) -> dict:
         teams = normalize_teams(teams_raw, teams_meta, season)
         players = normalize_players(players_raw, players_meta, teams, season)
         dvp_game, dvp_season = defense_vs_position(players, season)
+        style = build_style_snapshots(teams)
         audit = validate(teams, players, season)
         _write(teams, "teams", season)
         _write(players, "players", season)
         _write(dvp_game, "defense_vs_position_game", season)
         _write(dvp_season, "defense_vs_position_season", season)
+        _write(style, "team_style_pregame", season)
         done.append(audit)
         print(f"  validated {audit['regular_games_found']} regular games, "
               f"{audit['player_game_rows']} player-game rows", flush=True)
