@@ -1,0 +1,68 @@
+name: gpt-independent-daily
+
+on:
+  schedule:
+    - cron: "15 12 * * *"  # US morning, separate from existing nba-daily
+    - cron: "15 16 * * *"  # backup US morning slot
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Optional US Eastern date YYYY-MM-DD (empty = today and tomorrow)"
+        required: false
+        default: ""
+  pull_request:
+    paths:
+      - "gpt_engine/**"
+      - ".github/workflows/gpt-independent.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gpt-independent-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  predict:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install feed dependencies
+        run: python -m pip install numpy pandas
+      - name: Independent regression and leakage tests
+        run: python -m unittest discover -s gpt_engine/tests -v
+      - name: Run GPT challenger (schedule or manual only)
+        if: github.event_name != 'pull_request'
+        env:
+          GPT_DATE: ${{ inputs.date }}
+        run: |
+          if [ -n "$GPT_DATE" ]; then
+            python -m gpt_engine.run --date "$GPT_DATE"
+          else
+            python -m gpt_engine.run
+          fi
+      - name: Commit GPT reports and append-only forecast ledger
+        if: github.event_name != 'pull_request'
+        run: |
+          git config user.name "gpt-engine-bot"
+          git config user.email "gpt-engine-bot@users.noreply.github.com"
+          git add -f gpt_engine/artifacts/forecast_log.jsonl gpt_engine/artifacts/scorecard.json gpt_engine/artifacts/reports
+          if git diff --cached --quiet; then
+            echo "No GPT changes to commit."
+            exit 0
+          fi
+          git commit -m "gpt engine: independent daily forecasts"
+          for i in 1 2 3 4; do
+            if git pull --rebase && git push; then
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Unable to push GPT outputs after retries."
+          exit 1
