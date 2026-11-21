@@ -7,7 +7,8 @@ import numpy as np
 from gpt_engine.v2.situational_streaks import (
     rest_bucket,add_finished_game_context,
     append_pregame_situational_features,
-    matchup_record_asof,discover_historical_patterns
+    matchup_record_asof,discover_historical_patterns,
+    last_qualifying_games_asof,overall_streak_asof
 )
 
 def games_for_dates(days, seasons=None, home_a=True, winners=None):
@@ -122,6 +123,35 @@ def test_ambiguous_neutral_venue_is_excluded_not_fabricated():
     s=matchup_record_asof(ctx,"A","2025-10-08",2026,"home",2)
     assert s["sample"]==1
     assert s["wins"]==1
+
+def test_dated_qualifying_games_and_true_overall_run_are_independent():
+    days=["2026-10-01","2026-10-04","2026-10-05",
+          "2026-10-07","2026-10-10","2026-10-11",
+          "2026-10-13","2026-10-15","2026-10-17"]
+    winners=["A","A","B","B","A","B","B","B","B"]
+    d=games_for_dates(days, seasons=[2027]*len(days), winners=winners)
+    home_dates={"2026-10-01","2026-10-04","2026-10-10"}
+    d["home"] = d.apply(
+        lambda r: (r.game_date in home_dates)==(r.team_id=="A"),axis=1)
+    finished=add_finished_game_context(d)
+    streak=overall_streak_asof(finished,"A","2026-10-20",2027)
+    assert streak["label"]=="L4"
+    assert streak["last_date"]=="2026-10-17"
+    matched=last_qualifying_games_asof(
+        finished,"A","2026-10-20",2027,"home",2,limit=2)
+    assert matched==[
+        {"date_eastern":"2026-10-10","result":"W","game_id":"0022600004"},
+        {"date_eastern":"2026-10-04","result":"W","game_id":"0022600001"}
+    ]
+    # Target-day win must not leak into either streak or dated records.
+    later=games_for_dates(["2026-10-20"], seasons=[2027], winners=["A"])
+    later["game_id"]="0022600099"
+    poisoned=add_finished_game_context(pd.concat([d,later]))
+    assert last_qualifying_games_asof(
+        poisoned,"A","2026-10-20",2027,"home",2)==matched
+    assert overall_streak_asof(
+        poisoned,"A","2026-10-20",2027)["label"]=="L4"
+
 
 def test_duplicate_source_row_rejected():
     d=games_for_dates(["2025-10-01"])

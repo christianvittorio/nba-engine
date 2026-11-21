@@ -27,6 +27,7 @@ from .feature_ablation import load_teams
 from .research import ROOT, REPORTS, VERSION, run_day
 from .situational_streaks import (
     add_finished_game_context, matchup_record_asof, current_matching_run,
+    last_qualifying_games_asof, overall_streak_asof,
     season_from_eastern_date
 )
 
@@ -143,14 +144,24 @@ def _situation(finished:pd.DataFrame,team_id:str,day:str,
     run=current_matching_run(
         finished,_short_id(team_id),day,season,venue,rest
     )
-    run_note=(f"; current conditional run: {run['length']} consecutive "
-              f"{'wins' if run['result']=='win' else 'losses'}"
+    # Display dated observations so readers can verify the claimed run.
+    # These are matching-condition games only; intervening games may be losses.
+    examples=last_qualifying_games_asof(
+        finished,_short_id(team_id),day,season,venue,rest,limit=2
+    )
+    dated=", ".join(f"{g['date_eastern']} ({g['result']})" for g in examples)
+    run_note=(f"; last {run['length']} qualifying games: "
+              f"{run['result'].upper()} outcomes in a row among MATCHING "
+              f"games only (not an overall streak)"
               if run["length"] else "")
     return (f"{venue.title()}, {wording}: **{wins}–{losses}** "
             f"in {record['sample']} prior matching games "
             f"({100*wins/record['sample']:.1f}% raw; "
             f"{100*record['shrunk_win_rate']:.1f}% shrunk descriptive rate"
-            f"{sample_note}{run_note}). NOT a calibrated probability")
+            f"{sample_note}). "
+            f"**Last 2 qualifying games (Eastern dates):** {dated}. "
+            f"**Conditional run:** {run_note[2:] if run_note else 'none'}. "
+            f"NOT a calibrated probability")
 
 def _recent_form(finished:pd.DataFrame,team_id:str,day:str)->str:
     previous=finished[(finished.team_id.astype(str)==_short_id(team_id))&
@@ -158,7 +169,13 @@ def _recent_form(finished:pd.DataFrame,team_id:str,day:str)->str:
                           ["game_date","game_id"]).tail(5)
     if previous.empty:return "no prior results"
     won=int(previous.won.sum()); n=len(previous)
-    return f"last {n}: {won}–{n-won}"
+    streak=overall_streak_asof(
+        finished,_short_id(team_id),day,season_from_eastern_date(day)
+    )
+    return (f"last {n}: {won}–{n-won}; "
+            f"current overall streak (uninterrupted games): "
+            f"**{streak['label']}**"
+            + (f" through {streak['last_date']}" if streak["last_date"] else ""))
 
 def _injuries(doc:dict,team_id:str,name_lookup:dict)->str:
     statuses=[]
@@ -273,7 +290,7 @@ def render_report(day:str,docs:list[dict],*,team_names:dict[str,str],
             f"{sim['margin']['interval_80'][1]:+.0f}",
             f"- **Overtime chance:** {100*float(sim['overtime_probability']):.1f}%",
             "",
-            "**Current situational streaks (context, not predictive adjustments):**",
+            "**Overall form and audited situational records (context, not predictive adjustments):**",
             "",
         ]
         if finished.empty:
