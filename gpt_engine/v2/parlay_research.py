@@ -19,7 +19,7 @@ from zoneinfo import ZoneInfo
 
 from .contracts import iso, utc
 
-VERSION = "gpt-v2-parlay-research-0.2"
+VERSION = "gpt-v2-parlay-research-0.3"
 EASTERN = ZoneInfo("America/New_York")
 _ALLOWED_MARKETS = frozenset({"moneyline", "spread", "total"})
 _ALLOWED_DECISIONS = frozenset({"RESEARCH_ONLY", "REVIEW_POSITIVE_EV"})
@@ -92,6 +92,9 @@ def _valid_leg(row: dict, *, now: datetime, date_eastern: str | None,
         "push_probability": push, "model_probability_lower": lower,
         "retrieved_at_utc": iso(captured), "tip_utc": iso(tip),
         "individual_research_roi": one_leg_roi,
+        "bookmaker_break_even_win_probability": (1-push)/odds,
+        "model_vs_break_even_probability_gap": p-(1-push)/odds,
+        "no_vig_market_probability": float(row["no_vig_market_probability"]),
         "forward_validated": calibrated,
     }
 
@@ -100,7 +103,9 @@ def build_parlay_board(report: dict, *, date_eastern: str | None = None,
                        now_utc: str | None = None, min_legs: int = 2,
                        max_legs: int = 3, max_quote_age_minutes: float = 30,
                        max_capture_span_minutes: float = 10,
-                       minimum_leg_roi: float = 0.01,
+                       minimum_leg_roi: float = 0.001,
+                       minimum_single_win_probability: float = 0.55,
+                       maximum_singles: int = 5,
                        minimum_joint_win_probability: float = 0.10,
                        max_decimal_odds: float = 5,
                        maximum_results: int = 5) -> dict:
@@ -114,15 +119,18 @@ def build_parlay_board(report: dict, *, date_eastern: str | None = None,
         raise ValueError("As-of research report required")
     if min_legs < 2 or max_legs < min_legs or max_legs > 4:
         raise ValueError("Require two to four legs")
-    if maximum_results < 1 or maximum_results > 20:
+    if maximum_results < 1 or maximum_results > 20 or maximum_singles < 1 or maximum_singles > 20:
         raise ValueError("Invalid result count")
     if date_eastern is not None:
         datetime.strptime(date_eastern, "%Y-%m-%d")
     if any(not isfinite(float(x)) or float(x) < 0 for x in
            (max_quote_age_minutes, max_capture_span_minutes,
-            minimum_leg_roi, minimum_joint_win_probability)):
+            minimum_leg_roi, minimum_joint_win_probability,
+            minimum_single_win_probability)):
         raise ValueError("Invalid finite nonnegative threshold")
-    if not 0 <= minimum_joint_win_probability <= 1 or not 1 < max_decimal_odds <= 100:
+    if (not 0 <= minimum_joint_win_probability <= 1
+            or not 0 <= minimum_single_win_probability <= 1
+            or not 1 < max_decimal_odds <= 100):
         raise ValueError("Invalid parlay constraints")
     now = utc(now_utc) if now_utc else datetime.now(timezone.utc)
     candidates = []
@@ -135,6 +143,28 @@ def build_parlay_board(report: dict, *, date_eastern: str | None = None,
         )
         if parsed is not None:
             candidates.append(parsed)
+    # Independent singles board: rank by strict win/cover probability first,
+    # choose only one selection per game to avoid presenting correlated
+    # alternatives as independent "best picks". Raw ROI only breaks ties.
+    single_pool = sorted(
+        (leg for leg in candidates
+         if leg["model_probability"] >= minimum_single_win_probability),
+        key=lambda leg: (
+            -leg["model_probability"], -leg["individual_research_roi"],
+            leg["game_id"], leg["book"], leg["market_id"], leg["selection"],
+        ),
+    )
+    high_hit_singles = []
+    single_games = set()
+    for leg in single_pool:
+        if leg["game_id"] in single_games:
+            continue
+        high_hit_singles.append({**leg, "actionable": False,
+                                 "calibration_status": "UNCALIBRATED_RESEARCH_ONLY"})
+        single_games.add(leg["game_id"])
+        if len(high_hit_singles) == maximum_singles:
+            break
+
     by_book = defaultdict(list)
     for leg in candidates:
         by_book[leg["book"]].append(leg)
@@ -142,9 +172,12 @@ def build_parlay_board(report: dict, *, date_eastern: str | None = None,
     for book, pool in sorted(by_book.items()):
         for size in range(min_legs, min(max_legs, len(pool))+1):
             for combo in combinations(pool, size):
-                # A true parlay at one sportsbook may not include two
-                # selections from the same game. No guessed SGP correlations.
+                # One outcome per game and ONE Eastern slate date:
+                # never treat different-day games as one daily ticket.
                 if len({leg["game_id"] for leg in combo}) != size:
+                    continue
+                if len({utc(leg["tip_utc"]).astimezone(EASTERN).date()
+                        for leg in combo}) != 1:
                     continue
                 captured = [utc(leg["retrieved_at_utc"]) for leg in combo]
                 span = (max(captured)-min(captured)).total_seconds() / 60
@@ -201,11 +234,21 @@ def build_parlay_board(report: dict, *, date_eastern: str | None = None,
         "generated_at_utc": iso(now),
         "date_eastern": date_eastern,
         "eligible_single_legs": len(candidates),
+        "single_selection_status": (
+            "RESEARCH_SINGLES_AVAILABLE" if high_hit_singles
+            else "NO_QUALIFYING_SINGLE"
+        ),
+        "ranked_high_hit_singles": high_hit_singles,
+        "best_research_single": high_hit_singles[0] if high_hit_singles else None,
+        "single_ranking_metric": "model_probability",
+        "single_ranking_policy": "MAX_WIN_COVER_PROBABILITY_SUBJECT_TO_LOW_POSITIVE_ESTIMATED_VALUE",
         "candidate_tickets_screened": considered,
         "ranking_metric": "full_win_probability_independent",
         "ranking_policy": "MAX_HIT_PROBABILITY_SUBJECT_TO_POSITIVE_ESTIMATED_VALUE",
         "filters": {
             "minimum_leg_roi": minimum_leg_roi,
+            "minimum_single_win_probability": minimum_single_win_probability,
+            "maximum_singles": maximum_singles,
             "minimum_joint_win_probability": minimum_joint_win_probability,
             "min_legs": min_legs, "max_legs": max_legs,
             "max_quote_age_minutes": max_quote_age_minutes,
@@ -223,7 +266,7 @@ def build_parlay_board(report: dict, *, date_eastern: str | None = None,
         "status": ("RESEARCH_RANKING_AVAILABLE" if best
                    else "NO_QUALIFYING_PARLAY"),
         "limitations": [
-            "Ranking maximizes model-estimated full-win probability among positive raw EV tickets, not ROI.",
+            "Both singles and parlays rank highest modeled win chance with a low positive raw-EV eligibility floor, not highest payout.",
             "Live possession model is uncalibrated. A research leader is NOT a pick.",
             "Inter-game independence is assumed; common news/pace can correlate outcomes.",
             "Full-win odds assume every leg wins; push refunds reduce settlement payout.",
@@ -236,12 +279,33 @@ def build_parlay_board(report: dict, *, date_eastern: str | None = None,
 
 
 def render_markdown(board: dict) -> str:
-    out = ["# NBA Engine — Parlay of the Day (RESEARCH ONLY)", "",
+    out = ["# NBA Engine — High-Hit Singles + Parlay of the Day (RESEARCH ONLY)", "",
            "**Not a betting recommendation. Live model is not calibrated.**", "",
            "Status: **" + board["status"] + "**", "",
            f"Eligible priced legs: {board['eligible_single_legs']}; "
            f"screened qualifying combinations: {board['candidate_tickets_screened']}.",
            ""]
+    out += [
+        "## Highest modeled chance to win — individual games",
+        "",
+        "Only actually sourced sportsbook lines with low positive raw-model EV.",
+        "One selection per game; these probabilities are UNCALIBRATED.",
+        "",
+        "| Game | Book | Market | Side | Line | Model win P | Break-even P | Raw modeled EV |",
+        "|---|---|---|---|---:|---:|---:|---:|",
+    ]
+    if not board["ranked_high_hit_singles"]:
+        out.append("| No qualifying high-probability positive-value singles | — | — | — | — | — | — | — |")
+    for leg in board["ranked_high_hit_singles"]:
+        line = "—" if leg["line"] is None else f"{leg['line']:+g}"
+        out.append(
+            f"| {leg['game_id']} | {leg['book']} | {leg['market_type']} | "
+            f"{leg['selection']} | {line} | "
+            f"{leg['model_probability']:.1%} | "
+            f"{leg['bookmaker_break_even_win_probability']:.1%} | "
+            f"{leg['individual_research_roi']:+.1%} |"
+        )
+    out += ["", "## Highest modeled hit-chance combination", ""]
     first = board["best_research_combination"]
     if first is None:
         out.append("**NO PARLAY** — no simultaneously observed, sufficiently "
@@ -295,6 +359,11 @@ def main(argv=None):
     print(json.dumps({
         "parlay_research": True, "status": board["status"],
         "eligible_single_legs": board["eligible_single_legs"],
+        "high_hit_singles": len(board["ranked_high_hit_singles"]),
+        "best_single_model_win_probability": (
+            round(board["best_research_single"]["model_probability"],4)
+            if board["best_research_single"] else None
+        ),
         "screened_tickets": board["candidate_tickets_screened"],
         "has_validation_backed_review": (
             board["best_forward_validated_review"] is not None
