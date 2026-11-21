@@ -326,7 +326,8 @@ def simulate_game(matchup:Matchup,home:list[PlayerProjection],
                   seed:int=20261121,batch_size:int=500,
                   thresholds:dict[str,dict[str,list[float]]]|None=None,
                   include_samples:bool=False,
-                  event_model:str="baseline") -> dict:
+                  event_model:str="baseline",
+                  include_market_distributions:bool=False) -> dict:
     if event_model not in ("baseline","player_shot_mix"):
         raise ValueError("Only baseline or research player_shot_mix supported")
     if not isinstance(n,int) or n<50:
@@ -416,6 +417,34 @@ def simulate_game(matchup:Matchup,home:list[PlayerProjection],
             for stat,values in t.items() if stat in raw
         }
         out["player_statistics"][player.player_id]=p_stats
+    if include_market_distributions:
+        # Exact empirical point-mass distributions from the same correlated
+        # possession Monte Carlo. These are NOT calibrated betting odds.
+        # Histograms keep frozen predictions compact and allow later
+        # line-specific evaluations without replaying a stochastic model.
+        def histogram(values):
+            values=np.asarray(values,dtype=float)
+            if len(values)!=n or not np.all(np.isfinite(values)) or \\
+                    not np.all(values==np.round(values)):
+                raise ValueError("Invalid integer-valued market simulation samples")
+            unique,counts=np.unique(values.astype(np.int64),return_counts=True)
+            result={str(int(v)):int(c) for v,c in zip(unique,counts)}
+            if sum(result.values()) != n:
+                raise AssertionError("Incomplete market distribution")
+            return result
+        out["market_distributions"]={
+            "sample_count":n,
+            "home_margin_counts":histogram(arr[:,3]),
+            "game_total_counts":histogram(arr[:,2]),
+            "player_counts":{
+                pid:{stat:histogram(stats[stat])
+                     for stat in ("pts","reb","ast","fg3m")}
+                for pid,stats in per_player.items()
+            },
+            "calibration_status":"uncalibrated",
+            "source":"same_correlated_possession_draws",
+            "settlement_scope":"full_game_including_overtime",
+        }
     if include_samples:
         out["_samples"]=all_rows
         out["_player_samples"]=per_player
