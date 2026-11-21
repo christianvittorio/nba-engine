@@ -28,6 +28,8 @@ on:
       - "gpt_engine/v2/public_espn_odds.py"
       - "gpt_engine/v2/odds_map.py"
       - "gpt_engine/v2/market_run.py"
+      - "gpt_engine/v2/parlay_research.py"
+      - "gpt_engine/v2/tests/test_parlay_research.py"
       - "gpt_engine/v2/market_grade.py"
       - "gpt_engine/v2/market_results.py"
 
@@ -125,6 +127,19 @@ jobs:
             --book-set observed \
             --output-json /tmp/gpt-v2-five-book-board.json \
             --output-md /tmp/gpt-v2-five-book-board.md
+      - name: Rank same-book Parlay of the Day (research only, no wager)
+        env:
+          GPT_REPORT_DATE: ${{ inputs.date }}
+        run: |
+          ARGS=()
+          if [ -n "${GPT_REPORT_DATE}" ]; then
+            ARGS=(--date "${GPT_REPORT_DATE}")
+          fi
+          python -m gpt_engine.v2.parlay_research \
+            --asof-report /tmp/gpt-v2-market-asof-latest.json \
+            --output-json /tmp/gpt-v2-parlay-research-latest.json \
+            --output-md /tmp/gpt-v2-parlay-research-latest.md \
+            "${ARGS[@]}"
       - name: Grade independently verified final NBA scores (no bets)
         run: |
           python -m gpt_engine.v2.market_results \
@@ -144,6 +159,27 @@ jobs:
           graded=json.loads(Path("/tmp/gpt-v2-market-evaluation-latest.json").read_text())
           assert report["research_only"] is True
           assert graded["research_only"] is True
+          parlays=json.loads(Path("/tmp/gpt-v2-parlay-research-latest.json").read_text())
+          assert parlays["research_only"] is True
+          assert parlays["actionable"] is False
+          assert parlays["betting_recommendation"] is None
+          best=parlays["best_research_combination"]
+          print("PRIVATE_PARLAY_RESEARCH",json.dumps({
+             "status":parlays["status"],
+             "screened":parlays["candidate_tickets_screened"],
+             "best_raw_roi_independent":(
+                  round(best["estimated_roi_independent"],4) if best else None),
+             "joint_full_win_probability":(
+                  round(best["full_win_probability_independent"],4) if best else None),
+             "single_sportsbook":best["book"] if best else None,
+             "legs":([{
+                 "game_id":l["game_id"],
+                 "market_type":l["market_type"],
+                 "side":l["selection"],
+                 "line":l["line"],
+             } for l in best["legs"]] if best else []),
+             "status_note":"UNCALIBRATED_RESEARCH_NOT_AN_ACTIONABLE_PICK",
+          }))
           print("PRIVATE_MARKET_RUN",json.dumps({
              "slate_games":len(report["games"]),
              "price_observations_before_cutoff":report["usable_asof_quote_count"],
