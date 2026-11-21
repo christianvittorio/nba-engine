@@ -1,0 +1,72 @@
+name: gpt-v2-injury-effect-historical-research
+
+on:
+  pull_request:
+    paths:
+      - "gpt_engine/v2/injury_effect_fit.py"
+      - "gpt_engine/v2/tests/test_injury_effect_fit.py"
+      - ".github/workflows/gpt-v2-injury-effect-research.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gpt-v2-injury-research-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: gpt_engine/v2/requirements-test.txt
+      - name: Install v2 scientific dependencies
+        run: python -m pip install -r gpt_engine/v2/requirements-test.txt
+      - name: Compile entire research package
+        run: python -m compileall -q gpt_engine/v2
+      - name: Validate historical-source and training/test leakage protections
+        run: python -m pytest -q gpt_engine/v2/tests/test_injury_effect_fit.py
+      - name: Fit pregame-only replacement-value correction and evaluate chronological sample
+        run: |
+          python -m gpt_engine.v2.injury_effect_fit --repo . \
+            --output /tmp/gpt-v2-injury-effect-validation.json \
+            --games-output /tmp/gpt-v2-injury-eligible-games.json \
+            | tee /tmp/gpt-v2-injury-run.log
+      - name: Inspect sample completeness and enforce research-only status
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open("/tmp/gpt-v2-injury-effect-validation.json"))
+          assert d["historical_source_revision_count"]>0
+          assert d["eligible_game_rows"]>0
+          assert d["source_provenance"]=="Original Claude bot's Git availability.json revisions"
+          assert d["status"] in ("RESEARCH_FIT_COMPLETED_NOT_PRODUCTION_APPROVED",
+                                 "INSUFFICIENT_HISTORICAL_PREGAME_SAMPLE")
+          assert d["candidate_live_adoption"] is False
+          assert d["forecasting_changes_deployed"] is False if "forecasting_changes_deployed" in d else True
+          samples=json.load(open("/tmp/gpt-v2-injury-eligible-games.json"))
+          assert len(samples)==d["eligible_game_rows"]
+          for r in samples:
+              assert r["source_generated_utc"]<=r["source_committed_utc"]<=r["cutoff_utc"]<r["tip_utc"]
+              assert not r["home_prior_max_date"] or r["home_prior_max_date"]<r["game_date"]
+              assert not r["away_prior_max_date"] or r["away_prior_max_date"]<r["game_date"]
+          print("Validated",d["eligible_game_rows"],"actual games across",d["historical_source_revision_count"],"archived source snapshots")
+          PY
+      - name: Upload source audit, learned coefficient and temporal comparison
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpt-v2-injury-model-chronological-experiment
+          path: |
+            /tmp/gpt-v2-injury-effect-validation.json
+            /tmp/gpt-v2-injury-eligible-games.json
+            /tmp/gpt-v2-injury-run.log
+          if-no-files-found: error
