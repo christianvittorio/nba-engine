@@ -143,11 +143,31 @@ def _attempt(rng,attacking:TeamSettings,defending:TeamSettings,
             # Free throw trip: two attempts, or rarely three on a 3PA foul.
             three_foul=(rng.random()<attacking.three_attempt_rate*.11)
             attempts=3 if three_foul else 2
-            for _ in range(attempts):
+            missed_last=False
+            for shot_number in range(attempts):
                 box["fta"]+=1
-                if rng.random()<_safe_share(p.free_throw_pct,.50,.96):
+                made=rng.random()<_safe_share(p.free_throw_pct,.50,.96)
+                if made:
                     box["ftm"]+=1
                     box["pts"]+=1
+                if shot_number==attempts-1 and not made:
+                    missed_last=True
+            if missed_last:
+                # Live last-FT misses create exactly one rebound, as missed
+                # field goals do. An offensive board continues the possession.
+                if rng.random()<attacking.offensive_rebound_probability:
+                    rebounder=_weighted_pick(rng,aw["rebounds"])
+                    rr=ab[attack[rebounder].player_id]
+                    rr["reb"]+=1
+                    rr["oreb"]+=1
+                    if second_chance<3:
+                        continue
+                    ab[attack[_weighted_pick(rng,usage)].player_id]["tov"]+=1
+                else:
+                    defender=_weighted_pick(rng,dw["rebounds"])
+                    rr=db[defense[defender].player_id]
+                    rr["reb"]+=1
+                    rr["dreb"]+=1
             return
         is_three=(rng.random()<attacking.three_attempt_rate)
         box["fga"]+=1
