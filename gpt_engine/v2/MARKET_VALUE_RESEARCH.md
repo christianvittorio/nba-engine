@@ -209,7 +209,7 @@ through the environment and use:
 ```bash
 python -m gpt_engine.v2.odds_ingest \
   --nba-db /tmp/gpt-v2-daily.sqlite \
-  --ledger gpt_engine/v2/artifacts/market/odds_log.jsonl \
+  --ledger /tmp/gpt-v2-odds-log.jsonl \
   --report /tmp/odds_ingest_report.json \
   --markets h2h,spreads,totals --region us
 
@@ -219,7 +219,7 @@ python -m gpt_engine.v2.daily_publish \
 python -m gpt_engine.v2.market_run \
   --forecast-ledger gpt_engine/v2/artifacts/forecast_log.jsonl \
   --root . \
-  --odds-ledger gpt_engine/v2/artifacts/market/odds_log.jsonl \
+  --odds-ledger /tmp/gpt-v2-odds-log.jsonl \
   --output-json /tmp/nba_market_asof.json \
   --output-md /tmp/nba_market_asof.md
 
@@ -228,7 +228,7 @@ python -m gpt_engine.v2.market_results \
 
 python -m gpt_engine.v2.market_grade \
   --asof-report /tmp/nba_market_asof.json \
-  --odds-ledger gpt_engine/v2/artifacts/market/odds_log.jsonl \
+  --odds-ledger /tmp/gpt-v2-odds-log.jsonl \
   --finals-json /tmp/nba_verified_finals.json \
   --output /tmp/nba_market_grades.json
 ```
@@ -292,9 +292,10 @@ The existing `gpt-v2-daily-report.yml` workflow now:
 3. Generates immutable first-issue pretip forecasts as before;
 4. Publishes a *separate* model-vs-market Markdown/JSON with no EV on
    markets where the exact-line probabilities are unavailable;
-5. Exports verified finals and grades prior captured market records,
-   writing separate paper-only grading output; and
-6. Pushes market-ledger/report files along with the original reports.
+5. Exports verified finals and grades captured market records for the
+   **same workflow run**, writing paper-only grading output in /tmp; and
+6. Pushes only the original forecast artifacts, **never** raw sportsbook
+   snapshots or complete bookmaker tables to our public GitHub repository.
 
 Scheduled runs only execute this workflow after the PR is reviewed and
 merged to the default branch. Default simulation, separate Claude
@@ -314,3 +315,44 @@ reports and core model parameters are unchanged.
 - Market access, country-level availability, product terms and legal review.
 - GitHub Actions CI/polling smoke run verification. No success is
   claimed until actual runs are inspected.
+
+### CRITICAL: public-repository and provider-license safeguard
+
+`christianvittorio/nba-engine` is a **public repository**. The daily
+GitHub workflow therefore keeps provider raw quotes, full per-book
+comparisons and grading details in the *ephemeral runner filesystem*
+(`/tmp`) and **does not commit or upload them**. Only a small
+non-price summary is printed to workflow logs. A standalone user may
+use a secure private local ledger, but must not `git add` that raw
+provider file to the public repository.
+
+This safety-first behavior means later scheduled runs **do not currently
+share one durable odds history**. Multi-run opening/closing snapshots,
+paper results and full CLV require a separately approved access-
+controlled storage target and appropriate terms review. Do not
+describe cross-run CLV as operating automatically yet.
+
+If we later choose a persistent destination (e.g. a private database),
+the same ingestion/compare/grade modules support reuse of the
+append-only JSONL ledger without altering immutable forecasts.
+
+### Line-specific research probabilities (new)
+
+The default simulator's RNG and physical possession mechanics remain
+unchanged. Newly issued GPT v2 forecast JSON can optionally preserve
+histograms of **actual sampled score margins, full-game totals, and
+individual PTS/REB/AST/3PM**; this is enabled only for new first-issue
+forecasts in `research.run_day`.
+
+`market_probabilities.py` counts win, loss and (for whole-number
+lines) push outcomes at each bookmaker's **exact offered line**. The
+probability is an empirical Monte Carlo frequency, **not a calibrated
+market edge**. Uncertain player minutes remain conditional research.
+
+Older immutable forecasts without these histograms are not rerun or
+backfilled. The new `market_run` computes research-only EV for all
+supported markets when a histogram exists; otherwise it displays point
+differences only, explicitly reporting that a line-specific probability
+is unavailable. `market_grade` evaluates categorical WIN/PUSH/LOSS
+probability scoring without counting multiple bookmakers as
+independent model predictions.
