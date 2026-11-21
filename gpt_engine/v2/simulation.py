@@ -118,14 +118,14 @@ def _empty_box(players:list[PlayerProjection],mins:np.ndarray):
 def _attempt(rng,attacking:TeamSettings,defending:TeamSettings,
              attack:list[PlayerProjection],defense:list[PlayerProjection],
              aw:dict,dw:dict,ab:dict,db:dict, team_state:dict,
-             opponent_state:dict):
+             opponent_state:dict, location_advantage:float=0):
     """One possession with possible ORB retries; only explicit shot/FT events score."""
     usage=aw["usage"]
     if usage.sum()<1e-12: raise ValueError("No eligible attackers")
     efficiency=(attacking.offense_rating+defending.defense_rating)/2.0
     # Shared offensive shock across possessions induces score and player
     # correlation; matchups alter shooting via explicit team ratings.
-    bump=_safe_share((efficiency-113)/240.0+
+    bump=_safe_share((efficiency-113)/240.0 + location_advantage/150.0+
                      team_state["shooting_shock"]-opponent_state["defensive_shock"],
                      -.14,.14)
     if rng.random() < attacking.turnover_probability:
@@ -153,12 +153,10 @@ def _attempt(rng,attacking:TeamSettings,defending:TeamSettings,
         box["fga"]+=1
         box["fg3a"]+=int(is_three)
         p_make=(p.three_point_pct if is_three else
-                (p.field_goal_pct*(p.rates_per_min.get("fga",.3)/
-                 max(1e-4,p.rates_per_min.get("fga",.3)-
-                     p.rates_per_min.get("fg3a",.12))) -
-                 3/2*p.rates_per_min.get("fg3m",.05)/
-                 max(.08,p.rates_per_min.get("fga",.3)-
-                          p.rates_per_min.get("fg3a",.12))))
+                (p.field_goal_pct*p.rates_per_min.get("fga",.3) -
+                 p.three_point_pct*p.rates_per_min.get("fg3a",.12)) /
+                max(.08, p.rates_per_min.get("fga",.3) -
+                          p.rates_per_min.get("fg3a",.12)))
         # The estimated 2P formula above is approximate; bound by plausible
         # scoring domain and let validation tune it.
         probability=_safe_share(p_make+bump,.23,.77 if not is_three else .65)
@@ -209,8 +207,10 @@ def _roll_single(rng,match:Matchup,home:list[PlayerProjection],
     # Both teams share the same latent pace and game scoring environment.
     def period(possessions,pace_factor=1.0):
         for _ in range(possessions):
-            _attempt(rng,match.home,match.away,home,away,hw,aw,H,A,h_state,a_state)
-            _attempt(rng,match.away,match.home,away,home,aw,hw,A,H,a_state,h_state)
+            _attempt(rng,match.home,match.away,home,away,hw,aw,H,A,h_state,a_state,
+                     (match.home_court_points/2+match.rest_effect_home))
+            _attempt(rng,match.away,match.home,away,home,aw,hw,A,H,a_state,h_state,
+                     (-match.home_court_points/2+match.rest_effect_away))
     period(n)
     def score(box):
         return sum(r["pts"] for r in box.values())
