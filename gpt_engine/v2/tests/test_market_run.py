@@ -155,3 +155,34 @@ def test_saved_forecast_hash_identity_is_checked_before_loading():
         ledger.write_text(json.dumps(row)+"\n")
         with pytest.raises(ValueError,match="ledger"):
             read_frozen_forecasts(ledger,root)
+
+
+def test_new_forecasts_can_price_exact_spread_total_and_prop_lines():
+    d = doc()
+    d["result"]["simulation_count"] = 100
+    d["result"]["market_distributions"] = {
+        "sample_count":100,
+        "home_margin_counts":{"6":60,"7":40},
+        "game_total_counts":{"230":60,"231":40},
+        "player_counts":{"player:nba:1":{"pts":{"25":40,"26":60}}},
+        "calibration_status":"uncalibrated",
+        "settlement_scope":"full_game_including_overtime",
+    }
+    odds = [
+        q("home",1.91,mtype="spread",line=-5.5,
+          market="game:spread:home:-5.5"),
+        q("over",1.91,mtype="total",line=230.5,
+          market="game:total:230.5"),
+        q("over",1.91,mtype="player_prop",line=25.5,
+          market="player:pts:player:nba:1:25.5",
+          player_id="player:nba:1",provider_key="player_points"),
+    ]
+    rows=asof_market_report([d],odds)["markets"]
+    bytype={r["market_type"]:r for r in rows}
+    assert bytype["spread"]["model_probability"] == pytest.approx(1)
+    assert bytype["spread"]["expected_roi"] == pytest.approx(.91)
+    assert bytype["total"]["model_probability"] == pytest.approx(.4)
+    assert bytype["total"]["expected_roi"] == pytest.approx(.4*1.91-1)
+    assert bytype["player_prop"]["model_probability"] == pytest.approx(.6)
+    assert bytype["player_prop"]["expected_roi"] == pytest.approx(.6*1.91-1)
+    assert all(r["decision"]=="RESEARCH_ONLY" for r in rows)
