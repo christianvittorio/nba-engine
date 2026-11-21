@@ -21,6 +21,7 @@ import pandas as pd
 
 from .style import build_style_snapshots
 from .supplement import coach_coverage, position_lookup, read_supplement, release_url
+from .matchups import download_matchups, matchup_layers
 
 BASE = "https://basketball-data.billmill.org/nba/stats"
 PROJECT = Path(__file__).resolve().parents[1]
@@ -279,7 +280,11 @@ def run(seasons: list[int], out_dir: Path = OUTPUT) -> dict:
         players = normalize_players(players_raw, players_meta, teams, season)
         dvp_game, dvp_season = defense_vs_position(players, season)
         style = build_style_snapshots(teams)
+        raw_matchups = download_matchups(con, season)
+        tracked, matchup_games, matchup_season, matchup_audit = matchup_layers(
+            raw_matchups, teams, season)
         audit = validate(teams, players, season)
+        audit["tracked_matchups"] = matchup_audit
         audit["roster_position_source"] = release_url("rosters", season)
         audit["roster_position_quality"] = roster_quality
         audit["coaches_source"] = release_url("coaches", season)
@@ -293,6 +298,22 @@ def run(seasons: list[int], out_dir: Path = OUTPUT) -> dict:
         _write(dvp_game, "defense_vs_position_game", season)
         _write(dvp_season, "defense_vs_position_season", season)
         _write(style, "team_style_pregame", season)
+        _write(matchup_games, "tracked_defense_by_position_game", season)
+        _write(matchup_season, "tracked_defense_by_position_season", season)
+        match_dir = OUTPUT / "player_defender_matchups"
+        match_dir.mkdir(parents=True, exist_ok=True)
+        match_path = match_dir / f"{season}.parquet"
+        if match_path.exists():
+            match_path.unlink()
+        con.register("_tracked_export", tracked)
+        try:
+            # The output filename is created from our validated integer season.
+            con.execute(
+                f"COPY _tracked_export TO '{match_path.as_posix()}' "
+                "(FORMAT PARQUET, COMPRESSION ZSTD)"
+            )
+        finally:
+            con.unregister("_tracked_export")
         done.append(audit)
         print(f"  validated {audit['regular_games_found']} regular games, "
               f"{audit['player_game_rows']} player-game rows", flush=True)
@@ -307,7 +328,7 @@ def run(seasons: list[int], out_dir: Path = OUTPUT) -> dict:
                 if x["expected_regular_games"] is not None),
             "limitations": [
                 "Official roster positions are season labels (frequently G/F/C), not exact nightly PG/SG/SF/PF/C roles.",
-                "Defense-vs-position denotes opponent production, not specific defender assignments.",
+                "Tracked defender-matchup pairs are included when sourced, but attribution is not exclusive on every possession.",
                 "Coach names are sourced by season, but exact coach-to-game dates and tactical schemes are not verified.",
                 "Historical data may reflect corrected end-of-season NBA stats, not knowledge available before tip.",
             ],
