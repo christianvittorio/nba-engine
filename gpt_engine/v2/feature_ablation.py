@@ -47,6 +47,10 @@ FEATURE_GROUPS={
         "rolling20_tm_tov_pct","rolling20_oreb",
         "rolling20_dreb","rolling20_tov",
     ],
+    "defensive_event_allowances":[
+        "rolling20_opp_3pa_rate_allowed","rolling20_opp_fta_rate_allowed",
+        "rolling20_opp_tov_rate_forced","rolling20_opp_oreb_rate_allowed",
+    ],
     "observed_tactics":[
         "rolling5_pace","rolling10_pace","rolling5_three_point_rate",
         "rolling10_three_point_rate","rolling5_opp_ast",
@@ -318,8 +322,8 @@ def ablation_feature_sets(frame:pd.DataFrame)->dict[str,list[str]]:
     if any(c not in frame for c in core):
         raise ValueError("Core prior-game columns missing")
     sets={"core":core}
-    for group in ("shooting","rebounding_turnovers","observed_tactics",
-                  "tracked_defender_matchups","situational_streaks"):
+    for group in ("shooting","rebounding_turnovers","defensive_event_allowances",
+                  "observed_tactics","tracked_defender_matchups","situational_streaks"):
         extra=[f"{side}__{col}" for side in ("home","away")
                for col in FEATURE_GROUPS[group]]
         sets["core+"+group]=core+extra
