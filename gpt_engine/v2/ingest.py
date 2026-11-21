@@ -136,23 +136,27 @@ def ingest_season(con:sqlite3.Connection,season:int, *, schedule:pd.DataFrame,
                         " VALUES(?,?)",(_player_id(raw),retrieved))
             con.execute("INSERT OR IGNORE INTO provider_ids VALUES(?,?,?,?,?,?)",
                         ("player",_player_id(raw),"nba_stats_archive",raw,retrieved,"[]"))
-        # Map actual game home and away using the verified home flag.
-        actual_games={}
-        for raw,group in teams.groupby("game_id"):
-            if len(group)!=2:
-                raise ValueError(f"Expected two official team rows for NBA game {raw}")
-            home=group[group["home"].astype(str).str.lower().isin(("true","1"))]
-            away=group[~group["home"].astype(str).str.lower().isin(("true","1"))]
-            if len(home)!=1 or len(away)!=1:
-                raise ValueError(f"Home/away identity ambiguous for game {raw}")
-            home=home.iloc[0];away=away.iloc[0]
-            actual_games[str(raw)]=(home,away)
+        # Index official scheduled home/away BEFORE resolving neutral-site box
+        # scores: NBA logs may mark both sides 'away' at neutral venues.
         schedule_rows={}
         for row in schedule.itertuples(index=False):
             gid=str(row.game_id).zfill(10)
             if gid in schedule_rows:
                 raise ValueError(f"Duplicate NBA schedule game {gid}")
             schedule_rows[gid]=row
+        actual_games={}
+        for raw,group in teams.groupby("game_id"):
+            if len(group)!=2:
+                raise ValueError(f"Expected two official team rows for NBA game {raw}")
+            gid=str(raw).zfill(10)
+            sched=schedule_rows.get(gid)
+            if sched is None or pd.isna(sched.home_team_id) or pd.isna(sched.away_team_id):
+                raise ValueError(f"Missing sourced home/away identity for finished game {gid}")
+            home=group[group.team_id.astype(str)==str(sched.home_team_id)]
+            away=group[group.team_id.astype(str)==str(sched.away_team_id)]
+            if len(home)!=1 or len(away)!=1:
+                raise ValueError(f"Team identities do not reconcile against schedule for {gid}")
+            actual_games[gid]=(home.iloc[0],away.iloc[0])
         for gid,(home,away) in actual_games.items():
             if gid not in schedule_rows:
                 raise ValueError(f"Archived finished game absent in official schedule: {gid}")
