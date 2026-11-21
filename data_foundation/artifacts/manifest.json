@@ -1,5 +1,5 @@
 {
-  "created_utc": "2026-11-21T00:51:49+00:00",
+  "created_utc": "2026-11-21T00:54:32+00:00",
   "seasons": [
     {
       "season": 2020,
@@ -413,11 +413,70 @@
         "per_game_coach_identity_verified": false
       },
       "position_source_is_exact_role": false
+    },
+    {
+      "season": 2027,
+      "season_label": "2026-27",
+      "expected_regular_games": null,
+      "regular_games_found": 226,
+      "all_games_found": 226,
+      "all_team_game_rows": 452,
+      "player_game_rows": 5089,
+      "distinct_players": 473,
+      "teams": 30,
+      "team_box_score_identity_mismatches": 0,
+      "position_counts": {
+        "G": 2074,
+        "F": 1525,
+        "C": 515,
+        "G-F": 333,
+        "F-C": 293,
+        "C-F": 188,
+        "F-G": 148,
+        "UNKNOWN": 13
+      },
+      "fully_labeled_five_position_share": 0.1012,
+      "positions_are_actual_defenders": false,
+      "coach_identity_coverage": "official season roster; per-game changes unverified",
+      "source": "llimllib/nba_data NBA stats archive",
+      "source_urls": {
+        "team_game_logs": "https://basketball-data.billmill.org/nba/stats/team_game_logs/season=2027/data.parquet",
+        "player_game_logs": "https://basketball-data.billmill.org/nba/stats/player_game_logs/season=2027/data.parquet",
+        "team_seasons": "https://basketball-data.billmill.org/nba/stats/team_seasons/season=2027/data.parquet",
+        "player_seasons": "https://basketball-data.billmill.org/nba/stats/player_seasons/season=2027/data.parquet"
+      },
+      "tracked_matchups": {
+        "source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_matchups/game_matchups_2027.parquet",
+        "matchup_rows": 44947,
+        "tracked_games": 221,
+        "regular_season_tracked_games": 221,
+        "position_labels": {
+          "": 23565,
+          "G": 8636,
+          "F": 8570,
+          "C": 4176
+        },
+        "matchup_attribution_is_exclusive_defender_truth": false
+      },
+      "roster_position_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_rosters/rosters_2027.csv",
+      "roster_position_quality": {
+        "players": 527,
+        "mapped": 526,
+        "ambiguous": 0
+      },
+      "coaches_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_coaches/coaches_2027.csv",
+      "head_coach_coverage": {
+        "teams_with_head_coach": 30,
+        "teams_with_multiple_head_coaches": 4,
+        "head_coaches_total": 34,
+        "per_game_coach_identity_verified": false
+      },
+      "position_source_is_exact_role": false
     }
   ],
   "overall": {
-    "verified_regular_games": 8289,
-    "total_player_rows": 190160,
+    "verified_regular_games": 8515,
+    "total_player_rows": 195249,
     "all_expected_seasons_present": true,
     "limitations": [
       "Official roster positions are season labels (frequently G/F/C), not exact nightly PG/SG/SF/PF/C roles.",
