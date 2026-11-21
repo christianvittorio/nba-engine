@@ -49,8 +49,16 @@ def _request(endpoint: str, params: dict, *, timeout: int = 20):
 def _is_nba(event: dict) -> bool:
     league = event.get("league", {})
     if isinstance(league,dict):
-        league = str(league.get("slug") or league.get("name") or "")
-    return str(league).strip().casefold() in ("nba","national-basketball-association")
+        slug = str(league.get("slug") or "").strip().casefold()
+        name = str(league.get("name") or "").strip().casefold()
+    else:
+        slug = str(league).strip().casefold()
+        name = slug
+    # Provider docs have used both usa-nba and nba-regular-season.
+    # Summer League / All-Star are deliberately excluded.
+    return (slug in ("nba","usa-nba","nba-regular-season",
+                     "nba-playoffs","nba-finals")
+            or name in ("nba","nba regular season","nba playoffs","nba finals"))
 
 
 def _event_id(event: dict) -> str:
@@ -250,7 +258,7 @@ def normalize_five_book_events(events: list[dict], odds: list[dict],
 
 
 def fetch_five_book_snapshots() -> tuple[list[dict],list[dict],str]:
-    events = _request("/events",{"sport":"basketball","league":"nba",
+    events = _request("/events",{"sport":"basketball","league":"usa-nba",
                                   "status":"pending","limit":100})
     if not isinstance(events,list):
         raise ValueError("Provider event list must be an array")
