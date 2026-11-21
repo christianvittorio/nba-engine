@@ -1,0 +1,53 @@
+name: gpt-v2-matchup-ablation-calibration
+on:
+  pull_request:
+    paths:
+      - "gpt_engine/v2/**"
+      - ".github/workflows/gpt-v2-matchup-evaluation.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: gpt-v2-matchup-eval-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: gpt_engine/v2/requirements-test.txt
+      - name: Install GPT research dependencies
+        run: python -m pip install -r gpt_engine/v2/requirements-test.txt
+      - name: Compile research modules
+        run: python -m compileall -q gpt_engine/v2
+      - name: Test leakage, calibration, NBA availability bridge and basketball accounting
+        run: python -m pytest -q gpt_engine/v2/tests
+      - name: Evaluate five NBA seasons with separately selected and calibrated feature layers
+        run: |
+          python -m gpt_engine.v2.ablation_eval --years 2022 2023 2024 2025 2026 --output /tmp/gpt-v2-matchup-ablation-calibration.json
+      - name: Verify independent holdout size and evaluation gates
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open("/tmp/gpt-v2-matchup-ablation-calibration.json"))
+          groups={r["group"] for r in d["individual_ablation_validation_results"]}
+          assert {"core","core+shooting","core+rebounding_turnovers","core+observed_tactics","core+tracked_defender_matchups","core+offense_defense_crossmatchups","all_evidence"}<=groups
+          assert d["counts"]["test"]>=1000, d["counts"]
+          assert d["counts"]["calibration"]>=200, d["counts"]
+          assert not d["release_gate"]["automatic_live_model_replacement"]
+          for name,metrics in d["holdout_metrics"].items():
+              assert 0<metrics["win_log_loss"]<5,(name,metrics)
+          assert d["holdout_intervals"]["total_points"]["0.9"]["half_width_points"]>0
+          print("VALIDATED_HOLDOUT_ABLATION_AND_CALIBRATION")
+          PY
+      - name: Upload independent matchup-layer and calibration evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpt-v2-matchup-evidence-2025-26-holdout
+          path: /tmp/gpt-v2-matchup-ablation-calibration.json
+          if-no-files-found: error

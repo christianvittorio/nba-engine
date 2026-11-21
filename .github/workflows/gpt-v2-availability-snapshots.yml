@@ -1,0 +1,42 @@
+name: gpt-v2-source-availability-snapshots
+on:
+  schedule:
+    - cron: "45 9 * * *"
+    - cron: "45 14 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: gpt-v2-availability-archive
+  cancel-in-progress: false
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Copy fresh, source-timestamped ESPN injury data already fetched by Claude
+        run: python -m gpt_engine.v2.capture_shared --max-age-hours 12
+      - name: Commit only independent compact availability source snapshots
+        run: |
+          git config user.name "gpt-v2-data-capture-bot"
+          git config user.email "gpt-v2-data-capture-bot@users.noreply.github.com"
+          git add -f gpt_engine/v2/artifacts/availability/
+          if git diff --cached --quiet; then
+            echo "No new original-source snapshot"
+            exit 0
+          fi
+          git commit -m "gpt v2: archive ESPN source availability snapshot (no forecasts)"
+          for attempt in 1 2 3 4; do
+            if git pull --rebase && git push; then
+              exit 0
+            fi
+            sleep 4
+          done
+          echo "Failed to publish availability archive; no data was overwritten"
+          exit 1
