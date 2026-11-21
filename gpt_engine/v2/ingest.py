@@ -180,6 +180,10 @@ def ingest_season(con:sqlite3.Connection,season:int, *, schedule:pd.DataFrame,
                        "play_in" if gid[:3]=="005" else
                        "cup_final" if gid[:3]=="006" else "other")
             status="final" if is_final else "scheduled"
+            # Preserve official neutral-site designation rather than giving
+            # pandemic bubble/Paris games an invented home-court advantage.
+            raw_neutral=getattr(sch,"neutral_site",None)
+            neutral=0 if raw_neutral is None or pd.isna(raw_neutral) else int(bool(raw_neutral))
             if is_final:
                 boxhome,boxaway=actual_games[gid]
                 # Score identity reconciliation against official source.
@@ -188,12 +192,13 @@ def ingest_season(con:sqlite3.Connection,season:int, *, schedule:pd.DataFrame,
                     raise ValueError(f"Scoring identity failure in {gid}")
             con.execute(
                 "INSERT INTO games(game_id,season,game_date_eastern,tip_utc,home_team_id,"
-                "away_team_id,game_type,status,source_id,source_timestamp,retrieved_at_utc,"
-                "quality_flags_json) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) "
+                "away_team_id,game_type,neutral_site,status,source_id,source_timestamp,retrieved_at_utc,"
+                "quality_flags_json) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?) "
                 "ON CONFLICT(game_id) DO UPDATE SET tip_utc=excluded.tip_utc,"
-                "status=excluded.status,retrieved_at_utc=excluded.retrieved_at_utc",
+                "neutral_site=excluded.neutral_site,status=excluded.status,"
+                "retrieved_at_utc=excluded.retrieved_at_utc",
                 (internal,season,date_eastern,tip,_team_id(sch.home_team_id),
-                 _team_id(sch.away_team_id),game_type,status,"nba_schedule",
+                 _team_id(sch.away_team_id),game_type,neutral,status,"nba_schedule",
                  str(sch.start_time) if tip else None,retrieved,
                  historic_flags if is_final else current_flags)
             )
