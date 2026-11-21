@@ -22,6 +22,7 @@ on:
       - "gpt_engine/v2/tests/test_daily_publish.py"
       - ".github/workflows/gpt-v2-daily-report.yml"
       - "gpt_engine/v2/odds_ingest.py"
+      - "gpt_engine/v2/odds_api_io.py"
       - "gpt_engine/v2/odds_map.py"
       - "gpt_engine/v2/market_run.py"
       - "gpt_engine/v2/market_grade.py"
@@ -58,19 +59,27 @@ jobs:
           python -m gpt_engine.v2.ingest \
             --seasons 2024 2025 2026 2027 \
             --output /tmp/gpt-v2-daily.sqlite
-      - name: Capture point-in-time NBA moneylines/spreads/totals (optional)
+      - name: Capture five NBA sportsbooks before forecasts (optional)
         if: github.event_name != 'pull_request'
         env:
+          ODDS_API_IO_KEY: ${{ secrets.ODDS_API_IO_KEY }}
           THE_ODDS_API_KEY: ${{ secrets.THE_ODDS_API_KEY }}
         run: |
-          if [ -z "${THE_ODDS_API_KEY}" ]; then
-            echo "No configured odds API secret; skip live feed (no synthetic odds)"
-          else
+          if [ -n "${ODDS_API_IO_KEY}" ]; then
+            # Five requested books: FanDuel, Stake, MelBet, 1xbet, Bet365.
+            python -m gpt_engine.v2.odds_api_io \
+              --nba-db /tmp/gpt-v2-daily.sqlite \
+              --ledger /tmp/gpt-v2-odds-log.jsonl \
+              --report /tmp/gpt-v2-odds-capture.json
+          elif [ -n "${THE_ODDS_API_KEY}" ]; then
+            # Legacy single-feed option; does NOT claim all five books.
             python -m gpt_engine.v2.odds_ingest \
               --nba-db /tmp/gpt-v2-daily.sqlite \
               --ledger /tmp/gpt-v2-odds-log.jsonl \
               --report /tmp/gpt-v2-odds-capture.json \
               --markets h2h,spreads,totals --region us
+          else
+            echo "No configured odds API secret; skip live feed (no synthetic odds)"
           fi
       - name: Generate GPT v2 predictions and human-readable matchup reports
         env:
