@@ -5,7 +5,7 @@ import pytest
 from gpt_engine.v2.market_value import compare_markets
 
 TIP = "2026-11-22T01:00:00Z"
-ASOF = "2026-11-21T16:00:00Z"
+ASOF = "2026-11-21T16:10:00Z"
 BOOK_AT = "2026-11-21T16:05:00Z"
 GID = "game:nba:0022600100"
 
@@ -162,3 +162,19 @@ def test_exact_market_and_best_book_price_never_invented():
     assert rows[1]["expected_roi"] == pytest.approx(.53*1.95-1)
     assert rows[0]["no_vig_market_probability"] is None
     assert rows[1]["no_vig_market_probability"] is None
+
+
+def test_after_model_quote_cannot_be_valued_as_original_price():
+    q = [quote("home", 2.0, at="2026-11-21T16:20:00Z")]
+    p = [prediction("home", .58, asof="2026-11-21T16:10:00Z")]
+    item = compare_markets(q, p)["markets"][0]
+    assert item["decision"] == "QUOTE_NOT_AVAILABLE_AT_MODEL_CUTOFF"
+
+
+def test_missing_retrieval_evidence_blocks_review_even_when_forward_validated():
+    q = [quote("home", 2.0)]
+    del q[0]["retrieved_at_utc"]
+    p = [prediction("home", .58, lower=.54,
+                    status="forward_validated",
+                    validation_reference="documented-prospective-validation")]
+    assert compare_markets(q,p)["markets"][0]["decision"] == "NO_RETRIEVAL_EVIDENCE"
