@@ -199,6 +199,8 @@ jobs:
              "status":alt["status"],
              "games_reviewed":alt.get("games_reviewed",0),
              "coverage":alt.get("defense_coverage",[]),
+             "prior_final_freshness":alt.get("prior_final_freshness",[]),
+             "source_sample_exclusion_counts":alt.get("exclusion_counts",{}),
              "candidate_count":len(alt["candidates"]),
              "watchlist":[{
                  "player":c["player"],
