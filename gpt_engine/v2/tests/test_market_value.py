@@ -30,6 +30,7 @@ def quote(selection, decimal_odds, *, line=None, book="Example Book",
           at=BOOK_AT, player_id=None):
     return {
         "game_id": GID, "tip_utc": TIP, "observed_at_utc": at,
+        "retrieved_at_utc": at,
         "market_id": market_id, "market_type": market_type,
         "selection": selection, "line": line, "book": book,
         "decimal_odds": decimal_odds,
