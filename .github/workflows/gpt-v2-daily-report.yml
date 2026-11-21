@@ -111,7 +111,6 @@ jobs:
               --db /tmp/gpt-v2-daily.sqlite --n "$SIMS"
           fi
       - name: Compare frozen forecasts with captured sportsbook prices
-        if: github.event_name != 'pull_request'
         run: |
           python -m gpt_engine.v2.market_run \
             --forecast-ledger gpt_engine/v2/artifacts/forecast_log.jsonl \
@@ -120,7 +119,6 @@ jobs:
             --output-json /tmp/gpt-v2-market-asof-latest.json \
             --output-md /tmp/gpt-v2-market-asof-latest.md
       - name: Render private five-book side-by-side comparison
-        if: github.event_name != 'pull_request'
         run: |
           python -m gpt_engine.v2.five_book_board \
             --asof-report /tmp/gpt-v2-market-asof-latest.json \
@@ -128,7 +126,6 @@ jobs:
             --output-json /tmp/gpt-v2-five-book-board.json \
             --output-md /tmp/gpt-v2-five-book-board.md
       - name: Grade independently verified final NBA scores (no bets)
-        if: github.event_name != 'pull_request'
         run: |
           python -m gpt_engine.v2.market_results \
             --db /tmp/gpt-v2-daily.sqlite \
@@ -139,7 +136,6 @@ jobs:
             --finals-json /tmp/gpt-v2-market-finals.json \
             --output /tmp/gpt-v2-market-evaluation-latest.json
       - name: Audit private market research output without publishing provider prices
-        if: github.event_name != 'pull_request'
         run: |
           python - <<'PY'
           import json
