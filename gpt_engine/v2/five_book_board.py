@@ -95,7 +95,7 @@ def to_markdown(board: dict) -> str:
         "",
         "**UNVALIDATED MODEL RESEARCH — NOT LIVE BETTING SIGNALS**",
         "",
-        "Bookmakers: "+", ".join(BOOKS)+".",
+        "Bookmakers: "+", ".join(books)+".",
         "",
         "| NBA game | Market | Selection | Line | Model P* | "+
             columns+" | Best available |",
