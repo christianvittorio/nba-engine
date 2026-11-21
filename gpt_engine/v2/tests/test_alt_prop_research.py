@@ -230,3 +230,16 @@ def test_hypothetical_alt_no_odds_does_not_masquerade_as_book_price():
     result=build_alt_prop_research(db,now_utc=NOW,date_eastern="2026-11-21")
     assert result["priced_alternate_legs"]==[]
     assert "NO_SOURCE_VERIFIED_ALT_PLAYER_PROP_ODDS_AND_MODEL_PRICE_MATCH" in result["missing_requirements"]
+
+
+def test_future_placeholder_team_id_not_ranked_as_31st_nba_defense():
+    db=bare_db()
+    db.execute("INSERT INTO games VALUES (?,?,?,?,?,?,?,?)",(
+        "future-extra",2027,"2026-11-22","2026-11-23T01:00:00Z",
+        "placeholder-future-team","team-def","scheduled","regular_season"))
+    report=build_alt_prop_research(db,now_utc=NOW,date_eastern="2026-11-21")
+    coverage=report["defense_coverage"][0]["position_coverage"]
+    # Only teams with ACTUAL observed final player/team boxes enter the pool;
+    # teams listed solely in future source schedules are never counted.
+    assert coverage["G"]["required_teams"]==1
+    assert coverage["G"]["rankable"] is False
