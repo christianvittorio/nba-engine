@@ -60,4 +60,20 @@ jobs:
               print("WARNING: valid scoreboard has no NBA events for this day")
           if not priced:
               print("WARNING: no sportsbook moneylines currently included")
+          # Keys/types only. Do NOT log sportsbook prices or raw feed.
+          for event in games[:3]:
+              comps=event.get("competitions") or []
+              comp=comps[0] if comps else {}
+              odds=comp.get("odds") or []
+              sample=odds[0] if isinstance(odds,list) and odds else {}
+              h=sample.get("homeTeamOdds") or {}
+              a=sample.get("awayTeamOdds") or {}
+              print("PUBLIC_ODDS_SCHEMA",{
+                  "event_status":((event.get("status") or {}).get("type") or {}).get("state"),
+                  "odds_record_count":len(odds) if isinstance(odds,list) else "not-array",
+                  "odds_keys":sorted(sample) if isinstance(sample,dict) else [],
+                  "home_keys":sorted(h) if isinstance(h,dict) else [],
+                  "away_keys":sorted(a) if isinstance(a,dict) else [],
+                  "provider_name":(sample.get("provider") or {}).get("name") if isinstance(sample,dict) else None
+              })
           PY
