@@ -20,96 +20,74 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Compile no-account public odds fetcher
+      - name: Compile public odds fetcher
         run: python -m compileall -q gpt_engine/v2/public_espn_odds.py
-      - name: Verify live ESPN NBA JSON exists without credentials
+      - name: Test live no-key NBA feed and real 2026 market parser
         run: |
           python - <<'PY'
+          from collections import Counter
           from datetime import datetime
+          import sqlite3
           from zoneinfo import ZoneInfo
-          from gpt_engine.v2.public_espn_odds import fetch_public_scoreboard
+          from gpt_engine.v2.odds_map import abbreviation
+          from gpt_engine.v2.public_espn_odds import (
+              fetch_public_scoreboard, normalize_public_scoreboards, _team_info
+          )
+
           day=datetime.now(ZoneInfo("America/New_York")).strftime("%Y%m%d")
-          payload,retrieved=fetch_public_scoreboard(day)
-          games=payload["events"]
-          books=set()
-          priced=0
-          for event in games:
-              for competition in event.get("competitions",[]):
-                  for line in (competition.get("odds") or []):
-                      if not isinstance(line,dict):
-                          continue
-                      provider=line.get("provider") or {}
-                      name=provider.get("name") if isinstance(provider,dict) else None
-                      if name: books.add(name)
-                      h=line.get("homeTeamOdds") or {}
-                      a=line.get("awayTeamOdds") or {}
-                      if isinstance(h,dict) and isinstance(a,dict):
-                          if h.get("moneyLine") is not None and a.get("moneyLine") is not None:
-                              priced+=1
-          print({
-              "source":"ESPN public NBA scoreboard",
+          payload,captured=fetch_public_scoreboard(day)
+          events=payload["events"]
+          # A temporary source-derived schedule verifies parser wiring and
+          # timestamps. Production uses independent official NBA warehouse.
+          con=sqlite3.connect(":memory:")
+          con.executescript("""
+            CREATE TABLE teams(team_id TEXT PRIMARY KEY,current_name TEXT);
+            CREATE TABLE games(game_id TEXT PRIMARY KEY,tip_utc TEXT,
+              home_team_id TEXT,away_team_id TEXT,game_type TEXT);
+          """)
+          candidates=0
+          for e in events:
+              comps=e.get("competitions") or []
+              if len(comps)!=1 or not isinstance(comps[0],dict):
+                  continue
+              sides=_team_info(comps[0])
+              if sides is None:
+                  continue
+              home,away=sides
+              hc,ac=abbreviation(home),abbreviation(away)
+              if not hc or not ac or hc==ac: continue
+              hid,aid="smoke:"+hc,"smoke:"+ac
+              for tid,name in ((hid,home),(aid,away)):
+                  con.execute("INSERT OR IGNORE INTO teams VALUES(?,?)",(tid,name))
+              con.execute(
+                  "INSERT OR IGNORE INTO games VALUES(?,?,?,?,?)",
+                  ("game:nba:smoke:"+str(e["id"]),e["date"],hid,aid,"regular_season")
+              )
+              for bookmaker in comps[0].get("odds") or []:
+                  if not isinstance(bookmaker,dict):continue
+                  ml=bookmaker.get("moneyline") or {}
+                  h=(ml.get("home") or {}).get("close") or {}
+                  a=(ml.get("away") or {}).get("close") or {}
+                  if h.get("odds") is not None and a.get("odds") is not None:
+                      candidates+=1
+          captured_report=normalize_public_scoreboards([(payload,captured)],con)
+          types=Counter(q["market_type"] for q in captured_report["quotes"])
+          print("NO_KEY_LIVE_MARKET_SMOKE",{
               "date_eastern":day,
-              "retrieved_utc":retrieved,
-              "event_count":len(games),
-              "priced_moneyline_events":priced,
-              "source_named_bookmakers":sorted(books),
-              "requires_login":False,
-              "cost_usd":0
+              "retrieved_utc":captured,
+              "events":len(events),
+              "eligible_raw_moneyline_pairs":candidates,
+              "normalized_quotes":len(captured_report["quotes"]),
+              "normalized_market_types":dict(types),
+              "named_books":captured_report["verified_bookmakers"],
+              "skipped_reasons":dict(Counter(s.get("reason") for s in
+                                             captured_report["skipped"])),
+              "live_schedule_is_source_derived_smoke_only":True,
+              "api_key_or_login":False,
+              "cost_usd":0,
           })
-          if not games:
-              print("WARNING: valid scoreboard has no NBA events for this day")
-          if not priced:
-              print("WARNING: no sportsbook moneylines currently included")
-          for event in games[:1]:
-              for comp in event.get("competitions") or []:
-                  for quoted in comp.get("odds") or []:
-                      if not isinstance(quoted,dict):continue
-                      for market,sides in (
-                          ("moneyline",("home","away")),
-                          ("pointSpread",("home","away")),
-                          ("total",("over","under"))
-                      ):
-                          obj=quoted.get(market) or {}
-                          for side in sides:
-                              d=obj.get(side) or {}
-                              close=d.get("close") or {}
-                              odds=close.get("odds")
-                              line=close.get("line")
-                              print("MARKET_PRICE_TYPES",{
-                                  "market":market,"side":side,
-                                  "odds_type":type(odds).__name__,
-                                  "odds_object_keys":sorted(odds) if isinstance(odds,dict) else [],
-                                  "line_type":type(line).__name__,
-                                  "line_object_keys":sorted(line) if isinstance(line,dict) else [],
-                              })
-          # Keys/types only. Do NOT log sportsbook prices or raw feed.
-          for event in games[:3]:
-              comps=event.get("competitions") or []
-              comp=comps[0] if comps else {}
-              odds=comp.get("odds") or []
-              sample=odds[0] if isinstance(odds,list) and odds else {}
-              h=sample.get("homeTeamOdds") or {}
-              a=sample.get("awayTeamOdds") or {}
-              print("PUBLIC_ODDS_SCHEMA",{
-                  "event_status":((event.get("status") or {}).get("type") or {}).get("state"),
-                  "odds_record_count":len(odds) if isinstance(odds,list) else "not-array",
-                  "odds_keys":sorted(sample) if isinstance(sample,dict) else [],
-                  "home_keys":sorted(h) if isinstance(h,dict) else [],
-                  "away_keys":sorted(a) if isinstance(a,dict) else [],
-                  "provider_name":(sample.get("provider") or {}).get("name") if isinstance(sample,dict) else None,
-                  "nested_market_keys":{
-                      name: {
-                          side:{
-                              stage:(sorted(inner) if isinstance(inner,dict)
-                                     else type(inner).__name__)
-                              for stage,inner in value.items()
-                              if stage in ("open","close","current")
-                          } if isinstance(value,dict) else type(value).__name__
-                          for side,value in sample[name].items()
-                          if side in ("home","away","over","under")
-                      } if isinstance(sample.get(name),dict)
-                      else type(sample.get(name)).__name__
-                      for name in ("moneyline","pointSpread","total")
-                  } if isinstance(sample,dict) else {}
-              })
+          if candidates and not captured_report["quotes"]:
+              raise AssertionError(
+                  "Public sportsbook had moneyline pairs but parser captured zero quotes"
+              )
           PY
