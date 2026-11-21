@@ -189,6 +189,43 @@ def append_pregame_situational_features(team_games:pd.DataFrame,
         out[col]=vals[col].to_numpy()
     return out
 
+def current_matching_run(finished:pd.DataFrame,team_id:str,
+                         target_day:str,target_season:int,venue:str,
+                         rest_days:int,lookback_seasons:int=LOOKBACK_SEASONS)->dict:
+    """As-of consecutive wins or losses in the *matching* condition.
+
+    This does not imply a game-by-game overall winning streak: games that
+    do not satisfy the condition are skipped. No result from target date
+    or later can enter this calculation.
+    """
+    if venue not in VENUES or not isinstance(rest_days,int) or rest_days<0:
+        raise ValueError("Invalid venue/rest")
+    source=(add_finished_game_context(finished)
+            if "true_rest_days" not in finished else finished)
+    d=source[(source.team_id.astype(str)==str(team_id))&
+             (source.game_date.astype(str)<target_day)&
+             (source.season.astype(int)<=target_season)&
+             (source.season.astype(int)>=target_season-lookback_seasons+1)&
+             (source.venue_valid)&
+             (source.venue==venue)&
+             (source.rest_bucket==rest_bucket(rest_days))]
+    d=d.sort_values(["game_date","game_id"])
+    if d.empty:
+        return {"result":None,"length":0,"game_date":None,
+                "interpretation":"No matching prior games"}
+    last=int(d.iloc[-1].won)
+    length=0
+    for outcome in reversed(d.won.astype(int).tolist()):
+        if outcome!=last:break
+        length+=1
+    return {
+        "result":"win" if last else "loss",
+        "length":length,
+        "game_date":str(d.iloc[-1].game_date),
+        "interpretation":"Consecutive matching-condition games, NOT an overall team win/loss streak"
+    }
+
+
 def matchup_record_asof(finished:pd.DataFrame,team_id:str,
                         target_day:str,target_season:int,venue:str,
                         rest_days:int,lookback_seasons:int=LOOKBACK_SEASONS)->dict:
