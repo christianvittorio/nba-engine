@@ -13,6 +13,7 @@ from pathlib import Path
 from .contracts import iso, utc
 from .market_value import compare_markets, _validate_quote
 from .odds_ingest import PROPS
+from .market_probabilities import exact_line_probabilities
 
 VERSION = "gpt-v2-market-asof-report-0.1"
 
@@ -102,6 +103,24 @@ def asof_market_report(forecasts: list[dict], quotes: list[dict], *,
             {**base, "selection": "home", "probability": hprob},
             {**base, "selection": "away", "probability": 1-hprob},
         ])
+    # Future first-issue forecasts retain exact empirical distribution
+    # counts; unlike means/intervals, these support each quoted line.
+    # Older immutable forecasts without these counts are NOT backfilled.
+    added_prob_keys = {
+        (p["game_id"],p["market_id"],p["selection"],p.get("line"),p.get("player_id"))
+        for p in preds
+    }
+    for q in picked:
+        if q["market_type"] == "moneyline":
+            continue
+        result = exact_line_probabilities(q, model_by_game[q["game_id"]])
+        if result is None:
+            continue
+        key = (result["game_id"],result["market_id"],result["selection"],
+               result.get("line"),result.get("player_id"))
+        if key not in added_prob_keys:
+            preds.append(result)
+            added_prob_keys.add(key)
     compared = compare_markets(
         picked, preds, max_snapshot_gap_minutes=max_snapshot_gap_minutes
     )
@@ -173,7 +192,8 @@ def asof_market_report(forecasts: list[dict], quotes: list[dict], *,
         "excluded": excluded,
         "notes": [
             "Only odds actually retrieved by forecast cutoff are eligible.",
-            "No line-specific spread/total/prop distribution calibrated yet.",
+            "New forecasts retain exact-line empirical PMFs; old forecasts cannot be retrofitted.",
+            "All live game/spread/total/prop probabilities remain uncalibrated research.",
             "For spreads, positive point difference favors the home handicap.",
             "For totals/props, positive point difference means model mean above line.",
             "Point differences are not win probability or expected value.",
