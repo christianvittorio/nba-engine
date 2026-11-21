@@ -181,6 +181,7 @@ def ingest_availability_snapshot(con:sqlite3.Connection,game_id:str,
     register_source(con,SOURCE,"ESPN public JSON shared with Claude",
                     "https://site.api.espn.com/apis/site/v2/sports/basketball/nba")
     counts={"source_generated_utc":capture,"injury_reports_imported":0,
+            "roster_without_injury_reports":0,
             "unmatched_player_ids":0,"statuses":{},"teams":active_codes,
             "lineups_confirmed":0,"quality_flags":list(flags)}
     for code in active_codes:
@@ -188,6 +189,10 @@ def ingest_availability_snapshot(con:sqlite3.Connection,game_id:str,
         if not team_data:
             counts["quality_flags"].append("missing_team_roster:"+code)
             continue
+        reported_ids={
+            nba for inj in team_data.get("injuries",[])
+            if (nba:=_nba_id(inj.get("nba_id")))
+        }
         for inj in team_data.get("injuries",[]):
             nbaid=_nba_id(inj.get("nba_id"))
             if not nbaid:
@@ -215,5 +220,30 @@ def ingest_availability_snapshot(con:sqlite3.Connection,game_id:str,
             )
             counts["injury_reports_imported"]+=1
             counts["statuses"][normalized]=counts["statuses"].get(normalized,0)+1
+        # Injury feed is a changing *list*. When a player disappears from it,
+        # the previous 'Out' report must not persist forever. Store an observed
+        # roster/no-current-injury-list state as UNKNOWN, not as confirmed play.
+        for roster in team_data.get("roster",[]):
+            nbaid=_nba_id(roster.get("nba_id"))
+            if not nbaid or nbaid in reported_ids:
+                continue
+            internal="player:nba:"+nbaid
+            if con.execute("SELECT 1 FROM players WHERE player_id=?",(internal,)).fetchone() is None:
+                register_player(con,internal,str(roster.get("name") or "") or None)
+            source_status="not_listed_in_injury_feed"
+            rid="injury:"+hashlib.sha256(
+                canonical_json([game_id,internal,source_status,capture,SOURCE]).encode()
+            ).hexdigest()[:32]
+            con.execute(
+                "INSERT OR IGNORE INTO availability_reports(report_id,game_id,player_id,"
+                "provider_status,normalized_status,is_confirmed,report_utc,source_id,"
+                "source_timestamp,retrieved_at_utc,quality_flags_json)"
+                " VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+                (rid,game_id,internal,source_status,"unknown",0,capture,
+                 SOURCE,None,capture,
+                 canonical_json(["observed_roster_not_in_injury_list",
+                                 "absence_from_list_does_not_confirm_play"])),
+            )
+            counts["roster_without_injury_reports"]+=1
     con.commit()
     return counts
