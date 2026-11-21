@@ -17,7 +17,7 @@ VERSION = "gpt-v2-five-book-side-by-side-0.1"
 
 
 def build_board(report: dict, *, books: tuple[str,...] = BOOKS) -> dict:
-    if not books or len(books)!=len(set(books)):
+    if len(books)!=len(set(books)):
         raise ValueError("Require unique comparison book names")
     groups = defaultdict(dict)
     for row in report.get("markets",[]):
@@ -89,6 +89,10 @@ def build_board(report: dict, *, books: tuple[str,...] = BOOKS) -> dict:
 
 def to_markdown(board: dict) -> str:
     books=board["books"]
+    if not books:
+        return ("# NBA GPT v2 — Public odds comparison\n\n"
+                "No independently verified bookmaker prices captured at "
+                "the frozen model cutoff. No lines or EV invented.\n")
     columns=" | ".join(books)
     lines=[
         "# NBA GPT v2 — Five Sportsbooks vs Model",
@@ -128,13 +132,21 @@ def to_markdown(board: dict) -> str:
 def main(argv=None):
     ap=argparse.ArgumentParser()
     ap.add_argument("--asof-report",type=Path,required=True)
-    ap.add_argument("--book-set",choices=("requested","free"),default="requested",
+    ap.add_argument("--book-set",choices=("requested","free","observed"),default="requested",
                     help="requested=FanDuel/Stake/MelBet/1xbet/Bet365; free=HoopsAPI five")
     ap.add_argument("--output-json",type=Path,required=True)
     ap.add_argument("--output-md",type=Path,required=True)
     a=ap.parse_args(argv)
     report=json.loads(a.asof_report.read_text(encoding="utf-8"))
-    books=FREE_BOOKS if a.book_set=="free" else BOOKS
+    if a.book_set=="observed":
+        counts={}
+        for row in report.get("markets",[]):
+            book=row.get("book")
+            if book:
+                counts[book]=counts.get(book,0)+1
+        books=tuple(sorted(counts,key=lambda k:(-counts[k],k))[:5])
+    else:
+        books=FREE_BOOKS if a.book_set=="free" else BOOKS
     board=build_board(report,books=books)
     a.output_json.parent.mkdir(parents=True,exist_ok=True)
     a.output_md.parent.mkdir(parents=True,exist_ok=True)
