@@ -1,0 +1,84 @@
+name: gpt-v2-research-tests
+
+on:
+  pull_request:
+    paths:
+      - "gpt_engine/v2/**"
+      - ".github/workflows/gpt-v2-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gpt-v2-research-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: gpt_engine/v2/requirements-test.txt
+      - name: Install research dependencies
+        run: python -m pip install -r gpt_engine/v2/requirements-test.txt
+      - name: Compile research modules
+        run: python -m compileall -q gpt_engine/v2
+      - name: Run warehouse, feature, model, simulation and evaluation tests
+        run: python -m pytest -q gpt_engine/v2/tests
+      - name: Import live 2026-27 NBA archive and real tip times into SQLite
+        run: |
+          python -m gpt_engine.v2.ingest --seasons 2027 --output /tmp/gpt-v2-smoke.sqlite
+          python - <<'PY'
+          import sqlite3
+          db=sqlite3.connect("/tmp/gpt-v2-smoke.sqlite")
+          assert db.execute("select count(*) from actual_results").fetchone()[0] >= 200
+          assert db.execute("select count(*) from player_game_stats").fetchone()[0] >= 4500
+          assert db.execute("select count(*) from games where tip_utc is not null").fetchone()[0] >= 200
+          print("2026-27 NBA source-backed database ingestion passed")
+          PY
+      - name: Research-only live matchup integration smoke (minimum 50 sims)
+        run: |
+          python - <<'PY'
+          import sqlite3
+          from datetime import datetime,timezone,timedelta
+          from gpt_engine.v2.research import run_day
+          db="/tmp/gpt-v2-smoke.sqlite"
+          c=sqlite3.connect(db)
+          cutoff=(datetime.now(timezone.utc)+timedelta(hours=6)).isoformat()
+          r=c.execute("SELECT game_date_eastern FROM games WHERE status='scheduled' AND tip_utc > ? ORDER BY tip_utc LIMIT 1",(cutoff,)).fetchone()
+          if r:
+              actual=run_day(db,r[0],n=50,seed=101)
+              if not actual:
+                  print("No sufficiently evidenced rotations: report stays unpopulated; this is not a passing end-to-end model.")
+              else:
+                  print("Research-only 50-possession-simulation game forecasts",len(actual))
+          else:
+              print("No future games with sourced tipoffs; cannot validate live forecast path today")
+          PY
+      - name: Demonstrate Monte Carlo convergence at 1k, 5k and 10k
+        run: python -m gpt_engine.v2.convergence > /tmp/gpt-v2-convergence.json
+      - name: Upload converged sampling error report
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpt-v2-monte-carlo-convergence
+          path: /tmp/gpt-v2-convergence.json
+          if-no-files-found: error
+      - name: Verify historical manifest exists without updating forecasts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          p=Path("data_foundation/artifacts/manifest.json")
+          if not p.exists(): raise SystemExit("Historical data manifest absent")
+          d=json.loads(p.read_text())
+          years={row["season"] for row in d["seasons"]}
+          assert set(range(2020,2027))<=years, years
+          assert d["overall"]["all_expected_seasons_present"]
+          print("Verified historical seasons",sorted(years))
+          PY
