@@ -178,3 +178,11 @@ def test_missing_retrieval_evidence_blocks_review_even_when_forward_validated():
                     status="forward_validated",
                     validation_reference="documented-prospective-validation")]
     assert compare_markets(q,p)["markets"][0]["decision"] == "NO_RETRIEVAL_EVIDENCE"
+
+
+def test_market_selection_must_match_contract_type():
+    with pytest.raises(ValueError,match="Invalid selection"):
+        compare_markets([quote("over",2.0)],[])
+    with pytest.raises(ValueError,match="Invalid selection"):
+        compare_markets([quote("home",2.0,market_type="total",
+                               market_id="game:total:220.5",line=220.5)],[])
