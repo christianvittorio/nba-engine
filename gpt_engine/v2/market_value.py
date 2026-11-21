@@ -72,6 +72,11 @@ def _validate_quote(row: dict) -> dict:
         raise ValueError("Decimal odds must exceed 1.0")
     if utc(quote["observed_at_utc"]) >= utc(quote["tip_utc"]):
         raise ValueError("After-tip odds are not valid pregame evidence")
+    if quote.get("retrieved_at_utc") is not None:
+        quote["retrieved_at_utc"] = iso(quote["retrieved_at_utc"])
+        if not (utc(quote["observed_at_utc"]) <= utc(quote["retrieved_at_utc"])
+                < utc(quote["tip_utc"])):
+            raise ValueError("Retrieval must follow observed odds and precede tip")
     return quote
 
 
@@ -184,6 +189,7 @@ def compare_markets(
             "line": q.get("line"), "player_id": q.get("player_id"),
             "book": q["book"], "decimal_odds": price,
             "observed_at_utc": q["observed_at_utc"],
+            "retrieved_at_utc": q.get("retrieved_at_utc"),
             "tip_utc": q["tip_utc"], "break_even_probability": implied,
             "no_vig_market_probability": None, "book_overround": None,
             "model_probability": None, "model_probability_lower": None,
@@ -203,6 +209,9 @@ def compare_markets(
             rows.append(record)
             continue
         age = abs((utc(q["observed_at_utc"]) - utc(p["asof_utc"])).total_seconds()) / 60
+        after_model = utc(q["observed_at_utc"]) > utc(p["asof_utc"])
+        retrieval_after_model = (q.get("retrieved_at_utc") is not None
+                                 and utc(q["retrieved_at_utc"]) > utc(p["asof_utc"]))
         prob = p["probability"]
         lower = p["probability_lower"]
         push = p["push_probability"]
@@ -236,7 +245,12 @@ def compare_markets(
             )
         missing_push = any("explicit push probability unavailable" in w
                            for w in record["warnings"])
-        if age > gap_limit:
+        if after_model or retrieval_after_model:
+            record["decision"] = "QUOTE_NOT_AVAILABLE_AT_MODEL_CUTOFF"
+            record["warnings"].append(
+                "Price observed/retrieved after frozen model cutoff"
+            )
+        elif age > gap_limit:
             record["decision"] = "STALE_COMPARISON"
             record["warnings"].append("Market and model snapshots too far apart")
         elif missing_push:
@@ -246,6 +260,9 @@ def compare_markets(
             record["warnings"].append(
                 "Not forward validated; positive EV is a research estimate"
             )
+        elif q.get("retrieved_at_utc") is None:
+            record["decision"] = "NO_RETRIEVAL_EVIDENCE"
+            record["warnings"].append("Missing pretip price retrieval evidence")
         elif lower is None:
             record["decision"] = "INSUFFICIENT_UNCERTAINTY"
             record["warnings"].append("Conservative probability bound missing")
@@ -256,10 +273,8 @@ def compare_markets(
             )
         else:
             record["decision"] = "NO_ROBUST_EDGE"
-        if utc(q["observed_at_utc"]) > utc(p["asof_utc"]):
-            record["warnings"].append(
-                "Quote observed after model snapshot: news/lineup drift unverified"
-            )
+        # Already flagged above if either source timestamp or original
+        # retrieval happened after the frozen forecast cutoff.
         rows.append(record)
     return {
         "version": VERSION,
@@ -273,7 +288,7 @@ def compare_markets(
             r["game_id"], r["market_id"], r["book"]
         )),
         "limitations": [
-            "No bookie API or automatically verified odds feed is connected.",
+            "Live odds require separate configured provider ingestion and a licensed key.",
             "Expected ROI is conditional on model probability accuracy.",
             "No-vig market probabilities use proportional two-way normalization.",
             "No calibrated live possession Monte Carlo exists yet.",
