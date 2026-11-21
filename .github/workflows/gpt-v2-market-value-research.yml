@@ -8,6 +8,7 @@ on:
       - "gpt_engine/v2/research.py"
       - "gpt_engine/v2/odds_ingest.py"
       - "gpt_engine/v2/odds_api_io.py"
+      - "gpt_engine/v2/hoopsapi_free.py"
       - "gpt_engine/v2/five_book_board.py"
       - "gpt_engine/v2/odds_map.py"
       - "gpt_engine/v2/market_run.py"
@@ -19,6 +20,7 @@ on:
       - "gpt_engine/v2/tests/test_simulation.py"
       - "gpt_engine/v2/tests/test_odds_ingest.py"
       - "gpt_engine/v2/tests/test_odds_api_io.py"
+      - "gpt_engine/v2/tests/test_hoopsapi_free.py"
       - "gpt_engine/v2/tests/test_five_book_board.py"
       - "gpt_engine/v2/tests/test_market_run.py"
       - "gpt_engine/v2/tests/test_market_grade.py"
@@ -51,6 +53,7 @@ jobs:
           gpt_engine/v2/research.py
           gpt_engine/v2/odds_ingest.py
           gpt_engine/v2/odds_api_io.py
+          gpt_engine/v2/hoopsapi_free.py
           gpt_engine/v2/five_book_board.py
           gpt_engine/v2/odds_map.py
           gpt_engine/v2/market_run.py
@@ -65,6 +68,7 @@ jobs:
           gpt_engine/v2/tests/test_simulation.py
           gpt_engine/v2/tests/test_odds_ingest.py
           gpt_engine/v2/tests/test_odds_api_io.py
+          gpt_engine/v2/tests/test_hoopsapi_free.py
           gpt_engine/v2/tests/test_five_book_board.py
           gpt_engine/v2/tests/test_market_run.py
           gpt_engine/v2/tests/test_market_grade.py
