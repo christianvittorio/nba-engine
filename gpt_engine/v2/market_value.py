@@ -50,6 +50,10 @@ def _validate_common(row: dict) -> dict:
     value = dict(row)
     if value["market_type"] not in TYPES:
         raise ValueError("Unsupported market_type")
+    sides = ({"home","away"} if value["market_type"] in
+             ("moneyline","spread") else {"over","under"})
+    if value["selection"] not in sides:
+        raise ValueError("Invalid selection for market type")
     value["tip_utc"] = iso(value["tip_utc"])
     if value.get("line") is not None:
         value["line"] = _number(value["line"], "line")
