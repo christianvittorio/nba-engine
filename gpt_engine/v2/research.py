@@ -218,6 +218,15 @@ def run_day(db_path:str,day:str,n:int=1000,seed:int=20261121,
         con.commit()
         REPORTS.mkdir(parents=True,exist_ok=True)
         report=REPORTS/(day+"_"+gc.game_id.replace(":","-")+".json")
+        source_team_for_player={}
+        if imported_shared_source:
+            for tid in (gc.home_team_id,gc.away_team_id):
+                team_code=team_id_to_code.get(tid)
+                for injury in shared["teams"].get(team_code,{}).get("injuries",[]):
+                    if injury.get("nba_id"):
+                        source_team_for_player[
+                            "player:nba:"+str(injury["nba_id"])
+                        ]=tid
         report.write_text(json.dumps({
             "game_id":gc.game_id,"tip_utc":gc.tip_utc,
             "tip_manila":display_tip(gc.tip_utc),
@@ -228,6 +237,7 @@ def run_day(db_path:str,day:str,n:int=1000,seed:int=20261121,
             "result":sim,"quality_flags":quality,
             "availability_reports":[{
                 "player_id":r["player_id"],
+                "team_id":source_team_for_player.get(r["player_id"]),
                 "normalized_status":r["normalized_status"],
                 "provider_status":r["provider_status"],
                 "report_utc":r["report_utc"],
