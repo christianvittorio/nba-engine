@@ -95,7 +95,7 @@ def to_markdown(board: dict) -> str:
         "",
         "| NBA game | Market | Selection | Line | Model P* | "+
             columns+" | Best available |",
-        "|---|---|---|---:|---:|"+("|---:|"*len(BOOKS))+"---|",
+        "|---|---|---|---:|---:|"+("---:|"*len(BOOKS))+"---|",
     ]
     for row in board["markets"]:
         model = row["model_probability_uncalibrated"]
