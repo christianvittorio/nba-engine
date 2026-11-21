@@ -66,10 +66,10 @@ jobs:
           if [ -z "${THE_ODDS_API_KEY}" ]; then
             echo "No configured odds API secret; skip live feed (no synthetic odds)"
           else
-            python -m gpt_engine.v2.odds_ingest \\
-              --nba-db /tmp/gpt-v2-daily.sqlite \\
-              --ledger gpt_engine/v2/artifacts/market/odds_log.jsonl \\
-              --report /tmp/gpt-v2-odds-capture.json \\
+            python -m gpt_engine.v2.odds_ingest \
+              --nba-db /tmp/gpt-v2-daily.sqlite \
+              --ledger gpt_engine/v2/artifacts/market/odds_log.jsonl \
+              --report /tmp/gpt-v2-odds-capture.json \
               --markets h2h,spreads,totals --region us
           fi
       - name: Generate GPT v2 predictions and human-readable matchup reports
@@ -93,22 +93,22 @@ jobs:
       - name: Compare frozen forecasts with captured sportsbook prices
         if: github.event_name != 'pull_request'
         run: |
-          python -m gpt_engine.v2.market_run \\
-            --forecast-ledger gpt_engine/v2/artifacts/forecast_log.jsonl \\
-            --root . \\
-            --odds-ledger gpt_engine/v2/artifacts/market/odds_log.jsonl \\
-            --output-json gpt_engine/v2/artifacts/market/market_asof_latest.json \\
+          python -m gpt_engine.v2.market_run \
+            --forecast-ledger gpt_engine/v2/artifacts/forecast_log.jsonl \
+            --root . \
+            --odds-ledger gpt_engine/v2/artifacts/market/odds_log.jsonl \
+            --output-json gpt_engine/v2/artifacts/market/market_asof_latest.json \
             --output-md gpt_engine/v2/artifacts/market/market_asof_latest.md
       - name: Grade independently verified final NBA scores (no bets)
         if: github.event_name != 'pull_request'
         run: |
-          python -m gpt_engine.v2.market_results \\
-            --db /tmp/gpt-v2-daily.sqlite \\
+          python -m gpt_engine.v2.market_results \
+            --db /tmp/gpt-v2-daily.sqlite \
             --output /tmp/gpt-v2-market-finals.json
-          python -m gpt_engine.v2.market_grade \\
-            --asof-report gpt_engine/v2/artifacts/market/market_asof_latest.json \\
-            --odds-ledger gpt_engine/v2/artifacts/market/odds_log.jsonl \\
-            --finals-json /tmp/gpt-v2-market-finals.json \\
+          python -m gpt_engine.v2.market_grade \
+            --asof-report gpt_engine/v2/artifacts/market/market_asof_latest.json \
+            --odds-ledger gpt_engine/v2/artifacts/market/odds_log.jsonl \
+            --finals-json /tmp/gpt-v2-market-finals.json \
             --output gpt_engine/v2/artifacts/market/market_evaluation_latest.json
       - name: Check every saved pretip forecast and generated Markdown report
         run: |
