@@ -148,9 +148,18 @@ def evaluate_outcomes(asof_report: dict, odds_history: list[dict],
                       finals: dict, *, reference_book: str = "") -> dict:
     """Unselected market audit plus fixed best-odds positive-raw-EV paper cohort."""
     scores = _finals_index(finals)
-    q = [_validate_quote(row) | {
-        k:v for k,v in row.items() if k not in _validate_quote(row)
-    } for row in odds_history]
+    q, invalid_closing_captures = [], []
+    for raw in odds_history:
+        retrieval = raw.get("retrieved_at_utc")
+        if retrieval and utc(retrieval) >= utc(raw["tip_utc"]):
+            # This is not a pre-tip closing price. Audit its exclusion,
+            # rather than contaminating CLV with data fetched after start.
+            invalid_closing_captures.append({
+                "game_id": raw["game_id"], "book": raw["book"],
+                "reason": "QUOTE_RETRIEVED_AT_OR_AFTER_TIP"
+            })
+            continue
+        q.append(_validate_quote(raw))
     graded, skipped = [], []
     for row in asof_report.get("markets", []):
         game = scores.get(row["game_id"])
@@ -257,6 +266,7 @@ def evaluate_outcomes(asof_report: dict, odds_history: list[dict],
         },
         "graded_markets": graded,
         "excluded_without_final": skipped,
+        "excluded_closing_captures": invalid_closing_captures,
         "limitations": [
             "All returns are hypothetical flat-unit paper results, not executed bets.",
             "A market audit counts multiple books/selections per event; not independent wagers.",
