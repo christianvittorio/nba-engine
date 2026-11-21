@@ -115,12 +115,15 @@ def _synthetic_experiment():
     for name in allnames:
         frame[name]=rng.normal(0,1,len(frame))
     strength=3*frame["home__rolling20_off_rating"]-2*frame["away__rolling20_off_rating"]
-    margin=3+strength+rng.normal(0,9,len(frame))
-    total=225+rng.normal(0,16,len(frame))
+    raw_margin=3+strength+rng.normal(0,9,len(frame))
+    margin=np.where(raw_margin>=0,1,-1)*np.maximum(2,np.abs(np.rint(raw_margin)))
+    total=np.rint(225+rng.normal(0,16,len(frame)))
     frame["margin"]=margin
     frame["total"]=total
-    frame["home_score"]=(margin+total)/2
-    frame["away_score"]=(total-margin)/2
+    frame["home_score"]=np.rint((margin+total)/2).astype(int)
+    frame["away_score"]=np.rint((total-margin)/2).astype(int)
+    frame["margin"]=frame.home_score-frame.away_score
+    frame["total"]=frame.home_score+frame.away_score
     frame["winner_home"]=(margin>0).astype(int)
     return frame
 
