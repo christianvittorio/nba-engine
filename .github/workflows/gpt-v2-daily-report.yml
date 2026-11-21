@@ -30,6 +30,8 @@ on:
       - "gpt_engine/v2/market_run.py"
       - "gpt_engine/v2/parlay_research.py"
       - "gpt_engine/v2/alt_prop_research.py"
+      - "gpt_engine/v2/daily_master_report.py"
+      - "gpt_engine/v2/tests/test_daily_master_report.py"
       - "gpt_engine/v2/tests/test_alt_prop_research.py"
       - "gpt_engine/v2/tests/test_parlay_research.py"
       - "gpt_engine/v2/market_grade.py"
@@ -168,6 +170,22 @@ jobs:
             --odds-ledger /tmp/gpt-v2-odds-log.jsonl \
             --finals-json /tmp/gpt-v2-market-finals.json \
             --output /tmp/gpt-v2-market-evaluation-latest.json
+      - name: Assemble and archive unified daily research Markdown (no raw provider odds)
+        env:
+          GPT_REPORT_DATE: ${{ inputs.date }}
+        run: |
+          ARGS=()
+          if [ -n "${GPT_REPORT_DATE}" ]; then
+            ARGS=(--date "${GPT_REPORT_DATE}")
+          fi
+          python -m gpt_engine.v2.daily_master_report \
+            --db /tmp/gpt-v2-daily.sqlite \
+            --report-dir gpt_engine/v2/artifacts/reports \
+            --asof-report /tmp/gpt-v2-market-asof-latest.json \
+            --parlay-json /tmp/gpt-v2-parlay-research-latest.json \
+            --alt-prop-json /tmp/gpt-v2-usage-dvp-alt-prop.json \
+            --evaluation-json /tmp/gpt-v2-market-evaluation-latest.json \
+            "${ARGS[@]}"
       - name: Audit private market research output without publishing provider prices
         run: |
           python - <<'PY'
@@ -290,7 +308,24 @@ jobs:
           from gpt_engine.v2.contracts import utc
           forecasts=read_ledger()
           found=list(REPORTS.glob("daily_*.md"))
+          unified=list(REPORTS.glob("research_*.md"))
           assert found,"Expected a daily Markdown file even when there are no scheduled games"
+          assert unified,"Expected consolidated daily research Markdown"
+          for path in unified:
+              date=path.stem.replace("research_","")
+              original=REPORTS/f"daily_{date}.md"
+              assert original.is_file(), "Master report cannot outlive missing source"
+              md=path.read_text()
+              assert f"Unified Daily Research — {date}" in md
+              assert "High-hit single-game" in md
+              assert "90%-season-hit alt props" in md
+              assert "NO SOURCE-VERIFIED ALTERNATE-PROP PARLAY" in md or (
+                 "Research-only, uncalibrated source-priced alt parlay" in md
+              )
+              assert "NOT sourced or imported" in md
+              assert "raw provider odds" in md.lower()
+              assert "## Detailed game-by-game forecasts" in md
+          print("Consolidated daily research Markdown reports:",len(unified))
           for f in forecasts:
               detail=json.loads(Path(f["file"]).read_text())
               assert utc(detail["cutoff_utc"])<utc(detail["tip_utc"])
