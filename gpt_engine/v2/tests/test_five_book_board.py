@@ -63,3 +63,23 @@ def test_zero_cost_bookset_preserves_all_five_even_if_some_are_missing():
     markdown=to_markdown(board)
     assert "Unibet" in markdown
     assert "Stake" not in markdown
+
+
+def test_public_board_can_have_zero_named_books_without_fake_columns():
+    board=build_board({"markets":[]},books=())
+    assert board["books"]==[]
+    assert board["market_count"]==0
+    md=to_markdown(board)
+    assert "No independently verified bookmaker prices" in md
+    assert "FanDuel" not in md
+    assert "Bet365" not in md
+
+
+def test_public_board_with_only_actual_provider():
+    price=quote("Draft Kings",2.1)
+    board=build_board({"markets":[price]},books=("Draft Kings",))
+    assert board["books"]==["Draft Kings"]
+    assert board["market_count"]==1
+    assert board["markets"][0]["available_book_count"]==1
+    assert "Draft Kings" in to_markdown(board)
+    assert "Stake" not in to_markdown(board)
