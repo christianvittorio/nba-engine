@@ -333,6 +333,7 @@ def build_alt_prop_research(con: sqlite3.Connection, *,
     forecast_by_game={x["game_id"]:x for x in (forecasts or [])}
     candidates=[]
     coverage_reports=[]
+    stale_source_reports=[]
     excluded=defaultdict(int)
     # The forward-looking schedule may contain placeholder / non-regular
     # team IDs. Rank only the 30 teams that actually have sourced, finished
@@ -358,12 +359,41 @@ def build_alt_prop_research(con: sqlite3.Connection, *,
             coverage_reports.append({"asof_date_eastern":day,"season":season,
                                      "position_coverage":coverage})
         history,teamstats,pos,rankings,coverage=cache[key]
+        # A public stats backfill can lag a completed game by hours.
+        # A past scheduled tip >4h old without a sourced final is NOT a
+        # true 12/12 season sample: do not promote players from that team.
+        # Preserving status='scheduled' in the warehouse exposes gaps.
+        stale_by_team=defaultdict(list)
+        fresh_margin=iso(now-timedelta(hours=4))
+        stale_rows=con.execute(
+            "SELECT game_id,home_team_id,away_team_id FROM games "
+            "WHERE season=? AND game_type='regular_season' "
+            "AND game_date_eastern<? AND status IN ('scheduled','in_progress','unknown') "
+            "AND tip_utc IS NOT NULL AND tip_utc<=?",
+            (season,day,fresh_margin)
+        ).fetchall()
+        for sr in stale_rows:
+            for tid in (str(sr["home_team_id"]),str(sr["away_team_id"])):
+                stale_by_team[tid].append(str(sr["game_id"]))
+        stale_source_reports.append({
+            "date_eastern":day,
+            "missing_due_final_games":len(stale_rows),
+            "candidate_teams_with_unsettled_past_game":{
+                str(tid):len(stale_by_team.get(str(tid),[]))
+                for tid in (g["home_team_id"],g["away_team_id"])
+                if stale_by_team.get(str(tid))
+            },
+            "min_tip_age_hours_to_flag":4,
+        })
         grouped=defaultdict(list)
         for x in history:
             if x["team_id"] in (g["home_team_id"],g["away_team_id"]):
                 grouped[(x["player_id"],x["team_id"])].append(x)
         qualified=[]
         for (pid,tid),records in grouped.items():
+            if stale_by_team.get(tid):
+                excluded["UNSETTLED_PRIOR_GAME_MISSING_FINAL_BOXSCORE"]+=1
+                continue
             if len(records)<minimum_season_games:
                 excluded["INSUFFICIENT_PLAYER_SEASON_GAMES"]+=1
                 continue
@@ -510,6 +540,7 @@ def build_alt_prop_research(con: sqlite3.Connection, *,
         "position_scope":"published_G_F_C_only_no_invented_PG_SG_SF_PF",
         "dvp_rank_direction":"1=most_position_group_stats_allowed_per_48",
         "defense_coverage":coverage_reports,
+        "prior_final_freshness":stale_source_reports,
         "candidates":candidates,
         "priced_alternate_legs":priced,
         "same_book_parlay":evaluated[0] if evaluated else None,
@@ -523,6 +554,8 @@ def build_alt_prop_research(con: sqlite3.Connection, *,
             "Wilson lower bound illustrates uncertainty; selection over many alt lines increases optimistic bias.",
             "Only broad published G/F/C categories; not actual defensive assignments.",
             "Bottom-five is stat-specific positional allowed per 48 role minutes, not an individual opponent defender.",
+            "Teams with unfinished/missing boxscores from tips at least four hours ago are excluded from 90% claims.",
+            "The defensive leaderboard can still lag when other teams' past final boxes are missing.",
             "No game day / future results or after-cutoff pricing used.",
             "Actual sportsbook alt prop odds not present in anonymous ESPN game-only feed.",
             "Player availability may be unconfirmed; no lineup certainty or validated player-prop model.",
