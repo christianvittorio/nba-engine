@@ -155,3 +155,26 @@ def test_unknown_provider_and_ambiguous_handicap_are_not_assumed():
 def test_fetch_validation_no_auth_or_key_required():
     with pytest.raises(ValueError,match="YYYYMMDD"):
         fetch_public_scoreboard("tomorrow")
+
+
+def test_malformed_public_event_does_not_break_remaining_slate():
+    original=scoreboard()
+    malformed=scoreboard()
+    malformed["events"][0]["id"]="unverified-bad"
+    malformed["events"][0]["date"]="nonsense"
+    malformed["events"][0]["competitions"]="not-a-competition-array"
+    together={"events":malformed["events"]+original["events"]}
+    result=normalize_public_scoreboards([(together,CAPTURED)],db())
+    assert len(result["quotes"])==6
+    assert any(r["reason"]=="AMBIGUOUS_COMPETITION"
+               for r in result["skipped"])
+
+
+def test_malformed_bookmaker_odds_do_not_crash_slate():
+    original=scoreboard()
+    bad=original["events"][0]["competitions"][0]["odds"][0]
+    bad["homeTeamOdds"]="garbled"
+    result=normalize_public_scoreboards([(original,CAPTURED)],db())
+    assert result["quotes"]==[]
+    assert any(x["reason"]=="MALFORMED_TEAM_ODDS"
+               for x in result["skipped"])
