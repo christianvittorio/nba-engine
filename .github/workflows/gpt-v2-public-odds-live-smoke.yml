@@ -77,8 +77,12 @@ jobs:
                   "provider_name":(sample.get("provider") or {}).get("name") if isinstance(sample,dict) else None,
                   "nested_market_keys":{
                       name: {
-                          side:(sorted(value) if isinstance(value,dict)
-                                else type(value).__name__)
+                          side:{
+                              stage:(sorted(inner) if isinstance(inner,dict)
+                                     else type(inner).__name__)
+                              for stage,inner in value.items()
+                              if stage in ("open","close","current")
+                          } if isinstance(value,dict) else type(value).__name__
                           for side,value in sample[name].items()
                           if side in ("home","away","over","under")
                       } if isinstance(sample.get(name),dict)
