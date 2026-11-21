@@ -114,7 +114,8 @@ def _numbers(sim:dict)->dict:
 
 def replay_with_claude_injury(day:str,cutoff_utc:str,snapshot_path:str,
                              source_commit:str,simulations:int=1000,
-                             seed:int=20261118,seasons:list[int]|None=None)->dict:
+                             seed:int=20261118,seasons:list[int]|None=None,
+                             *,include_player_statistics:bool=False)->dict:
     if simulations<50:
         raise ValueError("Minimum 50 simulations per forecast")
     cutoff=iso(cutoff_utc)
@@ -230,6 +231,20 @@ def replay_with_claude_injury(day:str,cutoff_utc:str,snapshot_path:str,
             "model_version":MODEL,
             "simulation_seed":rng_seed,
         }
+        if include_player_statistics:
+            record["injury_adjusted_player_stats"]={
+                pid:{
+                    "minutes":stat["minutes"]["mean"],
+                    "pts":stat["pts"]["mean"],
+                    "reb":stat["reb"]["mean"],
+                    "ast":stat["ast"]["mean"],
+                    "fg3m":stat["fg3m"]["mean"],
+                    "tov":stat["tov"]["mean"],
+                    "availability":stat["availability"],
+                    "sample_games":stat["sample_games"],
+                    "quality_flags":stat["quality_flags"],
+                } for pid,stat in injured["player_statistics"].items()
+            }
         results.append(record)
         print("ASOF_REPLAY_GAME "+json.dumps(record,separators=(",",":")),flush=True)
     return {
