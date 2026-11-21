@@ -24,6 +24,10 @@ from .features import build_team_features
 from .players import estimate_player,allocate_minutes
 from .simulation import TeamSettings,Matchup,simulate_game
 from .warehouse import connect,asof_availability,asof_lineup,save_snapshot,save_model_version,save_prediction
+from .shared_availability import (
+    ARCHIVE, CLAUDE_SNAPSHOT, compact_snapshot, latest_asof_archive,
+    ingest_availability_snapshot, _team_codes
+)
 
 VERSION="gpt-v2-research-0.1"
 ROOT=Path(__file__).resolve().parents[2]
@@ -69,12 +73,14 @@ def team_parameters(team_id,vec):
         free_throw_trip_probability=bounded("rolling20_fta_rate",.24,.10,.48)*.58
     )
 
-def estimate_rotation(hist,team,day,season,status):
+def estimate_rotation(hist,team,day,season,status,rostered_ids=None):
     prior=hist[(hist.team_id.astype(str)==team)&
                (hist.game_date.astype(str)<day)&
                (hist.season.astype(int)<=season)].sort_values(["game_date","game_id"])
     # Only recent actual participants are provisional candidates. This can miss
     # players acquired today, so it is explicitly NOT a validated lineup.
+    if rostered_ids is not None:
+        prior=prior[prior.player_id.isin(rostered_ids)]
     candidates=prior.tail(180).player_id.value_counts().head(12).index.tolist()
     if len(candidates)<8:
         raise ValueError("Fewer than 8 evidenced recent player participants")
@@ -101,18 +107,57 @@ def run_day(db_path:str,day:str,n:int=1000,seed:int=20261121):
         "availability":"asof_or_unknown",
         "mc_target":10000
     })
+    # Read Claude's SOURCE observations (ESPN JSON), not its model scores.
+    # Prefer the latest verified compact snapshot, but allow a fresh original
+    # availability.json when the snapshot workflow has not yet archived it.
+    shared=latest_asof_archive(ARCHIVE,now,max_age_hours=12)
+    if CLAUDE_SNAPSHOT.exists():
+        try:
+            current=compact_snapshot(
+                json.loads(CLAUDE_SNAPSHOT.read_text(encoding="utf-8")),
+                cutoff_utc=now,max_age_hours=12)
+            if shared is None or current["generated_utc"]>shared["generated_utc"]:
+                shared=current
+        except (ValueError,KeyError,TypeError) as exc:
+            print("IGNORED stale/incomplete Claude source availability:",exc,flush=True)
+    official_codes=_team_codes(con,int(games[0]["season"]))
+    team_id_to_code={v:k for k,v in official_codes.items()}
     outcomes=[]
     for row in games:
         gc=GameContext(row["game_id"],int(row["season"]),row["game_date_eastern"],
                        row["tip_utc"],row["home_team_id"],row["away_team_id"],
                        bool(row["neutral_site"]))
+        source_quality=[]
+        if shared is not None:
+            try:
+                imported=ingest_availability_snapshot(con,gc.game_id,now,shared)
+                source_quality.append("espn_source_observed_at_"+imported["source_generated_utc"])
+                if imported["unmatched_player_ids"]:
+                    source_quality.append(
+                        f'espn_unresolved_injury_ids_{imported["unmatched_player_ids"]}')
+            except (ValueError,KeyError) as error:
+                source_quality.append("shared_availability_unavailable:"+str(error))
+        else:
+            source_quality.append("shared_availability_missing_or_stale")
         avail=asof_availability(con,gc.game_id,now)
         lineups=asof_lineup(con,gc.game_id,now)
         known={r["player_id"]:r["normalized_status"] for r in avail}
         snap=build_team_features(team_data,gc,now,availability=avail,lineup=lineups)
+        roster_for_team={}
+        if shared:
+            for team_id in (gc.home_team_id,gc.away_team_id):
+                code=team_id_to_code.get(team_id)
+                if code and code in shared["teams"]:
+                    roster_for_team[team_id]={
+                        "player:nba:"+str(p["nba_id"])
+                        for p in shared["teams"][code].get("roster",[])
+                        if p.get("nba_id")
+                    }
         try:
-            hp=estimate_rotation(player_data,gc.home_team_id,day,gc.season,known)
-            ap=estimate_rotation(player_data,gc.away_team_id,day,gc.season,known)
+            hp=estimate_rotation(player_data,gc.home_team_id,day,gc.season,known,
+                                 roster_for_team.get(gc.home_team_id))
+            ap=estimate_rotation(player_data,gc.away_team_id,day,gc.season,known,
+                                 roster_for_team.get(gc.away_team_id))
         except ValueError as error:
             print("SKIPPED "+gc.game_id+": "+str(error),flush=True)
             continue
@@ -126,7 +171,7 @@ def run_day(db_path:str,day:str,n:int=1000,seed:int=20261121):
             -1.0 if state["away"].get("b2b") else 0.0
         )
         sim=simulate_game(match,hp,ap,n=n,seed=seed)
-        quality=list(snap.quality_flags)+[
+        quality=list(snap.quality_flags)+source_quality+[
             "UNVALIDATED_RESEARCH_MODEL",
             "recent_participants_not_confirmed_lineup",
             "absence_of_live_injury_report_requires_conditional_interpretation",
