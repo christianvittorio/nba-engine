@@ -195,25 +195,82 @@ def normalize_public_scoreboards(
         tip=target["tip_utc"]
         h=data["homeTeamOdds"];a=data["awayTeamOdds"]
         groups=[]
-        hml=american_to_decimal(h.get("moneyLine"))
-        aml=american_to_decimal(a.get("moneyLine"))
+
+        # New ESPN scoreboard format (verified live on Nov 21 2026):
+        #   moneyline.home.close.odds / away.close.odds
+        #   pointSpread.home.close.{line,odds} / away.close.{line,odds}
+        #   total.over.close.{line,odds} / under.close.{line,odds}
+        # The named "close" object exists pre-tip; ONLY quote what is
+        # actually visible during this pre-tip retrieval. Never reconstruct
+        # an old price from post-tip historical snapshots or assume an
+        # "open" price is still the actionable current price.
+        def close_quote(market_name, side):
+            market=data.get(market_name)
+            if not isinstance(market,dict):
+                return None,None
+            container=market.get(side)
+            if not isinstance(container,dict):
+                return None,None
+            current=container.get("close")
+            if not isinstance(current,dict):
+                return None,None
+            price=american_to_decimal(current.get("odds"))
+            raw_line=current.get("line")
+            line=None
+            if raw_line is not None:
+                try:
+                    line=float(raw_line)
+                    if not -400<line<400:
+                        line=None
+                except (ValueError,TypeError,OverflowError):
+                    line=None
+            return price,line
+
+        if isinstance(data.get("moneyline"),dict):
+            hml,_=close_quote("moneyline","home")
+            aml,_=close_quote("moneyline","away")
+        else:
+            hml=american_to_decimal(h.get("moneyLine"))
+            aml=american_to_decimal(a.get("moneyLine"))
         if hml is not None and aml is not None:
             groups.append(("game:moneyline","moneyline",None,[
                 ("home",None,hml),("away",None,aml)
             ]))
-        hspread=american_to_decimal(h.get("spreadOdds"))
-        aspread=american_to_decimal(a.get("spreadOdds"))
-        home_line=_favorite_home_line(data,home,away)
+
+        if isinstance(data.get("pointSpread"),dict):
+            hspread,home_line=close_quote("pointSpread","home")
+            aspread,away_line=close_quote("pointSpread","away")
+            if (home_line is not None and away_line is not None
+                    and abs(home_line+away_line)>1e-8):
+                skipped.append({"event":eid,"book":book,
+                                "reason":"CONTRADICTORY_SPREAD_LINES"})
+                home_line=None
+        else:
+            hspread=american_to_decimal(h.get("spreadOdds"))
+            aspread=american_to_decimal(a.get("spreadOdds"))
+            home_line=_favorite_home_line(data,home,away)
         if home_line is not None and hspread is not None and aspread is not None:
             groups.append((f"game:spread:home:{home_line:+g}","spread",home_line,[
                 ("home",home_line,hspread),("away",-home_line,aspread)
             ]))
-        try:
-            total=float(data["overUnder"])
-        except (KeyError,TypeError,ValueError,OverflowError):
-            total=None
-        over=american_to_decimal(data.get("overOdds"))
-        under=american_to_decimal(data.get("underOdds"))
+
+        if isinstance(data.get("total"),dict):
+            over,over_line=close_quote("total","over")
+            under,under_line=close_quote("total","under")
+            total=(over_line if over_line is not None and
+                   under_line is not None and
+                   abs(over_line-under_line)<1e-8 else None)
+            if (over_line is not None and under_line is not None
+                    and total is None):
+                skipped.append({"event":eid,"book":book,
+                                "reason":"CONTRADICTORY_TOTAL_LINES"})
+        else:
+            try:
+                total=float(data["overUnder"])
+            except (KeyError,TypeError,ValueError,OverflowError):
+                total=None
+            over=american_to_decimal(data.get("overOdds"))
+            under=american_to_decimal(data.get("underOdds"))
         if total is not None and 100<total<400 and over is not None and under is not None:
             groups.append((f"game:total:{total:g}","total",total,[
                 ("over",total,over),("under",total,under)
