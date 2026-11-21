@@ -1,0 +1,63 @@
+name: gpt-v2-public-odds-live-smoke
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - ".github/workflows/gpt-v2-public-odds-live-smoke.yml"
+      - "gpt_engine/v2/public_espn_odds.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  no-key-public-source-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile no-account public odds fetcher
+        run: python -m compileall -q gpt_engine/v2/public_espn_odds.py
+      - name: Verify live ESPN NBA JSON exists without credentials
+        run: |
+          python - <<'PY'
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          from gpt_engine.v2.public_espn_odds import fetch_public_scoreboard
+          day=datetime.now(ZoneInfo("America/New_York")).strftime("%Y%m%d")
+          payload,retrieved=fetch_public_scoreboard(day)
+          games=payload["events"]
+          books=set()
+          priced=0
+          for event in games:
+              for competition in event.get("competitions",[]):
+                  for line in (competition.get("odds") or []):
+                      if not isinstance(line,dict):
+                          continue
+                      provider=line.get("provider") or {}
+                      name=provider.get("name") if isinstance(provider,dict) else None
+                      if name: books.add(name)
+                      h=line.get("homeTeamOdds") or {}
+                      a=line.get("awayTeamOdds") or {}
+                      if isinstance(h,dict) and isinstance(a,dict):
+                          if h.get("moneyLine") is not None and a.get("moneyLine") is not None:
+                              priced+=1
+          print({
+              "source":"ESPN public NBA scoreboard",
+              "date_eastern":day,
+              "retrieved_utc":retrieved,
+              "event_count":len(games),
+              "priced_moneyline_events":priced,
+              "source_named_bookmakers":sorted(books),
+              "requires_login":False,
+              "cost_usd":0
+          })
+          if not games:
+              print("WARNING: valid scoreboard has no NBA events for this day")
+          if not priced:
+              print("WARNING: no sportsbook moneylines currently included")
+          PY
