@@ -23,6 +23,7 @@ on:
       - ".github/workflows/gpt-v2-daily-report.yml"
       - "gpt_engine/v2/odds_ingest.py"
       - "gpt_engine/v2/odds_api_io.py"
+      - "gpt_engine/v2/five_book_board.py"
       - "gpt_engine/v2/odds_map.py"
       - "gpt_engine/v2/market_run.py"
       - "gpt_engine/v2/market_grade.py"
@@ -108,6 +109,13 @@ jobs:
             --odds-ledger /tmp/gpt-v2-odds-log.jsonl \
             --output-json /tmp/gpt-v2-market-asof-latest.json \
             --output-md /tmp/gpt-v2-market-asof-latest.md
+      - name: Render private five-book side-by-side comparison
+        if: github.event_name != 'pull_request'
+        run: |
+          python -m gpt_engine.v2.five_book_board \
+            --asof-report /tmp/gpt-v2-market-asof-latest.json \
+            --output-json /tmp/gpt-v2-five-book-board.json \
+            --output-md /tmp/gpt-v2-five-book-board.md
       - name: Grade independently verified final NBA scores (no bets)
         if: github.event_name != 'pull_request'
         run: |
