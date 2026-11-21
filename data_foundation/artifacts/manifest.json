@@ -1,0 +1,429 @@
+{
+  "created_utc": "2026-11-21T00:51:49+00:00",
+  "seasons": [
+    {
+      "season": 2020,
+      "season_label": "2019-20",
+      "expected_regular_games": 1059,
+      "regular_games_found": 1059,
+      "all_games_found": 1143,
+      "all_team_game_rows": 2286,
+      "player_game_rows": 24105,
+      "distinct_players": 530,
+      "teams": 30,
+      "team_box_score_identity_mismatches": 0,
+      "position_counts": {
+        "G": 7782,
+        "F": 6004,
+        "G-F": 2596,
+        "UNKNOWN": 2098,
+        "F-C": 1619,
+        "C": 1590,
+        "C-F": 1233,
+        "F-G": 1183
+      },
+      "fully_labeled_five_position_share": 0.066,
+      "positions_are_actual_defenders": false,
+      "coach_identity_coverage": "official season roster; per-game changes unverified",
+      "source": "llimllib/nba_data NBA stats archive",
+      "source_urls": {
+        "team_game_logs": "https://basketball-data.billmill.org/nba/stats/team_game_logs/season=2020/data.parquet",
+        "player_game_logs": "https://basketball-data.billmill.org/nba/stats/player_game_logs/season=2020/data.parquet",
+        "team_seasons": "https://basketball-data.billmill.org/nba/stats/team_seasons/season=2020/data.parquet",
+        "player_seasons": "https://basketball-data.billmill.org/nba/stats/player_seasons/season=2020/data.parquet"
+      },
+      "tracked_matchups": {
+        "source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_matchups/game_matchups_2020.parquet",
+        "matchup_rows": 213125,
+        "tracked_games": 1139,
+        "regular_season_tracked_games": 1055,
+        "position_labels": {
+          "": 107566,
+          "G": 42559,
+          "F": 42363,
+          "C": 20637
+        },
+        "matchup_attribution_is_exclusive_defender_truth": false
+      },
+      "roster_position_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_rosters/rosters_2020.csv",
+      "roster_position_quality": {
+        "players": 476,
+        "mapped": 476,
+        "ambiguous": 0
+      },
+      "coaches_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_coaches/coaches_2020.csv",
+      "head_coach_coverage": {
+        "teams_with_head_coach": 28,
+        "teams_with_multiple_head_coaches": 6,
+        "head_coaches_total": 35,
+        "per_game_coach_identity_verified": false
+      },
+      "position_source_is_exact_role": false
+    },
+    {
+      "season": 2021,
+      "season_label": "2020-21",
+      "expected_regular_games": 1080,
+      "regular_games_found": 1080,
+      "all_games_found": 1171,
+      "all_team_game_rows": 2342,
+      "player_game_rows": 25054,
+      "distinct_players": 540,
+      "teams": 30,
+      "team_box_score_identity_mismatches": 0,
+      "position_counts": {
+        "G": 8521,
+        "F": 6096,
+        "G-F": 2855,
+        "F-C": 1950,
+        "C": 1872,
+        "UNKNOWN": 1445,
+        "F-G": 1172,
+        "C-F": 1143
+      },
+      "fully_labeled_five_position_share": 0.0747,
+      "positions_are_actual_defenders": false,
+      "coach_identity_coverage": "official season roster; per-game changes unverified",
+      "source": "llimllib/nba_data NBA stats archive",
+      "source_urls": {
+        "team_game_logs": "https://basketball-data.billmill.org/nba/stats/team_game_logs/season=2021/data.parquet",
+        "player_game_logs": "https://basketball-data.billmill.org/nba/stats/player_game_logs/season=2021/data.parquet",
+        "team_seasons": "https://basketball-data.billmill.org/nba/stats/team_seasons/season=2021/data.parquet",
+        "player_seasons": "https://basketball-data.billmill.org/nba/stats/player_seasons/season=2021/data.parquet"
+      },
+      "tracked_matchups": {
+        "source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_matchups/game_matchups_2021.parquet",
+        "matchup_rows": 218397,
+        "tracked_games": 1171,
+        "regular_season_tracked_games": 1080,
+        "position_labels": {
+          "": 110633,
+          "G": 43550,
+          "F": 43045,
+          "C": 21169
+        },
+        "matchup_attribution_is_exclusive_defender_truth": false
+      },
+      "roster_position_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_rosters/rosters_2021.csv",
+      "roster_position_quality": {
+        "players": 486,
+        "mapped": 486,
+        "ambiguous": 0
+      },
+      "coaches_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_coaches/coaches_2021.csv",
+      "head_coach_coverage": {
+        "teams_with_head_coach": 29,
+        "teams_with_multiple_head_coaches": 4,
+        "head_coaches_total": 33,
+        "per_game_coach_identity_verified": false
+      },
+      "position_source_is_exact_role": false
+    },
+    {
+      "season": 2022,
+      "season_label": "2021-22",
+      "expected_regular_games": 1230,
+      "regular_games_found": 1230,
+      "all_games_found": 1323,
+      "all_team_game_rows": 2646,
+      "player_game_rows": 28049,
+      "distinct_players": 606,
+      "teams": 30,
+      "team_box_score_identity_mismatches": 0,
+      "position_counts": {
+        "G": 9795,
+        "F": 7128,
+        "G-F": 2695,
+        "UNKNOWN": 2134,
+        "C": 1993,
+        "F-C": 1866,
+        "C-F": 1244,
+        "F-G": 1194
+      },
+      "fully_labeled_five_position_share": 0.0711,
+      "positions_are_actual_defenders": false,
+      "coach_identity_coverage": "official season roster; per-game changes unverified",
+      "source": "llimllib/nba_data NBA stats archive",
+      "source_urls": {
+        "team_game_logs": "https://basketball-data.billmill.org/nba/stats/team_game_logs/season=2022/data.parquet",
+        "player_game_logs": "https://basketball-data.billmill.org/nba/stats/player_game_logs/season=2022/data.parquet",
+        "team_seasons": "https://basketball-data.billmill.org/nba/stats/team_seasons/season=2022/data.parquet",
+        "player_seasons": "https://basketball-data.billmill.org/nba/stats/player_seasons/season=2022/data.parquet"
+      },
+      "tracked_matchups": {
+        "source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_matchups/game_matchups_2022.parquet",
+        "matchup_rows": 246212,
+        "tracked_games": 1322,
+        "regular_season_tracked_games": 1229,
+        "position_labels": {
+          "": 123988,
+          "G": 49445,
+          "F": 48860,
+          "C": 23919
+        },
+        "matchup_attribution_is_exclusive_defender_truth": false
+      },
+      "roster_position_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_rosters/rosters_2022.csv",
+      "roster_position_quality": {
+        "players": 489,
+        "mapped": 489,
+        "ambiguous": 0
+      },
+      "coaches_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_coaches/coaches_2022.csv",
+      "head_coach_coverage": {
+        "teams_with_head_coach": 28,
+        "teams_with_multiple_head_coaches": 6,
+        "head_coaches_total": 34,
+        "per_game_coach_identity_verified": false
+      },
+      "position_source_is_exact_role": false
+    },
+    {
+      "season": 2023,
+      "season_label": "2022-23",
+      "expected_regular_games": 1230,
+      "regular_games_found": 1230,
+      "all_games_found": 1320,
+      "all_team_game_rows": 2640,
+      "player_game_rows": 27739,
+      "distinct_players": 541,
+      "teams": 30,
+      "team_box_score_identity_mismatches": 0,
+      "position_counts": {
+        "G": 9414,
+        "F": 7224,
+        "UNKNOWN": 2579,
+        "G-F": 2269,
+        "C": 2070,
+        "F-C": 2059,
+        "C-F": 1135,
+        "F-G": 989
+      },
+      "fully_labeled_five_position_share": 0.0746,
+      "positions_are_actual_defenders": false,
+      "coach_identity_coverage": "official season roster; per-game changes unverified",
+      "source": "llimllib/nba_data NBA stats archive",
+      "source_urls": {
+        "team_game_logs": "https://basketball-data.billmill.org/nba/stats/team_game_logs/season=2023/data.parquet",
+        "player_game_logs": "https://basketball-data.billmill.org/nba/stats/player_game_logs/season=2023/data.parquet",
+        "team_seasons": "https://basketball-data.billmill.org/nba/stats/team_seasons/season=2023/data.parquet",
+        "player_seasons": "https://basketball-data.billmill.org/nba/stats/player_seasons/season=2023/data.parquet"
+      },
+      "tracked_matchups": {
+        "source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_matchups/game_matchups_2023.parquet",
+        "matchup_rows": 243952,
+        "tracked_games": 1320,
+        "regular_season_tracked_games": 1230,
+        "position_labels": {
+          "": 121913,
+          "G": 49285,
+          "F": 48677,
+          "C": 24077
+        },
+        "matchup_attribution_is_exclusive_defender_truth": false
+      },
+      "roster_position_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_rosters/rosters_2023.csv",
+      "roster_position_quality": {
+        "players": 474,
+        "mapped": 474,
+        "ambiguous": 0
+      },
+      "coaches_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_coaches/coaches_2023.csv",
+      "head_coach_coverage": {
+        "teams_with_head_coach": 28,
+        "teams_with_multiple_head_coaches": 6,
+        "head_coaches_total": 34,
+        "per_game_coach_identity_verified": false
+      },
+      "position_source_is_exact_role": false
+    },
+    {
+      "season": 2024,
+      "season_label": "2023-24",
+      "expected_regular_games": 1230,
+      "regular_games_found": 1230,
+      "all_games_found": 1319,
+      "all_team_game_rows": 2638,
+      "player_game_rows": 28232,
+      "distinct_players": 572,
+      "teams": 30,
+      "team_box_score_identity_mismatches": 0,
+      "position_counts": {
+        "G": 10591,
+        "F": 7968,
+        "C": 2252,
+        "G-F": 2067,
+        "F-C": 1760,
+        "UNKNOWN": 1428,
+        "C-F": 1188,
+        "F-G": 978
+      },
+      "fully_labeled_five_position_share": 0.0798,
+      "positions_are_actual_defenders": false,
+      "coach_identity_coverage": "official season roster; per-game changes unverified",
+      "source": "llimllib/nba_data NBA stats archive",
+      "source_urls": {
+        "team_game_logs": "https://basketball-data.billmill.org/nba/stats/team_game_logs/season=2024/data.parquet",
+        "player_game_logs": "https://basketball-data.billmill.org/nba/stats/player_game_logs/season=2024/data.parquet",
+        "team_seasons": "https://basketball-data.billmill.org/nba/stats/team_seasons/season=2024/data.parquet",
+        "player_seasons": "https://basketball-data.billmill.org/nba/stats/player_seasons/season=2024/data.parquet"
+      },
+      "tracked_matchups": {
+        "source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_matchups/game_matchups_2024.parquet",
+        "matchup_rows": 245659,
+        "tracked_games": 1317,
+        "regular_season_tracked_games": 1228,
+        "position_labels": {
+          "": 124006,
+          "G": 48868,
+          "F": 48657,
+          "C": 24128
+        },
+        "matchup_attribution_is_exclusive_defender_truth": false
+      },
+      "roster_position_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_rosters/rosters_2024.csv",
+      "roster_position_quality": {
+        "players": 514,
+        "mapped": 514,
+        "ambiguous": 0
+      },
+      "coaches_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_coaches/coaches_2024.csv",
+      "head_coach_coverage": {
+        "teams_with_head_coach": 27,
+        "teams_with_multiple_head_coaches": 4,
+        "head_coaches_total": 31,
+        "per_game_coach_identity_verified": false
+      },
+      "position_source_is_exact_role": false
+    },
+    {
+      "season": 2025,
+      "season_label": "2024-25",
+      "expected_regular_games": 1230,
+      "regular_games_found": 1230,
+      "all_games_found": 1321,
+      "all_team_game_rows": 2642,
+      "player_game_rows": 28265,
+      "distinct_players": 569,
+      "teams": 30,
+      "team_box_score_identity_mismatches": 0,
+      "position_counts": {
+        "G": 10895,
+        "F": 7359,
+        "C": 2477,
+        "UNKNOWN": 2275,
+        "G-F": 2027,
+        "F-C": 1322,
+        "C-F": 1203,
+        "F-G": 707
+      },
+      "fully_labeled_five_position_share": 0.0876,
+      "positions_are_actual_defenders": false,
+      "coach_identity_coverage": "official season roster; per-game changes unverified",
+      "source": "llimllib/nba_data NBA stats archive",
+      "source_urls": {
+        "team_game_logs": "https://basketball-data.billmill.org/nba/stats/team_game_logs/season=2025/data.parquet",
+        "player_game_logs": "https://basketball-data.billmill.org/nba/stats/player_game_logs/season=2025/data.parquet",
+        "team_seasons": "https://basketball-data.billmill.org/nba/stats/team_seasons/season=2025/data.parquet",
+        "player_seasons": "https://basketball-data.billmill.org/nba/stats/player_seasons/season=2025/data.parquet"
+      },
+      "tracked_matchups": {
+        "source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_matchups/game_matchups_2025.parquet",
+        "matchup_rows": 248261,
+        "tracked_games": 1321,
+        "regular_season_tracked_games": 1230,
+        "position_labels": {
+          "": 125483,
+          "G": 49376,
+          "F": 49058,
+          "C": 24344
+        },
+        "matchup_attribution_is_exclusive_defender_truth": false
+      },
+      "roster_position_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_rosters/rosters_2025.csv",
+      "roster_position_quality": {
+        "players": 499,
+        "mapped": 499,
+        "ambiguous": 0
+      },
+      "coaches_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_coaches/coaches_2025.csv",
+      "head_coach_coverage": {
+        "teams_with_head_coach": 27,
+        "teams_with_multiple_head_coaches": 2,
+        "head_coaches_total": 29,
+        "per_game_coach_identity_verified": false
+      },
+      "position_source_is_exact_role": false
+    },
+    {
+      "season": 2026,
+      "season_label": "2025-26",
+      "expected_regular_games": 1230,
+      "regular_games_found": 1230,
+      "all_games_found": 1322,
+      "all_team_game_rows": 2644,
+      "player_game_rows": 28716,
+      "distinct_players": 582,
+      "teams": 30,
+      "team_box_score_identity_mismatches": 0,
+      "position_counts": {
+        "G": 10660,
+        "F": 7351,
+        "C": 2762,
+        "UNKNOWN": 2603,
+        "G-F": 2220,
+        "F-C": 1415,
+        "C-F": 1090,
+        "F-G": 615
+      },
+      "fully_labeled_five_position_share": 0.0962,
+      "positions_are_actual_defenders": false,
+      "coach_identity_coverage": "official season roster; per-game changes unverified",
+      "source": "llimllib/nba_data NBA stats archive",
+      "source_urls": {
+        "team_game_logs": "https://basketball-data.billmill.org/nba/stats/team_game_logs/season=2026/data.parquet",
+        "player_game_logs": "https://basketball-data.billmill.org/nba/stats/player_game_logs/season=2026/data.parquet",
+        "team_seasons": "https://basketball-data.billmill.org/nba/stats/team_seasons/season=2026/data.parquet",
+        "player_seasons": "https://basketball-data.billmill.org/nba/stats/player_seasons/season=2026/data.parquet"
+      },
+      "tracked_matchups": {
+        "source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_matchups/game_matchups_2026.parquet",
+        "matchup_rows": 257854,
+        "tracked_games": 1322,
+        "regular_season_tracked_games": 1230,
+        "position_labels": {
+          "": 132002,
+          "G": 50712,
+          "F": 50122,
+          "C": 25018
+        },
+        "matchup_attribution_is_exclusive_defender_truth": false
+      },
+      "roster_position_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_rosters/rosters_2026.csv",
+      "roster_position_quality": {
+        "players": 495,
+        "mapped": 495,
+        "ambiguous": 0
+      },
+      "coaches_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_coaches/coaches_2026.csv",
+      "head_coach_coverage": {
+        "teams_with_head_coach": 27,
+        "teams_with_multiple_head_coaches": 3,
+        "head_coaches_total": 30,
+        "per_game_coach_identity_verified": false
+      },
+      "position_source_is_exact_role": false
+    }
+  ],
+  "overall": {
+    "verified_regular_games": 8289,
+    "total_player_rows": 190160,
+    "all_expected_seasons_present": true,
+    "limitations": [
+      "Official roster positions are season labels (frequently G/F/C), not exact nightly PG/SG/SF/PF/C roles.",
+      "Tracked defender-matchup pairs are included when sourced, but attribution is not exclusive on every possession.",
+      "Coach names are sourced by season, but exact coach-to-game dates and tactical schemes are not verified.",
+      "Historical data may reflect corrected end-of-season NBA stats, not knowledge available before tip."
+    ]
+  }
+}
