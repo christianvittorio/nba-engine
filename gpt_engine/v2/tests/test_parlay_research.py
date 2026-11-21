@@ -83,14 +83,73 @@ def test_no_same_game_parlays_or_unsupported_player_props():
     assert result["eligible_single_legs"]==2
 
 
-def test_three_leg_max_expected_roi_and_joint_minimum():
+def test_highest_chance_prioritizes_two_leg_ticket_over_three():
     rows=[quote(1,odds=1.9,p=.6),quote(2,odds=1.9,p=.6),
           quote(3,odds=1.9,p=.6)]
     result=board(rows,maximum_results=5)
-    assert result["best_research_combination"]["leg_count"]==3
+    assert result["ranking_metric"]=="full_win_probability_independent"
+    assert result["best_research_combination"]["leg_count"]==2
     assert result["candidate_tickets_screened"]==4
+    assert result["ranked_research_combinations"][-1]["leg_count"]==3
     result=board(rows,minimum_joint_win_probability=.3)
     assert result["best_research_combination"]["leg_count"]==2
+
+
+def test_best_hit_rate_not_highest_return_even_with_other_positive_value_tickets():
+    # The longshot pair has higher ROI, but a much lower chance of winning.
+    rows=[
+        quote(1,odds=1.6,p=.70),
+        quote(2,odds=1.6,p=.70),
+        quote(3,odds=2.5,p=.46),
+        quote(4,odds=2.5,p=.46),
+    ]
+    result=board(rows,maximum_results=20)
+    leader=result["best_research_combination"]
+    assert result["ranking_policy"]=="MAX_HIT_PROBABILITY_SUBJECT_TO_POSITIVE_ESTIMATED_VALUE"
+    assert leader["leg_count"]==2
+    assert {leg["game_id"] for leg in leader["legs"]}=={
+        "game:nba:1","game:nba:2"
+    }
+    assert leader["full_win_probability_independent"]==pytest.approx(.49)
+    longshot=next(
+        combo for combo in result["ranked_research_combinations"]
+        if {leg["game_id"] for leg in combo["legs"]}=={
+           "game:nba:3","game:nba:4"
+        }
+    )
+    assert longshot["estimated_roi_independent"]>leader["estimated_roi_independent"]
+    assert leader["full_win_probability_independent"]>longshot["full_win_probability_independent"]
+    assert "Highest modeled full-win probability" in render_markdown(result)
+
+
+def test_highest_probability_is_still_required_to_have_positive_raw_value():
+    # A .93 * .93 sure-looking ticket with bad price is not eligible.
+    rows=[
+        quote(1,odds=1.04,p=.93),
+        quote(2,odds=1.04,p=.93),
+        quote(3,odds=1.9,p=.60),
+        quote(4,odds=1.9,p=.60),
+    ]
+    result=board(rows)
+    best=result["best_research_combination"]
+    assert {leg["game_id"] for leg in best["legs"]}=={
+       "game:nba:3","game:nba:4"
+    }
+    assert result["eligible_single_legs"]==2
+
+
+def test_tie_on_probability_uses_roi_as_tie_break_only():
+    rows=[
+      quote(1,odds=1.8,p=.7),
+      quote(2,odds=1.7,p=.7),
+      quote(3,odds=2.0,p=.7),
+    ]
+    result=board(rows,maximum_results=5)
+    best=result["best_research_combination"]
+    assert best["full_win_probability_independent"]==pytest.approx(.49)
+    assert {leg["game_id"] for leg in best["legs"]}=={
+        "game:nba:1","game:nba:3"
+    }
 
 
 def test_integer_line_pushes_are_refunds_not_full_wins():
