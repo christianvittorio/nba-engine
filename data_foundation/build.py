@@ -20,6 +20,7 @@ import sys
 import pandas as pd
 
 from .style import build_style_snapshots
+from .supplement import coach_coverage, position_lookup, read_supplement, release_url
 
 BASE = "https://basketball-data.billmill.org/nba/stats"
 PROJECT = Path(__file__).resolve().parents[1]
@@ -238,7 +239,7 @@ def validate(teams: pd.DataFrame, players: pd.DataFrame, season: int) -> dict:
         "fully_labeled_five_position_share": round(
             float((players.position_quality == "five_position").mean()), 4),
         "positions_are_actual_defenders": False,
-        "coach_identity_coverage": "not yet sourced",
+        "coach_identity_coverage": "official season roster; per-game changes unverified",
         "source": SOURCE,
         "source_urls": {name: season_url(name, season) for name in
                         ("team_game_logs", "player_game_logs", "team_seasons",
@@ -269,13 +270,26 @@ def run(seasons: list[int], out_dir: Path = OUTPUT) -> dict:
         players_raw = read_season(con, "player_game_logs", season)
         teams_meta = read_season(con, "team_seasons", season)
         players_meta = read_season(con, "player_seasons", season)
+        rosters = read_supplement("rosters", season)
+        coaches = read_supplement("coaches", season)
+        roster_positions, roster_quality = position_lookup(rosters)
+        players_meta = players_meta.copy()
+        players_meta["position"] = players_meta.player_id.astype(str).map(roster_positions)
         teams = normalize_teams(teams_raw, teams_meta, season)
         players = normalize_players(players_raw, players_meta, teams, season)
         dvp_game, dvp_season = defense_vs_position(players, season)
         style = build_style_snapshots(teams)
         audit = validate(teams, players, season)
+        audit["roster_position_source"] = release_url("rosters", season)
+        audit["roster_position_quality"] = roster_quality
+        audit["coaches_source"] = release_url("coaches", season)
+        audit["head_coach_coverage"] = coach_coverage(
+            coaches, set(teams.team_id.astype(str).unique()))
+        audit["position_source_is_exact_role"] = False
         _write(teams, "teams", season)
         _write(players, "players", season)
+        _write(rosters, "rosters", season)
+        _write(coaches, "coaches", season)
         _write(dvp_game, "defense_vs_position_game", season)
         _write(dvp_season, "defense_vs_position_season", season)
         _write(style, "team_style_pregame", season)
@@ -292,9 +306,9 @@ def run(seasons: list[int], out_dir: Path = OUTPUT) -> dict:
                 x["regular_games_found"] == x["expected_regular_games"] for x in done
                 if x["expected_regular_games"] is not None),
             "limitations": [
-                "Published positions may be G/F/C or hybrids; PG/SG/SF/PF/C coverage is measured, not assumed.",
+                "Official roster positions are season labels (frequently G/F/C), not exact nightly PG/SG/SF/PF/C roles.",
                 "Defense-vs-position denotes opponent production, not specific defender assignments.",
-                "Coaching identity and defensive scheme are not sourced or inferred from these tables.",
+                "Coach names are sourced by season, but exact coach-to-game dates and tactical schemes are not verified.",
                 "Historical data may reflect corrected end-of-season NBA stats, not knowledge available before tip.",
             ],
         },
