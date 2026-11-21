@@ -178,3 +178,65 @@ def test_malformed_bookmaker_odds_do_not_crash_slate():
     assert result["quotes"]==[]
     assert any(x["reason"]=="MALFORMED_TEAM_ODDS"
                for x in result["skipped"])
+
+
+def nested_2026_scoreboard():
+    data=scoreboard(moneyline=False,spread=False,total=False,
+                    provider="DraftKings")
+    odds=data["events"][0]["competitions"][0]["odds"][0]
+    odds["homeTeamOdds"]={"favorite":True,"team":{"abbreviation":"BOS"}}
+    odds["awayTeamOdds"]={"favorite":False,"team":{"abbreviation":"NYK"}}
+    odds["moneyline"]={
+        "home":{"close":{"odds":"-160"},"open":{"odds":"-150"}},
+        "away":{"close":{"odds":"+135"},"open":{"odds":"+125"}},
+    }
+    odds["pointSpread"]={
+        "home":{"close":{"line":"-3.5","odds":"-110"},
+                "open":{"line":"-3","odds":"-110"}},
+        "away":{"close":{"line":"+3.5","odds":"-110"},
+                "open":{"line":"+3","odds":"-110"}},
+    }
+    odds["total"]={
+        "over":{"close":{"line":"225.5","odds":"-108"},
+                "open":{"line":"224.5","odds":"-110"}},
+        "under":{"close":{"line":"225.5","odds":"-112"},
+                 "open":{"line":"224.5","odds":"-110"}},
+    }
+    return data
+
+
+def test_real_2026_espn_nested_schema_prices_exact_lines_only():
+    report=normalize_public_scoreboards(
+        [(nested_2026_scoreboard(),CAPTURED)],db())
+    assert len(report["quotes"])==6
+    assert report["verified_bookmakers"]==["DraftKings"]
+    moneylines=[x for x in report["quotes"] if x["market_type"]=="moneyline"]
+    assert {x["decimal_odds"] for x in moneylines}=={1.625,2.35}
+    spreads=[x for x in report["quotes"] if x["market_type"]=="spread"]
+    assert {x["line"] for x in spreads}=={-3.5,3.5}
+    totals=[x for x in report["quotes"] if x["market_type"]=="total"]
+    assert {x["line"] for x in totals}=={225.5}
+    assert all(x["observed_at_utc"]==CAPTURED for x in report["quotes"])
+
+
+def test_2026_nested_mismatch_is_rejected_not_cross_paired():
+    data=nested_2026_scoreboard()
+    obj=data["events"][0]["competitions"][0]["odds"][0]
+    obj["pointSpread"]["away"]["close"]["line"]="+4.5"
+    obj["total"]["under"]["close"]["line"]="226.5"
+    report=normalize_public_scoreboards([(data,CAPTURED)],db())
+    assert all(x["market_type"]=="moneyline" for x in report["quotes"])
+    assert len(report["quotes"])==2
+    assert {r["reason"] for r in report["skipped"]}>={
+        "CONTRADICTORY_SPREAD_LINES","CONTRADICTORY_TOTAL_LINES"
+    }
+
+
+def test_open_prices_never_substitute_for_missing_pretip_close():
+    data=nested_2026_scoreboard()
+    obj=data["events"][0]["competitions"][0]["odds"][0]
+    for field in ("moneyline","pointSpread","total"):
+        for side in obj[field]:
+            obj[field][side].pop("close")
+    report=normalize_public_scoreboards([(data,CAPTURED)],db())
+    assert report["quotes"]==[]
