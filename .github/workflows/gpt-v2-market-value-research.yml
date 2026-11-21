@@ -15,6 +15,7 @@ on:
       - "gpt_engine/v2/tests/test_market_grade.py"
       - "gpt_engine/v2/tests/test_market_results.py"
       - "gpt_engine/v2/tests/test_forward_calibration.py"
+      - "gpt_engine/v2/tests/test_market_pipeline_e2e.py"
       - "gpt_engine/v2/MARKET_VALUE_RESEARCH.md"
       - ".github/workflows/gpt-v2-market-value-research.yml"
   workflow_dispatch:
@@ -50,3 +51,4 @@ jobs:
           gpt_engine/v2/tests/test_market_grade.py
           gpt_engine/v2/tests/test_market_results.py
           gpt_engine/v2/tests/test_forward_calibration.py
+          gpt_engine/v2/tests/test_market_pipeline_e2e.py
