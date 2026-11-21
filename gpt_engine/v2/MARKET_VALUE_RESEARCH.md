@@ -149,3 +149,168 @@ python -m pytest -q gpt_engine/v2/tests/test_market_value.py
   discrepancies across a meaningful prospective sample.
 - Add measured net returns and risk limits only after external prospective
   validation. No automatic wagering.
+
+## New v0.2 pipeline implementation — November 21, 2026
+
+The research implementation now includes:
+- `odds_map.py`: strict NBA team+tip canonical mapping using the existing
+  `games`/`teams` warehouse tables. All 30 NBA teams are recognized by
+  approved full-name/abbreviation aliases; ambiguous or swapped games are
+  skipped. No player ID is guessed.
+- `odds_ingest.py`: opt-in The Odds API v4 live client, source- and
+  retrieval-timestamp verification, known market normalization and a
+  quote-ID-keyed append-only JSONL ledger. Default markets are featured
+  `h2h`, `spreads`, `totals`. Props (`player_points`,
+  `player_rebounds`, `player_assists`, `player_threes`) require the
+  event-specific API and an explicit provider-player-to-NBA-ID map.
+- `market_run.py`: pre-cutoff quote selection, strict frozen prediction
+  joining, experimental moneyline implied-return comparison, separate
+  projected spread/total/player-stat point differences. **No EV is inferred
+  from point means without a line-specific probability distribution.**
+- `market_results.py`: source-backed, postgame warehouse outcome export.
+  Only reconciled team boxscores are eligible; unresolved player
+  appearances are never treated as verified DNPs.
+- `market_grade.py`: after-game settlement, hypothetical paper ROI,
+  per-game Brier/log loss, optional pre-specified reference-book no-vig
+  comparison, and same-book same-line *actually captured pretip* CLV.
+- `forward_calibration.py`: chronological Platt probability research with
+  explicit artifact-issuance vs holdout-forecast chronology. Results remain
+  research-only even if the historical error improves.
+- A GitHub Actions CI regression suite and optional integration into the
+  independent GPT v2 daily GitHub workflow.
+
+**These new steps have not been promoted to production**, and do not
+retroactively create prices or calibration that were never captured.
+
+### Credentials and API costs
+
+Set the GitHub repository Actions secret `THE_ODDS_API_KEY` or export the
+same environment variable to use live ingestion. **Never commit the key**.
+Without it, no request is made. The API uses quota-based billing; the
+scheduled feature only requests NBA h2h/spreads/totals in `us` region.
+Event-level prop queries require a separate explicit run and may cost more.
+
+Official provider documentation:
+- https://the-odds-api.com/liveapi/guides/v4/
+- https://the-odds-api.com/terms-and-conditions.html
+
+Provider terms presently permit derived research and analytic products
+under conditions, but not resale as a competing raw odds feed. Confirm
+current service terms and local legal requirements before distributing
+a commercial version. Do not claim all bookmakers are available to
+people in a particular country.
+
+### End-to-end manual run
+
+Run from repository root after building an NBA SQLite warehouse as
+documented in `DAILY_REPORTS.md`. For a real API run, supply the key
+through the environment and use:
+
+```bash
+python -m gpt_engine.v2.odds_ingest \
+  --nba-db /tmp/gpt-v2-daily.sqlite \
+  --ledger gpt_engine/v2/artifacts/market/odds_log.jsonl \
+  --report /tmp/odds_ingest_report.json \
+  --markets h2h,spreads,totals --region us
+
+python -m gpt_engine.v2.daily_publish \
+  --db /tmp/gpt-v2-daily.sqlite --n 1000
+
+python -m gpt_engine.v2.market_run \
+  --forecast-ledger gpt_engine/v2/artifacts/forecast_log.jsonl \
+  --root . \
+  --odds-ledger gpt_engine/v2/artifacts/market/odds_log.jsonl \
+  --output-json /tmp/nba_market_asof.json \
+  --output-md /tmp/nba_market_asof.md
+
+python -m gpt_engine.v2.market_results \
+  --db /tmp/gpt-v2-daily.sqlite --output /tmp/nba_verified_finals.json
+
+python -m gpt_engine.v2.market_grade \
+  --asof-report /tmp/nba_market_asof.json \
+  --odds-ledger gpt_engine/v2/artifacts/market/odds_log.jsonl \
+  --finals-json /tmp/nba_verified_finals.json \
+  --output /tmp/nba_market_grades.json
+```
+
+**Order is essential**: the odds must be fetched and locally captured
+before the forecast cutoff. Historical quotes merely timestamped before
+a forecast but first retrieved afterwards are ineligible at that
+forecast cutoff. On repeat runs, new odds snapshots can become useful
+for a later new model version, or closing-line analysis, but cannot
+overwrite the original forecast or be injected into its as-of EV report.
+
+### Offline / no-key source replay
+
+Save a **genuinely captured** The Odds API JSON response to
+`/tmp/provider_saved.json`. In offline mode, explicitly provide the
+timestamp when it was actually retrieved; do not invent a capture time.
+
+```bash
+python -m gpt_engine.v2.odds_ingest \
+  --source-json /tmp/provider_saved.json \
+  --retrieved-at-utc 2026-11-21T20:05:00Z \
+  --nba-db /tmp/gpt-v2-daily.sqlite \
+  --ledger /tmp/nba_odds_test_ledger.jsonl \
+  --report /tmp/nba_odds_test_report.json
+```
+
+For a stable fixture/mapped-player experiment, supply `--event-map`
+with `{"events":{"<provider_event_id>":{...}}}`. Required mapped
+fields: `game_id`, `home_team`, `away_team`, `tip_utc`, and
+`settlement_scope:"full_game_including_ot"`. Optional `players`
+maps exact provider player names to preverified canonical NBA player IDs.
+
+### Forward model-calibration evaluation
+
+Once there are **80 or more** independently recorded frozen forecast
+outcomes with both home wins and away wins in the calibration window,
+and a separate later holdout, run:
+
+```bash
+python -m gpt_engine.v2.forward_calibration \
+  --forecast-ledger gpt_engine/v2/artifacts/forecast_log.jsonl \
+  --root . --finals-json /tmp/nba_verified_finals.json \
+  --calibration-before 2027-02-01T00:00:00Z \
+  --holdout-from 2027-02-15T00:00:00Z \
+  --holdout-before 2027-06-01T00:00:00Z \
+  --output /tmp/nba_forward_calibration_research.json
+```
+
+Those dates illustrate the *format only*. Do not choose or change
+cutoffs after seeing holdout results. A calibrator fitted retrospectively
+after those holdout predictions were issued is marked **NOT
+PROSPECTIVELY TRAINED**, regardless of score improvements. No automatic
+deployment follows a successful historical test.
+
+### Daily GitHub Actions behavior
+
+The existing `gpt-v2-daily-report.yml` workflow now:
+1. Builds the NBA source warehouse as before;
+2. Fetches pretip odds only when `THE_ODDS_API_KEY` exists
+   (no odds invented on missing key);
+3. Generates immutable first-issue pretip forecasts as before;
+4. Publishes a *separate* model-vs-market Markdown/JSON with no EV on
+   markets where the exact-line probabilities are unavailable;
+5. Exports verified finals and grades prior captured market records,
+   writing separate paper-only grading output; and
+6. Pushes market-ledger/report files along with the original reports.
+
+Scheduled runs only execute this workflow after the PR is reviewed and
+merged to the default branch. Default simulation, separate Claude
+reports and core model parameters are unchanged.
+
+### Release gates still missing
+
+- A real key and verified live provider access (none assumed).
+- Forward sample sizes, locked holdout dates and reproducible evaluation
+  showing calibrated probabilities outperform a market baseline after costs.
+- Live exact-line spread/total/prop probabilities and their push mass;
+  means or central prediction intervals alone cannot provide these.
+- Timestamped lineup/availability changes and a model reforecast
+  ledger that never overwrites the first issued forecast.
+- Independently verified settlement/scoring, including any historical
+  score-identity failures and special bookmaker prop void rules.
+- Market access, country-level availability, product terms and legal review.
+- GitHub Actions CI/polling smoke run verification. No success is
+  claimed until actual runs are inspected.
