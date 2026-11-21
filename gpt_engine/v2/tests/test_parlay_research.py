@@ -226,3 +226,63 @@ def test_no_positive_single_leg_edge_means_no_parlay():
     result=board([quote(1,p=.4,odds=1.91),quote(2,p=.4,odds=1.91)])
     assert result["status"]=="NO_QUALIFYING_PARLAY"
     assert result["candidate_tickets_screened"]==0
+
+
+def test_single_board_ranks_hit_probability_before_raw_ev_and_one_per_game():
+    rows = [
+        quote(1,odds=1.28,p=.80),
+        quote(2,odds=1.43,p=.72),
+        quote(3,odds=2.0,p=.60),
+        quote(1,side="away",odds=1.5,p=.75),
+    ]
+    result=board(rows)
+    assert result["single_ranking_metric"]=="model_probability"
+    assert result["single_selection_status"]=="RESEARCH_SINGLES_AVAILABLE"
+    singles=result["ranked_high_hit_singles"]
+    assert len(singles)==3
+    assert [x["game_id"] for x in singles]==[
+        "game:nba:1","game:nba:2","game:nba:3"
+    ]
+    assert [x["model_probability"] for x in singles]==[.80,.72,.60]
+    assert singles[0]["individual_research_roi"] < singles[2]["individual_research_roi"]
+    assert all(x["actionable"] is False for x in singles)
+    md=render_markdown(result)
+    assert "individual games" in md and "Break-even P" in md
+
+
+def test_tiny_positive_ev_below_old_one_percent_cutoff_is_now_eligible():
+    a=quote(1,odds=1.431,p=.70)  # 0.17% raw modeled ROI
+    b=quote(2,odds=1.431,p=.70)
+    result=board([a,b])
+    assert result["filters"]["minimum_leg_roi"]==pytest.approx(.001)
+    assert result["eligible_single_legs"]==2
+    assert result["best_research_single"]["model_probability"]==pytest.approx(.70)
+    assert result["best_research_combination"]["full_win_probability_independent"]==pytest.approx(.49)
+
+
+def test_even_high_probability_losing_value_is_not_a_single_or_parlay():
+    negative=quote(1,odds=1.04,p=.93)
+    positive=quote(2,odds=1.5,p=.72)
+    result=board([negative,positive])
+    assert result["eligible_single_legs"]==1
+    assert result["best_research_single"]["game_id"]=="game:nba:2"
+    assert result["best_research_combination"] is None
+
+
+def test_singles_require_a_model_win_chance_above_55_percent():
+    result=board([quote(1,p=.53,odds=2.0),quote(2,p=.52,odds=2.0)])
+    assert result["eligible_single_legs"]==2
+    assert result["single_selection_status"]=="NO_QUALIFYING_SINGLE"
+    assert result["ranked_high_hit_singles"]==[]
+    assert result["best_research_combination"] is not None
+
+
+def test_parlay_only_combines_games_from_same_eastern_slate_day():
+    a=quote(1)
+    b=quote(2)
+    # Both are pre-tip in UTC, but November 22 01:00 UTC vs November 23 01:00
+    b["tip_utc"]="2026-11-23T01:00:00Z"
+    report={"research_only":True,"markets":[a,b]}
+    result=build_parlay_board(report,now_utc=NOW,date_eastern=None)
+    assert result["eligible_single_legs"]==2
+    assert result["best_research_combination"] is None
