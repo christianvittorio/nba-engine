@@ -98,7 +98,7 @@ def test_paired_bootstrap_sign_and_count():
 def _synthetic_experiment():
     rng=np.random.default_rng(41)
     dates=(list(pd.date_range("2023-10-01",periods=150))+
-           list(pd.date_range("2024-11-01",periods=100))+
+           list(pd.date_range("2024-10-15",periods=100))+
            list(pd.date_range("2025-02-01",periods=100))+
            list(pd.date_range("2025-11-01",periods=100)))
     from gpt_engine.v2.feature_ablation import CROSS_FEATURES
