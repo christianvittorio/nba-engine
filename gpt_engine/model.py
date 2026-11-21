@@ -169,7 +169,14 @@ def evaluate_saved(predictions: list[dict], games: list[Game]) -> dict:
             continue
         tip = pred.get("tip_utc")
         made = pred.get("made_at_utc")
-        if not tip or not made or made >= tip:
+        if not tip or not made:
+            continue
+        try:
+            tip_dt = datetime.fromisoformat(tip.replace("Z", "+00:00")).astimezone(timezone.utc)
+            made_dt = datetime.fromisoformat(made.replace("Z", "+00:00")).astimezone(timezone.utc)
+        except (TypeError, ValueError):
+            continue
+        if made_dt >= tip_dt:
             continue
         y = float(game.home_pts > game.away_pts)
         p = max(1e-5, min(1 - 1e-5, float(pred["p_home"])))
