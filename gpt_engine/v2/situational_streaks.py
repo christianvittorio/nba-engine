@@ -226,6 +226,70 @@ def current_matching_run(finished:pd.DataFrame,team_id:str,
     }
 
 
+def last_qualifying_games_asof(finished:pd.DataFrame,team_id:str,
+                             target_day:str,target_season:int,venue:str,
+                             rest_days:int,*,limit:int=2,
+                             lookback_seasons:int=LOOKBACK_SEASONS)->list[dict]:
+    """Show the exact dates/results behind a situational 'run' claim.
+
+    Most recent first. Only games satisfying the SAME venue/rest condition,
+    strictly before the Eastern target date, within the three-season window.
+    Nonqualifying games are skipped, so do not call this an overall streak.
+    """
+    if venue not in VENUES or not isinstance(rest_days,int) or rest_days<0:
+        raise ValueError("Invalid venue/rest")
+    if not isinstance(limit,int) or not 1<=limit<=20:
+        raise ValueError("Expected 1–20 qualifying game examples")
+    src=(add_finished_game_context(finished)
+         if "true_rest_days" not in finished else finished)
+    matches=src[
+        (src.team_id.astype(str)==str(team_id))&
+        (src.game_date.astype(str)<target_day)&
+        (src.season.astype(int)<=target_season)&
+        (src.season.astype(int)>=target_season-lookback_seasons+1)&
+        (src.venue_valid)&(src.venue==venue)&
+        (src.rest_bucket==rest_bucket(rest_days))
+    ].sort_values(["game_date","game_id"],ascending=[False,False]).head(limit)
+    rows=[]
+    for row in matches.itertuples(index=False):
+        rows.append({
+            "date_eastern":str(row.game_date),
+            "result":"W" if int(row.won) else "L",
+            "game_id":str(row.game_id),
+        })
+    return rows
+
+
+def overall_streak_asof(finished:pd.DataFrame,team_id:str,
+                        target_day:str,target_season:int)->dict:
+    """Uninterrupted regular-season wins/losses, not conditional games.
+
+    Reset at season boundary; include games at any venue but never target-
+    day results. The latest result is always the first entry of the run.
+    """
+    src=(add_finished_game_context(finished)
+         if "true_rest_days" not in finished else finished)
+    prior=src[
+        (src.team_id.astype(str)==str(team_id))&
+        (src.season.astype(int)==int(target_season))&
+        (src.game_date.astype(str)<target_day)
+    ].sort_values(["game_date","game_id"])
+    if prior.empty:
+        return {"result":None,"length":0,"last_date":None,
+                "label":"No current-season games"}
+    latest=int(prior.iloc[-1].won)
+    length=0
+    for won in reversed(prior.won.astype(int).tolist()):
+        if won!=latest:break
+        length+=1
+    return {
+        "result":"W" if latest else "L",
+        "length":length,
+        "last_date":str(prior.iloc[-1].game_date),
+        "label":("W" if latest else "L")+str(length)
+    }
+
+
 def matchup_record_asof(finished:pd.DataFrame,team_id:str,
                         target_day:str,target_season:int,venue:str,
                         rest_days:int,lookback_seasons:int=LOOKBACK_SEASONS)->dict:
