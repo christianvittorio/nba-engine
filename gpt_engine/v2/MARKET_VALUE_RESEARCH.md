@@ -1,5 +1,67 @@
 # GPT v2 — sportsbook market value research lane
 
+
+## Daily Parlay of the Day — research-ranking module
+
+The daily GitHub workflow now evaluates **two- or three-leg same-sportsbook
+parlays** from its actual timestamp-verified market comparison, in a private
+research-only step after generating individual odds/model EV comparisons.
+It never assumes the best FanDuel line can be multiplied by a DraftKings line:
+all legs must be quoted by **one** actual provider, during a common
+10-minute observation window, and by the frozen model cutoff. At most one
+selection from any game is allowed; same-game correlations and player props
+are excluded. Stale prices, unsupported markets, one-sided quotes and
+post-tip results are rejected.
+
+The ranker measures **model-estimated expected ROI per unit staked**
+conditional on the model being correct; it also reports the probability
+that every leg wins. Given independently modeled different games:
+
+```
+P(all legs win) = product(P_i(win))
+Decimal parlay payout if every leg wins = product(decimal_odds_i)
+Expected net ROI allowing pushes = product(P_i(win) * odds_i + P_i(push)) - 1
+```
+
+A push refunds that leg rather than treating it as a loss. This
+independence assumption is a research simplification, not proven
+independence of NBA results and price factors. A high **projected** ROI is
+not high certainty, and our possession model is **not forward validated**.
+
+The optimizer bounds the selection problem to avoid tiny-hit-rate lottery
+combinations: 2–3 legs, at least 1% *raw research* individual EV on each
+leg, minimum 10% full-hit probability, price <=5.0 per leg, and a
+30-minute original quote age cap. These are configurable engineering
+thresholds, **not a wagering strategy**. It reports an explicit
+`NO_QUALIFYING_PARLAY` state if insufficient independently observed odds
+exist or not enough legs clear the safeguards.
+
+No amount of raw positive simulated EV can make the output an approved
+bet. The top research ticket is `actionable: false` and
+`betting_recommendation: null`; validated-review candidates require
+forward-tested per-leg lower probability bounds and still need
+independent review.
+
+Generated private files (never committed as raw sportsbook evidence):
+
+- `/tmp/gpt-v2-parlay-research-latest.json`
+- `/tmp/gpt-v2-parlay-research-latest.md`
+
+The public GitHub Actions log prints a **redacted summary**: best
+same-book combination market identities and lines, modeled hit-rate,
+model-only ROI, and explicit research status, without actual quoted
+prices or raw provider payloads.
+
+```bash
+python -m gpt_engine.v2.parlay_research \
+  --asof-report /tmp/gpt-v2-market-asof-latest.json \
+  --date 2026-11-21 \
+  --output-json /tmp/gpt-v2-parlay-research-latest.json \
+  --output-md /tmp/gpt-v2-parlay-research-latest.md
+```
+
+---
+
 ## ZERO-SETUP automatic odds research — current default
 
 **No account, no payment, no API key, no manual pasted odds.**
