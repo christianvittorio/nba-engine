@@ -71,7 +71,7 @@ def test_research_calibration_never_automatically_becomes_a_value_pick():
 def test_stale_or_invalid_timestamps_are_blocked():
     p = [prediction("home", .58, status="forward_validated",
                     lower=.55, validation_reference="external")]
-    stale = quote("home", 2.0, at="2026-11-21T19:00:00Z")
+    stale = quote("home", 2.0, at="2026-11-20T19:00:00Z")
     assert compare_markets([stale],p)["markets"][0]["decision"] == "STALE_COMPARISON"
     with pytest.raises(ValueError,match="After-tip odds"):
         compare_markets([quote("home",2,at=TIP)],p)
