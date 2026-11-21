@@ -31,7 +31,7 @@ def build_board(report: dict, *, books: tuple[str,...] = BOOKS) -> dict:
             raise ValueError(f"Duplicate book quote for frozen contract {key}")
         groups[key][book] = row
     markets = []
-    for key,books in groups.items():
+    for key,quoted_books in groups.items():
         gid,market_id,mtype,selection,line,pid=key
         available = {
             book: {
@@ -40,19 +40,19 @@ def build_board(report: dict, *, books: tuple[str,...] = BOOKS) -> dict:
                 "no_vig_probability":row.get("no_vig_market_probability"),
                 "decision":row.get("decision"),
                 "observed_at_utc":row["observed_at_utc"],
-            } if (row:=books.get(book)) else None
+            } if (row:=quoted_books.get(book)) else None
             for book in books
         }
         best_price = max(
-            (float(r["decimal_odds"]) for r in books.values()),
+            (float(r["decimal_odds"]) for r in quoted_books.values()),
             default=None,
         )
         best_books = [name for name in books
-                      if name in books and
-                      float(books[name]["decimal_odds"])==best_price]
+                      if name in quoted_books and
+                      float(quoted_books[name]["decimal_odds"])==best_price]
         probabilities = {
             float(r["model_probability"])
-            for r in books.values() if r.get("model_probability") is not None
+            for r in quoted_books.values() if r.get("model_probability") is not None
         }
         # Same outcome/line MUST have one model probability regardless of book.
         if len(probabilities)>1:
