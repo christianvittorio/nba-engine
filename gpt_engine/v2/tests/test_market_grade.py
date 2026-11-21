@@ -129,3 +129,21 @@ def test_no_finals_and_invalid_source_evidence_are_not_settled():
     bad["home_score"] = bad["away_score"]
     with pytest.raises(ValueError, match="tied"):
         _finals_index({"games":[bad]})
+
+
+def test_multiclass_probability_scoring_counts_push_and_only_one_contract():
+    a=report_row(market="game:total:210",mtype="total",
+                 selection="over",line=210,price=2.0,raw_ev=0.0)
+    a["model_probability"]=.45
+    a["push_probability"]=.10
+    b={**a,"book":"other-book","decimal_odds":2.2}
+    result=evaluate_outcomes(report([a,b]), [], {"games":[final()]})
+    scored=result["market_probability_scoring"]["total"]
+    assert scored["distinct_settled_contracts"] == 1
+    assert scored["categorical_log_loss"] == pytest.approx(
+        2.302585092994046
+    )
+    assert scored["categorical_brier"] == pytest.approx(
+        .45**2+(.10-1)**2+.45**2
+    )
+    assert scored["binary_brier_nonpush"] is None
