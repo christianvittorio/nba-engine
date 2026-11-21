@@ -1,0 +1,67 @@
+name: gpt-v2-november-time-travel-replay
+
+on:
+  pull_request:
+    paths:
+      - "gpt_engine/v2/replay.py"
+      - ".github/workflows/gpt-v2-replay.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: gpt_engine/v2/requirements-test.txt
+      - name: Install research dependencies
+        run: python -m pip install -r gpt_engine/v2/requirements-test.txt
+      - name: Compile replay module
+        run: python -m py_compile gpt_engine/v2/replay.py
+      - name: Reconstruct 2026-11-20 Eastern NBA slate (results excluded)
+        run: |
+          python -m gpt_engine.v2.replay \
+            --date 2026-11-20 --n 1000 --seed 20261120 \
+            --output /tmp/gpt-nov20-pretip-replay.json | tee /tmp/gpt-nov20.log
+      - name: Verify nine-game slate and strict cutoff
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/gpt-nov20-pretip-replay.json'))
+          assert d['game_count']==9,d['game_count']
+          assert d['cutoff_utc']=='2026-11-20T16:00:00Z',d['cutoff_utc']
+          assert len({g['game_id'] for g in d['games']})==9
+          assert all(g['tip_utc']>d['cutoff_utc'] for g in d['games'])
+          assert all(g['model_confidence']=='UNVALIDATED_RESEARCH' for g in d['games'])
+          print("NOV20_CHECKS_PASS 9 games, strict cutoff, no actual scores in output")
+          PY
+      - name: Reconstruct actual 12-game 2026-11-18 Eastern slate (comparison)
+        run: |
+          python -m gpt_engine.v2.replay \
+            --date 2026-11-18 --n 1000 --seed 20261118 \
+            --output /tmp/gpt-nov18-pretip-replay.json | tee /tmp/gpt-nov18.log
+      - name: Verify November 18 has twelve matches
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/gpt-nov18-pretip-replay.json'))
+          assert d['game_count']==12,d['game_count']
+          assert len({x['game_id'] for x in d['games']})==12
+          assert all(x['tip_utc']>d['cutoff_utc'] for x in d['games'])
+          print("NOV18_CHECKS_PASS 12 games")
+          PY
+      - name: Publish replay outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpt-v2-nov20-and-nov18-reconstructed-pretip-results
+          path: |
+            /tmp/gpt-nov20-pretip-replay.json
+            /tmp/gpt-nov18-pretip-replay.json
+          if-no-files-found: error
