@@ -71,7 +71,7 @@ def test_best_single_book_two_leg_roi_and_hit_rate():
     assert result["betting_recommendation"] is None
     assert candidate["validation_status"]=="UNCALIBRATED_RESEARCH_ONLY"
     assert result["best_forward_validated_review"] is None
-    assert "NOT a calibrated edge" in render_markdown(result)
+    assert "Neither modeled hit probability nor raw ROI is a calibrated" in render_markdown(result)
 
 
 def test_no_same_game_parlays_or_unsupported_player_props():
