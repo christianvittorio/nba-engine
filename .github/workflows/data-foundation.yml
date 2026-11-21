@@ -50,6 +50,21 @@ jobs:
                   if candidate in data:
                       print("  ", candidate, data[candidate].dropna().astype(str).unique()[:25], flush=True)
           PY
+      - name: Inspect published NBA rosters and coaching source schemas
+        if: github.event_name == 'pull_request'
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          for tag, label in (("nba_stats_rosters", "rosters"), ("nba_stats_coaches", "coaches")):
+              url = "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/" + tag + "/" + label + "_2020.csv"
+              print("FETCH", url, flush=True)
+              try:
+                  df = pd.read_csv(url)
+                  print("SCHEMA", tag, df.shape, list(df.columns), flush=True)
+                  print("SAMPLE", df.head(2).to_dict("records"), flush=True)
+              except Exception as exc:
+                  print("FETCH FAILURE", type(exc).__name__, str(exc), flush=True)
+          PY
       - name: Validate actual NBA archive source (2019-20 smoke test)
         if: github.event_name == 'pull_request'
         run: python -m data_foundation.build --seasons 2020 --out /tmp/nba-foundation-smoke
