@@ -12,7 +12,11 @@ independently captured alternate player prop odds.
 
 - Current season: at least **12 completed prior games** for this player on
   the actual team in today's game, with a credible recent minutes record;
-  no after-tip or same-day box scores.
+  no after-tip or same-day box scores. Crucially, when any prior scheduled
+  team game has an original tip at least four hours in the past but is
+  still missing its finished box score in the source archive, that team's
+  season hit-rate candidate is **excluded**. A stale corrected archive
+  cannot turn 11/13 into a false 12/12 result.
 - High usage: at least **24% weighted observed/estimated usage**, and
   top **two** of the team's qualified rotation players by season usage.
   Published `usg_pct` is used when present; otherwise a documented
