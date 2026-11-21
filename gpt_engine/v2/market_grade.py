@@ -11,6 +11,7 @@ from collections import defaultdict
 from datetime import datetime, timezone
 import json
 from math import log
+from statistics import median
 from pathlib import Path
 
 from .contracts import iso, utc
@@ -217,7 +218,7 @@ def evaluate_outcomes(asof_report: dict, odds_history: list[dict],
     # Game-level calibration measures: once per immutable game, never count
     # multiple bookmakers as independent win observations.
     by_game = {x["game_id"]: x for x in asof_report.get("games", [])}
-    quality, market_baseline = [], []
+    quality, market_baseline, consensus_baseline = [], [], []
     for gid, g in by_game.items():
         actual = scores.get(gid)
         if actual is None:
@@ -228,6 +229,25 @@ def evaluate_outcomes(asof_report: dict, odds_history: list[dict],
                         "brier": (p-y)**2,
                         "log_loss": -(y*log(max(1e-9,p))+
                                       (1-y)*log(max(1e-9,1-p)))})
+        # Fixed, predeclared equal-book-weight median of eligible no-vig
+        # home moneyline quotes, never selected using realized outcomes.
+        consensus_candidates = [
+            r["no_vig_market_probability"]
+            for r in asof_report.get("markets", [])
+            if r["game_id"] == gid and r["market_type"] == "moneyline"
+            and r["selection"] == "home"
+            and r.get("no_vig_market_probability") is not None
+            and r.get("decision") == "RESEARCH_ONLY"
+        ]
+        if consensus_candidates:
+            cp = median(consensus_candidates)
+            consensus_baseline.append({
+                "game_id":gid, "model_brier":(p-y)**2,
+                "market_brier":(cp-y)**2,
+                "model_logloss":-(y*log(max(1e-9,p)) + (1-y)*log(max(1e-9,1-p))),
+                "market_logloss":-(y*log(max(1e-9,cp)) + (1-y)*log(max(1e-9,1-cp))),
+                "market_p":cp, "book_count":len(consensus_candidates)
+            })
         if reference_book:
             candidates = [
                 r for r in asof_report.get("markets", [])
@@ -260,6 +280,12 @@ def evaluate_outcomes(asof_report: dict, odds_history: list[dict],
             "reference_book_no_vig_brier": mean(
                 [r["brier"] for r in market_baseline]
             ),
+            "consensus_rule": "Preselected median of eligible per-book no-vig home moneylines",
+            "matched_consensus_games": len(consensus_baseline),
+            "matched_game_model_brier": mean([r["model_brier"] for r in consensus_baseline]),
+            "matched_game_market_brier": mean([r["market_brier"] for r in consensus_baseline]),
+            "matched_game_model_logloss": mean([r["model_logloss"] for r in consensus_baseline]),
+            "matched_game_market_logloss": mean([r["market_logloss"] for r in consensus_baseline]),
             "sample_large_enough_for_public_accuracy_claim": (
                 len(quality) >= 200
             ),
@@ -270,6 +296,7 @@ def evaluate_outcomes(asof_report: dict, odds_history: list[dict],
         "limitations": [
             "All returns are hypothetical flat-unit paper results, not executed bets.",
             "A market audit counts multiple books/selections per event; not independent wagers.",
+            "Consensus benchmark is a predeclared median, not independent bookmaker observations.",
             "The experimental paper cohort may be severely miscalibrated and correlated.",
             "Closing-line value is quoted-price movement, not a guaranteed realized edge.",
             "Same-book, same-line, pretip captured close is required; no line interpolation.",
