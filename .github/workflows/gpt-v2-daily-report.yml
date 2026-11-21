@@ -21,6 +21,11 @@ on:
       - "gpt_engine/v2/research.py"
       - "gpt_engine/v2/tests/test_daily_publish.py"
       - ".github/workflows/gpt-v2-daily-report.yml"
+      - "gpt_engine/v2/odds_ingest.py"
+      - "gpt_engine/v2/odds_map.py"
+      - "gpt_engine/v2/market_run.py"
+      - "gpt_engine/v2/market_grade.py"
+      - "gpt_engine/v2/market_results.py"
 
 permissions:
   contents: write
@@ -53,6 +58,20 @@ jobs:
           python -m gpt_engine.v2.ingest \
             --seasons 2024 2025 2026 2027 \
             --output /tmp/gpt-v2-daily.sqlite
+      - name: Capture point-in-time NBA moneylines/spreads/totals (optional)
+        if: github.event_name != 'pull_request'
+        env:
+          THE_ODDS_API_KEY: ${{ secrets.THE_ODDS_API_KEY }}
+        run: |
+          if [ -z "${THE_ODDS_API_KEY}" ]; then
+            echo "No configured odds API secret; skip live feed (no synthetic odds)"
+          else
+            python -m gpt_engine.v2.odds_ingest \\
+              --nba-db /tmp/gpt-v2-daily.sqlite \\
+              --ledger gpt_engine/v2/artifacts/market/odds_log.jsonl \\
+              --report /tmp/gpt-v2-odds-capture.json \\
+              --markets h2h,spreads,totals --region us
+          fi
       - name: Generate GPT v2 predictions and human-readable matchup reports
         env:
           GPT_REPORT_DATE: ${{ inputs.date }}
@@ -71,6 +90,26 @@ jobs:
             python -m gpt_engine.v2.daily_publish \
               --db /tmp/gpt-v2-daily.sqlite --n "$SIMS"
           fi
+      - name: Compare frozen forecasts with captured sportsbook prices
+        if: github.event_name != 'pull_request'
+        run: |
+          python -m gpt_engine.v2.market_run \\
+            --forecast-ledger gpt_engine/v2/artifacts/forecast_log.jsonl \\
+            --root . \\
+            --odds-ledger gpt_engine/v2/artifacts/market/odds_log.jsonl \\
+            --output-json gpt_engine/v2/artifacts/market/market_asof_latest.json \\
+            --output-md gpt_engine/v2/artifacts/market/market_asof_latest.md
+      - name: Grade independently verified final NBA scores (no bets)
+        if: github.event_name != 'pull_request'
+        run: |
+          python -m gpt_engine.v2.market_results \\
+            --db /tmp/gpt-v2-daily.sqlite \\
+            --output /tmp/gpt-v2-market-finals.json
+          python -m gpt_engine.v2.market_grade \\
+            --asof-report gpt_engine/v2/artifacts/market/market_asof_latest.json \\
+            --odds-ledger gpt_engine/v2/artifacts/market/odds_log.jsonl \\
+            --finals-json /tmp/gpt-v2-market-finals.json \\
+            --output gpt_engine/v2/artifacts/market/market_evaluation_latest.json
       - name: Check every saved pretip forecast and generated Markdown report
         run: |
           python - <<'PY'
@@ -103,6 +142,9 @@ jobs:
           git config user.name "gpt-v2-report-bot"
           git config user.email "gpt-v2-report-bot@users.noreply.github.com"
           git add -f gpt_engine/v2/artifacts/reports/
+          if [ -d gpt_engine/v2/artifacts/market ]; then
+            git add -f gpt_engine/v2/artifacts/market/
+          fi
           if [ -f gpt_engine/v2/artifacts/forecast_log.jsonl ]; then
             git add -f gpt_engine/v2/artifacts/forecast_log.jsonl
           fi
