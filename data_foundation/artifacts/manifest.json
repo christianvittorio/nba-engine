@@ -1,5 +1,5 @@
 {
-  "created_utc": "2026-11-21T00:54:32+00:00",
+  "created_utc": "2026-11-21T21:08:16+00:00",
   "seasons": [
     {
       "season": 2020,
@@ -418,24 +418,24 @@
       "season": 2027,
       "season_label": "2026-27",
       "expected_regular_games": null,
-      "regular_games_found": 226,
-      "all_games_found": 226,
-      "all_team_game_rows": 452,
-      "player_game_rows": 5089,
+      "regular_games_found": 235,
+      "all_games_found": 235,
+      "all_team_game_rows": 470,
+      "player_game_rows": 5270,
       "distinct_players": 473,
       "teams": 30,
       "team_box_score_identity_mismatches": 0,
       "position_counts": {
-        "G": 2074,
-        "F": 1525,
-        "C": 515,
-        "G-F": 333,
-        "F-C": 293,
-        "C-F": 188,
-        "F-G": 148,
+        "G": 2148,
+        "F": 1578,
+        "C": 535,
+        "G-F": 344,
+        "F-C": 304,
+        "C-F": 194,
+        "F-G": 154,
         "UNKNOWN": 13
       },
-      "fully_labeled_five_position_share": 0.1012,
+      "fully_labeled_five_position_share": 0.1015,
       "positions_are_actual_defenders": false,
       "coach_identity_coverage": "official season roster; per-game changes unverified",
       "source": "llimllib/nba_data NBA stats archive",
@@ -447,14 +447,14 @@
       },
       "tracked_matchups": {
         "source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_matchups/game_matchups_2027.parquet",
-        "matchup_rows": 44947,
-        "tracked_games": 221,
-        "regular_season_tracked_games": 221,
+        "matchup_rows": 45776,
+        "tracked_games": 225,
+        "regular_season_tracked_games": 225,
         "position_labels": {
-          "": 23565,
-          "G": 8636,
-          "F": 8570,
-          "C": 4176
+          "": 23996,
+          "G": 8793,
+          "F": 8730,
+          "C": 4257
         },
         "matchup_attribution_is_exclusive_defender_truth": false
       },
@@ -475,8 +475,8 @@
     }
   ],
   "overall": {
-    "verified_regular_games": 8515,
-    "total_player_rows": 195249,
+    "verified_regular_games": 8524,
+    "total_player_rows": 195430,
     "all_expected_seasons_present": true,
     "limitations": [
       "Official roster positions are season labels (frequently G/F/C), not exact nightly PG/SG/SF/PF/C roles.",
