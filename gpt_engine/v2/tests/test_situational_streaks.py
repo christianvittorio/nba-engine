@@ -129,7 +129,7 @@ def test_dated_qualifying_games_and_true_overall_run_are_independent():
           "2026-10-07","2026-10-10","2026-10-11",
           "2026-10-13","2026-10-15","2026-10-17"]
     winners=["A","A","B","B","A","B","B","B","B"]
-    d=games_for_dates(days, winners=winners)
+    d=games_for_dates(days, seasons=[2027]*len(days), winners=winners)
     home_dates={"2026-10-01","2026-10-04","2026-10-10"}
     d["home"] = d.apply(
         lambda r: (r.game_date in home_dates)==(r.team_id=="A"),axis=1)
@@ -144,7 +144,7 @@ def test_dated_qualifying_games_and_true_overall_run_are_independent():
         {"date_eastern":"2026-10-04","result":"W","game_id":"0022600001"}
     ]
     # Target-day win must not leak into either streak or dated records.
-    later=games_for_dates(["2026-10-20"], winners=["A"])
+    later=games_for_dates(["2026-10-20"], seasons=[2027], winners=["A"])
     later["game_id"]="0022600099"
     poisoned=add_finished_game_context(pd.concat([d,later]))
     assert last_qualifying_games_asof(
