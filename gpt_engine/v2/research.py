@@ -184,7 +184,8 @@ def run_day(db_path:str,day:str,n:int=1000,seed:int=20261121,
             -1.0 if state["home"].get("b2b") else 0.0,
             -1.0 if state["away"].get("b2b") else 0.0
         )
-        sim=simulate_game(match,hp,ap,n=n,seed=seed)
+        sim=simulate_game(match,hp,ap,n=n,seed=seed,
+                          include_market_distributions=True)
         quality=list(snap.quality_flags)+source_quality+[
             "UNVALIDATED_RESEARCH_MODEL",
             "recent_participants_not_confirmed_lineup",

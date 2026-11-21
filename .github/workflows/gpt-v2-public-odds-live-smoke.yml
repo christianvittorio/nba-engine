@@ -1,0 +1,93 @@
+name: gpt-v2-public-odds-live-smoke
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - ".github/workflows/gpt-v2-public-odds-live-smoke.yml"
+      - "gpt_engine/v2/public_espn_odds.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  no-key-public-source-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile public odds fetcher
+        run: python -m compileall -q gpt_engine/v2/public_espn_odds.py
+      - name: Test live no-key NBA feed and real 2026 market parser
+        run: |
+          python - <<'PY'
+          from collections import Counter
+          from datetime import datetime
+          import sqlite3
+          from zoneinfo import ZoneInfo
+          from gpt_engine.v2.odds_map import abbreviation
+          from gpt_engine.v2.public_espn_odds import (
+              fetch_public_scoreboard, normalize_public_scoreboards, _team_info
+          )
+
+          day=datetime.now(ZoneInfo("America/New_York")).strftime("%Y%m%d")
+          payload,captured=fetch_public_scoreboard(day)
+          events=payload["events"]
+          # A temporary source-derived schedule verifies parser wiring and
+          # timestamps. Production uses independent official NBA warehouse.
+          con=sqlite3.connect(":memory:")
+          con.executescript("""
+            CREATE TABLE teams(team_id TEXT PRIMARY KEY,current_name TEXT);
+            CREATE TABLE games(game_id TEXT PRIMARY KEY,tip_utc TEXT,
+              home_team_id TEXT,away_team_id TEXT,game_type TEXT);
+          """)
+          candidates=0
+          for e in events:
+              comps=e.get("competitions") or []
+              if len(comps)!=1 or not isinstance(comps[0],dict):
+                  continue
+              sides=_team_info(comps[0])
+              if sides is None:
+                  continue
+              home,away=sides
+              hc,ac=abbreviation(home),abbreviation(away)
+              if not hc or not ac or hc==ac: continue
+              hid,aid="smoke:"+hc,"smoke:"+ac
+              for tid,name in ((hid,home),(aid,away)):
+                  con.execute("INSERT OR IGNORE INTO teams VALUES(?,?)",(tid,name))
+              con.execute(
+                  "INSERT OR IGNORE INTO games VALUES(?,?,?,?,?)",
+                  ("game:nba:smoke:"+str(e["id"]),e["date"],hid,aid,"regular_season")
+              )
+              for bookmaker in comps[0].get("odds") or []:
+                  if not isinstance(bookmaker,dict):continue
+                  ml=bookmaker.get("moneyline") or {}
+                  h=(ml.get("home") or {}).get("close") or {}
+                  a=(ml.get("away") or {}).get("close") or {}
+                  if h.get("odds") is not None and a.get("odds") is not None:
+                      candidates+=1
+          captured_report=normalize_public_scoreboards([(payload,captured)],con)
+          types=Counter(q["market_type"] for q in captured_report["quotes"])
+          print("NO_KEY_LIVE_MARKET_SMOKE",{
+              "date_eastern":day,
+              "retrieved_utc":captured,
+              "events":len(events),
+              "eligible_raw_moneyline_pairs":candidates,
+              "normalized_quotes":len(captured_report["quotes"]),
+              "normalized_market_types":dict(types),
+              "named_books":captured_report["verified_bookmakers"],
+              "skipped_reasons":dict(Counter(s.get("reason") for s in
+                                             captured_report["skipped"])),
+              "live_schedule_is_source_derived_smoke_only":True,
+              "api_key_or_login":False,
+              "cost_usd":0,
+          })
+          if candidates and not captured_report["quotes"]:
+              raise AssertionError(
+                  "Public sportsbook had moneyline pairs but parser captured zero quotes"
+              )
+          PY

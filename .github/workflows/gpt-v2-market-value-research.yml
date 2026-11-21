@@ -1,0 +1,83 @@
+name: gpt-v2-market-value-research
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - "gpt_engine/v2/market_value.py"
+      - "gpt_engine/v2/market_probabilities.py"
+      - "gpt_engine/v2/simulation.py"
+      - "gpt_engine/v2/research.py"
+      - "gpt_engine/v2/odds_ingest.py"
+      - "gpt_engine/v2/odds_api_io.py"
+      - "gpt_engine/v2/hoopsapi_free.py"
+      - "gpt_engine/v2/public_espn_odds.py"
+      - "gpt_engine/v2/five_book_board.py"
+      - "gpt_engine/v2/odds_map.py"
+      - "gpt_engine/v2/market_run.py"
+      - "gpt_engine/v2/market_grade.py"
+      - "gpt_engine/v2/market_results.py"
+      - "gpt_engine/v2/forward_calibration.py"
+      - "gpt_engine/v2/tests/test_market_value.py"
+      - "gpt_engine/v2/tests/test_market_probabilities.py"
+      - "gpt_engine/v2/tests/test_simulation.py"
+      - "gpt_engine/v2/tests/test_odds_ingest.py"
+      - "gpt_engine/v2/tests/test_odds_api_io.py"
+      - "gpt_engine/v2/tests/test_hoopsapi_free.py"
+      - "gpt_engine/v2/tests/test_public_espn_odds.py"
+      - "gpt_engine/v2/tests/test_five_book_board.py"
+      - "gpt_engine/v2/tests/test_market_run.py"
+      - "gpt_engine/v2/tests/test_market_grade.py"
+      - "gpt_engine/v2/tests/test_market_results.py"
+      - "gpt_engine/v2/tests/test_forward_calibration.py"
+      - "gpt_engine/v2/tests/test_market_pipeline_e2e.py"
+      - "gpt_engine/v2/tests/test_market_workflow_safety.py"
+      - "gpt_engine/v2/MARKET_VALUE_RESEARCH.md"
+      - ".github/workflows/gpt-v2-market-value-research.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  market-value-unit-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install GPT v2 research dependencies
+        run: python -m pip install -r gpt_engine/v2/requirements-test.txt
+      - name: Compile market comparator
+        run: >-
+          python -m compileall -q
+          gpt_engine/v2/market_value.py
+          gpt_engine/v2/market_probabilities.py
+          gpt_engine/v2/simulation.py
+          gpt_engine/v2/research.py
+          gpt_engine/v2/odds_ingest.py
+          gpt_engine/v2/odds_api_io.py
+          gpt_engine/v2/hoopsapi_free.py
+          gpt_engine/v2/public_espn_odds.py
+          gpt_engine/v2/five_book_board.py
+          gpt_engine/v2/odds_map.py
+          gpt_engine/v2/market_run.py
+          gpt_engine/v2/market_grade.py
+          gpt_engine/v2/market_results.py
+          gpt_engine/v2/forward_calibration.py
+      - name: Verify odds, vig, push, timestamp and calibration safeguards
+        run: >-
+          python -m pytest -q
+          gpt_engine/v2/tests/test_market_value.py
+          gpt_engine/v2/tests/test_market_probabilities.py
+          gpt_engine/v2/tests/test_simulation.py
+          gpt_engine/v2/tests/test_odds_ingest.py
+          gpt_engine/v2/tests/test_odds_api_io.py
+          gpt_engine/v2/tests/test_hoopsapi_free.py
+          gpt_engine/v2/tests/test_public_espn_odds.py
+          gpt_engine/v2/tests/test_five_book_board.py
+          gpt_engine/v2/tests/test_market_run.py
+          gpt_engine/v2/tests/test_market_grade.py
+          gpt_engine/v2/tests/test_market_results.py
+          gpt_engine/v2/tests/test_forward_calibration.py
+          gpt_engine/v2/tests/test_market_pipeline_e2e.py
+          gpt_engine/v2/tests/test_market_workflow_safety.py

@@ -21,13 +21,23 @@ on:
       - "gpt_engine/v2/research.py"
       - "gpt_engine/v2/tests/test_daily_publish.py"
       - ".github/workflows/gpt-v2-daily-report.yml"
+      - "gpt_engine/v2/odds_ingest.py"
+      - "gpt_engine/v2/odds_api_io.py"
+      - "gpt_engine/v2/five_book_board.py"
+      - "gpt_engine/v2/hoopsapi_free.py"
+      - "gpt_engine/v2/public_espn_odds.py"
+      - "gpt_engine/v2/odds_map.py"
+      - "gpt_engine/v2/market_run.py"
+      - "gpt_engine/v2/market_grade.py"
+      - "gpt_engine/v2/market_results.py"
 
 permissions:
   contents: write
 
 concurrency:
   group: gpt-v2-daily-report-${{ github.ref }}
-  cancel-in-progress: false
+  # Cancel stale PR attempts; never cancel scheduled real forecast publishing.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   forecast-and-publish:
@@ -53,6 +63,35 @@ jobs:
           python -m gpt_engine.v2.ingest \
             --seasons 2024 2025 2026 2027 \
             --output /tmp/gpt-v2-daily.sqlite
+      - name: Capture public NBA sportsbook odds (NO ACCOUNT, NO KEY)
+        env:
+          GPT_REPORT_DATE: ${{ inputs.date }}
+        run: |
+          # Two day-scoped public scoreboard queries maximum per run.
+          # No API secrets, no payment, no fake books or lines.
+          python -m gpt_engine.v2.public_espn_odds \
+            --nba-db /tmp/gpt-v2-daily.sqlite \
+            --ledger /tmp/gpt-v2-odds-log.jsonl \
+            --report /tmp/gpt-v2-odds-capture.json \
+            --date "${GPT_REPORT_DATE}"
+      - name: Verify official-schedule sportsbook mapping in PR smoke
+        if: github.event_name == 'pull_request'
+        run: |
+          python - <<'PY'
+          import json
+          from collections import Counter
+          from pathlib import Path
+          report=json.loads(Path("/tmp/gpt-v2-odds-capture.json").read_text())
+          assert report["requires_api_key"] is False
+          assert report["research_only"] is True
+          assert all(x.get("reason") for x in report["skipped"])
+          print("OFFICIAL_NBA_ODDS_WAREHOUSE_SMOKE",{
+            "mapped_official_games":report["mapped_games"],
+            "new_pretip_quotes":report["new_quotes"],
+            "actual_named_books":report["verified_bookmakers"],
+            "rejected_reasons":dict(Counter(x["reason"] for x in report["skipped"])),
+          })
+          PY
       - name: Generate GPT v2 predictions and human-readable matchup reports
         env:
           GPT_REPORT_DATE: ${{ inputs.date }}
@@ -71,6 +110,47 @@ jobs:
             python -m gpt_engine.v2.daily_publish \
               --db /tmp/gpt-v2-daily.sqlite --n "$SIMS"
           fi
+      - name: Compare frozen forecasts with captured sportsbook prices
+        run: |
+          python -m gpt_engine.v2.market_run \
+            --forecast-ledger gpt_engine/v2/artifacts/forecast_log.jsonl \
+            --root . \
+            --odds-ledger /tmp/gpt-v2-odds-log.jsonl \
+            --output-json /tmp/gpt-v2-market-asof-latest.json \
+            --output-md /tmp/gpt-v2-market-asof-latest.md
+      - name: Render private five-book side-by-side comparison
+        run: |
+          python -m gpt_engine.v2.five_book_board \
+            --asof-report /tmp/gpt-v2-market-asof-latest.json \
+            --book-set observed \
+            --output-json /tmp/gpt-v2-five-book-board.json \
+            --output-md /tmp/gpt-v2-five-book-board.md
+      - name: Grade independently verified final NBA scores (no bets)
+        run: |
+          python -m gpt_engine.v2.market_results \
+            --db /tmp/gpt-v2-daily.sqlite \
+            --output /tmp/gpt-v2-market-finals.json
+          python -m gpt_engine.v2.market_grade \
+            --asof-report /tmp/gpt-v2-market-asof-latest.json \
+            --odds-ledger /tmp/gpt-v2-odds-log.jsonl \
+            --finals-json /tmp/gpt-v2-market-finals.json \
+            --output /tmp/gpt-v2-market-evaluation-latest.json
+      - name: Audit private market research output without publishing provider prices
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path("/tmp/gpt-v2-market-asof-latest.json").read_text())
+          graded=json.loads(Path("/tmp/gpt-v2-market-evaluation-latest.json").read_text())
+          assert report["research_only"] is True
+          assert graded["research_only"] is True
+          print("PRIVATE_MARKET_RUN",json.dumps({
+             "slate_games":len(report["games"]),
+             "price_observations_before_cutoff":report["usable_asof_quote_count"],
+             "graded_games":graded["calibration"]["settled_game_count"],
+             "provisional_status":"UNCALIBRATED_RESEARCH"
+          }))
+          PY
       - name: Check every saved pretip forecast and generated Markdown report
         run: |
           python - <<'PY'
