@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-21T20:23:34Z",
+ "generated_utc": "2026-11-21T21:16:28Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -393,18 +393,25 @@
    ],
    "injuries": [
     {
+     "name": "Mitchell Robinson",
+     "nba_id": 1629011,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-21T20:55Z"
+    },
+    {
      "name": "Jayson Tatum",
      "nba_id": 1628369,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-21T01:07Z"
+     "date": "2026-11-21T20:51Z"
     },
     {
      "name": "Derrick White",
      "nba_id": 1628401,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-21T01:00Z"
+     "date": "2026-11-21T20:53Z"
     }
    ]
   },
@@ -2185,11 +2192,18 @@
    ],
    "injuries": [
     {
+     "name": "Giannis Antetokounmpo",
+     "nba_id": 203507,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-21T20:33Z"
+    },
+    {
      "name": "Myron Gardner",
      "nba_id": 1642066,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-19T14:45Z"
+     "date": "2026-11-21T20:35Z"
     }
    ]
   },
@@ -4162,7 +4176,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 30,
-  "injuries_endpoint_entries": 105,
-  "embedded_injuries": 105
+  "injuries_endpoint_entries": 107,
+  "embedded_injuries": 107
  }
 }
