@@ -25,6 +25,7 @@ on:
       - "gpt_engine/v2/odds_api_io.py"
       - "gpt_engine/v2/five_book_board.py"
       - "gpt_engine/v2/hoopsapi_free.py"
+      - "gpt_engine/v2/public_espn_odds.py"
       - "gpt_engine/v2/odds_map.py"
       - "gpt_engine/v2/market_run.py"
       - "gpt_engine/v2/market_grade.py"
@@ -61,20 +62,18 @@ jobs:
           python -m gpt_engine.v2.ingest \
             --seasons 2024 2025 2026 2027 \
             --output /tmp/gpt-v2-daily.sqlite
-      - name: Capture FREE NBA bookmaker odds before forecasts (optional)
+      - name: Capture public NBA sportsbook odds (NO ACCOUNT, NO KEY)
         if: github.event_name != 'pull_request'
         env:
-          HOOPSAPI_KEY: ${{ secrets.HOOPSAPI_KEY }}
+          GPT_REPORT_DATE: ${{ inputs.date }}
         run: |
-          if [ -z "${HOOPSAPI_KEY}" ]; then
-            echo "No free-tier HoopsAPI key; skip live feed (no invented sportsbook odds)"
-          else
-            # One free-tier request for the full NBA slate. Free quota = 10/day.
-            python -m gpt_engine.v2.hoopsapi_free \
-              --nba-db /tmp/gpt-v2-daily.sqlite \
-              --ledger /tmp/gpt-v2-odds-log.jsonl \
-              --report /tmp/gpt-v2-odds-capture.json
-          fi
+          # Two day-scoped public scoreboard queries maximum per run.
+          # No API secrets, no payment, no fake books or lines.
+          python -m gpt_engine.v2.public_espn_odds \
+            --nba-db /tmp/gpt-v2-daily.sqlite \
+            --ledger /tmp/gpt-v2-odds-log.jsonl \
+            --report /tmp/gpt-v2-odds-capture.json \
+            --date "${GPT_REPORT_DATE}"
       - name: Generate GPT v2 predictions and human-readable matchup reports
         env:
           GPT_REPORT_DATE: ${{ inputs.date }}
@@ -107,7 +106,7 @@ jobs:
         run: |
           python -m gpt_engine.v2.five_book_board \
             --asof-report /tmp/gpt-v2-market-asof-latest.json \
-            --book-set free \
+            --book-set observed \
             --output-json /tmp/gpt-v2-five-book-board.json \
             --output-md /tmp/gpt-v2-five-book-board.md
       - name: Grade independently verified final NBA scores (no bets)
