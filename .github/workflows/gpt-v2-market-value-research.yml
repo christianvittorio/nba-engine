@@ -15,6 +15,7 @@ on:
       - "gpt_engine/v2/odds_map.py"
       - "gpt_engine/v2/market_run.py"
       - "gpt_engine/v2/parlay_research.py"
+      - "gpt_engine/v2/alt_prop_research.py"
       - "gpt_engine/v2/market_grade.py"
       - "gpt_engine/v2/market_results.py"
       - "gpt_engine/v2/forward_calibration.py"
@@ -28,6 +29,7 @@ on:
       - "gpt_engine/v2/tests/test_five_book_board.py"
       - "gpt_engine/v2/tests/test_market_run.py"
       - "gpt_engine/v2/tests/test_parlay_research.py"
+      - "gpt_engine/v2/tests/test_alt_prop_research.py"
       - "gpt_engine/v2/tests/test_market_grade.py"
       - "gpt_engine/v2/tests/test_market_results.py"
       - "gpt_engine/v2/tests/test_forward_calibration.py"
@@ -64,6 +66,7 @@ jobs:
           gpt_engine/v2/odds_map.py
           gpt_engine/v2/market_run.py
           gpt_engine/v2/parlay_research.py
+          gpt_engine/v2/alt_prop_research.py
           gpt_engine/v2/market_grade.py
           gpt_engine/v2/market_results.py
           gpt_engine/v2/forward_calibration.py
@@ -80,6 +83,7 @@ jobs:
           gpt_engine/v2/tests/test_five_book_board.py
           gpt_engine/v2/tests/test_market_run.py
           gpt_engine/v2/tests/test_parlay_research.py
+          gpt_engine/v2/tests/test_alt_prop_research.py
           gpt_engine/v2/tests/test_market_grade.py
           gpt_engine/v2/tests/test_market_results.py
           gpt_engine/v2/tests/test_forward_calibration.py
