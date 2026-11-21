@@ -233,7 +233,11 @@ def render_report(day:str,docs:list[dict],*,team_names:dict[str,str],
                      f'**{winner} {pickp:.1%}** | {float(sim["total"]["mean"]):.1f} |')
     if not sorted_docs:
         lines.append("| No valid pre-tip GPT v2 forecasts recorded | — | — | — |")
-    lines+=["","## Game-by-game breakdown",""]
+    lines+=["","## Game-by-game breakdown","",
+            "Situational streaks and player-stat tables are included only "
+            "when a valid pre-tip forecast exists; none is invented for "
+            "games already underway or without sufficient evidence.",
+            ""]
     if finished is None:
         finished=pd.DataFrame()
     for doc in sorted_docs:
