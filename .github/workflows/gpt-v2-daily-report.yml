@@ -29,6 +29,8 @@ on:
       - "gpt_engine/v2/odds_map.py"
       - "gpt_engine/v2/market_run.py"
       - "gpt_engine/v2/parlay_research.py"
+      - "gpt_engine/v2/alt_prop_research.py"
+      - "gpt_engine/v2/tests/test_alt_prop_research.py"
       - "gpt_engine/v2/tests/test_parlay_research.py"
       - "gpt_engine/v2/market_grade.py"
       - "gpt_engine/v2/market_results.py"
@@ -140,6 +142,22 @@ jobs:
             --output-json /tmp/gpt-v2-parlay-research-latest.json \
             --output-md /tmp/gpt-v2-parlay-research-latest.md \
             "${ARGS[@]}"
+      - name: Audit high-usage 90%-season alternate props vs sourced defense groups
+        env:
+          GPT_REPORT_DATE: ${{ inputs.date }}
+        run: |
+          ARGS=()
+          if [ -n "${GPT_REPORT_DATE}" ]; then
+            ARGS=(--date "${GPT_REPORT_DATE}")
+          fi
+          python -m gpt_engine.v2.alt_prop_research \
+            --db /tmp/gpt-v2-daily.sqlite \
+            --odds-ledger /tmp/gpt-v2-odds-log.jsonl \
+            --forecast-ledger gpt_engine/v2/artifacts/forecast_log.jsonl \
+            --root . \
+            --output-json /tmp/gpt-v2-usage-dvp-alt-prop.json \
+            --output-md /tmp/gpt-v2-usage-dvp-alt-prop.md \
+            "${ARGS[@]}"
       - name: Grade independently verified final NBA scores (no bets)
         run: |
           python -m gpt_engine.v2.market_results \
@@ -165,6 +183,45 @@ jobs:
           assert parlays["actionable"] is False
           assert parlays["betting_recommendation"] is None
           assert parlays["ranking_metric"] == "full_win_probability_independent"
+          alt=json.loads(Path("/tmp/gpt-v2-usage-dvp-alt-prop.json").read_text())
+          assert alt["research_only"] is True
+          assert alt["actionable"] is False
+          assert alt["betting_recommendation"] is None
+          assert alt["same_book_parlay"] is None or all(
+             not item["actionable"] for item in alt["same_book_parlay"]["legs"]
+          )
+          # Never say the 90% retrospective sample is 90% predictive certainty.
+          assert all(row["raw_season_hit_rate"] >= 0.9 and
+                     row["season_games"] >= alt["minimum_season_games"] and
+                     row["opponent_defense"]["rank_most_allowed"] <= 5 and
+                     row["position_group"] in ("G","F","C") for row in alt["candidates"])
+          print("PRIVATE_USAGE_DVP_ALT_PROP_WATCHLIST",json.dumps({
+             "status":alt["status"],
+             "games_reviewed":alt.get("games_reviewed",0),
+             "coverage":alt.get("defense_coverage",[]),
+             "prior_final_freshness":alt.get("prior_final_freshness",[]),
+             "source_sample_exclusion_counts":alt.get("exclusion_counts",{}),
+             "candidate_count":len(alt["candidates"]),
+             "watchlist":[{
+                 "player":c["player"],
+                 "game_id":c["game_id"],
+                 "position_group":c["position_group"],
+                 "estimated_usage_percent":c["estimated_usage_percent"],
+                 "team_usage_rank":c["team_usage_rank"],
+                 "stat":c["stat"],
+                 "unpriced_statistical_alt_over":c["alt_over_line"],
+                 "season_hits":c["season_hits"],
+                 "season_games":c["season_games"],
+                 "defense_stat_rank_most_allowed":c["opponent_defense"]["rank_most_allowed"],
+                 "same_opponent_games":c["same_opponent_games"],
+                 "availability":c["availability"],
+             } for c in alt["candidates"][:15]],
+             "priced_alt_legs":len(alt["priced_alternate_legs"]),
+             "source_priced_parlay_found":alt["same_book_parlay"] is not None,
+             "missing_requirements":alt["missing_requirements"],
+             "status_note":"OBSERVED_90PCT_SEASON_IS_NOT_90PCT_FUTURE_PROBABILITY"
+          }))
+
           assert parlays["single_ranking_metric"] == "model_probability"
           assert parlays["filters"]["minimum_leg_roi"] > 0
           assert all(item["model_probability"] >=

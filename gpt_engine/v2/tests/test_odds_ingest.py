@@ -139,3 +139,37 @@ def test_live_requires_key_and_rejects_invalid_region(monkeypatch):
     monkeypatch.setenv("THE_ODDS_API_KEY", "placeholder")
     with pytest.raises(ValueError, match="Unsupported odds region"):
         fetch_live_odds(region="not-a-region")
+
+
+def test_real_alt_market_keys_preserved_and_distinct_from_standard_props():
+    """Optional event-scoped quotes only. No fake anonymous ESPN alt prices."""
+    p=fixture_payload()
+    p[0]["bookmakers"][0]["markets"].append({
+       "key":"player_points_alternate","last_update":UPDATED,
+       "outcomes":[
+          {"name":"Over","description":"Example Player","point":10.5,"price":1.30},
+          {"name":"Under","description":"Example Player","point":10.5,"price":3.50},
+          {"name":"Over","description":"Unknown Player","point":10.5,"price":1.30},
+       ]
+    })
+    result=normalize_provider_events(p,mapping(),retrieved_at_utc=RETRIEVED)
+    alt=[q for q in result["quotes"]
+         if q.get("provider_market_key")=="player_points_alternate"]
+    assert len(alt)==2
+    assert all(q["market_id"]=="player:alt:pts:player:nba:12345:10.5"
+               for q in alt)
+    assert all(q["line"]==10.5 and q["player_id"]=="player:nba:12345"
+               for q in alt)
+    standard=[q for q in result["quotes"]
+              if q.get("provider_market_key")=="player_points"]
+    assert standard[0]["market_id"]=="player:pts:player:nba:12345:26.5"
+    assert any(x["reason"]=="UNRESOLVED_SELECTION_OR_PLAYER"
+               for x in result["skipped"])
+
+
+def test_alt_props_cannot_be_queried_as_featured_slate():
+    import os
+    from unittest.mock import patch
+    with patch.dict(os.environ,{"THE_ODDS_API_KEY":"fixture"},clear=False):
+        with pytest.raises(ValueError,match="require --event-id"):
+            fetch_live_odds(markets=("player_points_alternate",))
