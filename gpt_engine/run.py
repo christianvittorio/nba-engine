@@ -14,6 +14,7 @@ import sys
 from zoneinfo import ZoneInfo
 
 from .model import VERSION, build_model, evaluate_saved, load_games
+from .compare import compare
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "gpt_engine" / "artifacts"
@@ -48,17 +49,21 @@ def legacy_forecasts() -> dict[tuple[int, int], dict]:
         return {}
     con = sqlite3.connect(path.resolve().as_uri() + "?mode=ro", uri=True)
     try:
-        return {(int(s), int(g)): {"p_home": float(p), "mean_home": float(h),
-                                  "mean_away": float(a), "mean_total": float(t)}
-                for s, g, p, h, a, t in con.execute(
-                    "SELECT season,game_id,p_home,mean_home,mean_away,mean_total "
-                    "FROM forecasts WHERE model_name='sim_mc' AND mean_total IS NOT NULL")}
+        return {(int(season), int(gid)): {
+                    "season": int(season), "game_id": int(gid),
+                    "p_home": float(p), "mean_home": float(h), "mean_away": float(a),
+                    "mean_margin": float(h - a), "mean_total": float(t),
+                    "made_at_utc": made, "tip_utc": (json.loads(details or "{}")).get("tip_utc")}
+                for season, gid, p, h, a, t, made, details in con.execute(
+                    "SELECT season,game_id,p_home,mean_home,mean_away,mean_total,"
+                    "made_at_utc,details_json FROM forecasts "
+                    "WHERE model_name='sim_mc' AND mean_total IS NOT NULL")}
     finally:
         con.close()
 
 
 def markdown_report(day: str, forecasts: list[dict], legacy: dict, metrics: dict,
-                    available_games: int, late_games: int) -> str:
+                    available_games: int, late_games: int, head_to_head: dict | None = None) -> str:
     lines = [f"# GPT challenger forecasts — {day}", "",
              f"Model: {VERSION}. **Independent baseline** using historic game results; "
              "it does not use Claude's ratings, simulation outputs or player predictions.",
@@ -90,6 +95,19 @@ def markdown_report(day: str, forecasts: list[dict], legacy: dict, metrics: dict
                   f'- Winner accuracy: {metrics["winner"]:.1%}',
                   f'- Margin MAE: {metrics["margin_mae"]:.2f} points',
                   f'- Total MAE: {metrics["total_mae"]:.2f} points']
+    if head_to_head and head_to_head["gpt"]["n"]:
+        ours, theirs = head_to_head["gpt"], head_to_head["claude"]
+        lines += ["", "## Fair head-to-head on matched completed games", "",
+                  f'Matched games (both forecasts pre-tip): {ours["n"]}', "",
+                  "| Metric | GPT challenger | Claude existing |",
+                  "|---|---:|---:|",
+                  f'| Win log-loss (lower better) | {ours["log_loss"]:.4f} | {theirs["log_loss"]:.4f} |',
+                  f'| Winner accuracy | {ours["winner"]:.1%} | {theirs["winner"]:.1%} |',
+                  f'| Margin MAE (lower better) | {ours["margin_mae"]:.2f} | {theirs["margin_mae"]:.2f} |',
+                  f'| Total MAE (lower better) | {ours["total_mae"]:.2f} | {theirs["total_mae"]:.2f} |']
+    else:
+        lines += ["", "## Fair head-to-head", "",
+                  "No matched completed games with both forecasts confirmed before tip-off yet."]
     lines += ["", "For a fair head-to-head, compare the same completed games, forecast lead times, "
               "and consistent pregame injury/lineup information. This report is informational, not a betting recommendation.", ""]
     return "\n".join(lines)
@@ -149,13 +167,15 @@ def main(argv=None):
             for row in new:
                 f.write(json.dumps(row, sort_keys=True) + "\n")
     metrics = evaluate_saved(list(saved.values()), games)
+    matched = compare(list(saved.values()), legacy, games)
     for day, n, late in report_data:
         dated = [r for r in saved.values() if r["date"] == day]
         path = REPORTS / f"gpt_forecasts_{day}.md"
-        path.write_text(markdown_report(day, dated, legacy, metrics, n, late), encoding="utf-8")
+        path.write_text(markdown_report(day, dated, legacy, metrics, n, late, matched), encoding="utf-8")
         print(f"GPT {day}: {len(dated)} saved pregame forecasts, {n} upcoming, {late} late; report {path}")
     (OUT / "scorecard.json").write_text(json.dumps(
-        {"generated_utc": stamp, "model_version": VERSION, **metrics}, indent=2) + "\n",
+        {"generated_utc": stamp, "model_version": VERSION, **metrics,
+         "head_to_head": matched}, indent=2) + "\n",
         encoding="utf-8")
     print("GPT graded scorecard:", metrics)
 
