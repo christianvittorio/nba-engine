@@ -252,7 +252,7 @@ def _write(df: pd.DataFrame, subfolder: str, season: int) -> Path:
     where = OUTPUT / subfolder
     where.mkdir(parents=True, exist_ok=True)
     path = where / f"{season}.csv.gz"
-    df.to_csv(path, index=False, compression={"method": "gzip", "compresslevel": 6})
+    df.to_csv(path, index=False, compression={"method": "gzip", "compresslevel": 6, "mtime": 0})
     return path
 
 
@@ -317,6 +317,16 @@ def run(seasons: list[int], out_dir: Path = OUTPUT) -> dict:
         done.append(audit)
         print(f"  validated {audit['regular_games_found']} regular games, "
               f"{audit['player_game_rows']} player-game rows", flush=True)
+    # Daily current-season refresh must not erase older seasons from the manifest.
+    prior_manifest = OUTPUT / "manifest.json"
+    if prior_manifest.exists():
+        previous = json.loads(prior_manifest.read_text(encoding="utf-8"))
+        archived = {int(row["season"]): row for row in previous.get("seasons", [])}
+    else:
+        archived = {}
+    for row in done:
+        archived[int(row["season"])] = row
+    done = [archived[s] for s in sorted(archived)]
     report = {
         "created_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "seasons": done,
