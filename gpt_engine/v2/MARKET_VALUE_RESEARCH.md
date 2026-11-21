@@ -1,90 +1,78 @@
 # GPT v2 — sportsbook market value research lane
 
-## FREE default: no paid API needed (added November 21, 2026)
+## ZERO-SETUP automatic odds research — current default
 
-The NBA Engine's **default odds workflow now uses HoopsAPI's permanent
-€0 Free tier**. Published offer (November 21, 2026): 10 API requests
-per rolling day, NBA moneylines/spreads/totals, bookmaker refresh
-roughly every 10 minutes, no credit card. The free API key requires
-a one-time **free account registration**; it cannot be obtained or
-invented by this project. Configure the GitHub Actions secret
-`HOOPSAPI_KEY` or an environment variable with the same name.
-**We do not call any paid API in the default workflow.**
+**No account, no payment, no API key, no manual pasted odds.**
 
-### Five bookmakers available without payment
+`public_espn_odds.py` captures NBA odds from ESPN's publicly accessible
+NBA scoreboard JSON, with **at most two date-scoped HTTP requests per
+scheduled run**. The existing GitHub Actions daily workflow:
+1. Builds our NBA research warehouse;
+2. Tries the public scoreboard for the current and next Eastern dates;
+3. Records only *actually observed*, named-book, pretip prices with
+   their real retrieval timestamps and verified official NBA IDs;
+4. Freezes new GPT v2 model forecasts;
+5. Compares available odds with those forecasts, calculates **research**
+   moneyline/spread/total EV where exact probabilities exist, and grades
+   independently sourced final game scores.
 
-- FanDuel
-- 1xBet
-- Betway
-- Pinnacle
-- Unibet
+It runs without secrets or user actions **after the draft PR has passed
+tests and been merged**. The normal daily forecast schedule remains
+unchanged. Failed public data retrieval reports an explicit error and
+continues with zero quotes; it never fabricates bookmaker prices.
 
-Other books (Smarkets/Cloudbet) may appear if the provider's actual
-response contains them. **Stake, MelBet and bet365 are NOT part of this
-free provider feed.** The original requested five-book board can still
-show those names but leaves their cells missing, never substituting
-another sportsbook's prices. A separate five-book **free-provider**
-board lists the five above when they have valid pretip quotations.
+### Critical limitations of no-signup prices
 
-### Free API setup (no credit card)
+ESPN's public odds fields are undocumented, can change or disappear, and
+typically contain one named sportsbook (often DraftKings) rather than
+all five originally requested (FanDuel, Stake, MelBet, 1xBet, bet365).
+**We cannot promise five named books for zero cost and zero user setup**.
+We select only the verified books actually returned, which may be zero,
+rather than inventing prices or bypassing access restrictions.
+Market odds are only eligible when observed and retrieved *before* the
+immutable model forecast cutoff.
 
-1. Open https://hoopsapi.com/sign-up and obtain a free account/API key.
-2. In the GitHub repo open **Settings → Secrets and variables → Actions**.
-3. Create a repository secret named `HOOPSAPI_KEY` with that key.
-4. After this PR passes tests and is merged, the existing pretip daily
-   schedule calls the free API once per run (up to 3 scheduled requests
-   on weekdays; below the published free quota).
-5. Alternatively, run locally using environment `HOOPSAPI_KEY` and:
+The public scoreboard endpoint does not always provide source quote
+`lastModified`. When it does not, the record states
+`source_modified_unknown`, uses our **actual retrieval instant** as the
+price observation time, and never claims it was the source's publication
+time. Only explicit full-game market prices are recorded. Unquoted
+spread or total sides are omitted.
+
+**This is internal/noncommercial research only.** Public web access is
+not a commercial reuse license. No raw odds or keys are stored in the
+public GitHub repo, and provider commercial rights must be reviewed
+before future product distribution.
+
+An unattended scheduled run cannot guarantee a free third-party feed
+will always be reachable, and it cannot retroactively capture odds
+that were never available when an original model prediction was frozen.
+
+### No-setup run commands (for maintainers / CI, NOT required of the user)
 
 ```bash
-python -m gpt_engine.v2.hoopsapi_free \
+python -m gpt_engine.v2.public_espn_odds \
   --nba-db /tmp/gpt-v2-daily.sqlite \
   --ledger /tmp/gpt-v2-odds-log.jsonl \
-  --report /tmp/gpt-v2-free-odds-capture.json
-```
+  --report /tmp/gpt-v2-odds-capture.json
 
-The program rejects provider prices retrieved after tip, validates
-per-book `captured_at` timestamps, matches actual official NBA
-team IDs/tips in the warehouse, preserves exact decimal market prices
-and applies the same no-lookahead EV gates as the paid prototype.
-
-Offline mode uses an original API response (JSON with `games` array)
-and its REAL retrieval timestamp:
-
-```bash
-python -m gpt_engine.v2.hoopsapi_free \
-  --nba-db /tmp/gpt-v2-daily.sqlite \
-  --source-json /tmp/captured_hoopsapi_response.json \
-  --retrieved-at-utc 2026-11-21T20:05:00Z \
-  --ledger /tmp/frozen_free_odds.jsonl \
-  --report /tmp/free_odds_report.json
-```
-
-Use the `--book-set free` option to produce the free five-book
-side-by-side report from `five_book_board.py`:
-
-```bash
 python -m gpt_engine.v2.five_book_board \
   --asof-report /tmp/gpt-v2-market-asof-latest.json \
-  --book-set free \
-  --output-json /tmp/gpt-v2-free-five-book.json \
-  --output-md /tmp/gpt-v2-free-five-book.md
+  --book-set observed \
+  --output-json /tmp/gpt-v2-observed-books.json \
+  --output-md /tmp/gpt-v2-observed-books.md
 ```
 
-No actual authenticated HoopsAPI request or CI smoke run has yet
-been verified here. Free-tier use has restrictions: its Terms prohibit
-raw odds redistribution and operating a competing odds aggregation
-service. This pipeline is research-only, never publishes the raw
-sportsbook data in the public GitHub repository, and requires license
-review before any commercial product release.
+An offline JSON fixture with an accurate recorded retrieval timestamp is
+also supported for deterministic tests. The older `hoopsapi_free.py`
+and paid-provider adapters remain **optional inactive research
+prototypes**; they are not part of the automatic zero-setup workflow.
 
-Provider documentation:
-- https://hoopsapi.com/leagues/nba
-- https://hoopsapi.com/docs
-- https://hoopsapi.com/legal/terms
+ESPN source: https://www.espn.com/nba/scoreboard
+Reference endpoint:
+https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard
 
 ---
-
 
 This component compares **actual timestamped bookmaker quotes** with
 **separately supplied line-specific probability estimates**. It computes
