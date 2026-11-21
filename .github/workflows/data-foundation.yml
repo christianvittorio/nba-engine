@@ -36,6 +36,20 @@ jobs:
         run: python -m pip install "duckdb>=1.4,<3" "pandas>=2.2,<3" "pytest>=8,<10"
       - name: Run offline data-integrity tests
         run: python -m pytest data_foundation/tests -q
+      - name: Inspect actual source columns before import
+        if: github.event_name == 'pull_request'
+        run: |
+          python - <<'PY'
+          import duckdb
+          from data_foundation.build import read_season
+          con = duckdb.connect()
+          for name in ("team_game_logs", "player_game_logs", "team_seasons", "player_seasons"):
+              data = read_season(con, name, 2020)
+              print(name, data.shape, list(data.columns), flush=True)
+              for candidate in ("position", "start_position", "nba_abbrev", "player_position", "team_id"):
+                  if candidate in data:
+                      print("  ", candidate, data[candidate].dropna().astype(str).unique()[:25], flush=True)
+          PY
       - name: Validate actual NBA archive source (2019-20 smoke test)
         if: github.event_name == 'pull_request'
         run: python -m data_foundation.build --seasons 2020 --out /tmp/nba-foundation-smoke
