@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-21
-Data refresh: last successful run 2026-11-21T16:39:11Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-21T20:22:45Z UTC. Model nbaengine-0.1.0.
 
 - MIL at PHI (game 401910023): P(home) sim 0.758 / Elo 0.879; mean score 117.9-108.1 (total 226.0); margin 50% [-0.1, 20.1], 80% [-9.2, 28.0]; total 80% [201.6, 250.5]; P(OT) 0.039; projected final PHI 118 - MIL 108 (the average outcome, not a single exact score).
   - betting line: PHI margin +11.5, total 228.5; our simulator +9.8 (differs by -1.7); line-centred P(home) 0.792.

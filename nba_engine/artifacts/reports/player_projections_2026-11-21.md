@@ -279,6 +279,7 @@ Means from the player simulation (2PM/2PA, PRA and combos are sums of the same s
 | Luke Kornet | SAS | o4.5 43% | o3.5 53% | o1.5 41% | o9.5 48% | o0.5 20% | o1.5 38% | o1.5 36% | o0.5 23% | o0.5 26% | o8.5 46% | o5.5 47% | o5.5 44% |
 | Carter Bryant | SAS | o3.5 47% | o1.5 48% | o0.5 51% | o5.5 52% | o0.5 50% | o0.5 50% | o0.5 39% | o0.5 19% | o0.5 30% | o4.5 54% | o4.5 47% | o2.5 46% |
 | Jordan McLaughlin | SAS | o2.5 55% | o1.5 43% | o1.5 51% | o4.5 64% | o0.5 37% | o0.5 58% | o0.5 37% | o0.5 48% | o0.5 39% | o3.5 59% | o3.5 64% | o2.5 56% |
+| Tarris Reed Jr. | SAS | o1.5 52% | o0.5 75% | o0.5 36% | o2.5 63% | o0.5 20% | o0.5 42% | o0.5 34% | o0.5 21% | o0.5 40% | o1.5 72% | o0.5 70% | o0.5 79% |
 
 ## BOS at SAC (game 401910028)
 

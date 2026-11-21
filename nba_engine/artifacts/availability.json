@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-21T16:40:01Z",
+ "generated_utc": "2026-11-21T20:23:34Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -972,7 +972,7 @@
      "nba_id": 1629023,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-20T22:40Z"
+     "date": "2026-11-21T19:22Z"
     }
    ]
   },
@@ -2056,13 +2056,6 @@
      "date": "2026-11-17T23:18Z"
     },
     {
-     "name": "Ty Jerome",
-     "nba_id": 1629660,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-11-20T23:11Z"
-    },
-    {
      "name": "Scotty Pippen Jr.",
      "nba_id": 1630590,
      "status": "Out",
@@ -2577,6 +2570,13 @@
      "date": "2026-11-19T21:15Z"
     },
     {
+     "name": "Trey Murphy III",
+     "nba_id": 1630530,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-21T18:22Z"
+    },
+    {
      "name": "Dejounte Murray",
      "nba_id": 1627749,
      "status": "Out",
@@ -2588,7 +2588,7 @@
      "nba_id": 1630570,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-19T21:09Z"
+     "date": "2026-11-21T18:21Z"
     }
    ]
   },
@@ -3120,13 +3120,6 @@
    ],
    "injuries": [
     {
-     "name": "Dominick Barlow",
-     "nba_id": 1631230,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-11-20T22:13Z"
-    },
-    {
      "name": "Adem Bona",
      "nba_id": 1641737,
      "status": "Out",
@@ -3146,13 +3139,6 @@
      "status": "Out",
      "detail": "",
      "date": "2026-10-06T19:17Z"
-    },
-    {
-     "name": "Tyrese Maxey",
-     "nba_id": 1630178,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-21T16:25Z"
     },
     {
      "name": "Dean Wade",
@@ -4084,13 +4070,6 @@
      "date": "2026-10-28T18:38Z"
     },
     {
-     "name": "Felix Okpara",
-     "nba_id": -5105841,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-21T14:54Z"
-    },
-    {
      "name": "Tristan Vukcevic",
      "nba_id": 1641774,
      "status": "Out",
@@ -4183,7 +4162,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 30,
-  "injuries_endpoint_entries": 108,
-  "embedded_injuries": 108
+  "injuries_endpoint_entries": 105,
+  "embedded_injuries": 105
  }
 }
