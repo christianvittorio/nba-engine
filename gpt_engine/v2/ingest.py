@@ -131,9 +131,14 @@ def ingest_season(con:sqlite3.Connection,season:int, *, schedule:pd.DataFrame,
                         ("team",_team_id(raw),"nba_stats_archive",raw,retrieved,"[]"))
         known_players=set(players.player_id.dropna().astype(str))|set(
             rosters.player_id.dropna().astype(str))
+        # Published roster names are labels, not identity keys.
+        roster_names={}
+        if "player" in rosters:
+            for rr in rosters[["player_id","player"]].dropna().itertuples(index=False):
+                roster_names.setdefault(str(rr.player_id),str(rr.player))
         for raw in sorted(known_players):
-            con.execute("INSERT OR IGNORE INTO players(player_id,created_at_utc)"
-                        " VALUES(?,?)",(_player_id(raw),retrieved))
+            con.execute("INSERT OR IGNORE INTO players(player_id,canonical_name,created_at_utc)"
+                        " VALUES(?,?,?)",(_player_id(raw),roster_names.get(raw),retrieved))
             con.execute("INSERT OR IGNORE INTO provider_ids VALUES(?,?,?,?,?,?)",
                         ("player",_player_id(raw),"nba_stats_archive",raw,retrieved,"[]"))
         # Index official scheduled home/away BEFORE resolving neutral-site box
@@ -245,6 +250,8 @@ def ingest_season(con:sqlite3.Connection,season:int, *, schedule:pd.DataFrame,
             con.execute("INSERT OR IGNORE INTO coaches(coach_id,coach_name,created_at_utc)"
                         " VALUES(?,?,?)",
                         (cid,str(r.coach_name),retrieved))
+            con.execute("INSERT OR IGNORE INTO provider_ids VALUES(?,?,?,?,?,?)",
+                        ("coach",cid,"sportsdataverse",str(r.coach_id),retrieved,"[]"))
             con.execute("INSERT INTO coach_tenures(team_id,coach_id,role,season,source_id,"
                         "retrieved_at_utc,quality_flags_json) VALUES(?,?,?,?,?,?,?)",
                         (_team_id(r.team_id),cid,str(r.coach_type),season,
