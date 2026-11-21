@@ -106,8 +106,14 @@ python -m pytest -q gpt_engine/v2/tests/test_market_value.py
 ## Interpretation and safeguards
 
 - Decimal odds `O` imply a break-even chance of `1/O`.
-- Conditional expected ROI is `p_model * O - 1` **before** trading
-  costs, slippage, tax or limit constraints.
+- Without pushes, estimated ROI is `p_win * O - 1`. For whole-number
+  spreads, totals or props that can settle as pushes (stake returned),
+  **explicitly supply** `push_probability` from the same scenario model;
+  estimated ROI becomes `p_win * O + p_push - 1`. If missing, an integer
+  line is flagged `MISSING_PUSH_PROBABILITY` and cannot produce a review
+  signal. The raw `1/O` break-even rate is **conditional on no push**;
+  the unconditional win-probability threshold is `(1-p_push)/O`.
+  These figures are **before** costs, slippage, tax or limit constraints.
 - Two opposing quotes from **the same book, observed time, and exact
   market line** produce no-vig probabilities `(1/O_side) / sum(1/O)`.
   The no-vig baseline is not itself the true underlying probability;
@@ -115,6 +121,9 @@ python -m pytest -q gpt_engine/v2/tests/test_market_value.py
 - A positive raw ROI estimate is **never** promoted directly into a
   validated betting recommendation. Today's live simulator is
   uncalibrated and will show `RESEARCH_ONLY`.
+- Conservative lower-bound EV credits no pushes unless uncertainty
+  in push probability has itself been validated, preventing optimistic
+  edge labeling.
 - `REVIEW_POSITIVE_EV` requires externally documented forward validation,
   a probability lower bound, snapshot proximity and a lower-bound ROI of
   at least 2% (a research screening parameter, not a profitable strategy).
