@@ -44,6 +44,9 @@ def import_events(con:sqlite3.Connection,season:int,games:list[str],include_rota
     if event_rows.empty:
         raise ValueError("No NBA event records for requested games")
     rotations=read_source("game_rotations",season,games) if include_rotations else pd.DataFrame()
+    if not rotations.empty:
+        rotations=rotations.copy()
+        rotations["_source_stint_index"]=rotations.groupby(["game_id","player_id"]).cumcount()
     timestamp=iso(datetime.now(timezone.utc))
     counts={"events":0,"rotation_stints":0,"season":season,"games_requested":len(games)}
     with con:
