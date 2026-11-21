@@ -31,6 +31,17 @@ jobs:
         run: python -m compileall -q gpt_engine/v2
       - name: Run warehouse, feature, model, simulation and evaluation tests
         run: python -m pytest -q gpt_engine/v2/tests
+      - name: Import live 2026-27 NBA archive and real tip times into SQLite
+        run: |
+          python -m gpt_engine.v2.ingest --seasons 2027 --output /tmp/gpt-v2-smoke.sqlite
+          python - <<'PY'
+          import sqlite3
+          db=sqlite3.connect("/tmp/gpt-v2-smoke.sqlite")
+          assert db.execute("select count(*) from actual_results").fetchone()[0] >= 200
+          assert db.execute("select count(*) from player_game_stats").fetchone()[0] >= 4500
+          assert db.execute("select count(*) from games where tip_utc is not null").fetchone()[0] >= 200
+          print("2026-27 NBA source-backed database ingestion passed")
+          PY
       - name: Verify historical manifest exists without updating forecasts
         run: |
           python - <<'PY'
