@@ -1,61 +1,56 @@
 # GPT v2 — sportsbook market value research lane
 
 
-## Daily Parlay of the Day — research-ranking module
+## Daily high-hit singles + small-positive-EV parlay research
 
-The daily GitHub workflow now evaluates **two- or three-leg same-sportsbook
-parlays** from its actual timestamp-verified market comparison, in a private
-research-only step after generating individual odds/model EV comparisons.
-It never assumes the best FanDuel line can be multiplied by a DraftKings line:
-all legs must be quoted by **one** actual provider, during a common
-10-minute observation window, and by the frozen model cutoff. At most one
-selection from any game is allowed; same-game correlations and player props
-are excluded. Stale prices, unsupported markets, one-sided quotes and
-post-tip results are rejected.
+The no-key daily engine outputs **two separate rankings**, both using only
+original bookmaker prices captured and reconciled before the frozen model
+forecast cutoff:
 
-The ranker prioritizes the **highest modeled probability of all legs winning**
-among same-book combinations whose individual legs have positive **raw
-model-estimated value** (at least +1% research ROI by default). It uses raw
-ROI only to break ties, not to chase the highest payout. As a consequence,
-two-leg combinations often rank ahead of three-leg combinations. Given
-independently modeled different games:
+1. **Best single-game markets by modeled winning probability.** Requires a
+   recorded two-sided bookmaker line, minimum **55% raw simulator win/cover
+   probability**, minimum **+0.1% model-estimated net ROI**, and one selected
+   market per game so the shortlist never repeats the same matchup. Shows the
+   probability of winning, bookmaker break-even probability, handicap, source
+   bookmaker and raw model EV. Ties use modeled EV; the top metric is the
+   win/cover probability, not payout.
+2. **Best 2–3-leg same-sportsbook parlay by modeled joint winning
+   probability.** Every leg must clear the same small positive EV floor.
+   This includes 0.1%–1% hypothetical EV outcomes previously excluded by
+   our higher threshold. ROI breaks ties; it is never the main target.
+
+The engine can return **NO_QUALIFYING_SINGLE** and
+**NO_QUALIFYING_PARLAY** rather than manufacture a selection.
+
+Safety and correctness checks: one actual named sportsbook per ticket,
+all legs from the same Eastern slate date and different NBA games, at most
+a 10-minute gap between their bookmaker snapshots, prices retrieved by the
+frozen forecast cutoff, original quote at most 30 minutes old, complete
+no-vig pairing, no player props and no same-game correlation assumptions.
+Default individual decimal odds <=5.0 and minimum joint parlay win probability
+10% are screening rules, not recommended wagering thresholds.
+
+For distinct games under a simplifying independence assumption:
 
 ```
 P(all legs win) = product(P_i(win))
-Decimal parlay payout if every leg wins = product(decimal_odds_i)
-Expected net ROI allowing pushes = product(P_i(win) * odds_i + P_i(push)) - 1
+Decimal payout if all win = product(decimal_odds_i)
+Push-aware estimated net ROI = product(P_i(win)*odds_i + P_i(push)) - 1
 ```
 
-A push refunds that leg rather than treating it as a loss. This
-independence assumption is a research simplification, not proven
-independence of NBA results and price factors. A high **projected** ROI is
-not high certainty, and our possession model is **not forward validated**.
+Whole-line pushes refund the affected leg rather than counting as a loss.
+The individual and joint probabilities are **UNCALIBRATED simulation
+frequencies**; positive apparent EV does not demonstrate a real advantage.
+Player-availability conflicts, lineup assumptions and totals calibration
+remain open research limitations.
 
-The optimizer prioritizes hit probability while excluding negative raw-value
-legs and tiny-hit-rate lottery combinations: 2–3 legs, at least 1% *raw research* individual EV on each
-leg, minimum 10% full-hit probability, price <=5.0 per leg, and a
-30-minute original quote age cap. These are configurable engineering
-thresholds, **not a wagering strategy**. It reports an explicit
-`NO_QUALIFYING_PARLAY` state if insufficient independently observed odds
-exist or not enough legs clear the safeguards.
-
-No amount of raw positive simulated EV can make the output an approved
-bet. The top research ticket is `actionable: false` and
-`betting_recommendation: null`; validated-review candidates require
-forward-tested per-leg lower probability bounds and still need
-independent review.
-
-Generated private files (never committed as raw sportsbook evidence):
-
-- `/tmp/gpt-v2-parlay-research-latest.json`
-- `/tmp/gpt-v2-parlay-research-latest.md`
-
-The public GitHub Actions log prints a **redacted summary**: the highest
-modeled hit-probability same-book combination, its market identities and lines,
-modeled hit-rate, model-only ROI, and explicit research status, without
-actual quoted prices or raw provider payloads. The selection is **not**
-a real-world best-win-probability claim: player availability and possession
-model calibration remain unresolved.
+Outputs remain private: `/tmp/gpt-v2-parlay-research-latest.json` and
+`/tmp/gpt-v2-parlay-research-latest.md`. The workflow logs only a
+redacted summary of matchup names, market types, selections, handicaps,
+model probabilities, break-even thresholds and research EV estimates.
+Raw provider prices are not published to the GitHub repo. No money is
+wagered, no staking advice is generated, and returned candidates always
+have `actionable:false` and `betting_recommendation:null`.
 
 ```bash
 python -m gpt_engine.v2.parlay_research \
