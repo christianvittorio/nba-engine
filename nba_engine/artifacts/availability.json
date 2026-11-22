@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-22T20:36:24Z",
+ "generated_utc": "2026-11-22T21:22:56Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -268,14 +268,14 @@
      "nba_id": 1641761,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-21T14:51Z"
+     "date": "2026-11-22T20:39Z"
     },
     {
      "name": "Nolan Traore",
      "nba_id": 1642849,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-21T14:51Z"
+     "date": "2026-11-22T20:37Z"
     }
    ]
   },
@@ -386,25 +386,18 @@
    ],
    "injuries": [
     {
+     "name": "Paul George",
+     "nba_id": 202331,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-22T20:56Z"
+    },
+    {
      "name": "Mitchell Robinson",
      "nba_id": 1629011,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-22T15:03Z"
-    },
-    {
-     "name": "Jayson Tatum",
-     "nba_id": 1628369,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-22T15:02Z"
-    },
-    {
-     "name": "Derrick White",
-     "nba_id": 1628401,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-22T15:03Z"
+     "date": "2026-11-22T20:58Z"
     }
    ]
   },
@@ -1501,15 +1494,7 @@
      "nba_id": 1627832
     }
    ],
-   "injuries": [
-    {
-     "name": "Clint Capela",
-     "nba_id": 203991,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-11-19T23:19Z"
-    }
-   ]
+   "injuries": []
   },
   "IND": {
    "roster": [
@@ -2574,14 +2559,14 @@
      "nba_id": 1631121,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-19T21:15Z"
+     "date": "2026-11-22T20:53Z"
     },
     {
      "name": "Trey Murphy III",
      "nba_id": 1630530,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-22T15:07Z"
+     "date": "2026-11-22T21:02Z"
     },
     {
      "name": "Dejounte Murray",
@@ -2602,7 +2587,7 @@
      "nba_id": 1629627,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-22T15:07Z"
+     "date": "2026-11-22T20:50Z"
     }
    ]
   },
@@ -3804,7 +3789,7 @@
      "nba_id": null,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-14T21:59Z"
+     "date": "2026-11-22T21:13Z"
     },
     {
      "name": "Kawhi Leonard",
@@ -3818,7 +3803,7 @@
      "nba_id": 1642867,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-22T17:10Z"
+     "date": "2026-11-22T21:15Z"
     }
    ]
   },
@@ -4190,7 +4175,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 30,
-  "injuries_endpoint_entries": 109,
-  "embedded_injuries": 109
+  "injuries_endpoint_entries": 108,
+  "embedded_injuries": 107
  }
 }
