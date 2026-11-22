@@ -281,6 +281,7 @@ Means from the player simulation (2PM/2PA, PRA and combos are sums of the same s
 | Jaxson Hayes | UTA | o6.5 78% | o3.5 83% | o0.5 77% | o11.5 84% | o0.5 28% | o2.5 66% | o2.5 60% | o0.5 49% | o0.5 65% | o10.5 84% | o7.5 80% | o4.5 84% |
 | Isaiah Collier | UTA | o3.5 76% | o0.5 80% | o2.5 70% | o6.5 82% | o0.5 37% | o1.5 58% | o1.5 55% | o0.5 41% | o0.5 69% | o4.5 78% | o5.5 81% | o2.5 84% |
 | Tony Bradley | UTA | o1.5 74% | o1.5 72% | o0.5 50% | o3.5 76% | o0.5 23% | o0.5 65% | o0.5 57% | o0.5 18% | o0.5 38% | o3.5 73% | o2.5 67% | o1.5 78% |
+| Kyle Filipowski | UTA | o1.5 73% | o1.5 60% | o0.5 59% | o3.5 71% | o0.5 35% | o0.5 65% | o0.5 56% | o0.5 32% | o0.5 42% | o2.5 73% | o1.5 76% | o1.5 71% |
 
 ## IND at NYK (game 401910034)
 
@@ -396,3 +397,4 @@ Means from the player simulation (2PM/2PA, PRA and combos are sums of the same s
 | LJ Cryer | GSW | o8.5 49% | o1.5 30% | o1.5 47% | o10.5 54% | o1.5 54% | o1.5 34% | o0.5 56% | o0.5 15% | o0.5 39% | o9.5 48% | o9.5 53% | o2.5 49% |
 | Gary Payton II | GSW | o5.5 57% | o2.5 55% | o1.5 37% | o8.5 65% | o0.5 48% | o1.5 62% | o0.5 41% | o0.5 54% | o0.5 55% | o7.5 64% | o6.5 59% | o3.5 59% |
 | Al Horford | GSW | o4.5 58% | o2.5 60% | o1.5 55% | o8.5 64% | o0.5 66% | o0.5 61% | o0.5 34% | o0.5 25% | o0.5 42% | o7.5 58% | o6.5 56% | o4.5 56% |
+| Graham Ike | GSW | o3.5 44% | o1.5 46% | o0.5 51% | o5.5 49% | o0.5 30% | o0.5 54% | o0.5 50% | o0.5 21% | o0.5 36% | o4.5 50% | o3.5 51% | o2.5 46% |

@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-22
-Data refresh: last successful run 2026-11-22T16:56:58Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-22T20:35:29Z UTC. Model nbaengine-0.1.0.
 
 - DET at ATL (game 401910029): P(home) sim 0.434 / Elo 0.490; mean score 111.7-114.4 (total 226.1); margin 50% [-13.1, 7.1], 80% [-21.0, 16.2]; total 80% [201.6, 250.4]; P(OT) 0.045; projected final DET 114 - ATL 112 (the average outcome, not a single exact score).
   - betting line: ATL margin -1.5, total 223.5; our simulator -2.8 (differs by -1.3); line-centred P(home) 0.451.
