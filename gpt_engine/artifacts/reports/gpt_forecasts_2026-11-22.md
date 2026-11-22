@@ -5,7 +5,7 @@ Source: completed games in the shared SQLite archives; upcoming schedule from ES
 Each new forecast is saved only before its game starts and is never replaced.
 No player predictions or betting edges are claimed by this first release.
 
-Found 7 scheduled games; skipped 0 already tipped-off games; GPT pregame forecasts for this date: 7.
+Found 6 scheduled games; skipped 0 already tipped-off games; GPT pregame forecasts for this date: 7.
 
 | Game | GPT predicted score | GPT win probability | GPT total | Claude predicted score | Claude win probability |
 |---|---:|---:|---:|---:|---:|
