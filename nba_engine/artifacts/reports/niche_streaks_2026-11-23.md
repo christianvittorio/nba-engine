@@ -13,7 +13,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 - **CHA**: has scored over its projection 6 straight when proj_total=220-225 and opp_record=middling opp (14-12 in 26 such games; chance of run 1.499%).
 
 ## POR at PHI
-- **POR**: has seen the game total stay under the projection 11 straight when streak=no streak and opp_record=middling opp and density=normal (25-40 in 65 such games; chance of run 0.056%).
+- **POR**: has seen the game total stay under the projection 11 straight when opp_rest=1d and streak=no streak and record=middling (29-49 in 78 such games; chance of run 0.056%).
 - **POR**: has beaten the model's margin 9 straight when streak=no streak and density=normal (103-71 in 174 such games; chance of run 0.193%).
 - **PHI**: has beaten the model's margin 11 straight when favorite=pick'em (93-89 in 182 such games; chance of run 0.049%).
 - **PHI**: has seen the game total go over the projection 10 straight when rest=1d and favorite=pick'em and next_day_game=no game tomorrow (44-40 in 84 such games; chance of run 0.086%).
@@ -40,7 +40,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 - **BKN**: has lost 10 straight when rest_edge=more rest and prev_result=lost close (4-15 in 19 such games; chance of run 0.601%).
 - **BKN**: has seen the game total go over the projection 7 straight when venue=away and record=middling (20-19 in 39 such games; chance of run 0.714%).
 - **MIN**: has scored under its projection 10 straight when venue=home and rest=1d and rest_edge=less rest (0-10 in 10 such games; chance of run 0.115%).
-- **MIN**: has seen the game total stay under the projection 9 straight when rest=1d (81-135 in 216 such games; chance of run 0.219%).
+- **MIN**: has seen the game total stay under the projection 9 straight when next_day_game=no game tomorrow (113-170 in 283 such games; chance of run 0.219%).
 - **MIN**: has beaten the model's margin 8 straight when rest_edge=less rest and prev_result=won close and record=middling (8-0 in 8 such games; chance of run 0.383%).
 
 ## CLE at CHI
@@ -73,7 +73,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 - **UTA**: has seen the game total stay under the projection 8 straight when venue=away and streak=no streak (56-53 in 109 such games; chance of run 0.432%).
 - **LAL**: has scored over its projection 8 straight when rest_edge=more rest and next_day_game=no game tomorrow (38-22 in 60 such games; chance of run 0.377%).
 - **LAL**: has beaten the model's margin 8 straight when venue=home and opp_rest=B2B and density=normal (21-7 in 28 such games; chance of run 0.420%).
-- **LAL**: has seen the game total go over the projection 6 straight when rest_edge=more rest and streak=no streak and next_day_game=no game tomorrow (23-26 in 49 such games; chance of run 1.447%).
+- **LAL**: has seen the game total go over the projection 6 straight when rest=2d and streak=no streak and next_day_game=no game tomorrow (19-13 in 32 such games; chance of run 1.447%).
 
 ## SAS at SAC
 - **SAS**: has scored over its projection 14 straight when rest_edge=equal rest and proj_total=225-230 and density=normal (22-3 in 25 such games; chance of run 0.005%).

@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-23
-Data refresh: last successful run 2026-11-23T20:55:47Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-24T01:29:54Z UTC. Model nbaengine-0.1.0.
 
 - MEM at CHA (game 401910036): P(home) sim 0.529 / Elo 0.570; mean score 111.6-110.3 (total 221.9); margin 50% [-9.2, 11.1], 80% [-18.2, 20.1]; total 80% [197.7, 247.5]; P(OT) 0.048; projected final CHA 112 - MEM 110 (the average outcome, not a single exact score).
   - betting line: CHA margin -2.5, total 212.5; our simulator +1.2 (differs by +3.7); line-centred P(home) 0.452.
