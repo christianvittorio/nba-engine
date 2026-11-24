@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-24T05:46:44Z",
+ "generated_utc": "2026-11-24T20:00:29Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -656,6 +656,13 @@
      "date": "2026-11-22T15:25Z"
     },
     {
+     "name": "Jalen Smith",
+     "nba_id": 1630188,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-24T18:21Z"
+    },
+    {
      "name": "Caleb Wilson",
      "nba_id": -5095151,
      "status": "Out",
@@ -1172,28 +1179,28 @@
      "nba_id": 1631105,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-23T22:08Z"
+     "date": "2026-11-24T18:27Z"
     },
     {
      "name": "Ebuka Okorie",
      "nba_id": -5258459,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-23T22:10Z"
+     "date": "2026-11-24T18:37Z"
     },
     {
      "name": "Taurean Prince",
      "nba_id": 1627752,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-20T23:02Z"
+     "date": "2026-11-24T18:33Z"
     },
     {
      "name": "Duncan Robinson",
      "nba_id": 1629130,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-17T16:25Z"
+     "date": "2026-11-24T18:30Z"
     }
    ]
   },
@@ -1560,25 +1567,18 @@
    ],
    "injuries": [
     {
-     "name": "Johnny Furphy",
-     "nba_id": 1642277,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-10-30T19:06Z"
-    },
-    {
      "name": "Tyrese Haliburton",
      "nba_id": 1630169,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-20T20:41Z"
+     "date": "2026-11-24T19:41Z"
     },
     {
      "name": "T.J. McConnell",
      "nba_id": 204456,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-24T04:40Z"
+     "date": "2026-11-24T19:43Z"
     },
     {
      "name": "Larry Nance Jr.",
@@ -2124,7 +2124,7 @@
      "nba_id": 203507,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-23T15:04Z"
+     "date": "2026-11-24T18:56Z"
     }
    ]
   },
@@ -2359,7 +2359,7 @@
      "nba_id": 1628978,
      "status": "Out",
      "detail": "",
-     "date": "2026-10-05T20:53Z"
+     "date": "2026-11-24T17:10Z"
     },
     {
      "name": "Anthony Edwards",
@@ -2616,21 +2616,21 @@
      "nba_id": 1628384,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-23T15:07Z"
+     "date": "2026-11-24T18:42Z"
     },
     {
      "name": "Jordan Clarkson",
      "nba_id": 203903,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-22T18:05Z"
+     "date": "2026-11-24T18:48Z"
     },
     {
      "name": "Miles McBride",
      "nba_id": 1630540,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-23T15:07Z"
+     "date": "2026-11-24T18:40Z"
     }
    ]
   },
@@ -3550,9 +3550,9 @@
     {
      "name": "De'Aaron Fox",
      "nba_id": 1628368,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-24T01:24Z"
+     "date": "2026-11-24T06:06Z"
     },
     {
      "name": "Dylan Harper",
@@ -3578,9 +3578,9 @@
     {
      "name": "Victor Wembanyama",
      "nba_id": -5104157,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-24T01:24Z"
+     "date": "2026-11-24T06:06Z"
     }
    ]
   },
@@ -3719,7 +3719,7 @@
      "espn_id": "4684682",
      "name": "Jonas Aidoo",
      "pos": "C",
-     "nba_id": null
+     "nba_id": -4684682
     },
     {
      "espn_id": "4873138",
@@ -3828,9 +3828,9 @@
     {
      "name": "Jaxson Hayes",
      "nba_id": 1629637,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-23T21:04Z"
+     "date": "2026-11-24T06:07Z"
     },
     {
      "name": "Jaren Jackson Jr.",
@@ -3982,6 +3982,13 @@
      "date": "2026-10-28T18:38Z"
     },
     {
+     "name": "Tre Mann",
+     "nba_id": -4432819,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-24T16:47Z"
+    },
+    {
      "name": "Tristan Vukcevic",
      "nba_id": 1641774,
      "status": "Out",
@@ -4019,8 +4026,7 @@
   "OKC:Thomas Sorber",
   "ORL:Izaiyah Nelson",
   "SAS:Jayden Quaintance",
-  "TOR:Nate Bittle",
-  "UTA:Jonas Aidoo"
+  "TOR:Nate Bittle"
  ],
  "problems": [],
  "probe": {
@@ -4074,7 +4080,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 27,
-  "injuries_endpoint_entries": 92,
-  "embedded_injuries": 92
+  "injuries_endpoint_entries": 93,
+  "embedded_injuries": 93
  }
 }
