@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-24T20:00:29Z",
+ "generated_utc": "2026-11-24T23:24:57Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -504,14 +504,21 @@
      "nba_id": 1628960,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-22T22:08Z"
+     "date": "2026-11-24T22:29Z"
+    },
+    {
+     "name": "Sion James",
+     "nba_id": 1642883,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-24T22:30Z"
     },
     {
      "name": "Ryan Kalkbrenner",
      "nba_id": 1641750,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-24T02:14Z"
+     "date": "2026-11-24T22:33Z"
     },
     {
      "name": "Kon Knueppel",
@@ -525,14 +532,7 @@
      "nba_id": 203471,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-08T22:26Z"
-    },
-    {
-     "name": "Grant Williams",
-     "nba_id": 1629684,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-24T04:32Z"
+     "date": "2026-11-24T22:32Z"
     }
    ]
   },
@@ -1331,6 +1331,13 @@
      "date": "2026-11-12T17:03Z"
     },
     {
+     "name": "Yaxel Lendeborg",
+     "nba_id": -5175737,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-24T23:20Z"
+    },
+    {
      "name": "Moses Moody",
      "nba_id": 1630541,
      "status": "Out",
@@ -1349,7 +1356,7 @@
      "nba_id": 1630314,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-23T20:52Z"
+     "date": "2026-11-24T20:58Z"
     }
    ]
   },
@@ -2002,7 +2009,7 @@
      "nba_id": 1630590,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-16T17:16Z"
+     "date": "2026-11-24T23:04Z"
     },
     {
      "name": "Richie Saunders",
@@ -2124,7 +2131,7 @@
      "nba_id": 203507,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-24T18:56Z"
+     "date": "2026-11-24T22:07Z"
     }
    ]
   },
@@ -2614,23 +2621,37 @@
     {
      "name": "OG Anunoby",
      "nba_id": 1628384,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-24T18:42Z"
+     "date": "2026-11-24T21:53Z"
     },
     {
      "name": "Jordan Clarkson",
      "nba_id": 203903,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-24T18:48Z"
+     "date": "2026-11-24T21:56Z"
+    },
+    {
+     "name": "Josh Hart",
+     "nba_id": 1628404,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-24T21:54Z"
     },
     {
      "name": "Miles McBride",
      "nba_id": 1630540,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-24T18:40Z"
+     "date": "2026-11-24T21:56Z"
+    },
+    {
+     "name": "Karl-Anthony Towns",
+     "nba_id": -3136195,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-24T21:50Z"
     }
    ]
   },
@@ -2763,9 +2784,9 @@
     {
      "name": "Aday Mara",
      "nba_id": -5174983,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-24T04:36Z"
+     "date": "2026-11-24T23:18Z"
     },
     {
      "name": "Thomas Sorber",
@@ -2798,9 +2819,9 @@
     {
      "name": "Jaylin Williams",
      "nba_id": -4432823,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-24T04:36Z"
+     "date": "2026-11-24T23:21Z"
     }
    ]
   },
@@ -3051,7 +3072,7 @@
      "nba_id": 203954,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-24T04:33Z"
+     "date": "2026-11-24T22:09Z"
     },
     {
      "name": "Ariel Hukporti",
@@ -3709,7 +3730,7 @@
      "nba_id": 202695,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-20T20:42Z"
+     "date": "2026-11-24T21:15Z"
     }
    ]
   },
@@ -4080,7 +4101,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 27,
-  "injuries_endpoint_entries": 93,
-  "embedded_injuries": 93
+  "injuries_endpoint_entries": 95,
+  "embedded_injuries": 96
  }
 }

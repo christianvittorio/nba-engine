@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-24
-Data refresh: last successful run 2026-11-24T19:59:54Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-24T23:24:23Z UTC. Model nbaengine-0.1.0.
 
 - DET at ORL (game 401909314): P(home) sim 0.395 / Elo 0.386; mean score 107.3-111.4 (total 218.7); margin 50% [-14.1, 6.1], 80% [-23.2, 14.0]; total 80% [194.7, 242.4]; P(OT) 0.045; projected final DET 111 - ORL 107 (the average outcome, not a single exact score).
   - betting line: ORL margin -2.5, total 212.5; our simulator -4.1 (differs by -1.6); line-centred P(home) 0.416.
