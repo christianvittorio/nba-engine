@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-24T01:30:41Z",
+ "generated_utc": "2026-11-24T05:46:44Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -507,6 +507,13 @@
      "date": "2026-11-22T22:08Z"
     },
     {
+     "name": "Ryan Kalkbrenner",
+     "nba_id": 1641750,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-24T02:14Z"
+    },
+    {
      "name": "Kon Knueppel",
      "nba_id": 1642851,
      "status": "Out",
@@ -523,9 +530,9 @@
     {
      "name": "Grant Williams",
      "nba_id": 1629684,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-22T22:05Z"
+     "date": "2026-11-24T04:32Z"
     }
    ]
   },
@@ -1569,16 +1576,23 @@
     {
      "name": "T.J. McConnell",
      "nba_id": 204456,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-23T18:25Z"
+     "date": "2026-11-24T04:40Z"
+    },
+    {
+     "name": "Larry Nance Jr.",
+     "nba_id": 1626204,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-24T02:00Z"
     },
     {
      "name": "Aaron Nesmith",
      "nba_id": 1630174,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-23T18:22Z"
+     "date": "2026-11-24T04:40Z"
     },
     {
      "name": "Ben Sheppard",
@@ -1846,7 +1860,7 @@
      "nba_id": 1630559,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-23T01:09Z"
+     "date": "2026-11-24T01:31Z"
     }
    ]
   },
@@ -2749,9 +2763,9 @@
     {
      "name": "Aday Mara",
      "nba_id": -5174983,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-23T18:45Z"
+     "date": "2026-11-24T04:36Z"
     },
     {
      "name": "Thomas Sorber",
@@ -2784,9 +2798,9 @@
     {
      "name": "Jaylin Williams",
      "nba_id": -4432823,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-23T19:09Z"
+     "date": "2026-11-24T04:36Z"
     }
    ]
   },
@@ -3035,9 +3049,9 @@
     {
      "name": "Joel Embiid",
      "nba_id": 203954,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-23T22:49Z"
+     "date": "2026-11-24T04:33Z"
     },
     {
      "name": "Ariel Hukporti",
@@ -3538,7 +3552,7 @@
      "nba_id": 1628368,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-24T01:23Z"
+     "date": "2026-11-24T01:24Z"
     },
     {
      "name": "Dylan Harper",
@@ -3553,13 +3567,6 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-16T19:26Z"
-    },
-    {
-     "name": "Jordan McLaughlin",
-     "nba_id": 1629162,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-23T01:38Z"
     },
     {
      "name": "Jayden Quaintance",
@@ -4067,7 +4074,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 27,
-  "injuries_endpoint_entries": 91,
-  "embedded_injuries": 91
+  "injuries_endpoint_entries": 92,
+  "embedded_injuries": 92
  }
 }
