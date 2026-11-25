@@ -1,5 +1,5 @@
 {
-  "created_utc": "2026-11-24T02:35:00+00:00",
+  "created_utc": "2026-11-25T00:07:03+00:00",
   "seasons": [
     {
       "season": 2020,
@@ -418,24 +418,24 @@
       "season": 2027,
       "season_label": "2026-27",
       "expected_regular_games": null,
-      "regular_games_found": 248,
-      "all_games_found": 248,
-      "all_team_game_rows": 496,
-      "player_game_rows": 5545,
-      "distinct_players": 474,
+      "regular_games_found": 258,
+      "all_games_found": 258,
+      "all_team_game_rows": 516,
+      "player_game_rows": 5772,
+      "distinct_players": 481,
       "teams": 30,
       "team_box_score_identity_mismatches": 0,
       "position_counts": {
-        "G": 2264,
-        "F": 1660,
-        "C": 562,
-        "G-F": 362,
-        "F-C": 320,
-        "C-F": 205,
-        "F-G": 159,
+        "G": 2353,
+        "F": 1733,
+        "C": 589,
+        "G-F": 377,
+        "F-C": 330,
+        "C-F": 211,
+        "F-G": 166,
         "UNKNOWN": 13
       },
-      "fully_labeled_five_position_share": 0.1014,
+      "fully_labeled_five_position_share": 0.102,
       "positions_are_actual_defenders": false,
       "coach_identity_coverage": "official season roster; per-game changes unverified",
       "source": "llimllib/nba_data NBA stats archive",
@@ -460,8 +460,8 @@
       },
       "roster_position_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_rosters/rosters_2027.csv",
       "roster_position_quality": {
-        "players": 527,
-        "mapped": 526,
+        "players": 528,
+        "mapped": 527,
         "ambiguous": 0
       },
       "coaches_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_coaches/coaches_2027.csv",
@@ -475,8 +475,8 @@
     }
   ],
   "overall": {
-    "verified_regular_games": 8537,
-    "total_player_rows": 195705,
+    "verified_regular_games": 8547,
+    "total_player_rows": 195932,
     "all_expected_seasons_present": true,
     "limitations": [
       "Official roster positions are season labels (frequently G/F/C), not exact nightly PG/SG/SF/PF/C roles.",
