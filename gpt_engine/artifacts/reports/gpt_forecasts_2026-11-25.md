@@ -9,34 +9,34 @@ Found 9 scheduled games; skipped 0 already tipped-off games; GPT pregame forecas
 
 | Game | GPT predicted score | GPT win probability | GPT total | Claude predicted score | Claude win probability |
 |---|---:|---:|---:|---:|---:|
-| MIA @ PHI | 115-117 | 56.1% home | 232.3 | — | — home |
-| CHI @ CHA | 112-115 | 61.8% home | 227.7 | — | — home |
-| CLE @ NYK | 111-115 | 65.3% home | 225.2 | — | — home |
-| MIN @ OKC | 112-113 | 53.7% home | 225.0 | — | — home |
-| LAC @ MEM | 112-117 | 66.5% home | 228.8 | — | — home |
-| BKN @ MIL | 114-116 | 56.6% home | 230.5 | — | — home |
-| PHX @ HOU | 112-116 | 66.3% home | 228.1 | — | — home |
-| SAC @ GSW | 109-116 | 73.3% home | 225.1 | — | — home |
-| SAS @ POR | 114-112 | 41.7% home | 225.6 | — | — home |
+| MIA @ PHI | 115-117 | 56.1% home | 232.3 | 118-118 | 52.6% home |
+| CHI @ CHA | 112-115 | 61.8% home | 227.7 | 111-115 | 60.7% home |
+| CLE @ NYK | 111-115 | 65.3% home | 225.2 | 109-114 | 60.5% home |
+| MIN @ OKC | 112-113 | 53.7% home | 225.0 | 110-112 | 55.9% home |
+| LAC @ MEM | 112-117 | 66.5% home | 228.8 | 113-116 | 55.5% home |
+| BKN @ MIL | 114-116 | 56.6% home | 230.5 | 110-113 | 56.6% home |
+| PHX @ HOU | 112-116 | 66.3% home | 228.1 | 107-113 | 66.3% home |
+| SAC @ GSW | 109-116 | 73.3% home | 225.1 | 107-116 | 74.4% home |
+| SAS @ POR | 114-112 | 41.7% home | 225.6 | 114-111 | 42.1% home |
 
 ## GPT performance on completed, timestamp-validated forecasts
 
-- Graded games: 22
-- Win Brier score: 0.2377
+- Graded games: 25
+- Win Brier score: 0.2374
 - Win log-loss: 0.6649
-- Winner accuracy: 54.5%
-- Margin MAE: 8.62 points
-- Total MAE: 19.13 points
+- Winner accuracy: 56.0%
+- Margin MAE: 9.48 points
+- Total MAE: 19.47 points
 
 ## Fair head-to-head on matched completed games
 
-Matched games (both forecasts pre-tip): 22
+Matched games (both forecasts pre-tip): 25
 
 | Metric | GPT challenger | Claude existing |
 |---|---:|---:|
-| Win log-loss (lower better) | 0.6649 | 0.7031 |
-| Winner accuracy | 54.5% | 50.0% |
-| Margin MAE (lower better) | 8.62 | 9.23 |
-| Total MAE (lower better) | 19.13 | 18.68 |
+| Win log-loss (lower better) | 0.6649 | 0.6976 |
+| Winner accuracy | 56.0% | 52.0% |
+| Margin MAE (lower better) | 9.48 | 9.88 |
+| Total MAE (lower better) | 19.47 | 19.20 |
 
 For a fair head-to-head, compare the same completed games, forecast lead times, and consistent pregame injury/lineup information. This report is informational, not a betting recommendation.

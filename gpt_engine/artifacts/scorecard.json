@@ -1,28 +1,28 @@
 {
-  "generated_utc": "2026-11-25T00:37:12Z",
+  "generated_utc": "2026-11-25T21:37:40Z",
   "model_version": "gpt-stat-v1.0",
-  "n": 22,
-  "brier": 0.2377,
+  "n": 25,
+  "brier": 0.2374,
   "log_loss": 0.6649,
-  "winner": 0.5455,
-  "margin_mae": 8.622,
-  "total_mae": 19.1264,
+  "winner": 0.56,
+  "margin_mae": 9.4823,
+  "total_mae": 19.4739,
   "head_to_head": {
     "gpt": {
-      "n": 22,
-      "brier": 0.2377,
+      "n": 25,
+      "brier": 0.2374,
       "log_loss": 0.6649,
-      "winner": 0.5455,
-      "margin_mae": 8.622,
-      "total_mae": 19.1264
+      "winner": 0.56,
+      "margin_mae": 9.4823,
+      "total_mae": 19.4739
     },
     "claude": {
-      "n": 22,
-      "brier": 0.2534,
-      "log_loss": 0.7031,
-      "winner": 0.5,
-      "margin_mae": 9.2334,
-      "total_mae": 18.685
+      "n": 25,
+      "brier": 0.2512,
+      "log_loss": 0.6976,
+      "winner": 0.52,
+      "margin_mae": 9.8798,
+      "total_mae": 19.2048
     }
   }
 }
