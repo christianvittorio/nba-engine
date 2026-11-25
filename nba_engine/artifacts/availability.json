@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-25T19:02:09Z",
+ "generated_utc": "2026-11-25T22:57:04Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -507,13 +507,6 @@
      "date": "2026-11-25T17:39Z"
     },
     {
-     "name": "Sion James",
-     "nba_id": 1642883,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-24T22:30Z"
-    },
-    {
      "name": "Ryan Kalkbrenner",
      "nba_id": 1641750,
      "status": "Out",
@@ -658,9 +651,9 @@
     {
      "name": "Jalen Smith",
      "nba_id": 1630188,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-24T18:21Z"
+     "date": "2026-11-25T22:07Z"
     },
     {
      "name": "Caleb Wilson",
@@ -1163,9 +1156,9 @@
     {
      "name": "Cade Cunningham",
      "nba_id": 1630595,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-24T23:36Z"
+     "date": "2026-11-25T19:00Z"
     },
     {
      "name": "Jalen Duren",
@@ -1860,7 +1853,7 @@
      "nba_id": 1630559,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-24T01:31Z"
+     "date": "2026-11-25T20:33Z"
     }
    ]
   },
@@ -2118,15 +2111,7 @@
      "nba_id": 203952
     }
    ],
-   "injuries": [
-    {
-     "name": "Giannis Antetokounmpo",
-     "nba_id": 203507,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-24T22:07Z"
-    }
-   ]
+   "injuries": []
   },
   "MIL": {
    "roster": [
@@ -2630,7 +2615,7 @@
      "nba_id": 1628973,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-25T17:53Z"
+     "date": "2026-11-25T21:35Z"
     },
     {
      "name": "Jordan Clarkson",
@@ -3070,9 +3055,9 @@
     {
      "name": "Joel Embiid",
      "nba_id": 203954,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-24T22:09Z"
+     "date": "2026-11-25T20:07Z"
     },
     {
      "name": "Ariel Hukporti",
@@ -3447,11 +3432,18 @@
    ],
    "injuries": [
     {
+     "name": "Zach LaVine",
+     "nba_id": 203897,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-25T22:40Z"
+    },
+    {
      "name": "Maxime Raynaud",
      "nba_id": 1642875,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-25T16:25Z"
+     "date": "2026-11-25T21:38Z"
     },
     {
      "name": "Ben Simmons",
@@ -4093,8 +4085,8 @@
    "status",
    "timestamp"
   ],
-  "injuries_endpoint_teams": 27,
-  "injuries_endpoint_entries": 95,
-  "embedded_injuries": 95
+  "injuries_endpoint_teams": 26,
+  "injuries_endpoint_entries": 94,
+  "embedded_injuries": 94
  }
 }

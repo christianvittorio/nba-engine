@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-25
-Data refresh: last successful run 2026-11-25T19:01:08Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-25T22:56:18Z UTC. Model nbaengine-0.1.0.
 
 - MIA at PHI (game 401909317): P(home) sim 0.526 / Elo 0.611; mean score 118.4-117.5 (total 236.0); margin 50% [-9.1, 11.1], 80% [-18.2, 20.2]; total 80% [211.6, 261.4]; P(OT) 0.051; projected final PHI 118 - MIA 118 (the average outcome, not a single exact score).
   - betting line: PHI margin +1.5, total 237.5; our simulator +0.9 (differs by -0.6); line-centred P(home) 0.526.
