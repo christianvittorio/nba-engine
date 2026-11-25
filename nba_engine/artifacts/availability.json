@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-24T23:24:57Z",
+ "generated_utc": "2026-11-25T04:48:04Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -938,13 +938,6 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-20T19:31Z"
-    },
-    {
-     "name": "P.J. Washington",
-     "nba_id": 1629023,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-23T23:21Z"
     }
    ]
   },
@@ -1170,9 +1163,9 @@
     {
      "name": "Cade Cunningham",
      "nba_id": 1630595,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-23T22:07Z"
+     "date": "2026-11-24T23:36Z"
     },
     {
      "name": "Jalen Duren",
@@ -2768,13 +2761,6 @@
    ],
    "injuries": [
     {
-     "name": "Alex Caruso",
-     "nba_id": 1627936,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-11-23T18:38Z"
-    },
-    {
      "name": "Chet Holmgren",
      "nba_id": 1631096,
      "status": "Out",
@@ -2786,7 +2772,7 @@
      "nba_id": -5174983,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-24T23:18Z"
+     "date": "2026-11-24T23:19Z"
     },
     {
      "name": "Thomas Sorber",
@@ -2800,7 +2786,7 @@
      "nba_id": 1642260,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-23T18:49Z"
+     "date": "2026-11-24T23:29Z"
     },
     {
      "name": "Cason Wallace",
@@ -2821,7 +2807,7 @@
      "nba_id": -4432823,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-24T23:21Z"
+     "date": "2026-11-24T23:24Z"
     }
    ]
   },
@@ -3451,7 +3437,7 @@
      "nba_id": 1642875,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-18T05:54Z"
+     "date": "2026-11-25T04:21Z"
     },
     {
      "name": "Ben Simmons",
@@ -3573,7 +3559,7 @@
      "nba_id": 1628368,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-24T06:06Z"
+     "date": "2026-11-25T01:27Z"
     },
     {
      "name": "Dylan Harper",
@@ -3601,7 +3587,7 @@
      "nba_id": -5104157,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-24T06:06Z"
+     "date": "2026-11-25T01:23Z"
     }
    ]
   },
@@ -4003,13 +3989,6 @@
      "date": "2026-10-28T18:38Z"
     },
     {
-     "name": "Tre Mann",
-     "nba_id": -4432819,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-24T16:47Z"
-    },
-    {
      "name": "Tristan Vukcevic",
      "nba_id": 1641774,
      "status": "Out",
@@ -4101,7 +4080,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 27,
-  "injuries_endpoint_entries": 95,
-  "embedded_injuries": 96
+  "injuries_endpoint_entries": 93,
+  "embedded_injuries": 93
  }
 }
