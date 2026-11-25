@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-25T04:48:04Z",
+ "generated_utc": "2026-11-25T19:02:09Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -504,7 +504,7 @@
      "nba_id": 1628960,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-24T22:29Z"
+     "date": "2026-11-25T17:39Z"
     },
     {
      "name": "Sion James",
@@ -516,9 +516,9 @@
     {
      "name": "Ryan Kalkbrenner",
      "nba_id": 1641750,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-24T22:33Z"
+     "date": "2026-11-25T17:41Z"
     },
     {
      "name": "Kon Knueppel",
@@ -2497,6 +2497,13 @@
      "date": "2026-11-13T20:19Z"
     },
     {
+     "name": "Julian Reese",
+     "nba_id": 1642882,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-25T16:11Z"
+    },
+    {
      "name": "Trendon Watford",
      "nba_id": 1630570,
      "status": "Out",
@@ -2619,6 +2626,13 @@
      "date": "2026-11-24T21:53Z"
     },
     {
+     "name": "Jalen Brunson",
+     "nba_id": 1628973,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-25T17:53Z"
+    },
+    {
      "name": "Jordan Clarkson",
      "nba_id": 203903,
      "status": "Out",
@@ -2630,21 +2644,21 @@
      "nba_id": 1628404,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-24T21:54Z"
+     "date": "2026-11-25T17:57Z"
     },
     {
      "name": "Miles McBride",
      "nba_id": 1630540,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-24T21:56Z"
+     "date": "2026-11-25T17:57Z"
     },
     {
      "name": "Karl-Anthony Towns",
      "nba_id": -3136195,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-24T21:50Z"
+     "date": "2026-11-25T17:54Z"
     }
    ]
   },
@@ -3437,7 +3451,7 @@
      "nba_id": 1642875,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-25T04:21Z"
+     "date": "2026-11-25T16:25Z"
     },
     {
      "name": "Ben Simmons",
@@ -4080,7 +4094,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 27,
-  "injuries_endpoint_entries": 93,
-  "embedded_injuries": 93
+  "injuries_endpoint_entries": 95,
+  "embedded_injuries": 95
  }
 }
