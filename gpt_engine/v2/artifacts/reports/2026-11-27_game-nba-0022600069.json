@@ -1,0 +1,9276 @@
+{
+  "game_id": "game:nba:0022600069",
+  "tip_utc": "2026-11-28T01:30:00Z",
+  "tip_manila": "2026-11-28 09:30 AM PST",
+  "game_date_eastern": "2026-11-27",
+  "home_team_id": "team:nba:1610612750",
+  "away_team_id": "team:nba:1610612763",
+  "cutoff_utc": "2026-11-26T19:44:32Z",
+  "model_version": "gpt-v2-research-0.1",
+  "prediction_id": "prediction:5ac4f4710f0981f4fbb7bd6c",
+  "result": {
+    "simulation_version": "possession-events-v2.0",
+    "event_model": "baseline",
+    "experimental_player_shot_mix": false,
+    "seed": 20261121,
+    "simulation_count": 1000,
+    "batch_size": 500,
+    "home_team_id": "team:nba:1610612750",
+    "away_team_id": "team:nba:1610612763",
+    "home_win_probability": 0.543,
+    "away_win_probability": 0.457,
+    "expected_home_score": 121.424,
+    "expected_away_score": 119.32,
+    "home_score": {
+      "mean": 121.424,
+      "median": 121.0,
+      "interval_50": [
+        112.0,
+        131.0
+      ],
+      "interval_80": [
+        104.0,
+        139.0
+      ],
+      "interval_90": [
+        98.0,
+        145.0
+      ]
+    },
+    "away_score": {
+      "mean": 119.32,
+      "median": 119.0,
+      "interval_50": [
+        109.0,
+        129.0
+      ],
+      "interval_80": [
+        101.0,
+        138.0
+      ],
+      "interval_90": [
+        97.0,
+        143.0
+      ]
+    },
+    "total": {
+      "mean": 240.744,
+      "median": 241.0,
+      "interval_50": [
+        225.0,
+        256.0
+      ],
+      "interval_80": [
+        213.0,
+        269.0
+      ],
+      "interval_90": [
+        205.0,
+        277.0
+      ]
+    },
+    "margin": {
+      "mean": 2.104,
+      "median": 2.0,
+      "interval_50": [
+        -10.0,
+        13.0
+      ],
+      "interval_80": [
+        -19.0,
+        26.0
+      ],
+      "interval_90": [
+        -26.0,
+        32.0
+      ]
+    },
+    "overtime_probability": 0.016,
+    "mc_sampling_error": {
+      "home_win_probability": 0.015753,
+      "expected_home_score": 0.4414,
+      "expected_away_score": 0.4416,
+      "expected_total": 0.6967,
+      "expected_margin": 0.5427
+    },
+    "player_statistics": {
+      "player:nba:203497": {
+        "minutes": {
+          "mean": 32.2166,
+          "median": 31.8724,
+          "interval_50": [
+            29.14,
+            35.1
+          ],
+          "interval_80": [
+            26.72,
+            38.13
+          ],
+          "interval_90": [
+            25.51,
+            40.01
+          ]
+        },
+        "pts": {
+          "mean": 10.262,
+          "median": 10.0,
+          "interval_50": [
+            7.0,
+            13.0
+          ],
+          "interval_80": [
+            4.0,
+            17.0
+          ],
+          "interval_90": [
+            3.0,
+            20.0
+          ]
+        },
+        "reb": {
+          "mean": 11.518,
+          "median": 11.0,
+          "interval_50": [
+            9.0,
+            14.0
+          ],
+          "interval_80": [
+            7.0,
+            17.0
+          ],
+          "interval_90": [
+            6.0,
+            18.0
+          ]
+        },
+        "ast": {
+          "mean": 2.153,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            5.0
+          ]
+        },
+        "stl": {
+          "mean": 0.866,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "blk": {
+          "mean": 0.592,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "tov": {
+          "mean": 1.515,
+          "median": 1.0,
+          "interval_50": [
+            1.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fgm": {
+          "mean": 3.618,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "fga": {
+          "mean": 8.262,
+          "median": 8.0,
+          "interval_50": [
+            6.0,
+            10.0
+          ],
+          "interval_80": [
+            4.0,
+            12.0
+          ],
+          "interval_90": [
+            4.0,
+            14.0
+          ]
+        },
+        "fg3m": {
+          "mean": 1.103,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "fg3a": {
+          "mean": 3.436,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "ftm": {
+          "mean": 1.923,
+          "median": 2.0,
+          "interval_50": [
+            0.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            5.0
+          ]
+        },
+        "fta": {
+          "mean": 3.361,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            0.0,
+            7.0
+          ],
+          "interval_90": [
+            0.0,
+            8.0
+          ]
+        },
+        "oreb": {
+          "mean": 3.699,
+          "median": 4.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "dreb": {
+          "mean": 7.819,
+          "median": 8.0,
+          "interval_50": [
+            6.0,
+            10.0
+          ],
+          "interval_80": [
+            4.0,
+            11.0
+          ],
+          "interval_90": [
+            3.0,
+            13.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 1000,
+          "ratio_of_expected_totals": 0.4379,
+          "conditional_distribution": {
+            "mean": 0.437,
+            "median": 0.4286,
+            "interval_50": [
+              0.31,
+              0.57
+            ],
+            "interval_80": [
+              0.2,
+              0.69
+            ],
+            "interval_90": [
+              0.14,
+              0.75
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 961,
+          "ratio_of_expected_totals": 0.321,
+          "conditional_distribution": {
+            "mean": 0.3101,
+            "median": 0.3333,
+            "interval_50": [
+              0.0,
+              0.5
+            ],
+            "interval_80": [
+              0.0,
+              0.67
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 800,
+          "ratio_of_expected_totals": 0.5722,
+          "conditional_distribution": {
+            "mean": 0.5718,
+            "median": 0.5,
+            "interval_50": [
+              0.5,
+              0.75
+            ],
+            "interval_80": [
+              0.25,
+              1.0
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 283,
+        "quality_flags": [
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1630183": {
+        "minutes": {
+          "mean": 39.0769,
+          "median": 38.8628,
+          "interval_50": [
+            35.97,
+            41.95
+          ],
+          "interval_80": [
+            33.63,
+            45.11
+          ],
+          "interval_90": [
+            32.54,
+            46.58
+          ]
+        },
+        "pts": {
+          "mean": 22.225,
+          "median": 22.0,
+          "interval_50": [
+            17.0,
+            27.0
+          ],
+          "interval_80": [
+            13.0,
+            32.0
+          ],
+          "interval_90": [
+            11.0,
+            36.0
+          ]
+        },
+        "reb": {
+          "mean": 6.939,
+          "median": 7.0,
+          "interval_50": [
+            5.0,
+            9.0
+          ],
+          "interval_80": [
+            4.0,
+            10.0
+          ],
+          "interval_90": [
+            3.0,
+            12.0
+          ]
+        },
+        "ast": {
+          "mean": 3.631,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "stl": {
+          "mean": 1.445,
+          "median": 1.0,
+          "interval_50": [
+            1.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "blk": {
+          "mean": 0.458,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "tov": {
+          "mean": 2.806,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            4.0
+          ],
+          "interval_80": [
+            1.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "fgm": {
+          "mean": 7.446,
+          "median": 7.0,
+          "interval_50": [
+            6.0,
+            9.0
+          ],
+          "interval_80": [
+            4.0,
+            11.0
+          ],
+          "interval_90": [
+            3.0,
+            12.0
+          ]
+        },
+        "fga": {
+          "mean": 15.264,
+          "median": 15.0,
+          "interval_50": [
+            12.0,
+            18.0
+          ],
+          "interval_80": [
+            10.0,
+            21.0
+          ],
+          "interval_90": [
+            9.0,
+            22.0
+          ]
+        },
+        "fg3m": {
+          "mean": 2.249,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            5.0
+          ]
+        },
+        "fg3a": {
+          "mean": 6.439,
+          "median": 6.0,
+          "interval_50": [
+            5.0,
+            8.0
+          ],
+          "interval_80": [
+            3.0,
+            10.0
+          ],
+          "interval_90": [
+            2.0,
+            11.0
+          ]
+        },
+        "ftm": {
+          "mean": 5.084,
+          "median": 5.0,
+          "interval_50": [
+            3.0,
+            7.0
+          ],
+          "interval_80": [
+            1.0,
+            9.0
+          ],
+          "interval_90": [
+            0.0,
+            11.0
+          ]
+        },
+        "fta": {
+          "mean": 6.288,
+          "median": 6.0,
+          "interval_50": [
+            4.0,
+            8.0
+          ],
+          "interval_80": [
+            2.0,
+            12.0
+          ],
+          "interval_90": [
+            2.0,
+            13.0
+          ]
+        },
+        "oreb": {
+          "mean": 2.189,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            5.0
+          ]
+        },
+        "dreb": {
+          "mean": 4.75,
+          "median": 5.0,
+          "interval_50": [
+            3.0,
+            6.0
+          ],
+          "interval_80": [
+            2.0,
+            8.0
+          ],
+          "interval_90": [
+            1.0,
+            9.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 1000,
+          "ratio_of_expected_totals": 0.4878,
+          "conditional_distribution": {
+            "mean": 0.4888,
+            "median": 0.5,
+            "interval_50": [
+              0.4,
+              0.58
+            ],
+            "interval_80": [
+              0.32,
+              0.67
+            ],
+            "interval_90": [
+              0.27,
+              0.7
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 996,
+          "ratio_of_expected_totals": 0.3493,
+          "conditional_distribution": {
+            "mean": 0.3483,
+            "median": 0.3333,
+            "interval_50": [
+              0.2,
+              0.5
+            ],
+            "interval_80": [
+              0.0,
+              0.6
+            ],
+            "interval_90": [
+              0.0,
+              0.72
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 954,
+          "ratio_of_expected_totals": 0.8085,
+          "conditional_distribution": {
+            "mean": 0.8083,
+            "median": 0.8333,
+            "interval_50": [
+              0.7,
+              1.0
+            ],
+            "interval_80": [
+              0.5,
+              1.0
+            ],
+            "interval_90": [
+              0.5,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 288,
+        "quality_flags": [
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1630538": {
+        "minutes": {
+          "mean": 18.3508,
+          "median": 17.9266,
+          "interval_50": [
+            15.19,
+            21.06
+          ],
+          "interval_80": [
+            12.97,
+            23.97
+          ],
+          "interval_90": [
+            12.0,
+            26.02
+          ]
+        },
+        "pts": {
+          "mean": 12.513,
+          "median": 12.0,
+          "interval_50": [
+            8.0,
+            16.0
+          ],
+          "interval_80": [
+            5.0,
+            20.0
+          ],
+          "interval_90": [
+            4.0,
+            23.0
+          ]
+        },
+        "reb": {
+          "mean": 2.001,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            5.0
+          ]
+        },
+        "ast": {
+          "mean": 3.142,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            4.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            6.0
+          ]
+        },
+        "stl": {
+          "mean": 0.877,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "blk": {
+          "mean": 0.081,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            1.0
+          ]
+        },
+        "tov": {
+          "mean": 1.517,
+          "median": 1.0,
+          "interval_50": [
+            1.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fgm": {
+          "mean": 4.116,
+          "median": 4.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            7.0
+          ],
+          "interval_90": [
+            1.0,
+            8.0
+          ]
+        },
+        "fga": {
+          "mean": 8.432,
+          "median": 8.0,
+          "interval_50": [
+            6.0,
+            11.0
+          ],
+          "interval_80": [
+            4.0,
+            13.0
+          ],
+          "interval_90": [
+            3.0,
+            15.0
+          ]
+        },
+        "fg3m": {
+          "mean": 1.358,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fg3a": {
+          "mean": 3.538,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "ftm": {
+          "mean": 2.923,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            4.0
+          ],
+          "interval_80": [
+            0.0,
+            6.0
+          ],
+          "interval_90": [
+            0.0,
+            7.0
+          ]
+        },
+        "fta": {
+          "mean": 3.57,
+          "median": 4.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            0.0,
+            8.0
+          ],
+          "interval_90": [
+            0.0,
+            8.0
+          ]
+        },
+        "oreb": {
+          "mean": 0.689,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "dreb": {
+          "mean": 1.312,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 1000,
+          "ratio_of_expected_totals": 0.4881,
+          "conditional_distribution": {
+            "mean": 0.4934,
+            "median": 0.5,
+            "interval_50": [
+              0.36,
+              0.62
+            ],
+            "interval_80": [
+              0.25,
+              0.75
+            ],
+            "interval_90": [
+              0.17,
+              0.83
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 968,
+          "ratio_of_expected_totals": 0.3838,
+          "conditional_distribution": {
+            "mean": 0.3803,
+            "median": 0.3333,
+            "interval_50": [
+              0.0,
+              0.57
+            ],
+            "interval_80": [
+              0.0,
+              0.83
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 818,
+          "ratio_of_expected_totals": 0.8188,
+          "conditional_distribution": {
+            "mean": 0.8209,
+            "median": 0.8571,
+            "interval_50": [
+              0.75,
+              1.0
+            ],
+            "interval_80": [
+              0.5,
+              1.0
+            ],
+            "interval_90": [
+              0.5,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 103,
+        "quality_flags": [
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1630245": {
+        "minutes": {
+          "mean": 36.7109,
+          "median": 36.4694,
+          "interval_50": [
+            33.73,
+            39.61
+          ],
+          "interval_80": [
+            31.28,
+            42.15
+          ],
+          "interval_90": [
+            29.78,
+            44.25
+          ]
+        },
+        "pts": {
+          "mean": 23.009,
+          "median": 23.0,
+          "interval_50": [
+            18.0,
+            27.0
+          ],
+          "interval_80": [
+            14.0,
+            33.0
+          ],
+          "interval_90": [
+            12.0,
+            37.0
+          ]
+        },
+        "reb": {
+          "mean": 5.092,
+          "median": 5.0,
+          "interval_50": [
+            3.0,
+            7.0
+          ],
+          "interval_80": [
+            2.0,
+            8.0
+          ],
+          "interval_90": [
+            2.0,
+            9.0
+          ]
+        },
+        "ast": {
+          "mean": 4.0,
+          "median": 4.0,
+          "interval_50": [
+            3.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            7.0
+          ],
+          "interval_90": [
+            1.0,
+            8.0
+          ]
+        },
+        "stl": {
+          "mean": 1.39,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "blk": {
+          "mean": 0.156,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            1.0
+          ]
+        },
+        "tov": {
+          "mean": 2.76,
+          "median": 3.0,
+          "interval_50": [
+            1.0,
+            4.0
+          ],
+          "interval_80": [
+            1.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "fgm": {
+          "mean": 7.415,
+          "median": 7.0,
+          "interval_50": [
+            5.0,
+            9.0
+          ],
+          "interval_80": [
+            4.0,
+            11.0
+          ],
+          "interval_90": [
+            3.0,
+            12.0
+          ]
+        },
+        "fga": {
+          "mean": 14.806,
+          "median": 15.0,
+          "interval_50": [
+            12.0,
+            18.0
+          ],
+          "interval_80": [
+            10.0,
+            20.0
+          ],
+          "interval_90": [
+            9.0,
+            22.0
+          ]
+        },
+        "fg3m": {
+          "mean": 2.656,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            4.0
+          ],
+          "interval_80": [
+            1.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "fg3a": {
+          "mean": 6.265,
+          "median": 6.0,
+          "interval_50": [
+            4.0,
+            8.0
+          ],
+          "interval_80": [
+            3.0,
+            10.0
+          ],
+          "interval_90": [
+            3.0,
+            11.0
+          ]
+        },
+        "ftm": {
+          "mean": 5.523,
+          "median": 5.0,
+          "interval_50": [
+            3.0,
+            8.0
+          ],
+          "interval_80": [
+            2.0,
+            10.0
+          ],
+          "interval_90": [
+            1.0,
+            11.0
+          ]
+        },
+        "fta": {
+          "mean": 6.315,
+          "median": 6.0,
+          "interval_50": [
+            4.0,
+            8.0
+          ],
+          "interval_80": [
+            2.0,
+            11.0
+          ],
+          "interval_90": [
+            2.0,
+            12.0
+          ]
+        },
+        "oreb": {
+          "mean": 1.575,
+          "median": 1.0,
+          "interval_50": [
+            1.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "dreb": {
+          "mean": 3.517,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 1000,
+          "ratio_of_expected_totals": 0.5008,
+          "conditional_distribution": {
+            "mean": 0.5033,
+            "median": 0.5,
+            "interval_50": [
+              0.41,
+              0.6
+            ],
+            "interval_80": [
+              0.33,
+              0.68
+            ],
+            "interval_90": [
+              0.29,
+              0.72
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 998,
+          "ratio_of_expected_totals": 0.4239,
+          "conditional_distribution": {
+            "mean": 0.4231,
+            "median": 0.4,
+            "interval_50": [
+              0.28,
+              0.57
+            ],
+            "interval_80": [
+              0.14,
+              0.71
+            ],
+            "interval_90": [
+              0.0,
+              0.8
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 961,
+          "ratio_of_expected_totals": 0.8746,
+          "conditional_distribution": {
+            "mean": 0.8754,
+            "median": 0.9,
+            "interval_50": [
+              0.78,
+              1.0
+            ],
+            "interval_80": [
+              0.67,
+              1.0
+            ],
+            "interval_90": [
+              0.5,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 52,
+        "quality_flags": [
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1642866": {
+        "minutes": {
+          "mean": 17.6606,
+          "median": 17.0803,
+          "interval_50": [
+            14.23,
+            20.3
+          ],
+          "interval_80": [
+            12.24,
+            24.14
+          ],
+          "interval_90": [
+            11.21,
+            26.28
+          ]
+        },
+        "pts": {
+          "mean": 6.385,
+          "median": 6.0,
+          "interval_50": [
+            3.0,
+            9.0
+          ],
+          "interval_80": [
+            2.0,
+            12.0
+          ],
+          "interval_90": [
+            0.0,
+            14.0
+          ]
+        },
+        "reb": {
+          "mean": 5.748,
+          "median": 5.0,
+          "interval_50": [
+            4.0,
+            7.0
+          ],
+          "interval_80": [
+            2.0,
+            10.0
+          ],
+          "interval_90": [
+            2.0,
+            11.0
+          ]
+        },
+        "ast": {
+          "mean": 0.596,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "stl": {
+          "mean": 0.629,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "blk": {
+          "mean": 0.664,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "tov": {
+          "mean": 0.843,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "fgm": {
+          "mean": 2.191,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            5.0
+          ]
+        },
+        "fga": {
+          "mean": 4.388,
+          "median": 4.0,
+          "interval_50": [
+            3.0,
+            6.0
+          ],
+          "interval_80": [
+            2.0,
+            8.0
+          ],
+          "interval_90": [
+            1.0,
+            9.0
+          ]
+        },
+        "fg3m": {
+          "mean": 0.659,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "fg3a": {
+          "mean": 1.85,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            4.05
+          ]
+        },
+        "ftm": {
+          "mean": 1.344,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fta": {
+          "mean": 1.896,
+          "median": 2.0,
+          "interval_50": [
+            0.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "oreb": {
+          "mean": 1.833,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            4.05
+          ]
+        },
+        "dreb": {
+          "mean": 3.915,
+          "median": 4.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            7.0
+          ],
+          "interval_90": [
+            1.0,
+            8.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 969,
+          "ratio_of_expected_totals": 0.4993,
+          "conditional_distribution": {
+            "mean": 0.4874,
+            "median": 0.5,
+            "interval_50": [
+              0.33,
+              0.67
+            ],
+            "interval_80": [
+              0.0,
+              0.83
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 834,
+          "ratio_of_expected_totals": 0.3562,
+          "conditional_distribution": {
+            "mean": 0.358,
+            "median": 0.3333,
+            "interval_50": [
+              0.0,
+              0.5
+            ],
+            "interval_80": [
+              0.0,
+              1.0
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 580,
+          "ratio_of_expected_totals": 0.7089,
+          "conditional_distribution": {
+            "mean": 0.7143,
+            "median": 0.75,
+            "interval_50": [
+              0.5,
+              1.0
+            ],
+            "interval_80": [
+              0.5,
+              1.0
+            ],
+            "interval_90": [
+              0.25,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 63,
+        "quality_flags": [
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1626168": {
+        "minutes": {
+          "mean": 22.6142,
+          "median": 22.1104,
+          "interval_50": [
+            18.82,
+            25.9
+          ],
+          "interval_80": [
+            16.13,
+            29.91
+          ],
+          "interval_90": [
+            14.56,
+            32.16
+          ]
+        },
+        "pts": {
+          "mean": 8.789,
+          "median": 8.0,
+          "interval_50": [
+            5.0,
+            12.0
+          ],
+          "interval_80": [
+            3.0,
+            15.0
+          ],
+          "interval_90": [
+            2.0,
+            18.0
+          ]
+        },
+        "reb": {
+          "mean": 4.582,
+          "median": 4.0,
+          "interval_50": [
+            3.0,
+            6.0
+          ],
+          "interval_80": [
+            2.0,
+            8.0
+          ],
+          "interval_90": [
+            1.0,
+            9.0
+          ]
+        },
+        "ast": {
+          "mean": 1.748,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "stl": {
+          "mean": 0.622,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "blk": {
+          "mean": 0.15,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            1.0
+          ]
+        },
+        "tov": {
+          "mean": 1.033,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "fgm": {
+          "mean": 3.157,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            4.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            0.0,
+            7.0
+          ]
+        },
+        "fga": {
+          "mean": 5.717,
+          "median": 5.0,
+          "interval_50": [
+            4.0,
+            8.0
+          ],
+          "interval_80": [
+            2.0,
+            10.0
+          ],
+          "interval_90": [
+            2.0,
+            11.0
+          ]
+        },
+        "fg3m": {
+          "mean": 0.807,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "fg3a": {
+          "mean": 2.322,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            5.0
+          ]
+        },
+        "ftm": {
+          "mean": 1.668,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            5.0
+          ]
+        },
+        "fta": {
+          "mean": 2.275,
+          "median": 2.0,
+          "interval_50": [
+            0.0,
+            4.0
+          ],
+          "interval_80": [
+            0.0,
+            6.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "oreb": {
+          "mean": 1.458,
+          "median": 1.0,
+          "interval_50": [
+            1.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "dreb": {
+          "mean": 3.124,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            4.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            0.0,
+            7.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 991,
+          "ratio_of_expected_totals": 0.5522,
+          "conditional_distribution": {
+            "mean": 0.552,
+            "median": 0.5556,
+            "interval_50": [
+              0.4,
+              0.71
+            ],
+            "interval_80": [
+              0.25,
+              0.86
+            ],
+            "interval_90": [
+              0.11,
+              1.0
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 888,
+          "ratio_of_expected_totals": 0.3475,
+          "conditional_distribution": {
+            "mean": 0.348,
+            "median": 0.3333,
+            "interval_50": [
+              0.0,
+              0.5
+            ],
+            "interval_80": [
+              0.0,
+              1.0
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 657,
+          "ratio_of_expected_totals": 0.7332,
+          "conditional_distribution": {
+            "mean": 0.7344,
+            "median": 0.75,
+            "interval_50": [
+              0.5,
+              1.0
+            ],
+            "interval_80": [
+              0.5,
+              1.0
+            ],
+            "interval_90": [
+              0.25,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 18,
+        "quality_flags": [
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1630228": {
+        "minutes": {
+          "mean": 34.9519,
+          "median": 34.9655,
+          "interval_50": [
+            32.17,
+            37.63
+          ],
+          "interval_80": [
+            29.74,
+            40.21
+          ],
+          "interval_90": [
+            28.36,
+            41.84
+          ]
+        },
+        "pts": {
+          "mean": 17.271,
+          "median": 17.0,
+          "interval_50": [
+            12.75,
+            21.0
+          ],
+          "interval_80": [
+            9.0,
+            26.0
+          ],
+          "interval_90": [
+            7.0,
+            29.0
+          ]
+        },
+        "reb": {
+          "mean": 6.507,
+          "median": 6.0,
+          "interval_50": [
+            5.0,
+            8.0
+          ],
+          "interval_80": [
+            3.0,
+            10.0
+          ],
+          "interval_90": [
+            3.0,
+            11.0
+          ]
+        },
+        "ast": {
+          "mean": 3.199,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            4.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "stl": {
+          "mean": 0.909,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "blk": {
+          "mean": 0.359,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "tov": {
+          "mean": 2.44,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            1.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            5.0
+          ]
+        },
+        "fgm": {
+          "mean": 5.735,
+          "median": 6.0,
+          "interval_50": [
+            4.0,
+            7.0
+          ],
+          "interval_80": [
+            3.0,
+            9.0
+          ],
+          "interval_90": [
+            2.0,
+            10.0
+          ]
+        },
+        "fga": {
+          "mean": 12.455,
+          "median": 12.0,
+          "interval_50": [
+            10.0,
+            15.0
+          ],
+          "interval_80": [
+            8.0,
+            18.0
+          ],
+          "interval_90": [
+            6.0,
+            19.0
+          ]
+        },
+        "fg3m": {
+          "mean": 2.097,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            5.0
+          ]
+        },
+        "fg3a": {
+          "mean": 5.25,
+          "median": 5.0,
+          "interval_50": [
+            3.0,
+            7.0
+          ],
+          "interval_80": [
+            2.0,
+            8.0
+          ],
+          "interval_90": [
+            2.0,
+            9.0
+          ]
+        },
+        "ftm": {
+          "mean": 3.704,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            7.0
+          ],
+          "interval_90": [
+            0.0,
+            9.0
+          ]
+        },
+        "fta": {
+          "mean": 5.237,
+          "median": 4.0,
+          "interval_50": [
+            2.0,
+            8.0
+          ],
+          "interval_80": [
+            2.0,
+            10.0
+          ],
+          "interval_90": [
+            0.0,
+            12.0
+          ]
+        },
+        "oreb": {
+          "mean": 2.134,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            5.0
+          ]
+        },
+        "dreb": {
+          "mean": 4.373,
+          "median": 4.0,
+          "interval_50": [
+            3.0,
+            6.0
+          ],
+          "interval_80": [
+            2.0,
+            7.0
+          ],
+          "interval_90": [
+            1.0,
+            8.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 1000,
+          "ratio_of_expected_totals": 0.4605,
+          "conditional_distribution": {
+            "mean": 0.4625,
+            "median": 0.4615,
+            "interval_50": [
+              0.37,
+              0.56
+            ],
+            "interval_80": [
+              0.27,
+              0.64
+            ],
+            "interval_90": [
+              0.21,
+              0.71
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 993,
+          "ratio_of_expected_totals": 0.3994,
+          "conditional_distribution": {
+            "mean": 0.3967,
+            "median": 0.4,
+            "interval_50": [
+              0.25,
+              0.5
+            ],
+            "interval_80": [
+              0.0,
+              0.67
+            ],
+            "interval_90": [
+              0.0,
+              0.8
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 921,
+          "ratio_of_expected_totals": 0.7073,
+          "conditional_distribution": {
+            "mean": 0.7096,
+            "median": 0.75,
+            "interval_50": [
+              0.5,
+              0.88
+            ],
+            "interval_80": [
+              0.5,
+              1.0
+            ],
+            "interval_90": [
+              0.33,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 17,
+        "quality_flags": [
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1630545": {
+        "minutes": {
+          "mean": 25.5757,
+          "median": 25.2021,
+          "interval_50": [
+            22.3,
+            28.26
+          ],
+          "interval_80": [
+            20.31,
+            31.55
+          ],
+          "interval_90": [
+            18.81,
+            33.82
+          ]
+        },
+        "pts": {
+          "mean": 15.322,
+          "median": 15.0,
+          "interval_50": [
+            11.0,
+            20.0
+          ],
+          "interval_80": [
+            7.0,
+            23.1
+          ],
+          "interval_90": [
+            5.0,
+            26.0
+          ]
+        },
+        "reb": {
+          "mean": 3.49,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "ast": {
+          "mean": 3.055,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            4.0
+          ],
+          "interval_80": [
+            1.0,
+            5.1
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "stl": {
+          "mean": 0.593,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "blk": {
+          "mean": 0.031,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "tov": {
+          "mean": 1.952,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            5.0
+          ]
+        },
+        "fgm": {
+          "mean": 5.03,
+          "median": 5.0,
+          "interval_50": [
+            3.0,
+            7.0
+          ],
+          "interval_80": [
+            2.0,
+            8.0
+          ],
+          "interval_90": [
+            1.0,
+            9.0
+          ]
+        },
+        "fga": {
+          "mean": 10.48,
+          "median": 10.0,
+          "interval_50": [
+            8.0,
+            13.0
+          ],
+          "interval_80": [
+            6.0,
+            15.0
+          ],
+          "interval_90": [
+            5.0,
+            17.0
+          ]
+        },
+        "fg3m": {
+          "mean": 1.744,
+          "median": 1.5,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fg3a": {
+          "mean": 4.396,
+          "median": 4.0,
+          "interval_50": [
+            3.0,
+            6.0
+          ],
+          "interval_80": [
+            2.0,
+            7.0
+          ],
+          "interval_90": [
+            1.0,
+            9.0
+          ]
+        },
+        "ftm": {
+          "mean": 3.518,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            0.0,
+            7.0
+          ],
+          "interval_90": [
+            0.0,
+            8.0
+          ]
+        },
+        "fta": {
+          "mean": 4.332,
+          "median": 4.0,
+          "interval_50": [
+            2.0,
+            6.0
+          ],
+          "interval_80": [
+            0.0,
+            8.0
+          ],
+          "interval_90": [
+            0.0,
+            10.0
+          ]
+        },
+        "oreb": {
+          "mean": 1.06,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "dreb": {
+          "mean": 2.43,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            1.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            5.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 999,
+          "ratio_of_expected_totals": 0.48,
+          "conditional_distribution": {
+            "mean": 0.4803,
+            "median": 0.5,
+            "interval_50": [
+              0.36,
+              0.6
+            ],
+            "interval_80": [
+              0.26,
+              0.7
+            ],
+            "interval_90": [
+              0.2,
+              0.77
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 980,
+          "ratio_of_expected_totals": 0.3967,
+          "conditional_distribution": {
+            "mean": 0.3971,
+            "median": 0.375,
+            "interval_50": [
+              0.2,
+              0.57
+            ],
+            "interval_80": [
+              0.0,
+              0.75
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 868,
+          "ratio_of_expected_totals": 0.8121,
+          "conditional_distribution": {
+            "mean": 0.8122,
+            "median": 0.8333,
+            "interval_50": [
+              0.7,
+              1.0
+            ],
+            "interval_80": [
+              0.5,
+              1.0
+            ],
+            "interval_90": [
+              0.5,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 108,
+        "quality_flags": [
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1641740": {
+        "minutes": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "pts": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "reb": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "ast": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "stl": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "blk": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "tov": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fgm": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fga": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fg3m": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fg3a": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "ftm": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fta": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "oreb": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "dreb": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 0,
+          "ratio_of_expected_totals": null,
+          "conditional_distribution": null
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 0,
+          "ratio_of_expected_totals": null,
+          "conditional_distribution": null
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 0,
+          "ratio_of_expected_totals": null,
+          "conditional_distribution": null
+        },
+        "availability": "out",
+        "sample_games": 131,
+        "quality_flags": [],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1642262": {
+        "minutes": {
+          "mean": 5.7227,
+          "median": 5.2944,
+          "interval_50": [
+            4.03,
+            6.95
+          ],
+          "interval_80": [
+            3.24,
+            8.64
+          ],
+          "interval_90": [
+            2.76,
+            10.21
+          ]
+        },
+        "pts": {
+          "mean": 1.846,
+          "median": 2.0,
+          "interval_50": [
+            0.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "reb": {
+          "mean": 0.781,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "ast": {
+          "mean": 0.389,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "stl": {
+          "mean": 0.212,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            1.0
+          ]
+        },
+        "blk": {
+          "mean": 0.029,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "tov": {
+          "mean": 0.248,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            1.0
+          ]
+        },
+        "fgm": {
+          "mean": 0.612,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "fga": {
+          "mean": 1.343,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fg3m": {
+          "mean": 0.178,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            1.0
+          ]
+        },
+        "fg3a": {
+          "mean": 0.539,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "ftm": {
+          "mean": 0.444,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "fta": {
+          "mean": 0.571,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "oreb": {
+          "mean": 0.255,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            1.0
+          ]
+        },
+        "dreb": {
+          "mean": 0.526,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 710,
+          "ratio_of_expected_totals": 0.4557,
+          "conditional_distribution": {
+            "mean": 0.4555,
+            "median": 0.5,
+            "interval_50": [
+              0.0,
+              1.0
+            ],
+            "interval_80": [
+              0.0,
+              1.0
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 403,
+          "ratio_of_expected_totals": 0.3302,
+          "conditional_distribution": {
+            "mean": 0.3425,
+            "median": 0.0,
+            "interval_50": [
+              0.0,
+              1.0
+            ],
+            "interval_80": [
+              0.0,
+              1.0
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 235,
+          "ratio_of_expected_totals": 0.7776,
+          "conditional_distribution": {
+            "mean": 0.7808,
+            "median": 1.0,
+            "interval_50": [
+              0.5,
+              1.0
+            ],
+            "interval_80": [
+              0.5,
+              1.0
+            ],
+            "interval_90": [
+              0.5,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 10,
+        "quality_flags": [
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1630162": {
+        "minutes": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "pts": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "reb": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "ast": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "stl": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "blk": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "tov": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fgm": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fga": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fg3m": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fg3a": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "ftm": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fta": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "oreb": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "dreb": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 0,
+          "ratio_of_expected_totals": null,
+          "conditional_distribution": null
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 0,
+          "ratio_of_expected_totals": null,
+          "conditional_distribution": null
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 0,
+          "ratio_of_expected_totals": null,
+          "conditional_distribution": null
+        },
+        "availability": "out",
+        "sample_games": 264,
+        "quality_flags": [],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1642389": {
+        "minutes": {
+          "mean": 7.5197,
+          "median": 6.9082,
+          "interval_50": [
+            5.33,
+            9.33
+          ],
+          "interval_80": [
+            4.28,
+            11.54
+          ],
+          "interval_90": [
+            3.63,
+            12.99
+          ]
+        },
+        "pts": {
+          "mean": 3.802,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            6.0
+          ],
+          "interval_80": [
+            0.0,
+            8.0
+          ],
+          "interval_90": [
+            0.0,
+            10.0
+          ]
+        },
+        "reb": {
+          "mean": 1.125,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "ast": {
+          "mean": 1.206,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "stl": {
+          "mean": 0.159,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            1.0
+          ]
+        },
+        "blk": {
+          "mean": 0.026,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "tov": {
+          "mean": 0.485,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "fgm": {
+          "mean": 1.267,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fga": {
+          "mean": 2.524,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            4.0
+          ],
+          "interval_80": [
+            0.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "fg3m": {
+          "mean": 0.372,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "fg3a": {
+          "mean": 1.035,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "ftm": {
+          "mean": 0.896,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fta": {
+          "mean": 1.097,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "oreb": {
+          "mean": 0.36,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "dreb": {
+          "mean": 0.765,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 874,
+          "ratio_of_expected_totals": 0.502,
+          "conditional_distribution": {
+            "mean": 0.5025,
+            "median": 0.5,
+            "interval_50": [
+              0.25,
+              0.75
+            ],
+            "interval_80": [
+              0.0,
+              1.0
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 604,
+          "ratio_of_expected_totals": 0.3594,
+          "conditional_distribution": {
+            "mean": 0.3444,
+            "median": 0.0,
+            "interval_50": [
+              0.0,
+              0.67
+            ],
+            "interval_80": [
+              0.0,
+              1.0
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 402,
+          "ratio_of_expected_totals": 0.8168,
+          "conditional_distribution": {
+            "mean": 0.8225,
+            "median": 1.0,
+            "interval_50": [
+              0.5,
+              1.0
+            ],
+            "interval_80": [
+              0.5,
+              1.0
+            ],
+            "interval_90": [
+              0.5,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 9,
+        "quality_flags": [
+          "low_sample_minutes_and_stat_rates",
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1642285": {
+        "minutes": {
+          "mean": 27.9841,
+          "median": 27.5585,
+          "interval_50": [
+            24.27,
+            31.44
+          ],
+          "interval_80": [
+            21.48,
+            35.21
+          ],
+          "interval_90": [
+            20.21,
+            37.28
+          ]
+        },
+        "pts": {
+          "mean": 12.619,
+          "median": 12.0,
+          "interval_50": [
+            9.0,
+            16.0
+          ],
+          "interval_80": [
+            6.0,
+            20.0
+          ],
+          "interval_90": [
+            4.0,
+            23.0
+          ]
+        },
+        "reb": {
+          "mean": 3.45,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "ast": {
+          "mean": 4.979,
+          "median": 5.0,
+          "interval_50": [
+            3.0,
+            6.0
+          ],
+          "interval_80": [
+            2.0,
+            8.0
+          ],
+          "interval_90": [
+            2.0,
+            9.0
+          ]
+        },
+        "stl": {
+          "mean": 0.836,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "blk": {
+          "mean": 0.121,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            1.0
+          ]
+        },
+        "tov": {
+          "mean": 1.601,
+          "median": 1.0,
+          "interval_50": [
+            1.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fgm": {
+          "mean": 4.086,
+          "median": 4.0,
+          "interval_50": [
+            3.0,
+            5.0
+          ],
+          "interval_80": [
+            2.0,
+            7.0
+          ],
+          "interval_90": [
+            1.0,
+            8.0
+          ]
+        },
+        "fga": {
+          "mean": 8.478,
+          "median": 8.0,
+          "interval_50": [
+            6.0,
+            11.0
+          ],
+          "interval_80": [
+            5.0,
+            12.0
+          ],
+          "interval_90": [
+            4.0,
+            14.0
+          ]
+        },
+        "fg3m": {
+          "mean": 1.684,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fg3a": {
+          "mean": 3.806,
+          "median": 4.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "ftm": {
+          "mean": 2.763,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            4.0
+          ],
+          "interval_80": [
+            0.0,
+            6.0
+          ],
+          "interval_90": [
+            0.0,
+            7.0
+          ]
+        },
+        "fta": {
+          "mean": 3.043,
+          "median": 2.0,
+          "interval_50": [
+            2.0,
+            4.0
+          ],
+          "interval_80": [
+            0.0,
+            6.0
+          ],
+          "interval_90": [
+            0.0,
+            8.0
+          ]
+        },
+        "oreb": {
+          "mean": 1.142,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "dreb": {
+          "mean": 2.308,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            1.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            5.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 1000,
+          "ratio_of_expected_totals": 0.482,
+          "conditional_distribution": {
+            "mean": 0.4869,
+            "median": 0.5,
+            "interval_50": [
+              0.36,
+              0.6
+            ],
+            "interval_80": [
+              0.25,
+              0.73
+            ],
+            "interval_90": [
+              0.17,
+              0.8
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 972,
+          "ratio_of_expected_totals": 0.4425,
+          "conditional_distribution": {
+            "mean": 0.4453,
+            "median": 0.5,
+            "interval_50": [
+              0.25,
+              0.67
+            ],
+            "interval_80": [
+              0.0,
+              1.0
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 765,
+          "ratio_of_expected_totals": 0.908,
+          "conditional_distribution": {
+            "mean": 0.9066,
+            "median": 1.0,
+            "interval_50": [
+              0.83,
+              1.0
+            ],
+            "interval_80": [
+              0.64,
+              1.0
+            ],
+            "interval_90": [
+              0.5,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 115,
+        "quality_flags": [
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1642907": {
+        "minutes": {
+          "mean": 31.0415,
+          "median": 30.7714,
+          "interval_50": [
+            28.03,
+            33.96
+          ],
+          "interval_80": [
+            25.56,
+            36.71
+          ],
+          "interval_90": [
+            24.17,
+            38.8
+          ]
+        },
+        "pts": {
+          "mean": 16.332,
+          "median": 16.0,
+          "interval_50": [
+            12.0,
+            20.0
+          ],
+          "interval_80": [
+            8.0,
+            25.0
+          ],
+          "interval_90": [
+            7.0,
+            27.0
+          ]
+        },
+        "reb": {
+          "mean": 8.303,
+          "median": 8.0,
+          "interval_50": [
+            6.0,
+            10.0
+          ],
+          "interval_80": [
+            4.0,
+            12.0
+          ],
+          "interval_90": [
+            4.0,
+            14.0
+          ]
+        },
+        "ast": {
+          "mean": 2.834,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            4.0
+          ],
+          "interval_80": [
+            1.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "stl": {
+          "mean": 1.329,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "blk": {
+          "mean": 0.295,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            1.0
+          ]
+        },
+        "tov": {
+          "mean": 2.32,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            1.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            5.0
+          ]
+        },
+        "fgm": {
+          "mean": 5.487,
+          "median": 5.0,
+          "interval_50": [
+            4.0,
+            7.0
+          ],
+          "interval_80": [
+            3.0,
+            8.0
+          ],
+          "interval_90": [
+            2.0,
+            9.0
+          ]
+        },
+        "fga": {
+          "mean": 12.003,
+          "median": 12.0,
+          "interval_50": [
+            9.75,
+            14.0
+          ],
+          "interval_80": [
+            7.0,
+            17.0
+          ],
+          "interval_90": [
+            7.0,
+            18.0
+          ]
+        },
+        "fg3m": {
+          "mean": 1.868,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fg3a": {
+          "mean": 5.268,
+          "median": 5.0,
+          "interval_50": [
+            4.0,
+            7.0
+          ],
+          "interval_80": [
+            3.0,
+            8.0
+          ],
+          "interval_90": [
+            2.0,
+            9.0
+          ]
+        },
+        "ftm": {
+          "mean": 3.49,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            0.0,
+            7.0
+          ],
+          "interval_90": [
+            0.0,
+            9.0
+          ]
+        },
+        "fta": {
+          "mean": 4.3,
+          "median": 4.0,
+          "interval_50": [
+            2.0,
+            6.0
+          ],
+          "interval_80": [
+            0.0,
+            8.0
+          ],
+          "interval_90": [
+            0.0,
+            10.0
+          ]
+        },
+        "oreb": {
+          "mean": 2.832,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            4.0
+          ],
+          "interval_80": [
+            1.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "dreb": {
+          "mean": 5.471,
+          "median": 5.0,
+          "interval_50": [
+            4.0,
+            7.0
+          ],
+          "interval_80": [
+            2.0,
+            9.0
+          ],
+          "interval_90": [
+            2.0,
+            10.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 1000,
+          "ratio_of_expected_totals": 0.4571,
+          "conditional_distribution": {
+            "mean": 0.4568,
+            "median": 0.4545,
+            "interval_50": [
+              0.36,
+              0.56
+            ],
+            "interval_80": [
+              0.27,
+              0.65
+            ],
+            "interval_90": [
+              0.21,
+              0.7
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 992,
+          "ratio_of_expected_totals": 0.3546,
+          "conditional_distribution": {
+            "mean": 0.3562,
+            "median": 0.3333,
+            "interval_50": [
+              0.2,
+              0.5
+            ],
+            "interval_80": [
+              0.0,
+              0.67
+            ],
+            "interval_90": [
+              0.0,
+              0.75
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 878,
+          "ratio_of_expected_totals": 0.8116,
+          "conditional_distribution": {
+            "mean": 0.8087,
+            "median": 0.8333,
+            "interval_50": [
+              0.69,
+              1.0
+            ],
+            "interval_80": [
+              0.5,
+              1.0
+            ],
+            "interval_90": [
+              0.5,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 79,
+        "quality_flags": [
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1642377": {
+        "minutes": {
+          "mean": 28.0879,
+          "median": 27.674,
+          "interval_50": [
+            24.97,
+            30.9
+          ],
+          "interval_80": [
+            22.78,
+            33.84
+          ],
+          "interval_90": [
+            21.75,
+            35.98
+          ]
+        },
+        "pts": {
+          "mean": 12.282,
+          "median": 12.0,
+          "interval_50": [
+            8.0,
+            16.0
+          ],
+          "interval_80": [
+            5.0,
+            20.0
+          ],
+          "interval_90": [
+            4.0,
+            22.0
+          ]
+        },
+        "reb": {
+          "mean": 3.51,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "ast": {
+          "mean": 1.222,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "stl": {
+          "mean": 0.791,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "blk": {
+          "mean": 0.094,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            1.0
+          ]
+        },
+        "tov": {
+          "mean": 1.599,
+          "median": 1.0,
+          "interval_50": [
+            1.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fgm": {
+          "mean": 4.191,
+          "median": 4.0,
+          "interval_50": [
+            3.0,
+            6.0
+          ],
+          "interval_80": [
+            2.0,
+            7.0
+          ],
+          "interval_90": [
+            1.0,
+            8.0
+          ]
+        },
+        "fga": {
+          "mean": 8.393,
+          "median": 8.0,
+          "interval_50": [
+            6.0,
+            10.0
+          ],
+          "interval_80": [
+            5.0,
+            13.0
+          ],
+          "interval_90": [
+            4.0,
+            14.0
+          ]
+        },
+        "fg3m": {
+          "mean": 1.479,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fg3a": {
+          "mean": 3.749,
+          "median": 4.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "ftm": {
+          "mean": 2.421,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            4.0
+          ],
+          "interval_80": [
+            0.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "fta": {
+          "mean": 3.031,
+          "median": 2.0,
+          "interval_50": [
+            2.0,
+            4.0
+          ],
+          "interval_80": [
+            0.0,
+            6.0
+          ],
+          "interval_90": [
+            0.0,
+            8.0
+          ]
+        },
+        "oreb": {
+          "mean": 1.206,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "dreb": {
+          "mean": 2.304,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            5.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 1000,
+          "ratio_of_expected_totals": 0.4993,
+          "conditional_distribution": {
+            "mean": 0.4996,
+            "median": 0.5,
+            "interval_50": [
+              0.38,
+              0.62
+            ],
+            "interval_80": [
+              0.25,
+              0.75
+            ],
+            "interval_90": [
+              0.2,
+              0.8
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 967,
+          "ratio_of_expected_totals": 0.3945,
+          "conditional_distribution": {
+            "mean": 0.387,
+            "median": 0.4,
+            "interval_50": [
+              0.17,
+              0.56
+            ],
+            "interval_80": [
+              0.0,
+              0.75
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 776,
+          "ratio_of_expected_totals": 0.7987,
+          "conditional_distribution": {
+            "mean": 0.8002,
+            "median": 0.8571,
+            "interval_50": [
+              0.67,
+              1.0
+            ],
+            "interval_80": [
+              0.5,
+              1.0
+            ],
+            "interval_90": [
+              0.5,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 166,
+        "quality_flags": [
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1641707": {
+        "minutes": {
+          "mean": 22.4638,
+          "median": 21.6474,
+          "interval_50": [
+            17.63,
+            26.49
+          ],
+          "interval_80": [
+            14.47,
+            31.5
+          ],
+          "interval_90": [
+            13.21,
+            34.78
+          ]
+        },
+        "pts": {
+          "mean": 10.097,
+          "median": 9.0,
+          "interval_50": [
+            6.0,
+            14.0
+          ],
+          "interval_80": [
+            4.0,
+            18.0
+          ],
+          "interval_90": [
+            2.0,
+            21.0
+          ]
+        },
+        "reb": {
+          "mean": 5.288,
+          "median": 5.0,
+          "interval_50": [
+            3.0,
+            7.0
+          ],
+          "interval_80": [
+            2.0,
+            9.0
+          ],
+          "interval_90": [
+            2.0,
+            10.0
+          ]
+        },
+        "ast": {
+          "mean": 1.154,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "stl": {
+          "mean": 0.972,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "blk": {
+          "mean": 0.299,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            1.0
+          ]
+        },
+        "tov": {
+          "mean": 1.412,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fgm": {
+          "mean": 3.491,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "fga": {
+          "mean": 7.436,
+          "median": 7.0,
+          "interval_50": [
+            5.0,
+            10.0
+          ],
+          "interval_80": [
+            3.0,
+            12.0
+          ],
+          "interval_90": [
+            2.0,
+            13.0
+          ]
+        },
+        "fg3m": {
+          "mean": 1.169,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "fg3a": {
+          "mean": 3.237,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            4.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "ftm": {
+          "mean": 1.946,
+          "median": 2.0,
+          "interval_50": [
+            0.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "fta": {
+          "mean": 2.717,
+          "median": 2.0,
+          "interval_50": [
+            0.0,
+            4.0
+          ],
+          "interval_80": [
+            0.0,
+            6.0
+          ],
+          "interval_90": [
+            0.0,
+            8.0
+          ]
+        },
+        "oreb": {
+          "mean": 1.771,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "dreb": {
+          "mean": 3.517,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 999,
+          "ratio_of_expected_totals": 0.4695,
+          "conditional_distribution": {
+            "mean": 0.4723,
+            "median": 0.5,
+            "interval_50": [
+              0.33,
+              0.6
+            ],
+            "interval_80": [
+              0.22,
+              0.75
+            ],
+            "interval_90": [
+              0.17,
+              0.83
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 954,
+          "ratio_of_expected_totals": 0.3611,
+          "conditional_distribution": {
+            "mean": 0.3581,
+            "median": 0.3333,
+            "interval_50": [
+              0.0,
+              0.5
+            ],
+            "interval_80": [
+              0.0,
+              0.8
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 707,
+          "ratio_of_expected_totals": 0.7162,
+          "conditional_distribution": {
+            "mean": 0.7224,
+            "median": 0.75,
+            "interval_50": [
+              0.5,
+              1.0
+            ],
+            "interval_80": [
+              0.5,
+              1.0
+            ],
+            "interval_90": [
+              0.22,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 39,
+        "quality_flags": [
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      },
+      "player:nba:203924": {
+        "minutes": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "pts": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "reb": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "ast": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "stl": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "blk": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "tov": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fgm": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fga": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fg3m": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fg3a": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "ftm": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fta": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "oreb": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "dreb": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 0,
+          "ratio_of_expected_totals": null,
+          "conditional_distribution": null
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 0,
+          "ratio_of_expected_totals": null,
+          "conditional_distribution": null
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 0,
+          "ratio_of_expected_totals": null,
+          "conditional_distribution": null
+        },
+        "availability": "out",
+        "sample_games": 15,
+        "quality_flags": [],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1641744": {
+        "minutes": {
+          "mean": 23.5138,
+          "median": 23.0976,
+          "interval_50": [
+            20.36,
+            26.25
+          ],
+          "interval_80": [
+            18.39,
+            29.16
+          ],
+          "interval_90": [
+            17.22,
+            31.74
+          ]
+        },
+        "pts": {
+          "mean": 9.858,
+          "median": 9.0,
+          "interval_50": [
+            6.0,
+            13.0
+          ],
+          "interval_80": [
+            4.0,
+            16.0
+          ],
+          "interval_90": [
+            2.95,
+            18.0
+          ]
+        },
+        "reb": {
+          "mean": 9.852,
+          "median": 10.0,
+          "interval_50": [
+            7.0,
+            12.0
+          ],
+          "interval_80": [
+            6.0,
+            14.0
+          ],
+          "interval_90": [
+            5.0,
+            16.0
+          ]
+        },
+        "ast": {
+          "mean": 0.887,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "stl": {
+          "mean": 0.388,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "blk": {
+          "mean": 0.641,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "tov": {
+          "mean": 1.396,
+          "median": 1.0,
+          "interval_50": [
+            1.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fgm": {
+          "mean": 3.42,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "fga": {
+          "mean": 7.287,
+          "median": 7.0,
+          "interval_50": [
+            5.0,
+            9.0
+          ],
+          "interval_80": [
+            4.0,
+            11.0
+          ],
+          "interval_90": [
+            3.0,
+            12.0
+          ]
+        },
+        "fg3m": {
+          "mean": 1.01,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "fg3a": {
+          "mean": 3.218,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            4.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "ftm": {
+          "mean": 2.008,
+          "median": 2.0,
+          "interval_50": [
+            0.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "fta": {
+          "mean": 2.623,
+          "median": 2.0,
+          "interval_50": [
+            0.0,
+            4.0
+          ],
+          "interval_80": [
+            0.0,
+            6.0
+          ],
+          "interval_90": [
+            0.0,
+            7.0
+          ]
+        },
+        "oreb": {
+          "mean": 3.264,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            4.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "dreb": {
+          "mean": 6.588,
+          "median": 6.0,
+          "interval_50": [
+            5.0,
+            8.0
+          ],
+          "interval_80": [
+            3.0,
+            10.0
+          ],
+          "interval_90": [
+            3.0,
+            11.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 998,
+          "ratio_of_expected_totals": 0.4693,
+          "conditional_distribution": {
+            "mean": 0.4718,
+            "median": 0.5,
+            "interval_50": [
+              0.33,
+              0.6
+            ],
+            "interval_80": [
+              0.22,
+              0.71
+            ],
+            "interval_90": [
+              0.14,
+              0.78
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 954,
+          "ratio_of_expected_totals": 0.3139,
+          "conditional_distribution": {
+            "mean": 0.3076,
+            "median": 0.3333,
+            "interval_50": [
+              0.0,
+              0.5
+            ],
+            "interval_80": [
+              0.0,
+              0.67
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 727,
+          "ratio_of_expected_totals": 0.7655,
+          "conditional_distribution": {
+            "mean": 0.7632,
+            "median": 0.8182,
+            "interval_50": [
+              0.5,
+              1.0
+            ],
+            "interval_80": [
+              0.5,
+              1.0
+            ],
+            "interval_90": [
+              0.28,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 97,
+        "quality_flags": [
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1630191": {
+        "minutes": {
+          "mean": 20.6402,
+          "median": 20.3762,
+          "interval_50": [
+            17.34,
+            23.44
+          ],
+          "interval_80": [
+            15.31,
+            26.57
+          ],
+          "interval_90": [
+            13.89,
+            28.3
+          ]
+        },
+        "pts": {
+          "mean": 10.774,
+          "median": 10.0,
+          "interval_50": [
+            7.0,
+            14.0
+          ],
+          "interval_80": [
+            4.0,
+            18.0
+          ],
+          "interval_90": [
+            3.0,
+            21.0
+          ]
+        },
+        "reb": {
+          "mean": 4.01,
+          "median": 4.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            2.0,
+            7.0
+          ],
+          "interval_90": [
+            1.0,
+            8.0
+          ]
+        },
+        "ast": {
+          "mean": 1.047,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "stl": {
+          "mean": 0.148,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            1.0
+          ]
+        },
+        "blk": {
+          "mean": 0.455,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "tov": {
+          "mean": 1.342,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fgm": {
+          "mean": 3.686,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "fga": {
+          "mean": 7.385,
+          "median": 7.0,
+          "interval_50": [
+            5.0,
+            9.0
+          ],
+          "interval_80": [
+            4.0,
+            11.0
+          ],
+          "interval_90": [
+            3.0,
+            13.0
+          ]
+        },
+        "fg3m": {
+          "mean": 1.142,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "fg3a": {
+          "mean": 3.249,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            4.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            0.0,
+            7.0
+          ]
+        },
+        "ftm": {
+          "mean": 2.26,
+          "median": 2.0,
+          "interval_50": [
+            0.0,
+            4.0
+          ],
+          "interval_80": [
+            0.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "fta": {
+          "mean": 2.707,
+          "median": 2.0,
+          "interval_50": [
+            0.0,
+            4.0
+          ],
+          "interval_80": [
+            0.0,
+            6.0
+          ],
+          "interval_90": [
+            0.0,
+            8.0
+          ]
+        },
+        "oreb": {
+          "mean": 1.364,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "dreb": {
+          "mean": 2.646,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            4.0
+          ],
+          "interval_80": [
+            1.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 996,
+          "ratio_of_expected_totals": 0.4991,
+          "conditional_distribution": {
+            "mean": 0.5058,
+            "median": 0.5,
+            "interval_50": [
+              0.38,
+              0.64
+            ],
+            "interval_80": [
+              0.25,
+              0.78
+            ],
+            "interval_90": [
+              0.17,
+              0.86
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 943,
+          "ratio_of_expected_totals": 0.3515,
+          "conditional_distribution": {
+            "mean": 0.3613,
+            "median": 0.3333,
+            "interval_50": [
+              0.0,
+              0.5
+            ],
+            "interval_80": [
+              0.0,
+              0.83
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 716,
+          "ratio_of_expected_totals": 0.8349,
+          "conditional_distribution": {
+            "mean": 0.8404,
+            "median": 1.0,
+            "interval_50": [
+              0.75,
+              1.0
+            ],
+            "interval_80": [
+              0.5,
+              1.0
+            ],
+            "interval_90": [
+              0.5,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 13,
+        "quality_flags": [
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1641713": {
+        "minutes": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "pts": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "reb": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "ast": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "stl": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "blk": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "tov": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fgm": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fga": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fg3m": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fg3a": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "ftm": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "fta": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "oreb": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "dreb": {
+          "mean": 0.0,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            0.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 0,
+          "ratio_of_expected_totals": null,
+          "conditional_distribution": null
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 0,
+          "ratio_of_expected_totals": null,
+          "conditional_distribution": null
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 0,
+          "ratio_of_expected_totals": null,
+          "conditional_distribution": null
+        },
+        "availability": "out",
+        "sample_games": 145,
+        "quality_flags": [],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1629660": {
+        "minutes": {
+          "mean": 31.5626,
+          "median": 31.3183,
+          "interval_50": [
+            28.4,
+            34.43
+          ],
+          "interval_80": [
+            26.31,
+            36.98
+          ],
+          "interval_90": [
+            25.07,
+            39.15
+          ]
+        },
+        "pts": {
+          "mean": 24.861,
+          "median": 24.5,
+          "interval_50": [
+            20.0,
+            30.0
+          ],
+          "interval_80": [
+            15.0,
+            35.0
+          ],
+          "interval_90": [
+            13.0,
+            38.0
+          ]
+        },
+        "reb": {
+          "mean": 4.169,
+          "median": 4.0,
+          "interval_50": [
+            3.0,
+            6.0
+          ],
+          "interval_80": [
+            2.0,
+            7.0
+          ],
+          "interval_90": [
+            1.0,
+            8.0
+          ]
+        },
+        "ast": {
+          "mean": 4.04,
+          "median": 4.0,
+          "interval_50": [
+            3.0,
+            5.0
+          ],
+          "interval_80": [
+            2.0,
+            7.0
+          ],
+          "interval_90": [
+            1.0,
+            7.05
+          ]
+        },
+        "stl": {
+          "mean": 1.139,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "blk": {
+          "mean": 0.116,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            1.0
+          ]
+        },
+        "tov": {
+          "mean": 3.323,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            6.0
+          ]
+        },
+        "fgm": {
+          "mean": 8.26,
+          "median": 8.0,
+          "interval_50": [
+            6.0,
+            10.0
+          ],
+          "interval_80": [
+            5.0,
+            12.0
+          ],
+          "interval_90": [
+            4.0,
+            14.0
+          ]
+        },
+        "fga": {
+          "mean": 17.87,
+          "median": 18.0,
+          "interval_50": [
+            14.0,
+            21.0
+          ],
+          "interval_80": [
+            12.0,
+            24.0
+          ],
+          "interval_90": [
+            11.0,
+            26.0
+          ]
+        },
+        "fg3m": {
+          "mean": 3.002,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            4.0
+          ],
+          "interval_80": [
+            1.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "fg3a": {
+          "mean": 7.982,
+          "median": 8.0,
+          "interval_50": [
+            6.0,
+            10.0
+          ],
+          "interval_80": [
+            4.0,
+            12.0
+          ],
+          "interval_90": [
+            3.95,
+            13.0
+          ]
+        },
+        "ftm": {
+          "mean": 5.339,
+          "median": 5.0,
+          "interval_50": [
+            3.0,
+            7.0
+          ],
+          "interval_80": [
+            2.0,
+            10.0
+          ],
+          "interval_90": [
+            0.0,
+            12.0
+          ]
+        },
+        "fta": {
+          "mean": 6.217,
+          "median": 6.0,
+          "interval_50": [
+            4.0,
+            8.0
+          ],
+          "interval_80": [
+            2.0,
+            11.0
+          ],
+          "interval_90": [
+            1.9,
+            14.0
+          ]
+        },
+        "oreb": {
+          "mean": 1.463,
+          "median": 1.0,
+          "interval_50": [
+            1.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "dreb": {
+          "mean": 2.706,
+          "median": 3.0,
+          "interval_50": [
+            1.0,
+            4.0
+          ],
+          "interval_80": [
+            1.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 1000,
+          "ratio_of_expected_totals": 0.4622,
+          "conditional_distribution": {
+            "mean": 0.464,
+            "median": 0.4545,
+            "interval_50": [
+              0.38,
+              0.55
+            ],
+            "interval_80": [
+              0.32,
+              0.62
+            ],
+            "interval_90": [
+              0.27,
+              0.67
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 998,
+          "ratio_of_expected_totals": 0.3761,
+          "conditional_distribution": {
+            "mean": 0.3765,
+            "median": 0.375,
+            "interval_50": [
+              0.25,
+              0.5
+            ],
+            "interval_80": [
+              0.14,
+              0.6
+            ],
+            "interval_90": [
+              0.07,
+              0.67
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 950,
+          "ratio_of_expected_totals": 0.8588,
+          "conditional_distribution": {
+            "mean": 0.8638,
+            "median": 0.8824,
+            "interval_50": [
+              0.75,
+              1.0
+            ],
+            "interval_80": [
+              0.67,
+              1.0
+            ],
+            "interval_90": [
+              0.5,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 28,
+        "quality_flags": [
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1642942": {
+        "minutes": {
+          "mean": 19.2572,
+          "median": 17.9028,
+          "interval_50": [
+            14.12,
+            23.33
+          ],
+          "interval_80": [
+            11.08,
+            28.53
+          ],
+          "interval_90": [
+            9.47,
+            32.97
+          ]
+        },
+        "pts": {
+          "mean": 6.051,
+          "median": 6.0,
+          "interval_50": [
+            3.0,
+            8.0
+          ],
+          "interval_80": [
+            1.0,
+            12.0
+          ],
+          "interval_90": [
+            0.0,
+            14.0
+          ]
+        },
+        "reb": {
+          "mean": 2.897,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            4.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            0.0,
+            7.0
+          ]
+        },
+        "ast": {
+          "mean": 2.329,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "stl": {
+          "mean": 0.791,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "blk": {
+          "mean": 0.214,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            1.0
+          ]
+        },
+        "tov": {
+          "mean": 1.02,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "fgm": {
+          "mean": 2.028,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            5.0
+          ]
+        },
+        "fga": {
+          "mean": 5.219,
+          "median": 5.0,
+          "interval_50": [
+            3.0,
+            7.0
+          ],
+          "interval_80": [
+            2.0,
+            9.0
+          ],
+          "interval_90": [
+            1.0,
+            11.0
+          ]
+        },
+        "fg3m": {
+          "mean": 0.677,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "fg3a": {
+          "mean": 2.324,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "ftm": {
+          "mean": 1.318,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.1
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fta": {
+          "mean": 1.979,
+          "median": 2.0,
+          "interval_50": [
+            0.0,
+            4.0
+          ],
+          "interval_80": [
+            0.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "oreb": {
+          "mean": 0.949,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "dreb": {
+          "mean": 1.948,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            5.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 981,
+          "ratio_of_expected_totals": 0.3886,
+          "conditional_distribution": {
+            "mean": 0.3814,
+            "median": 0.4,
+            "interval_50": [
+              0.2,
+              0.5
+            ],
+            "interval_80": [
+              0.0,
+              0.67
+            ],
+            "interval_90": [
+              0.0,
+              0.8
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 873,
+          "ratio_of_expected_totals": 0.2913,
+          "conditional_distribution": {
+            "mean": 0.2928,
+            "median": 0.2,
+            "interval_50": [
+              0.0,
+              0.5
+            ],
+            "interval_80": [
+              0.0,
+              1.0
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 597,
+          "ratio_of_expected_totals": 0.666,
+          "conditional_distribution": {
+            "mean": 0.6687,
+            "median": 0.6667,
+            "interval_50": [
+              0.5,
+              1.0
+            ],
+            "interval_80": [
+              0.4,
+              1.0
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 39,
+        "quality_flags": [
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1642914": {
+        "minutes": {
+          "mean": 24.1585,
+          "median": 23.7558,
+          "interval_50": [
+            20.92,
+            27.11
+          ],
+          "interval_80": [
+            18.59,
+            30.19
+          ],
+          "interval_90": [
+            17.0,
+            32.53
+          ]
+        },
+        "pts": {
+          "mean": 11.3,
+          "median": 11.0,
+          "interval_50": [
+            7.0,
+            15.0
+          ],
+          "interval_80": [
+            5.0,
+            18.0
+          ],
+          "interval_90": [
+            4.0,
+            21.0
+          ]
+        },
+        "reb": {
+          "mean": 4.025,
+          "median": 4.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            7.0
+          ],
+          "interval_90": [
+            1.0,
+            8.0
+          ]
+        },
+        "ast": {
+          "mean": 3.886,
+          "median": 4.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            7.0
+          ],
+          "interval_90": [
+            1.0,
+            8.0
+          ]
+        },
+        "stl": {
+          "mean": 0.743,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "blk": {
+          "mean": 0.091,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            1.0
+          ]
+        },
+        "tov": {
+          "mean": 1.519,
+          "median": 1.0,
+          "interval_50": [
+            1.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fgm": {
+          "mean": 3.748,
+          "median": 4.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            7.0
+          ]
+        },
+        "fga": {
+          "mean": 8.264,
+          "median": 8.0,
+          "interval_50": [
+            6.0,
+            10.0
+          ],
+          "interval_80": [
+            4.0,
+            13.0
+          ],
+          "interval_90": [
+            4.0,
+            14.0
+          ]
+        },
+        "fg3m": {
+          "mean": 1.466,
+          "median": 1.0,
+          "interval_50": [
+            1.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fg3a": {
+          "mean": 3.709,
+          "median": 3.0,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            6.0
+          ],
+          "interval_90": [
+            1.0,
+            8.0
+          ]
+        },
+        "ftm": {
+          "mean": 2.338,
+          "median": 2.0,
+          "interval_50": [
+            0.0,
+            4.0
+          ],
+          "interval_80": [
+            0.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "fta": {
+          "mean": 2.89,
+          "median": 2.0,
+          "interval_50": [
+            2.0,
+            4.0
+          ],
+          "interval_80": [
+            0.0,
+            6.0
+          ],
+          "interval_90": [
+            0.0,
+            8.0
+          ]
+        },
+        "oreb": {
+          "mean": 1.363,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "dreb": {
+          "mean": 2.662,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            4.0
+          ],
+          "interval_80": [
+            1.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 999,
+          "ratio_of_expected_totals": 0.4535,
+          "conditional_distribution": {
+            "mean": 0.4554,
+            "median": 0.4444,
+            "interval_50": [
+              0.33,
+              0.57
+            ],
+            "interval_80": [
+              0.22,
+              0.71
+            ],
+            "interval_90": [
+              0.14,
+              0.78
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 966,
+          "ratio_of_expected_totals": 0.3953,
+          "conditional_distribution": {
+            "mean": 0.3967,
+            "median": 0.4,
+            "interval_50": [
+              0.2,
+              0.57
+            ],
+            "interval_80": [
+              0.0,
+              0.75
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 753,
+          "ratio_of_expected_totals": 0.809,
+          "conditional_distribution": {
+            "mean": 0.8034,
+            "median": 0.875,
+            "interval_50": [
+              0.67,
+              1.0
+            ],
+            "interval_80": [
+              0.5,
+              1.0
+            ],
+            "interval_90": [
+              0.5,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 51,
+        "quality_flags": [
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      },
+      "player:nba:1642366": {
+        "minutes": {
+          "mean": 11.6905,
+          "median": 10.7822,
+          "interval_50": [
+            8.51,
+            14.06
+          ],
+          "interval_80": [
+            6.74,
+            17.78
+          ],
+          "interval_90": [
+            5.8,
+            20.82
+          ]
+        },
+        "pts": {
+          "mean": 5.146,
+          "median": 5.0,
+          "interval_50": [
+            2.0,
+            7.0
+          ],
+          "interval_80": [
+            0.0,
+            11.0
+          ],
+          "interval_90": [
+            0.0,
+            12.05
+          ]
+        },
+        "reb": {
+          "mean": 2.427,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            5.0
+          ],
+          "interval_90": [
+            0.0,
+            6.0
+          ]
+        },
+        "ast": {
+          "mean": 0.518,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "stl": {
+          "mean": 0.327,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            1.0
+          ],
+          "interval_90": [
+            0.0,
+            1.0
+          ]
+        },
+        "blk": {
+          "mean": 0.085,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            0.0
+          ],
+          "interval_80": [
+            0.0,
+            0.0
+          ],
+          "interval_90": [
+            0.0,
+            1.0
+          ]
+        },
+        "tov": {
+          "mean": 0.692,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "fgm": {
+          "mean": 1.808,
+          "median": 2.0,
+          "interval_50": [
+            1.0,
+            3.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fga": {
+          "mean": 3.733,
+          "median": 3.5,
+          "interval_50": [
+            2.0,
+            5.0
+          ],
+          "interval_80": [
+            1.0,
+            7.0
+          ],
+          "interval_90": [
+            1.0,
+            8.0
+          ]
+        },
+        "fg3m": {
+          "mean": 0.527,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            2.0
+          ]
+        },
+        "fg3a": {
+          "mean": 1.65,
+          "median": 1.0,
+          "interval_50": [
+            1.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "ftm": {
+          "mean": 1.003,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "fta": {
+          "mean": 1.266,
+          "median": 0.0,
+          "interval_50": [
+            0.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            4.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "oreb": {
+          "mean": 0.83,
+          "median": 1.0,
+          "interval_50": [
+            0.0,
+            1.0
+          ],
+          "interval_80": [
+            0.0,
+            2.0
+          ],
+          "interval_90": [
+            0.0,
+            3.0
+          ]
+        },
+        "dreb": {
+          "mean": 1.597,
+          "median": 1.0,
+          "interval_50": [
+            1.0,
+            2.0
+          ],
+          "interval_80": [
+            0.0,
+            3.0
+          ],
+          "interval_90": [
+            0.0,
+            4.0
+          ]
+        },
+        "field_goal_percentage": {
+          "eligible_simulations": 951,
+          "ratio_of_expected_totals": 0.4843,
+          "conditional_distribution": {
+            "mean": 0.4802,
+            "median": 0.5,
+            "interval_50": [
+              0.25,
+              0.67
+            ],
+            "interval_80": [
+              0.0,
+              1.0
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "three_point_percentage": {
+          "eligible_simulations": 777,
+          "ratio_of_expected_totals": 0.3194,
+          "conditional_distribution": {
+            "mean": 0.3166,
+            "median": 0.25,
+            "interval_50": [
+              0.0,
+              0.5
+            ],
+            "interval_80": [
+              0.0,
+              1.0
+            ],
+            "interval_90": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "free_throw_percentage": {
+          "eligible_simulations": 437,
+          "ratio_of_expected_totals": 0.7923,
+          "conditional_distribution": {
+            "mean": 0.7858,
+            "median": 1.0,
+            "interval_50": [
+              0.5,
+              1.0
+            ],
+            "interval_80": [
+              0.5,
+              1.0
+            ],
+            "interval_90": [
+              0.5,
+              1.0
+            ]
+          }
+        },
+        "availability": "unknown",
+        "sample_games": 12,
+        "quality_flags": [
+          "availability_scenario_required"
+        ],
+        "threshold_probabilities": {}
+      }
+    },
+    "warnings": [
+      "Availability/playing time uncertain: report separate conditional scenarios; no confident props. Players: player:nba:203497, player:nba:1630183, player:nba:1630538, player:nba:1630245, player:nba:1642866, player:nba:1626168, player:nba:1630228, player:nba:1630545, player:nba:1642262, player:nba:1642389, player:nba:1642285, player:nba:1642907, player:nba:1642377, player:nba:1641707, player:nba:1641744, player:nba:1630191, player:nba:1629660, player:nba:1642942, player:nba:1642914, player:nba:1642366",
+      "Limited (<10 games) historical sample: player:nba:1642389",
+      "Simulation parameters are initial physical priors, NOT holdout-calibrated.",
+      "Larger simulation counts reduce Monte Carlo noise, not model bias.",
+      "Shot/role selection and overtime allocations are approximate, not full clock-and-lineup tracking."
+    ],
+    "market_distributions": {
+      "sample_count": 1000,
+      "home_margin_counts": {
+        "-61": 1,
+        "-50": 1,
+        "-45": 1,
+        "-43": 1,
+        "-42": 3,
+        "-41": 1,
+        "-38": 1,
+        "-37": 4,
+        "-36": 3,
+        "-34": 3,
+        "-33": 2,
+        "-32": 1,
+        "-31": 4,
+        "-30": 2,
+        "-29": 3,
+        "-28": 4,
+        "-27": 7,
+        "-26": 9,
+        "-25": 8,
+        "-24": 8,
+        "-23": 8,
+        "-22": 6,
+        "-21": 5,
+        "-20": 9,
+        "-19": 11,
+        "-18": 13,
+        "-17": 14,
+        "-16": 13,
+        "-15": 18,
+        "-14": 18,
+        "-13": 28,
+        "-12": 13,
+        "-11": 23,
+        "-10": 14,
+        "-9": 13,
+        "-8": 16,
+        "-7": 17,
+        "-6": 17,
+        "-5": 25,
+        "-4": 28,
+        "-3": 27,
+        "-2": 32,
+        "-1": 22,
+        "1": 23,
+        "2": 25,
+        "3": 25,
+        "4": 35,
+        "5": 20,
+        "6": 21,
+        "7": 32,
+        "8": 21,
+        "9": 23,
+        "10": 19,
+        "11": 20,
+        "12": 21,
+        "13": 11,
+        "14": 24,
+        "15": 10,
+        "16": 16,
+        "17": 10,
+        "18": 15,
+        "19": 14,
+        "20": 11,
+        "21": 6,
+        "22": 11,
+        "23": 8,
+        "24": 9,
+        "25": 11,
+        "26": 7,
+        "27": 13,
+        "28": 12,
+        "29": 6,
+        "30": 7,
+        "31": 6,
+        "32": 8,
+        "33": 3,
+        "34": 3,
+        "35": 5,
+        "36": 3,
+        "37": 7,
+        "38": 8,
+        "39": 5,
+        "40": 1,
+        "41": 3,
+        "42": 2,
+        "47": 1,
+        "48": 1,
+        "49": 1
+      },
+      "game_total_counts": {
+        "174": 1,
+        "182": 1,
+        "187": 3,
+        "188": 3,
+        "191": 1,
+        "192": 3,
+        "193": 1,
+        "194": 3,
+        "195": 2,
+        "196": 1,
+        "197": 5,
+        "198": 1,
+        "199": 4,
+        "200": 4,
+        "201": 3,
+        "202": 4,
+        "203": 4,
+        "204": 2,
+        "205": 5,
+        "206": 5,
+        "207": 4,
+        "208": 10,
+        "209": 6,
+        "210": 5,
+        "211": 10,
+        "212": 6,
+        "213": 5,
+        "214": 12,
+        "215": 11,
+        "216": 8,
+        "217": 10,
+        "218": 10,
+        "219": 7,
+        "220": 12,
+        "221": 20,
+        "222": 17,
+        "223": 17,
+        "224": 15,
+        "225": 17,
+        "226": 16,
+        "227": 10,
+        "228": 11,
+        "229": 19,
+        "230": 17,
+        "231": 23,
+        "232": 20,
+        "233": 20,
+        "234": 15,
+        "235": 14,
+        "236": 22,
+        "237": 13,
+        "238": 17,
+        "239": 6,
+        "240": 15,
+        "241": 17,
+        "242": 15,
+        "243": 16,
+        "244": 17,
+        "245": 17,
+        "246": 16,
+        "247": 15,
+        "248": 16,
+        "249": 28,
+        "250": 18,
+        "251": 17,
+        "252": 13,
+        "253": 24,
+        "254": 13,
+        "255": 10,
+        "256": 14,
+        "257": 10,
+        "258": 7,
+        "259": 17,
+        "260": 10,
+        "261": 13,
+        "262": 13,
+        "263": 15,
+        "264": 12,
+        "265": 15,
+        "266": 9,
+        "267": 4,
+        "268": 9,
+        "269": 7,
+        "270": 6,
+        "271": 9,
+        "272": 8,
+        "273": 4,
+        "274": 13,
+        "275": 2,
+        "276": 4,
+        "277": 5,
+        "278": 7,
+        "279": 1,
+        "280": 3,
+        "281": 4,
+        "282": 3,
+        "283": 1,
+        "284": 3,
+        "285": 3,
+        "286": 5,
+        "287": 2,
+        "288": 2,
+        "289": 2,
+        "295": 3,
+        "296": 1,
+        "297": 1,
+        "301": 1,
+        "302": 1,
+        "313": 1,
+        "323": 1,
+        "325": 1
+      },
+      "player_counts": {
+        "player:nba:203497": {
+          "pts": {
+            "0": 8,
+            "1": 7,
+            "2": 33,
+            "3": 22,
+            "4": 45,
+            "5": 53,
+            "6": 70,
+            "7": 84,
+            "8": 74,
+            "9": 95,
+            "10": 71,
+            "11": 77,
+            "12": 68,
+            "13": 45,
+            "14": 41,
+            "15": 51,
+            "16": 37,
+            "17": 31,
+            "18": 19,
+            "19": 15,
+            "20": 17,
+            "21": 15,
+            "22": 7,
+            "23": 6,
+            "24": 4,
+            "26": 1,
+            "27": 1,
+            "28": 3
+          },
+          "reb": {
+            "2": 2,
+            "3": 6,
+            "4": 13,
+            "5": 23,
+            "6": 34,
+            "7": 67,
+            "8": 62,
+            "9": 101,
+            "10": 94,
+            "11": 110,
+            "12": 116,
+            "13": 105,
+            "14": 58,
+            "15": 60,
+            "16": 46,
+            "17": 41,
+            "18": 25,
+            "19": 16,
+            "20": 10,
+            "21": 3,
+            "22": 6,
+            "25": 2
+          },
+          "ast": {
+            "0": 127,
+            "1": 239,
+            "2": 273,
+            "3": 184,
+            "4": 102,
+            "5": 51,
+            "6": 18,
+            "7": 4,
+            "8": 1,
+            "9": 1
+          },
+          "fg3m": {
+            "0": 347,
+            "1": 343,
+            "2": 209,
+            "3": 69,
+            "4": 25,
+            "5": 7
+          }
+        },
+        "player:nba:1630183": {
+          "pts": {
+            "0": 1,
+            "3": 1,
+            "4": 2,
+            "6": 3,
+            "7": 5,
+            "8": 8,
+            "9": 11,
+            "10": 11,
+            "11": 20,
+            "12": 21,
+            "13": 34,
+            "14": 29,
+            "15": 47,
+            "16": 41,
+            "17": 43,
+            "18": 56,
+            "19": 53,
+            "20": 49,
+            "21": 56,
+            "22": 55,
+            "23": 46,
+            "24": 55,
+            "25": 47,
+            "26": 25,
+            "27": 42,
+            "28": 34,
+            "29": 32,
+            "30": 34,
+            "31": 26,
+            "32": 14,
+            "33": 23,
+            "34": 10,
+            "35": 14,
+            "36": 15,
+            "37": 8,
+            "38": 6,
+            "39": 6,
+            "40": 6,
+            "41": 3,
+            "42": 4,
+            "43": 1,
+            "44": 1,
+            "47": 1,
+            "52": 1
+          },
+          "reb": {
+            "0": 2,
+            "1": 10,
+            "2": 23,
+            "3": 62,
+            "4": 90,
+            "5": 140,
+            "6": 132,
+            "7": 134,
+            "8": 140,
+            "9": 104,
+            "10": 67,
+            "11": 34,
+            "12": 36,
+            "13": 7,
+            "14": 11,
+            "15": 3,
+            "16": 2,
+            "17": 1,
+            "18": 2
+          },
+          "ast": {
+            "0": 20,
+            "1": 95,
+            "2": 182,
+            "3": 213,
+            "4": 200,
+            "5": 131,
+            "6": 88,
+            "7": 41,
+            "8": 17,
+            "9": 5,
+            "10": 6,
+            "11": 2
+          },
+          "fg3m": {
+            "0": 111,
+            "1": 240,
+            "2": 260,
+            "3": 192,
+            "4": 120,
+            "5": 46,
+            "6": 17,
+            "7": 12,
+            "8": 1,
+            "9": 1
+          }
+        },
+        "player:nba:1630538": {
+          "pts": {
+            "0": 6,
+            "1": 2,
+            "2": 19,
+            "3": 12,
+            "4": 35,
+            "5": 29,
+            "6": 62,
+            "7": 54,
+            "8": 62,
+            "9": 53,
+            "10": 64,
+            "11": 73,
+            "12": 67,
+            "13": 64,
+            "14": 67,
+            "15": 43,
+            "16": 45,
+            "17": 46,
+            "18": 29,
+            "19": 42,
+            "20": 28,
+            "21": 16,
+            "22": 20,
+            "23": 18,
+            "24": 11,
+            "25": 5,
+            "26": 5,
+            "27": 9,
+            "28": 1,
+            "29": 3,
+            "30": 2,
+            "31": 3,
+            "32": 2,
+            "33": 1,
+            "34": 2
+          },
+          "reb": {
+            "0": 165,
+            "1": 250,
+            "2": 259,
+            "3": 166,
+            "4": 97,
+            "5": 39,
+            "6": 18,
+            "7": 4,
+            "8": 2
+          },
+          "ast": {
+            "0": 49,
+            "1": 137,
+            "2": 226,
+            "3": 202,
+            "4": 164,
+            "5": 113,
+            "6": 61,
+            "7": 32,
+            "8": 9,
+            "9": 6,
+            "10": 1
+          },
+          "fg3m": {
+            "0": 287,
+            "1": 321,
+            "2": 231,
+            "3": 97,
+            "4": 43,
+            "5": 14,
+            "6": 7
+          }
+        },
+        "player:nba:1630245": {
+          "pts": {
+            "4": 1,
+            "7": 2,
+            "8": 8,
+            "9": 7,
+            "10": 4,
+            "11": 12,
+            "12": 18,
+            "13": 25,
+            "14": 26,
+            "15": 44,
+            "16": 45,
+            "17": 56,
+            "18": 54,
+            "19": 51,
+            "20": 47,
+            "21": 55,
+            "22": 44,
+            "23": 47,
+            "24": 61,
+            "25": 56,
+            "26": 49,
+            "27": 50,
+            "28": 27,
+            "29": 44,
+            "30": 22,
+            "31": 17,
+            "32": 16,
+            "33": 20,
+            "34": 16,
+            "35": 13,
+            "36": 12,
+            "37": 11,
+            "38": 6,
+            "39": 8,
+            "40": 8,
+            "41": 3,
+            "42": 5,
+            "43": 2,
+            "44": 3,
+            "45": 2,
+            "46": 1,
+            "50": 1,
+            "56": 1
+          },
+          "reb": {
+            "0": 8,
+            "1": 41,
+            "2": 69,
+            "3": 143,
+            "4": 172,
+            "5": 179,
+            "6": 132,
+            "7": 107,
+            "8": 65,
+            "9": 35,
+            "10": 30,
+            "11": 9,
+            "12": 6,
+            "13": 2,
+            "14": 2
+          },
+          "ast": {
+            "0": 28,
+            "1": 74,
+            "2": 139,
+            "3": 187,
+            "4": 204,
+            "5": 149,
+            "6": 106,
+            "7": 58,
+            "8": 26,
+            "9": 18,
+            "10": 9,
+            "11": 1,
+            "13": 1
+          },
+          "fg3m": {
+            "0": 69,
+            "1": 196,
+            "2": 245,
+            "3": 218,
+            "4": 131,
+            "5": 84,
+            "6": 37,
+            "7": 14,
+            "8": 3,
+            "9": 2,
+            "10": 1
+          }
+        },
+        "player:nba:1642866": {
+          "pts": {
+            "0": 79,
+            "1": 10,
+            "2": 96,
+            "3": 76,
+            "4": 109,
+            "5": 94,
+            "6": 90,
+            "7": 92,
+            "8": 89,
+            "9": 49,
+            "10": 58,
+            "11": 52,
+            "12": 26,
+            "13": 23,
+            "14": 16,
+            "15": 8,
+            "16": 8,
+            "17": 7,
+            "18": 6,
+            "19": 5,
+            "20": 3,
+            "21": 1,
+            "24": 2,
+            "26": 1
+          },
+          "reb": {
+            "0": 3,
+            "1": 39,
+            "2": 74,
+            "3": 107,
+            "4": 141,
+            "5": 145,
+            "6": 135,
+            "7": 107,
+            "8": 88,
+            "9": 53,
+            "10": 50,
+            "11": 25,
+            "12": 13,
+            "13": 11,
+            "14": 3,
+            "15": 2,
+            "16": 3,
+            "17": 1
+          },
+          "ast": {
+            "0": 542,
+            "1": 352,
+            "2": 83,
+            "3": 15,
+            "4": 7,
+            "5": 1
+          },
+          "fg3m": {
+            "0": 510,
+            "1": 357,
+            "2": 108,
+            "3": 16,
+            "4": 7,
+            "5": 2
+          }
+        },
+        "player:nba:1626168": {
+          "pts": {
+            "0": 23,
+            "1": 7,
+            "2": 69,
+            "3": 31,
+            "4": 78,
+            "5": 74,
+            "6": 88,
+            "7": 62,
+            "8": 78,
+            "9": 74,
+            "10": 75,
+            "11": 70,
+            "12": 68,
+            "13": 41,
+            "14": 36,
+            "15": 28,
+            "16": 20,
+            "17": 20,
+            "18": 16,
+            "19": 15,
+            "20": 9,
+            "21": 6,
+            "22": 6,
+            "23": 2,
+            "24": 1,
+            "25": 1,
+            "27": 1,
+            "31": 1
+          },
+          "reb": {
+            "0": 12,
+            "1": 74,
+            "2": 98,
+            "3": 181,
+            "4": 148,
+            "5": 174,
+            "6": 112,
+            "7": 86,
+            "8": 59,
+            "9": 27,
+            "10": 15,
+            "11": 5,
+            "12": 6,
+            "13": 2,
+            "15": 1
+          },
+          "ast": {
+            "0": 208,
+            "1": 284,
+            "2": 245,
+            "3": 142,
+            "4": 81,
+            "5": 25,
+            "6": 9,
+            "7": 4,
+            "8": 1,
+            "9": 1
+          },
+          "fg3m": {
+            "0": 461,
+            "1": 333,
+            "2": 157,
+            "3": 37,
+            "4": 11,
+            "5": 1
+          }
+        },
+        "player:nba:1630228": {
+          "pts": {
+            "1": 1,
+            "2": 3,
+            "3": 3,
+            "4": 4,
+            "5": 5,
+            "6": 15,
+            "7": 22,
+            "8": 30,
+            "9": 30,
+            "10": 38,
+            "11": 47,
+            "12": 52,
+            "13": 48,
+            "14": 56,
+            "15": 62,
+            "16": 70,
+            "17": 61,
+            "18": 56,
+            "19": 58,
+            "20": 56,
+            "21": 42,
+            "22": 32,
+            "23": 32,
+            "24": 30,
+            "25": 34,
+            "26": 25,
+            "27": 19,
+            "28": 9,
+            "29": 18,
+            "30": 10,
+            "31": 9,
+            "32": 2,
+            "33": 8,
+            "34": 4,
+            "35": 1,
+            "36": 3,
+            "37": 1,
+            "39": 3,
+            "45": 1
+          },
+          "reb": {
+            "0": 3,
+            "1": 12,
+            "2": 32,
+            "3": 70,
+            "4": 107,
+            "5": 138,
+            "6": 164,
+            "7": 152,
+            "8": 116,
+            "9": 84,
+            "10": 48,
+            "11": 33,
+            "12": 23,
+            "13": 7,
+            "14": 7,
+            "15": 2,
+            "16": 1,
+            "17": 1
+          },
+          "ast": {
+            "0": 47,
+            "1": 123,
+            "2": 232,
+            "3": 203,
+            "4": 170,
+            "5": 114,
+            "6": 57,
+            "7": 32,
+            "8": 14,
+            "9": 6,
+            "10": 1,
+            "11": 1
+          },
+          "fg3m": {
+            "0": 126,
+            "1": 263,
+            "2": 260,
+            "3": 181,
+            "4": 111,
+            "5": 40,
+            "6": 10,
+            "7": 7,
+            "8": 1,
+            "10": 1
+          }
+        },
+        "player:nba:1630545": {
+          "pts": {
+            "0": 1,
+            "2": 10,
+            "3": 14,
+            "4": 16,
+            "5": 17,
+            "6": 20,
+            "7": 30,
+            "8": 29,
+            "9": 43,
+            "10": 40,
+            "11": 60,
+            "12": 65,
+            "13": 57,
+            "14": 74,
+            "15": 58,
+            "16": 50,
+            "17": 62,
+            "18": 48,
+            "19": 47,
+            "20": 47,
+            "21": 40,
+            "22": 36,
+            "23": 36,
+            "24": 25,
+            "25": 21,
+            "26": 16,
+            "27": 11,
+            "28": 6,
+            "29": 6,
+            "30": 5,
+            "31": 1,
+            "32": 3,
+            "33": 1,
+            "34": 2,
+            "35": 2,
+            "36": 1
+          },
+          "reb": {
+            "0": 45,
+            "1": 117,
+            "2": 170,
+            "3": 206,
+            "4": 193,
+            "5": 118,
+            "6": 70,
+            "7": 45,
+            "8": 21,
+            "9": 7,
+            "10": 6,
+            "11": 1,
+            "16": 1
+          },
+          "ast": {
+            "0": 56,
+            "1": 142,
+            "2": 226,
+            "3": 207,
+            "4": 175,
+            "5": 94,
+            "6": 57,
+            "7": 24,
+            "8": 14,
+            "9": 4,
+            "12": 1
+          },
+          "fg3m": {
+            "0": 183,
+            "1": 317,
+            "2": 234,
+            "3": 156,
+            "4": 76,
+            "5": 21,
+            "6": 10,
+            "7": 2,
+            "8": 1
+          }
+        },
+        "player:nba:1641740": {
+          "pts": {
+            "0": 1000
+          },
+          "reb": {
+            "0": 1000
+          },
+          "ast": {
+            "0": 1000
+          },
+          "fg3m": {
+            "0": 1000
+          }
+        },
+        "player:nba:1642262": {
+          "pts": {
+            "0": 437,
+            "1": 30,
+            "2": 250,
+            "3": 94,
+            "4": 72,
+            "5": 52,
+            "6": 23,
+            "7": 18,
+            "8": 8,
+            "9": 8,
+            "10": 5,
+            "11": 1,
+            "12": 1,
+            "13": 1
+          },
+          "reb": {
+            "0": 472,
+            "1": 345,
+            "2": 131,
+            "3": 38,
+            "4": 10,
+            "5": 4
+          },
+          "ast": {
+            "0": 680,
+            "1": 257,
+            "2": 57,
+            "3": 6
+          },
+          "fg3m": {
+            "0": 836,
+            "1": 150,
+            "2": 14
+          }
+        },
+        "player:nba:1630162": {
+          "pts": {
+            "0": 1000
+          },
+          "reb": {
+            "0": 1000
+          },
+          "ast": {
+            "0": 1000
+          },
+          "fg3m": {
+            "0": 1000
+          }
+        },
+        "player:nba:1642389": {
+          "pts": {
+            "0": 202,
+            "1": 23,
+            "2": 204,
+            "3": 93,
+            "4": 132,
+            "5": 78,
+            "6": 82,
+            "7": 62,
+            "8": 39,
+            "9": 22,
+            "10": 26,
+            "11": 11,
+            "12": 9,
+            "13": 4,
+            "14": 8,
+            "15": 1,
+            "16": 2,
+            "17": 1,
+            "21": 1
+          },
+          "reb": {
+            "0": 373,
+            "1": 315,
+            "2": 194,
+            "3": 74,
+            "4": 27,
+            "5": 11,
+            "6": 5,
+            "7": 1
+          },
+          "ast": {
+            "0": 319,
+            "1": 357,
+            "2": 190,
+            "3": 91,
+            "4": 25,
+            "5": 13,
+            "6": 4,
+            "7": 1
+          },
+          "fg3m": {
+            "0": 709,
+            "1": 225,
+            "2": 55,
+            "3": 7,
+            "4": 4
+          }
+        },
+        "player:nba:1642285": {
+          "pts": {
+            "0": 4,
+            "1": 1,
+            "2": 22,
+            "3": 14,
+            "4": 29,
+            "5": 29,
+            "6": 42,
+            "7": 48,
+            "8": 58,
+            "9": 65,
+            "10": 68,
+            "11": 81,
+            "12": 67,
+            "13": 76,
+            "14": 61,
+            "15": 57,
+            "16": 46,
+            "17": 38,
+            "18": 45,
+            "19": 30,
+            "20": 22,
+            "21": 15,
+            "22": 19,
+            "23": 19,
+            "24": 8,
+            "25": 6,
+            "26": 12,
+            "27": 6,
+            "28": 3,
+            "29": 4,
+            "30": 1,
+            "31": 2,
+            "35": 1,
+            "47": 1
+          },
+          "reb": {
+            "0": 34,
+            "1": 115,
+            "2": 195,
+            "3": 213,
+            "4": 178,
+            "5": 121,
+            "6": 73,
+            "7": 36,
+            "8": 22,
+            "9": 9,
+            "10": 2,
+            "11": 2
+          },
+          "ast": {
+            "0": 9,
+            "1": 40,
+            "2": 93,
+            "3": 137,
+            "4": 183,
+            "5": 169,
+            "6": 123,
+            "7": 95,
+            "8": 62,
+            "9": 50,
+            "10": 22,
+            "11": 10,
+            "12": 6,
+            "14": 1
+          },
+          "fg3m": {
+            "0": 199,
+            "1": 291,
+            "2": 272,
+            "3": 144,
+            "4": 65,
+            "5": 18,
+            "6": 10,
+            "7": 1
+          }
+        },
+        "player:nba:1642907": {
+          "pts": {
+            "0": 1,
+            "2": 2,
+            "3": 5,
+            "4": 10,
+            "5": 8,
+            "6": 22,
+            "7": 25,
+            "8": 29,
+            "9": 31,
+            "10": 43,
+            "11": 50,
+            "12": 50,
+            "13": 62,
+            "14": 70,
+            "15": 63,
+            "16": 65,
+            "17": 54,
+            "18": 64,
+            "19": 59,
+            "20": 54,
+            "21": 43,
+            "22": 31,
+            "23": 25,
+            "24": 27,
+            "25": 21,
+            "26": 21,
+            "27": 21,
+            "28": 11,
+            "29": 3,
+            "30": 11,
+            "31": 5,
+            "32": 4,
+            "33": 6,
+            "34": 1,
+            "35": 1,
+            "36": 2
+          },
+          "reb": {
+            "1": 3,
+            "2": 18,
+            "3": 17,
+            "4": 64,
+            "5": 95,
+            "6": 111,
+            "7": 118,
+            "8": 128,
+            "9": 114,
+            "10": 102,
+            "11": 81,
+            "12": 50,
+            "13": 35,
+            "14": 29,
+            "15": 13,
+            "16": 13,
+            "17": 6,
+            "20": 1,
+            "21": 1,
+            "22": 1
+          },
+          "ast": {
+            "0": 58,
+            "1": 162,
+            "2": 260,
+            "3": 219,
+            "4": 127,
+            "5": 98,
+            "6": 47,
+            "7": 21,
+            "8": 5,
+            "9": 2,
+            "10": 1
+          },
+          "fg3m": {
+            "0": 166,
+            "1": 252,
+            "2": 294,
+            "3": 177,
+            "4": 68,
+            "5": 33,
+            "6": 10
+          }
+        },
+        "player:nba:1642377": {
+          "pts": {
+            "0": 4,
+            "1": 2,
+            "2": 13,
+            "3": 13,
+            "4": 33,
+            "5": 36,
+            "6": 47,
+            "7": 59,
+            "8": 69,
+            "9": 74,
+            "10": 64,
+            "11": 75,
+            "12": 56,
+            "13": 70,
+            "14": 63,
+            "15": 45,
+            "16": 49,
+            "17": 52,
+            "18": 38,
+            "19": 25,
+            "20": 29,
+            "21": 20,
+            "22": 19,
+            "23": 11,
+            "24": 10,
+            "25": 5,
+            "26": 11,
+            "27": 3,
+            "28": 1,
+            "29": 2,
+            "31": 1,
+            "39": 1
+          },
+          "reb": {
+            "0": 30,
+            "1": 103,
+            "2": 197,
+            "3": 211,
+            "4": 194,
+            "5": 109,
+            "6": 84,
+            "7": 38,
+            "8": 21,
+            "9": 11,
+            "10": 1,
+            "12": 1
+          },
+          "ast": {
+            "0": 296,
+            "1": 360,
+            "2": 215,
+            "3": 95,
+            "4": 26,
+            "5": 5,
+            "6": 3
+          },
+          "fg3m": {
+            "0": 252,
+            "1": 306,
+            "2": 250,
+            "3": 126,
+            "4": 43,
+            "5": 15,
+            "6": 8
+          }
+        },
+        "player:nba:1641707": {
+          "pts": {
+            "0": 20,
+            "1": 4,
+            "2": 45,
+            "3": 30,
+            "4": 52,
+            "5": 52,
+            "6": 83,
+            "7": 79,
+            "8": 67,
+            "9": 77,
+            "10": 74,
+            "11": 59,
+            "12": 44,
+            "13": 63,
+            "14": 43,
+            "15": 45,
+            "16": 29,
+            "17": 28,
+            "18": 26,
+            "19": 14,
+            "20": 15,
+            "21": 17,
+            "22": 9,
+            "23": 9,
+            "24": 5,
+            "25": 3,
+            "26": 4,
+            "27": 1,
+            "28": 1,
+            "30": 1,
+            "32": 1
+          },
+          "reb": {
+            "0": 11,
+            "1": 38,
+            "2": 98,
+            "3": 135,
+            "4": 142,
+            "5": 147,
+            "6": 142,
+            "7": 94,
+            "8": 62,
+            "9": 62,
+            "10": 25,
+            "11": 17,
+            "12": 14,
+            "13": 9,
+            "14": 1,
+            "15": 2,
+            "16": 1
+          },
+          "ast": {
+            "0": 326,
+            "1": 354,
+            "2": 211,
+            "3": 72,
+            "4": 26,
+            "5": 9,
+            "6": 1,
+            "7": 1
+          },
+          "fg3m": {
+            "0": 333,
+            "1": 352,
+            "2": 182,
+            "3": 93,
+            "4": 29,
+            "5": 9,
+            "6": 1,
+            "7": 1
+          }
+        },
+        "player:nba:203924": {
+          "pts": {
+            "0": 1000
+          },
+          "reb": {
+            "0": 1000
+          },
+          "ast": {
+            "0": 1000
+          },
+          "fg3m": {
+            "0": 1000
+          }
+        },
+        "player:nba:1641744": {
+          "pts": {
+            "0": 7,
+            "1": 4,
+            "2": 39,
+            "3": 33,
+            "4": 53,
+            "5": 46,
+            "6": 71,
+            "7": 77,
+            "8": 85,
+            "9": 89,
+            "10": 82,
+            "11": 75,
+            "12": 71,
+            "13": 52,
+            "14": 51,
+            "15": 45,
+            "16": 28,
+            "17": 22,
+            "18": 23,
+            "19": 11,
+            "20": 11,
+            "21": 8,
+            "22": 5,
+            "23": 8,
+            "24": 2,
+            "25": 1,
+            "27": 1
+          },
+          "reb": {
+            "0": 1,
+            "2": 2,
+            "3": 9,
+            "4": 26,
+            "5": 60,
+            "6": 74,
+            "7": 97,
+            "8": 102,
+            "9": 107,
+            "10": 120,
+            "11": 103,
+            "12": 94,
+            "13": 68,
+            "14": 38,
+            "15": 35,
+            "16": 25,
+            "17": 15,
+            "18": 15,
+            "19": 2,
+            "20": 4,
+            "21": 1,
+            "24": 1,
+            "25": 1
+          },
+          "ast": {
+            "0": 415,
+            "1": 359,
+            "2": 169,
+            "3": 41,
+            "4": 14,
+            "5": 1,
+            "6": 1
+          },
+          "fg3m": {
+            "0": 373,
+            "1": 352,
+            "2": 196,
+            "3": 58,
+            "4": 15,
+            "5": 4,
+            "6": 2
+          }
+        },
+        "player:nba:1630191": {
+          "pts": {
+            "0": 6,
+            "1": 5,
+            "2": 32,
+            "3": 20,
+            "4": 39,
+            "5": 58,
+            "6": 82,
+            "7": 67,
+            "8": 72,
+            "9": 63,
+            "10": 74,
+            "11": 67,
+            "12": 76,
+            "13": 71,
+            "14": 58,
+            "15": 31,
+            "16": 30,
+            "17": 35,
+            "18": 23,
+            "19": 20,
+            "20": 15,
+            "21": 13,
+            "22": 9,
+            "23": 10,
+            "24": 4,
+            "25": 8,
+            "26": 3,
+            "27": 3,
+            "28": 3,
+            "30": 1,
+            "33": 1,
+            "34": 1
+          },
+          "reb": {
+            "0": 29,
+            "1": 64,
+            "2": 179,
+            "3": 187,
+            "4": 173,
+            "5": 139,
+            "6": 93,
+            "7": 69,
+            "8": 32,
+            "9": 19,
+            "10": 10,
+            "11": 3,
+            "12": 1,
+            "13": 1,
+            "14": 1
+          },
+          "ast": {
+            "0": 356,
+            "1": 363,
+            "2": 187,
+            "3": 70,
+            "4": 20,
+            "5": 4
+          },
+          "fg3m": {
+            "0": 327,
+            "1": 357,
+            "2": 204,
+            "3": 82,
+            "4": 21,
+            "5": 7,
+            "6": 2
+          }
+        },
+        "player:nba:1641713": {
+          "pts": {
+            "0": 1000
+          },
+          "reb": {
+            "0": 1000
+          },
+          "ast": {
+            "0": 1000
+          },
+          "fg3m": {
+            "0": 1000
+          }
+        },
+        "player:nba:1629660": {
+          "pts": {
+            "4": 1,
+            "6": 1,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 7,
+            "11": 11,
+            "12": 14,
+            "13": 16,
+            "14": 21,
+            "15": 23,
+            "16": 26,
+            "17": 34,
+            "18": 38,
+            "19": 43,
+            "20": 50,
+            "21": 44,
+            "22": 60,
+            "23": 48,
+            "24": 51,
+            "25": 57,
+            "26": 48,
+            "27": 54,
+            "28": 38,
+            "29": 50,
+            "30": 37,
+            "31": 38,
+            "32": 23,
+            "33": 29,
+            "34": 16,
+            "35": 13,
+            "36": 22,
+            "37": 12,
+            "38": 16,
+            "39": 11,
+            "40": 7,
+            "41": 9,
+            "42": 3,
+            "44": 2,
+            "45": 1,
+            "46": 2,
+            "47": 5,
+            "48": 3,
+            "50": 1,
+            "51": 2,
+            "53": 1
+          },
+          "reb": {
+            "0": 17,
+            "1": 71,
+            "2": 138,
+            "3": 177,
+            "4": 190,
+            "5": 156,
+            "6": 113,
+            "7": 75,
+            "8": 35,
+            "9": 16,
+            "10": 10,
+            "11": 1,
+            "13": 1
+          },
+          "ast": {
+            "0": 30,
+            "1": 67,
+            "2": 142,
+            "3": 185,
+            "4": 172,
+            "5": 175,
+            "6": 118,
+            "7": 61,
+            "8": 28,
+            "9": 13,
+            "10": 6,
+            "11": 2,
+            "13": 1
+          },
+          "fg3m": {
+            "0": 52,
+            "1": 141,
+            "2": 224,
+            "3": 232,
+            "4": 171,
+            "5": 102,
+            "6": 42,
+            "7": 25,
+            "8": 7,
+            "9": 2,
+            "10": 1,
+            "12": 1
+          }
+        },
+        "player:nba:1642942": {
+          "pts": {
+            "0": 94,
+            "1": 21,
+            "2": 124,
+            "3": 74,
+            "4": 96,
+            "5": 88,
+            "6": 97,
+            "7": 87,
+            "8": 79,
+            "9": 48,
+            "10": 50,
+            "11": 33,
+            "12": 25,
+            "13": 19,
+            "14": 19,
+            "15": 8,
+            "16": 8,
+            "17": 12,
+            "18": 8,
+            "19": 2,
+            "20": 4,
+            "21": 1,
+            "22": 1,
+            "24": 2
+          },
+          "reb": {
+            "0": 83,
+            "1": 156,
+            "2": 240,
+            "3": 214,
+            "4": 125,
+            "5": 76,
+            "6": 54,
+            "7": 19,
+            "8": 21,
+            "9": 8,
+            "10": 3,
+            "12": 1
+          },
+          "ast": {
+            "0": 121,
+            "1": 252,
+            "2": 243,
+            "3": 157,
+            "4": 103,
+            "5": 72,
+            "6": 31,
+            "7": 12,
+            "8": 4,
+            "9": 4,
+            "10": 1
+          },
+          "fg3m": {
+            "0": 523,
+            "1": 322,
+            "2": 122,
+            "3": 22,
+            "4": 10,
+            "5": 1
+          }
+        },
+        "player:nba:1642914": {
+          "pts": {
+            "0": 10,
+            "1": 4,
+            "2": 20,
+            "3": 12,
+            "4": 48,
+            "5": 33,
+            "6": 71,
+            "7": 59,
+            "8": 68,
+            "9": 69,
+            "10": 76,
+            "11": 86,
+            "12": 68,
+            "13": 55,
+            "14": 64,
+            "15": 49,
+            "16": 39,
+            "17": 36,
+            "18": 35,
+            "19": 25,
+            "20": 17,
+            "21": 16,
+            "22": 10,
+            "23": 9,
+            "24": 8,
+            "25": 2,
+            "26": 6,
+            "28": 2,
+            "29": 2,
+            "35": 1
+          },
+          "reb": {
+            "0": 21,
+            "1": 84,
+            "2": 158,
+            "3": 183,
+            "4": 193,
+            "5": 131,
+            "6": 106,
+            "7": 55,
+            "8": 29,
+            "9": 19,
+            "10": 10,
+            "11": 8,
+            "12": 2,
+            "13": 1
+          },
+          "ast": {
+            "0": 27,
+            "1": 86,
+            "2": 170,
+            "3": 181,
+            "4": 192,
+            "5": 132,
+            "6": 99,
+            "7": 53,
+            "8": 35,
+            "9": 13,
+            "10": 7,
+            "11": 4,
+            "13": 1
+          },
+          "fg3m": {
+            "0": 243,
+            "1": 332,
+            "2": 241,
+            "3": 117,
+            "4": 42,
+            "5": 17,
+            "6": 8
+          }
+        },
+        "player:nba:1642366": {
+          "pts": {
+            "0": 139,
+            "1": 18,
+            "2": 154,
+            "3": 55,
+            "4": 123,
+            "5": 109,
+            "6": 86,
+            "7": 91,
+            "8": 44,
+            "9": 42,
+            "10": 36,
+            "11": 23,
+            "12": 30,
+            "13": 18,
+            "14": 8,
+            "15": 7,
+            "16": 6,
+            "17": 3,
+            "18": 2,
+            "19": 1,
+            "20": 1,
+            "21": 3,
+            "26": 1
+          },
+          "reb": {
+            "0": 123,
+            "1": 223,
+            "2": 244,
+            "3": 166,
+            "4": 122,
+            "5": 55,
+            "6": 37,
+            "7": 19,
+            "8": 7,
+            "9": 2,
+            "12": 1,
+            "14": 1
+          },
+          "ast": {
+            "0": 603,
+            "1": 301,
+            "2": 74,
+            "3": 20,
+            "4": 1,
+            "5": 1
+          },
+          "fg3m": {
+            "0": 602,
+            "1": 297,
+            "2": 78,
+            "3": 19,
+            "4": 3,
+            "5": 1
+          }
+        }
+      },
+      "calibration_status": "uncalibrated",
+      "source": "same_correlated_possession_draws",
+      "settlement_scope": "full_game_including_overtime"
+    }
+  },
+  "quality_flags": [
+    "historical_corrected_archive_not_proof_of_original_asof",
+    "lineups_unconfirmed",
+    "espn_source_observed_at_2026-11-26T18:52:48Z",
+    "espn_unresolved_injury_ids_3",
+    "espn_source_observed_at_2026-11-26T18:52:48Z",
+    "espn_unresolved_injury_ids_3",
+    "UNVALIDATED_RESEARCH_MODEL",
+    "recent_participants_not_confirmed_lineup",
+    "unconfirmed_lineup_status_scenarios_needed"
+  ],
+  "availability_reports": [
+    {
+      "player_id": "player:nba:1626168",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1628978",
+      "team_id": "team:nba:1610612750",
+      "normalized_status": "out",
+      "provider_status": "Out",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1629660",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1630162",
+      "team_id": "team:nba:1610612750",
+      "normalized_status": "out",
+      "provider_status": "Out",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1630183",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1630191",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1630228",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1630245",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1630538",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1630545",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1630590",
+      "team_id": "team:nba:1610612763",
+      "normalized_status": "out",
+      "provider_status": "Out",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1641707",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1641713",
+      "team_id": "team:nba:1610612763",
+      "normalized_status": "out",
+      "provider_status": "Out",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1641740",
+      "team_id": "team:nba:1610612750",
+      "normalized_status": "out",
+      "provider_status": "Out",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1641744",
+      "team_id": "team:nba:1610612763",
+      "normalized_status": "unknown",
+      "provider_status": "Day-To-Day",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1641780",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1642262",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1642285",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1642366",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1642377",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1642389",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1642866",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1642907",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1642911",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1642914",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:1642942",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:203497",
+      "team_id": null,
+      "normalized_status": "unknown",
+      "provider_status": "not_listed_in_injury_feed",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    },
+    {
+      "player_id": "player:nba:203924",
+      "team_id": "team:nba:1610612763",
+      "normalized_status": "out",
+      "provider_status": "Out",
+      "report_utc": "2026-11-26T18:52:48Z",
+      "source_id": "espn_unofficial_shared_feed"
+    }
+  ],
+  "confirmed_starting_lineups": false,
+  "betting_recommendation": false
+}
