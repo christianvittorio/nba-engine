@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-25T22:57:04Z",
+ "generated_utc": "2026-11-26T03:59:19Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -269,6 +269,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-23T15:22Z"
+    },
+    {
+     "name": "Moritz Wagner",
+     "nba_id": 1629021,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-26T02:48Z"
     }
    ]
   },
@@ -1314,14 +1321,7 @@
      "nba_id": 201939,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-12T17:03Z"
-    },
-    {
-     "name": "Yaxel Lendeborg",
-     "nba_id": -5175737,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-24T23:20Z"
+     "date": "2026-11-26T01:36Z"
     },
     {
      "name": "Moses Moody",
@@ -1336,13 +1336,6 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-06T21:26Z"
-    },
-    {
-     "name": "Brandon Williams",
-     "nba_id": 1630314,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-11-24T20:58Z"
     }
    ]
   },
@@ -1977,6 +1970,13 @@
      "date": "2026-11-23T23:07Z"
     },
     {
+     "name": "Zach Edey",
+     "nba_id": 1641744,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-26T03:43Z"
+    },
+    {
      "name": "Jerami Grant",
      "nba_id": 203924,
      "status": "Out",
@@ -2333,6 +2333,13 @@
    ],
    "injuries": [
     {
+     "name": "LaMelo Ball",
+     "nba_id": -4432816,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-26T03:37Z"
+    },
+    {
      "name": "Jaylen Clark",
      "nba_id": 1641740,
      "status": "Out",
@@ -2608,14 +2615,7 @@
      "nba_id": 1628384,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-24T21:53Z"
-    },
-    {
-     "name": "Jalen Brunson",
-     "nba_id": 1628973,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-25T21:35Z"
+     "date": "2026-11-25T23:19Z"
     },
     {
      "name": "Jordan Clarkson",
@@ -2625,11 +2625,11 @@
      "date": "2026-11-24T21:56Z"
     },
     {
-     "name": "Josh Hart",
-     "nba_id": 1628404,
+     "name": "Andre Drummond",
+     "nba_id": 203083,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-25T17:57Z"
+     "date": "2026-11-26T03:40Z"
     },
     {
      "name": "Miles McBride",
@@ -2637,13 +2637,6 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-25T17:57Z"
-    },
-    {
-     "name": "Karl-Anthony Towns",
-     "nba_id": -3136195,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-25T17:54Z"
     }
    ]
   },
@@ -3053,11 +3046,18 @@
    ],
    "injuries": [
     {
+     "name": "Jaylen Brown",
+     "nba_id": 1627759,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-26T01:06Z"
+    },
+    {
      "name": "Joel Embiid",
      "nba_id": 203954,
-     "status": "Out",
+     "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-25T20:07Z"
+     "date": "2026-11-26T01:06Z"
     },
     {
      "name": "Ariel Hukporti",
@@ -3563,9 +3563,9 @@
     {
      "name": "De'Aaron Fox",
      "nba_id": 1628368,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-25T01:27Z"
+     "date": "2026-11-26T02:20Z"
     },
     {
      "name": "Dylan Harper",
@@ -3587,13 +3587,6 @@
      "status": "Out",
      "detail": "",
      "date": "2026-10-05T21:43Z"
-    },
-    {
-     "name": "Victor Wembanyama",
-     "nba_id": -5104157,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-25T01:23Z"
     }
    ]
   },
@@ -4086,7 +4079,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 26,
-  "injuries_endpoint_entries": 94,
-  "embedded_injuries": 94
+  "injuries_endpoint_entries": 93,
+  "embedded_injuries": 93
  }
 }
