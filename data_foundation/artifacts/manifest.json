@@ -1,5 +1,5 @@
 {
-  "created_utc": "2026-11-26T23:59:58+00:00",
+  "created_utc": "2026-11-27T23:44:15+00:00",
   "seasons": [
     {
       "season": 2020,
@@ -460,8 +460,8 @@
       },
       "roster_position_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_rosters/rosters_2027.csv",
       "roster_position_quality": {
-        "players": 527,
-        "mapped": 526,
+        "players": 528,
+        "mapped": 527,
         "ambiguous": 0
       },
       "coaches_source": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_coaches/coaches_2027.csv",
