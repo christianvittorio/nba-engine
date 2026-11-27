@@ -9,17 +9,17 @@ Found 11 scheduled games; skipped 0 already tipped-off games; GPT pregame foreca
 
 | Game | GPT predicted score | GPT win probability | GPT total | Claude predicted score | Claude win probability |
 |---|---:|---:|---:|---:|---:|
-| MIA @ NYK | 111-115 | 66.2% home | 226.2 | — | — home |
-| MIL @ DET | 107-119 | 84.6% home | 226.6 | — | — home |
-| PHI @ IND | 116-112 | 34.8% home | 228.6 | — | — home |
-| BKN @ TOR | 110-117 | 72.8% home | 227.3 | — | — home |
-| ATL @ BOS | 110-114 | 64.3% home | 223.3 | — | — home |
-| MEM @ MIN | 111-115 | 66.8% home | 226.4 | — | — home |
-| DAL @ PHX | 112-115 | 62.1% home | 227.0 | — | — home |
-| LAL @ SAS | 111-116 | 66.2% home | 227.0 | — | — home |
-| DEN @ UTA | 116-111 | 29.8% home | 227.1 | — | — home |
-| NOP @ LAC | 114-116 | 60.2% home | 229.7 | — | — home |
-| GSW @ POR | 110-115 | 68.1% home | 225.3 | — | — home |
+| MIA @ NYK | 111-115 | 66.2% home | 226.2 | 109-116 | 67.5% home |
+| MIL @ DET | 107-119 | 84.6% home | 226.6 | 102-117 | 86.5% home |
+| PHI @ IND | 116-112 | 34.8% home | 228.6 | 116-113 | 43.3% home |
+| BKN @ TOR | 110-117 | 72.8% home | 227.3 | 104-113 | 76.3% home |
+| ATL @ BOS | 110-114 | 64.3% home | 223.3 | 107-113 | 65.6% home |
+| MEM @ MIN | 111-115 | 66.8% home | 226.4 | 110-118 | 68.5% home |
+| DAL @ PHX | 112-115 | 62.1% home | 227.0 | 110-114 | 60.6% home |
+| LAL @ SAS | 111-116 | 66.2% home | 227.0 | 111-115 | 60.7% home |
+| DEN @ UTA | 116-111 | 29.8% home | 227.1 | 121-113 | 28.5% home |
+| NOP @ LAC | 114-116 | 60.2% home | 229.7 | 111-117 | 64.5% home |
+| GSW @ POR | 110-115 | 68.1% home | 225.3 | 109-113 | 60.1% home |
 
 ## GPT performance on completed, timestamp-validated forecasts
 
