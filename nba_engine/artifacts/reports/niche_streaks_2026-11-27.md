@@ -16,7 +16,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 - **MIL**: has scored under its projection 10 straight when density=normal and record=middling (34-50 in 84 such games; chance of run 0.100%).
 - **MIL**: has seen the game total go over the projection 9 straight when rest_edge=less rest and next_day_game=no game tomorrow (41-34 in 75 such games; chance of run 0.176%).
 - **MIL**: has lost 7 straight when venue=away and streak=no streak (59-62 in 121 such games; chance of run 10.444%).
-- **DET**: has beaten the model's margin 10 straight when streak=no streak and opp_record=middling opp (40-38 in 78 such games; chance of run 0.094%).
+- **DET**: has beaten the model's margin 10 straight when streak=no streak and opp_record=middling opp and next_day_game=no game tomorrow (30-32 in 62 such games; chance of run 0.094%).
 - **DET**: has won 10 straight when streak=no streak and opp_record=middling opp and next_day_game=no game tomorrow (24-38 in 62 such games; chance of run 0.576%).
 - **DET**: has scored over its projection 7 straight when venue=home and rest_edge=more rest and record=middling (8-1 in 9 such games; chance of run 0.701%).
 
@@ -63,7 +63,7 @@ Each line is a situation that describes tonight's game for that team, the team's
 ## LAL at SAS
 - **LAL**: has beaten the model's margin 9 straight when prev_result=won by 10+ and density=normal (41-21 in 62 such games; chance of run 0.208%).
 - **LAL**: has scored over its projection 8 straight when prev_result=won by 10+ and next_day_game=no game tomorrow and density=normal (29-20 in 49 such games; chance of run 0.351%).
-- **LAL**: has seen the game total stay under the projection 8 straight when prev_result=won by 10+ and streak=no streak (28-35 in 63 such games; chance of run 0.428%).
+- **LAL**: has seen the game total stay under the projection 8 straight when venue=away and prev_result=won by 10+ and opp_record=middling opp (3-11 in 14 such games; chance of run 0.428%).
 - **SAS**: has beaten the model's margin 15 straight when streak=no streak (120-93 in 213 such games; chance of run 0.003%).
 - **SAS**: has seen the game total stay under the projection 12 straight when prev_result=lost close and next_day_game=no game tomorrow (26-41 in 67 such games; chance of run 0.028%).
 - **SAS**: has won 13 straight when rest_edge=less rest and streak=no streak and next_day_game=no game tomorrow (19-17 in 36 such games; chance of run 0.076%).

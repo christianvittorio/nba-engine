@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-27T18:45:30Z",
+ "generated_utc": "2026-11-27T22:30:17Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -511,14 +511,14 @@
      "nba_id": 1628960,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-25T17:39Z"
+     "date": "2026-11-27T22:17Z"
     },
     {
      "name": "Ryan Kalkbrenner",
      "nba_id": 1641750,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-26T05:30Z"
+     "date": "2026-11-27T22:04Z"
     },
     {
      "name": "Kon Knueppel",
@@ -648,6 +648,13 @@
     }
    ],
    "injuries": [
+    {
+     "name": "Noa Essengue",
+     "nba_id": 1642855,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-27T19:06Z"
+    },
     {
      "name": "Norman Powell",
      "nba_id": 1626181,
@@ -924,6 +931,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-26T23:59Z"
+    },
+    {
+     "name": "Kyrie Irving",
+     "nba_id": 202681,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-27T19:07Z"
     },
     {
      "name": "Tobi Lawal",
@@ -1444,7 +1458,15 @@
      "nba_id": 1627832
     }
    ],
-   "injuries": []
+   "injuries": [
+    {
+     "name": "Steven Adams",
+     "nba_id": 203500,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-27T22:06Z"
+    }
+   ]
   },
   "IND": {
    "roster": [
@@ -1840,15 +1862,7 @@
      "nba_id": 1630533
     }
    ],
-   "injuries": [
-    {
-     "name": "Austin Reaves",
-     "nba_id": 1630559,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-11-26T23:21Z"
-    }
-   ]
+   "injuries": []
   },
   "MEM": {
    "roster": [
@@ -2358,9 +2372,9 @@
     {
      "name": "LaMelo Ball",
      "nba_id": -4432816,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-27T17:49Z"
+     "date": "2026-11-27T18:52Z"
     },
     {
      "name": "Jaylen Clark",
@@ -2953,6 +2967,13 @@
      "date": "2026-10-24T16:47Z"
     },
     {
+     "name": "Anthony Black",
+     "nba_id": 1641710,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-27T21:05Z"
+    },
+    {
      "name": "Colin Castleton",
      "nba_id": 1630658,
      "status": "Day-To-Day",
@@ -2979,6 +3000,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-14T17:33Z"
+    },
+    {
+     "name": "Kevin Porter Jr.",
+     "nba_id": 1629645,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-27T21:08Z"
     }
    ]
   },
@@ -3622,7 +3650,7 @@
      "nba_id": 1642844,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-26T23:41Z"
+     "date": "2026-11-27T18:51Z"
     },
     {
      "name": "Tobias Harris",
@@ -4142,7 +4170,7 @@
    "timestamp"
   ],
   "injuries_endpoint_teams": 28,
-  "injuries_endpoint_entries": 101,
-  "embedded_injuries": 101
+  "injuries_endpoint_entries": 105,
+  "embedded_injuries": 105
  }
 }

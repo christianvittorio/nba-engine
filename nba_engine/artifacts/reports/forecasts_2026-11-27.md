@@ -1,5 +1,5 @@
 # NBA forecasts for 2026-11-27
-Data refresh: last successful run 2026-11-27T18:44:21Z UTC. Model nbaengine-0.1.0.
+Data refresh: last successful run 2026-11-27T22:29:12Z UTC. Model nbaengine-0.1.0.
 
 - MIA at NYK (game 401909326): P(home) sim 0.675 / Elo 0.724; mean score 115.9-109.2 (total 225.1); margin 50% [-3.1, 16.0], 80% [-12.2, 25.0]; total 80% [200.6, 250.4]; P(OT) 0.043; projected final NYK 116 - MIA 109 (the average outcome, not a single exact score).
   - betting line: NYK margin +2.5, total 222.5; our simulator +6.7 (differs by +4.2); line-centred P(home) 0.585.
