@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-27T03:58:29Z",
+ "generated_utc": "2026-11-27T18:45:30Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -390,7 +390,7 @@
      "nba_id": 1629011,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-26T19:00Z"
+     "date": "2026-11-27T17:31Z"
     }
    ]
   },
@@ -660,7 +660,7 @@
      "nba_id": 1630188,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-26T05:29Z"
+     "date": "2026-11-27T18:36Z"
     },
     {
      "name": "Caleb Wilson",
@@ -1557,7 +1557,7 @@
      "nba_id": 1630169,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-24T19:41Z"
+     "date": "2026-11-27T16:20Z"
     },
     {
      "name": "T.J. McConnell",
@@ -1571,7 +1571,7 @@
      "nba_id": 1626204,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-26T22:43Z"
+     "date": "2026-11-27T18:07Z"
     },
     {
      "name": "Kelly Oubre Jr.",
@@ -2125,13 +2125,6 @@
      "status": "Day-To-Day",
      "detail": "",
      "date": "2026-11-26T21:15Z"
-    },
-    {
-     "name": "Andrew Wiggins",
-     "nba_id": 203952,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-26T21:08Z"
     }
    ]
   },
@@ -2246,7 +2239,15 @@
      "nba_id": 1642276
     }
    ],
-   "injuries": []
+   "injuries": [
+    {
+     "name": "Kasparas Jakucionis",
+     "nba_id": 1642857,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-27T17:58Z"
+    }
+   ]
   },
   "MIN": {
    "roster": [
@@ -2359,7 +2360,7 @@
      "nba_id": -4432816,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-26T23:14Z"
+     "date": "2026-11-27T17:49Z"
     },
     {
      "name": "Jaylen Clark",
@@ -2637,28 +2638,35 @@
      "nba_id": 1628384,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-26T21:57Z"
+     "date": "2026-11-27T18:20Z"
     },
     {
      "name": "Jordan Clarkson",
      "nba_id": 203903,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-26T22:03Z"
+     "date": "2026-11-27T18:19Z"
     },
     {
      "name": "Andre Drummond",
      "nba_id": 203083,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-26T21:51Z"
+     "date": "2026-11-27T15:36Z"
     },
     {
      "name": "Miles McBride",
      "nba_id": 1630540,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-27T18:21Z"
+    },
+    {
+     "name": "Karl-Anthony Towns",
+     "nba_id": -3136195,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-26T22:11Z"
+     "date": "2026-11-27T16:51Z"
     }
    ]
   },
@@ -3092,7 +3100,7 @@
      "nba_id": 203954,
      "status": "Day-To-Day",
      "detail": "",
-     "date": "2026-11-26T22:16Z"
+     "date": "2026-11-27T16:32Z"
     },
     {
      "name": "Ariel Hukporti",
@@ -3330,6 +3338,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-11T19:56Z"
+    },
+    {
+     "name": "Damian Lillard",
+     "nba_id": 203081,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-27T18:38Z"
     },
     {
      "name": "Ja Morant",
@@ -3874,6 +3889,13 @@
    ],
    "injuries": [
     {
+     "name": "Mo Bamba",
+     "nba_id": 1628964,
+     "status": "Day-To-Day",
+     "detail": "",
+     "date": "2026-11-27T16:41Z"
+    },
+    {
      "name": "Jaxson Hayes",
      "nba_id": 1629637,
      "status": "Day-To-Day",
@@ -4119,8 +4141,8 @@
    "status",
    "timestamp"
   ],
-  "injuries_endpoint_teams": 27,
-  "injuries_endpoint_entries": 98,
-  "embedded_injuries": 98
+  "injuries_endpoint_teams": 28,
+  "injuries_endpoint_entries": 101,
+  "embedded_injuries": 101
  }
 }
