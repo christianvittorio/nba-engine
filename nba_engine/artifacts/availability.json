@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-27T22:30:17Z",
+ "generated_utc": "2026-11-28T03:45:31Z",
  "source": "ESPN public JSON (unofficial; completeness and freshness unverified)",
  "teams": {
   "ATL": {
@@ -660,7 +660,7 @@
      "nba_id": 1626181,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-22T15:25Z"
+     "date": "2026-11-28T01:54Z"
     },
     {
      "name": "Jalen Smith",
@@ -935,9 +935,9 @@
     {
      "name": "Kyrie Irving",
      "nba_id": 202681,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-27T19:07Z"
+     "date": "2026-11-28T00:30Z"
     },
     {
      "name": "Tobi Lawal",
@@ -1335,7 +1335,7 @@
      "nba_id": 201939,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-26T01:36Z"
+     "date": "2026-11-28T00:47Z"
     },
     {
      "name": "Moses Moody",
@@ -1584,23 +1584,9 @@
     {
      "name": "T.J. McConnell",
      "nba_id": 204456,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-26T22:29Z"
-    },
-    {
-     "name": "Larry Nance Jr.",
-     "nba_id": 1626204,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-27T18:07Z"
-    },
-    {
-     "name": "Kelly Oubre Jr.",
-     "nba_id": 1626162,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-27T00:42Z"
+     "date": "2026-11-27T23:02Z"
     },
     {
      "name": "Ben Sheppard",
@@ -1915,6 +1901,12 @@
      "nba_id": -5231919
     },
     {
+     "espn_id": "4596528",
+     "name": "Lawson Lovering",
+     "pos": "C",
+     "nba_id": 1643133
+    },
+    {
      "espn_id": "4683934",
      "name": "Jahmai Mashack",
      "pos": "G",
@@ -1984,13 +1976,6 @@
      "date": "2026-11-23T23:07Z"
     },
     {
-     "name": "Zach Edey",
-     "nba_id": 1641744,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-26T23:24Z"
-    },
-    {
      "name": "Jerami Grant",
      "nba_id": 203924,
      "status": "Out",
@@ -2021,9 +2006,9 @@
     {
      "name": "Isaiah Stewart",
      "nba_id": 1630191,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-26T23:27Z"
+     "date": "2026-11-28T00:26Z"
     }
    ]
   },
@@ -2132,15 +2117,7 @@
      "nba_id": 203952
     }
    ],
-   "injuries": [
-    {
-     "name": "Giannis Antetokounmpo",
-     "nba_id": 203507,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-26T21:15Z"
-    }
-   ]
+   "injuries": []
   },
   "MIL": {
    "roster": [
@@ -2516,7 +2493,7 @@
      "nba_id": 1631097,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-26T21:21Z"
+     "date": "2026-11-28T01:22Z"
     },
     {
      "name": "Dejounte Murray",
@@ -2531,13 +2508,6 @@
      "status": "Day-To-Day",
      "detail": "",
      "date": "2026-11-25T16:11Z"
-    },
-    {
-     "name": "Trendon Watford",
-     "nba_id": 1630570,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-11-26T21:22Z"
     }
    ]
   },
@@ -2674,13 +2644,6 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-27T18:21Z"
-    },
-    {
-     "name": "Karl-Anthony Towns",
-     "nba_id": -3136195,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-27T16:51Z"
     }
    ]
   },
@@ -2808,7 +2771,7 @@
      "nba_id": -5174983,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-24T23:19Z"
+     "date": "2026-11-27T23:10Z"
     },
     {
      "name": "Thomas Sorber",
@@ -2822,7 +2785,7 @@
      "nba_id": 1642260,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-24T23:29Z"
+     "date": "2026-11-27T23:49Z"
     },
     {
      "name": "Cason Wallace",
@@ -2976,9 +2939,9 @@
     {
      "name": "Colin Castleton",
      "nba_id": 1630658,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-26T16:10Z"
+     "date": "2026-11-28T01:53Z"
     },
     {
      "name": "Jonathan Isaac",
@@ -3121,14 +3084,7 @@
      "nba_id": 1627759,
      "status": "Out",
      "detail": "",
-     "date": "2026-11-26T22:13Z"
-    },
-    {
-     "name": "Joel Embiid",
-     "nba_id": 203954,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-27T16:32Z"
+     "date": "2026-11-27T23:15Z"
     },
     {
      "name": "Ariel Hukporti",
@@ -3136,6 +3092,13 @@
      "status": "Out",
      "detail": "",
      "date": "2026-10-06T19:17Z"
+    },
+    {
+     "name": "Dean Wade",
+     "nba_id": 1629731,
+     "status": "Out",
+     "detail": "",
+     "date": "2026-11-27T23:33Z"
     }
    ]
   },
@@ -3639,20 +3602,6 @@
    ],
    "injuries": [
     {
-     "name": "De'Aaron Fox",
-     "nba_id": 1628368,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-26T23:35Z"
-    },
-    {
-     "name": "Dylan Harper",
-     "nba_id": 1642844,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-11-27T18:51Z"
-    },
-    {
      "name": "Tobias Harris",
      "nba_id": 202699,
      "status": "Out",
@@ -3796,11 +3745,11 @@
      "date": "2026-11-24T21:15Z"
     },
     {
-     "name": "Alijah Martin",
-     "nba_id": 1642918,
-     "status": "Day-To-Day",
+     "name": "Ja'Kobe Walter",
+     "nba_id": 1642266,
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-26T21:18Z"
+     "date": "2026-11-28T02:34Z"
     }
    ]
   },
@@ -3919,16 +3868,9 @@
     {
      "name": "Mo Bamba",
      "nba_id": 1628964,
-     "status": "Day-To-Day",
+     "status": "Out",
      "detail": "",
-     "date": "2026-11-27T16:41Z"
-    },
-    {
-     "name": "Jaxson Hayes",
-     "nba_id": 1629637,
-     "status": "Day-To-Day",
-     "detail": "",
-     "date": "2026-11-27T00:11Z"
+     "date": "2026-11-28T01:37Z"
     },
     {
      "name": "Jaren Jackson Jr.",
@@ -3943,13 +3885,6 @@
      "status": "Out",
      "detail": "",
      "date": "2026-11-11T18:22Z"
-    },
-    {
-     "name": "Jusuf Nurkic",
-     "nba_id": 203994,
-     "status": "Out",
-     "detail": "",
-     "date": "2026-11-27T00:08Z"
     }
    ]
   },
@@ -4169,8 +4104,8 @@
    "status",
    "timestamp"
   ],
-  "injuries_endpoint_teams": 28,
-  "injuries_endpoint_entries": 105,
-  "embedded_injuries": 105
+  "injuries_endpoint_teams": 27,
+  "injuries_endpoint_entries": 95,
+  "embedded_injuries": 95
  }
 }
